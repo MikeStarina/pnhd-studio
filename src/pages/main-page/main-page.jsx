@@ -7,6 +7,8 @@ import ThirdScreen from "../../components/main-page-components/third-screen.jsx"
 import CaseGallery from "../../components/main-page-components/case-gallery.jsx";
 import ConstructorScreen from "../../components/main-page-components/constructor-screen.jsx";
 import MethodsGallery from "../../components/main-page-components/methods-gallery.jsx";
+import ShopGallery from "../../components/main-page-components/shop-gallery.jsx";
+import PriceScreen from "../../components/main-page-components/price-screen.jsx";
 
 
 
@@ -21,6 +23,8 @@ const MainPage = () => {
       <CaseGallery />
       <ConstructorScreen />
       <MethodsGallery />
+      <ShopGallery />
+      <PriceScreen />
     </main>
   );
 };
