@@ -9,6 +9,9 @@ import ConstructorScreen from "../../components/main-page-components/constructor
 import MethodsGallery from "../../components/main-page-components/methods-gallery.jsx";
 import ShopGallery from "../../components/main-page-components/shop-gallery.jsx";
 import PriceScreen from "../../components/main-page-components/price-screen.jsx";
+import FeedbackScreen from "../../components/main-page-components/feedback-screen.jsx";
+import FormScreen from "../../components/main-page-components/form-screen.jsx";
+import Footer from "../../components/footer/footer.jsx";
 
 
 
@@ -25,6 +28,9 @@ const MainPage = () => {
       <MethodsGallery />
       <ShopGallery />
       <PriceScreen />
+      <FeedbackScreen />
+      <FormScreen />
+      <Footer />
     </main>
   );
 };
