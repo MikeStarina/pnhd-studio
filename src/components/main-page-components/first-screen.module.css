@@ -10,6 +10,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
+    overflow: hidden;
 }
 
 .main_heading {
@@ -19,10 +21,12 @@
     line-height: 80px;
     font-weight: 700;
     color: rgb(0, 255, 0);
+    z-index: 3;
 }
 
 .textStyle_italic {
     font-style: italic;
+    z-index: 3;
 }
 
 
@@ -33,6 +37,7 @@
     font-size: 20px;
     line-height: 20px;
     font-weight: 500;
+    z-index: 3;
 }
 
 
@@ -49,9 +54,37 @@
     font-weight: 700;
     padding: 0;
     margin: 60px 0 0 0;
+    z-index: 3;
 }
 
 .button:hover {
     cursor: pointer;
     background-color: rgb(0, 255, 0);
+    z-index: 3;
+}
+
+.link {
+    z-index: 3;
+}
+
+
+.background_video {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    top: 0;
+    min-width: 100vw;
+    min-height: 100vh;
+    z-index: 1;
+}
+
+.video_overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, .2);
+    z-index: 2;
 }
