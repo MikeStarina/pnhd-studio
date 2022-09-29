@@ -10,7 +10,7 @@ import bgvideo from '../../bgvideo.mp4';
 const FirstScreen = () => {
     return (
         <section className={styles.main_screen}>
-            <video autoplay='autoplay' muted='muted' loop='loop' class={styles.background_video}>
+            <video autoPlay='autoPlay' muted='muted' loop='loop' className={styles.background_video}>
                 <source src={bgvideo} type="video/mp4"></source>
             </video>
             <div className={styles.video_overlay}></div>
