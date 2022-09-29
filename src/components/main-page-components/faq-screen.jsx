@@ -18,7 +18,7 @@ const FaqScreen = () => {
                     <div className={styles.text_wrapper}>
                         <h5 className={styles.screen_heading}>ДИЗАЙН / <span className={styles.textStyle_italic}>DESIGN</span></h5>
                         <p className={styles.screen_description}>
-                            Отправь нам дизайн или приходи в студию. Наши дизайнеры помогут, если что-то пойдет не так ^_^
+                            Отправь нам дизайн или приходи в студию. Наши дизайнеры помогут, если что-то пойдет не так!
                         </p>
                     </div>    
                 </div>
@@ -32,7 +32,7 @@ const FaqScreen = () => {
                     <div className={styles.text_wrapper}>
                         <h5 className={styles.screen_heading}>ТЕКСТИЛЬ / <span className={styles.textStyle_italic}>GARMENT</span></h5>
                         <p className={styles.screen_description}>
-                            Мы следим за трендами. Текстиль актуального кроя и цветов всегда в наличии. Просто выбери то, что подойдет именно тебе $$$
+                            Мы следим за трендами. Текстиль актуального кроя и цветов всегда в наличии. Просто выбери то, что подойдет именно тебе!
                         </p>
                     </div>    
                 </div>
@@ -45,7 +45,7 @@ const FaqScreen = () => {
                     <div className={styles.text_wrapper}>
                         <h5 className={styles.screen_heading}>ПЕЧАТЬ / <span className={styles.textStyle_italic}>SOME MAGIC</span></h5>
                         <p className={styles.screen_description}>
-                            Куча методов нанесений, а все для того чтобы именно твой принт выглядел идеально! О_о
+                            Куча методов нанесений, а все для того чтобы именно твой принт выглядел идеально!
                         </p>
                     </div>    
                 </div>
