@@ -10,32 +10,49 @@ const MethodsGallery = () => {
         <section className={styles.screen}>
             <div className={styles.gallery_card}>
                 <img src={methods01} alt="tee" className={styles.card_img} />
+                
                 <div className={styles.card_title}>
-                    <h5 className={styles.card_header}>ШЕЛКОГРАФИЯ</h5>
+                    <h5 className={styles.card_heading}>ФЛЕКС</h5>
+                    <p className={styles.card_description}>
+                        Надписи и однотонные лого.
+                    </p>
                 </div>
             </div>
             <div className={styles.gallery_card}>
                 <img src={methods02} alt="tee" className={styles.card_img} />
                 <div className={styles.card_title}>
-                    <h5 className={styles.card_header}>ШЕЛКОГРАФИЯ</h5>
+                    <h5 className={styles.card_heading}>DTG</h5>
+                    <p className={styles.card_description}>
+                        Если нужно напечатать фотку или картинку.
+                    </p>
                 </div>
+                
             </div>
             <div className={styles.gallery_card}>
                 <img src={methods03} alt="tee" className={styles.card_img} />
                 <div className={styles.card_title}>
-                    <h5 className={styles.card_header}>ШЕЛКОГРАФИЯ</h5>
+                    <h5 className={styles.card_heading}>ВЫШИВКА</h5>
+                    <p className={styles.card_description}>
+                        Для логотипов и шевронов.
+                    </p>
                 </div>
             </div>
             <div className={styles.gallery_card}>
                 <img src={methods02} alt="tee" className={styles.card_img} />
                 <div className={styles.card_title}>
-                    <h5 className={styles.card_header}>ШЕЛКОГРАФИЯ</h5>
+                    <h5 className={styles.card_heading}>DTF</h5>
+                    <p className={styles.card_description}>
+                        Если нужно от 10 штук.
+                    </p>
                 </div>
             </div>
             <div className={styles.gallery_card}>
                 <img src={methods03} alt="tee" className={styles.card_img} />
                 <div className={styles.card_title}>
-                    <h5 className={styles.card_header}>ШЕЛКОГРАФИЯ</h5>
+                    <h5 className={styles.card_heading}>ШЕЛКОГРАФИЯ</h5>
+                    <p className={styles.card_description}>
+                        Для эффектов и оооочень больших тиражей.
+                    </p>
                 </div>
             </div>
         

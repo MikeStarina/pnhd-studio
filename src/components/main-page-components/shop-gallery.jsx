@@ -1,5 +1,9 @@
 import React from "react";
 import styles from './shop-gallery.module.css';
+import all from '../images/all.jpg';
+import man from '../images/man.jpg';
+import wman from '../images/wman.jpg';
+import acc from '../images/acc.jpg';
 
 
 
@@ -16,40 +20,52 @@ const ShopGallery = () => {
 
                 <div className={styles.card}>
 
-                    <h5 className={styles.card_heading}>
-                        ВСЕ ТОВАРЫ / <span className={styles.textStyle_italic}>ALL</span>
-                    </h5>
-                    <button type='button' className={styles.card_button}>СМОТРЕТЬ</button>
-                </div>
-
-
-
-                <div className={styles.card}>
+                    <img className={styles.card_img} src={all} alt='shop'></img>
                     
-                    <h5 className={styles.card_heading}>
-                        МУЖСКОЕ / <span className={styles.textStyle_italic}>MAN</span>
-                    </h5>
-                    <button type='button' className={styles.card_button}>СМОТРЕТЬ</button>
+                    <div className={styles.card_title}>
+                        <h5 className={styles.card_heading}>
+                            ВСЕ ТОВАРЫ / <span className={styles.textStyle_italic}>ALL</span>
+                        </h5>
+                        <button type='button' className={styles.card_button}>СМОТРЕТЬ</button>
+                    </div>
                 </div>
 
 
 
                 <div className={styles.card}>
 
-                    <h5 className={styles.card_heading}>
-                        ЖЕНСКОЕ / <span className={styles.textStyle_italic}>WOMAN</span>
-                    </h5>
-                    <button type='button' className={styles.card_button}>СМОТРЕТЬ</button>
+                    <img className={styles.card_img} src={man} alt='shop'></img>
+                    <div className={styles.card_title}>
+                        <h5 className={styles.card_heading}>
+                            МУЖСКОЕ / <span className={styles.textStyle_italic}>MAN</span>
+                        </h5>
+                        <button type='button' className={styles.card_button}>СМОТРЕТЬ</button>
+                    </div>
                 </div>
 
 
 
                 <div className={styles.card}>
 
-                    <h5 className={styles.card_heading}>
-                        АКСЕССУАРЫ / <span className={styles.textStyle_italic}>??</span>
-                    </h5>
-                    <button type='button' className={styles.card_button}>СМОТРЕТЬ</button>
+                    <img className={styles.card_img} src={wman} alt='shop'></img>
+                    <div className={styles.card_title}>
+                        <h5 className={styles.card_heading}>
+                            ЖЕНСКОЕ / <span className={styles.textStyle_italic}>WOMAN</span>
+                        </h5>
+                        <button type='button' className={styles.card_button}>СМОТРЕТЬ</button>
+                    </div>
+                </div>
+
+
+
+                <div className={styles.card}>
+                    <img className={styles.card_img} src={acc} alt='shop'></img>
+                    <div className={styles.card_title}>
+                        <h5 className={styles.card_heading}>
+                            АКСЕССУАРЫ / <span className={styles.textStyle_italic}>??</span>
+                        </h5>
+                        <button type='button' className={styles.card_button}>СМОТРЕТЬ</button>
+                    </div>
                 </div>
 
 
