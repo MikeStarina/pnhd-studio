@@ -1,0 +1,114 @@
+.screen {
+    width: 100%;
+    margin: 0;
+    padding: 60px 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.heading {
+    padding: 0;
+    margin: 0 0 30px 0;
+    font-size: 60px;
+    line-height: 60px;
+}
+
+.description {
+    padding: 0;
+    margin: 0 0 60px 0;
+    font-size: 20px;
+    line-height: 20px;
+    font-weight: bold;
+    max-width: 600px;
+    text-align: center;
+}
+
+.textStyle_italic {
+    font-style: italic;
+}
+
+.button_wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 800px;
+    width: 800px;
+}
+
+.button {
+    border: none;
+    background-color: transparent;
+    color: black;
+    font-size: 30px;
+    line-height: 30px;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    
+}
+
+.button_active {
+    color: gray;
+}
+
+.button:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.price_table {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 100px 0 0 0;
+    padding: 0;
+    width: 1000px;
+}
+
+.table_row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    margin: 0;
+    padding: 5px 20px;
+    border: none;
+    border-radius: 15px;
+}
+
+.table_row:nth-of-type(2n) {
+    background-color: rgba(0, 0, 0, .1);
+}
+
+.row_heading {
+    font-size: 30px;
+    line-height: 30px;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+
+
+.action_button {
+    width: 200px;
+    height: 60px;
+    border: none;
+    border-radius: 15px;
+    background-color: rgb(0, 255, 0);
+    color: white;
+    font-size: 20px;
+    line-height: 20px;
+    font-weight: bold;
+    padding: 0;
+    margin: 50px 0 0 0;
+}
+
+.action_button:hover {
+    color: rgb(0, 255, 0);
+    cursor: pointer;
+}
