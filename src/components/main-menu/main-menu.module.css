@@ -1,21 +1,17 @@
 .burger {
     width: 38px;
     height: 26px;
-    position: absolute;
+    position: fixed;
     top: 10px;
-    right: 10px;
+    right: 15px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
+    z-index: 3;
 }
 
-
-.burger_stripe {
-    width: 38px;
-    height: 5px;
-    margin: 0 0 10px 0;
-    padding: 0;
-    background-color: black;
+.burger:hover {
+    cursor: pointer;
 }

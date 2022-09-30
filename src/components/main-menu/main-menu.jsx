@@ -1,14 +1,12 @@
 import React from "react";
 import styles from './main-menu.module.css';
-
+import burger from '../images/burger.svg';
 
 
 const MainMenu = () => {
     return (
         <div className={styles.burger}>
-            <div className={styles.burger_stripe}></div>
-            <div className={styles.burger_stripe}></div>
-            <div className={styles.burger_stripe}></div>
+            <img src={burger} alt='main menu' className={styles.burger_icon}></img>
         </div>
     );
 
