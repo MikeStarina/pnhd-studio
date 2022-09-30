@@ -14,6 +14,7 @@ import FormScreen from "../../components/main-page-components/form-screen.jsx";
 import MapScreen from "../../components/main-page-components/map-screen.jsx";
 import Footer from "../../components/footer/footer.jsx";
 
+
 const MainPage = () => {
   return (
     <main className={styles.main_page}>

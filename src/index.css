@@ -6,7 +6,7 @@ body {
   padding: 0;
   width: 100%;
   box-sizing: border-box;
-
+  position: relative;
 
   font-family: 'Neue_machina', Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
