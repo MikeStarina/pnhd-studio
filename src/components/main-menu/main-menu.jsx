@@ -13,9 +13,10 @@ const MainMenu = ({ closeMenu }) => {
                 <button type='button' className={styles.close_button} onClick={closeMenu}>
                     <img src={closeIcon} alt='close icon' className={styles.close_icon}></img>
                 </button>
-                <Link className={styles.menu_link} to='/'>КАТАЛОГ</Link>
-                <Link className={styles.menu_link} to='/'>FAQ</Link>
-                <Link className={styles.menu_link} to='/'>ЦЕНЫ</Link>
+                <Link className={styles.menu_link} to='/'>ГЛАВНАЯ</Link>
+                <Link className={styles.menu_link} to='/shop'>КАТАЛОГ</Link>
+                <Link className={styles.menu_link} to='/faq'>FAQ</Link>
+                <Link className={styles.menu_link} to='/prices'>ЦЕНЫ</Link>
                 <Link className={styles.menu_link} to='/contacts'>КОНТАКТЫ</Link>
             </div>
         </div>
