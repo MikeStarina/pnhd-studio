@@ -20,7 +20,8 @@ const openMenu = () => {
 }
 
 
-const closeMenu = () => {
+const closeMenu = (e) => {
+  console.log(e.target);
   dispatch({
     type: CLOSE_MODAL_MENU,
   })
