@@ -11,7 +11,7 @@ const ConstructorScreen = () => {
                 <p className={styles.description}>
                     У нас есть конструктор, в котором можно посмотреть как будет выглядеть именно твой принт! &rarr;
                 </p>
-                <Link>
+                <Link  to='/'>
                     <button className={styles.button} type='button'>КОНСТРУКТОР</button>
                 </Link>
 

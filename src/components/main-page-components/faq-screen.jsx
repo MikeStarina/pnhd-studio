@@ -52,7 +52,7 @@ const FaqScreen = () => {
 
 
 
-                <Link>
+                <Link  to='/'>
                     <button type='button' className={styles.faq_button}>FAQ</button>
                 </Link>
 
