@@ -44,7 +44,7 @@ const PriceScreen = () => {
 
 
 
-            <Link>
+            <Link  to='/'>
                 <button type='button' className={styles.action_button}>ЗАКАЗАТЬ</button>
             </Link>
             
