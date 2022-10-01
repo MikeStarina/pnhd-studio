@@ -1,10 +1,12 @@
-import React from "react";
-//import styles from './contacts-page.module.css';
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { CLOSE_MODAL_MENU } from "../../services/actions/utility-actions.jsx";
+//import styles from './prices-page.module.css';
 
-const ContactsPage = () => {
+
+
+
+const PricesPage = () => {
 
     const dispatch = useDispatch();
 
@@ -17,9 +19,9 @@ const ContactsPage = () => {
 
     return (
         <main>
-            <h1>contacts page</h1>
-        </main>  
+            <h1>prices page</h1>
+        </main>
     );
 }
 
-export default ContactsPage;
+export default PricesPage;
