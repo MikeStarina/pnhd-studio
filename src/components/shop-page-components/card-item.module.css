@@ -3,4 +3,43 @@
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
+    height: 100vh;
+    min-width: 300px;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+
+.card_image {
+    object-fit: cover;
+    width: 100%;
+}
+
+.card_caption {
+    width: 100%;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.card_title {
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    line-height: 20px;
+    font-weight: 400;
+}
+
+.card_price {
+    margin: 20px 0 0 0;
+    padding: 0;
+    font-size: 20px;
+    line-height: 20px;
+    font-weight: 400;
 }

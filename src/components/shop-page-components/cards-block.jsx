@@ -9,6 +9,11 @@ const CardsBlock = () => {
     return (
         <section className={styles.screen}>
             <CardItem />
+            <CardItem />
+            <CardItem />
+            <CardItem />
+            <CardItem />
+            <CardItem />
         </section>
     );
 }

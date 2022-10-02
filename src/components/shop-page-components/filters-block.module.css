@@ -1,20 +1,19 @@
 .screen {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
+    justify-content: center;
+    align-items: flex-end;
     margin: 0;
-    padding: 50px 100px;
+    padding: 50px 100px 20px 100px;
     width: 100%;
     box-sizing: border-box;
-    border: 1px solid red;
 }
 
 
 .filter {
     padding: 0;
     margin: 0 0 0 20px;
-    font-size: 20px;
-    line-height: 20px;
-    font-weight: 500;
+    font-size: 15px;
+    line-height: 15px;
+    font-weight: 200;
 }

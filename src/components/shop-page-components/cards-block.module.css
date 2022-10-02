@@ -2,9 +2,10 @@
     width: 100%;
     box-sizing: border-box;
     margin: 0;
-    padding: 0;
+    padding: 0 5px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: auto;
     gap: 5px;
 }
+
