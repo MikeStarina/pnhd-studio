@@ -15,6 +15,7 @@ import Footer from '../footer/footer.jsx';
 import ShopPage from '../../pages/shop-page/shop-page.jsx';
 import FaqPage from '../../pages/faq-page/faq-page.jsx';
 import PricesPage from '../../pages/prices-page/prices-page.jsx';
+import Constructor from '../../pages/constructor-page/constructor-page.jsx';
 
 
 
@@ -70,6 +71,12 @@ const closeMenu = (e) => {
       <Route exact path='/prices'>
         <PricesPage />
       </Route>
+
+      <Route exact path='/constructor'>
+        <Constructor />
+      </Route>
+
+
 
     </Switch>
 

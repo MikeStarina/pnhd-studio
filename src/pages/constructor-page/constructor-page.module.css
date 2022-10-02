@@ -1,0 +1,38 @@
+.screen {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 0;
+    padding: 100px;
+    box-sizing: border-box;
+}
+
+.mockup_container {
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    border: 1px solid red;
+    position: relative;
+}
+
+.mockup_img {
+    width: 500px;
+    object-fit: cover;
+}
+
+.stage_container {
+    width: 220px;
+    position: absolute;
+    top: 100px;
+    margin-right: 25px;
+}
+
+.stage {
+    border: 1px solid red;
+}
+
+.layer {
+}

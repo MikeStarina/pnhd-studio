@@ -7,6 +7,8 @@ import man from '../images/man.jpg';
 
 const CardItem = () => {
 
+   
+   
     return (
         <div className={styles.card}>
             <img src={man} alt="card pic" className={styles.card_image} />
