@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import styles from './constructor-page.module.css';
 import { Stage, Layer } from "react-konva";
 import front from '../../components/images/front.png';
-import { IMAGE_SELECT, IMAGE_DESELECT } from "../../services/actions/editor-actions.jsx";
+import { IMAGE_SELECT, IMAGE_DESELECT, ADD_FILE } from "../../services/actions/editor-actions.jsx";
 import Print from "./print.jsx";
 
 
@@ -30,11 +30,11 @@ import Print from "./print.jsx";
 
    
     
-    //console.log(window.innerWidth);
+    
  
 
     const dispatch = useDispatch();
-    const { isSelected } = useSelector(store => store.editorState);
+    const { isSelected, file } = useSelector(store => store.editorState);
 
 
     const onSelect = () => {
@@ -43,13 +43,33 @@ import Print from "./print.jsx";
   
     const checkDeselect = (e) => {
 
-        //console.log(e.target.getLayer());
+       
       
       const clickedOnEmpty = e.target === e.target.getStage();
       if (clickedOnEmpty) {
         dispatch({type: IMAGE_DESELECT})
       }
     };
+
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+    
+        
+    }
+
+    const onChange = (e) => {
+        e.preventDefault()
+        //console.log(e.target.files[0]);
+        const img = window.URL.createObjectURL(e.target.files[0])
+        console.log(img);
+
+        
+        dispatch({
+            type: ADD_FILE,
+            payload: img,
+        }) 
+    }
   
     return (
         <section className={styles.screen}>
@@ -70,6 +90,7 @@ import Print from "./print.jsx";
                             <Print
                                 isSelected={isSelected}
                                 onSelect={onSelect}
+                                file={file}
                                 initialImageCoords={params}
                                 onChange={(newAttrs) => {
                                     
@@ -85,10 +106,38 @@ import Print from "./print.jsx";
                     </Stage>
             </div>
         </div>
+        <div className={styles.controls_container}>
+            <div className={styles.tabs_container}>
+                <div className={styles.tab}>
+                    <p className={styles.tab_caption}>Грудь</p>
+                </div>
+                <div className={styles.tab}>
+                    <p className={styles.tab_caption}>Спина</p>
+                </div>
+                <div className={styles.tab}>
+                    <p className={styles.tab_caption}>Л. рукав</p>
+                </div>
+                <div className={styles.tab}>
+                    <p className={styles.tab_caption}>П. рукав</p>
+                </div>
+                <div className={styles.tab}>
+                    <p className={styles.tab_caption}>Бирка</p>
+                </div>
+            </div>
+           
+            <div className={styles.input_container}>
+                <form className={styles.input_form} onSubmit={onSubmit}>
+                    <input type='file' className={styles.file_input} name='file_input' onChange={onChange}></input>
+                    <button type='submit'>Загрузить</button>
+                </form>
+            </div>
+        </div>
       </section>
     );
   };
   
 export default Constructor;
+
+// {file && <img src={file} alt='uploaded'></img>}
   
 

@@ -6,11 +6,14 @@ import circle50px from '../../components/images/circle50px.png';
 
 
 
-const Print = ({ initialImageCoords, isSelected, onSelect, onChange }) => {
+const Print = ({ initialImageCoords, isSelected, onSelect, onChange, file }) => {
     const imgRef = useRef();
     const trRef = useRef();
+    //console.log(circle50px);
 
-    const [imageTwo] = useImage(circle50px);
+
+    //const imageToRender = file ? file : circle50px;
+    const [imageTwo] = useImage(file);
 
   
     useEffect(() => {
