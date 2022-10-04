@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { OPEN_MODAL_MENU, CLOSE_MODAL_MENU } from '../../services/actions/utility-actions';
 import { Route, Switch } from 'react-router-dom';
+import { getShopData } from '../../services/actions/shop-data-actions.jsx';
 
 
 
@@ -17,6 +18,8 @@ import FaqPage from '../../pages/faq-page/faq-page.jsx';
 import PricesPage from '../../pages/prices-page/prices-page.jsx';
 import Constructor from '../../pages/constructor-page/constructor-page.jsx';
 
+import ItemPage from '../../pages/item-page/item-page.jsx';
+
 
 
 function App() {
@@ -26,10 +29,17 @@ const { mainMenu } = useSelector(store => store.utilityState);
 
 
 useEffect(() => {
+  dispatch(getShopData());
+}, [])
+
+
+useEffect(() => {
   dispatch({
       type: CLOSE_MODAL_MENU,
   })    
 }, [dispatch])
+
+
 
 
 const openMenu = () => {
@@ -73,6 +83,10 @@ const closeMenu = (e) => {
 
       <Route exact path='/constructor'>
         <Constructor />
+      </Route>
+
+      <Route exact path='/shop/:id'>
+        <ItemPage />
       </Route>
 
 
