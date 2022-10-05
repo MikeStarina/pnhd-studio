@@ -5,6 +5,7 @@ import styles from './item-page.module.css';
 import closeicon from '../../components/images/closeIcon.svg';
 import { useDispatch } from "react-redux";
 import { ADD_TO_CART } from "../../services/actions/cart-actions.jsx";
+import { Link } from "react-router-dom";
 
 
 
@@ -12,7 +13,8 @@ import { ADD_TO_CART } from "../../services/actions/cart-actions.jsx";
 const ItemPage = () => {
 
     const { id } = useParams();
-    const { data } = useSelector(store => store.shopData)
+    const { data } = useSelector(store => store.shopData);
+    //const { order } = useSelector(store => store.cartData);
     const history = useHistory();
     const dispatch = useDispatch();
 
@@ -53,7 +55,9 @@ const ItemPage = () => {
                 </div>
 
                 <div className={styles.item_info_block}>
-                    <button type='button' className={styles.item_button}>ДОБАВИТЬ ПРИНТ</button>
+                    <Link to='/constructor'>
+                        <button type='button' className={styles.item_button}>ДОБАВИТЬ ПРИНТ</button>
+                    </Link>
                     <button type='button' className={styles.item_button} onClick={addToCart}>ДОБАВИТЬ В КОРЗИНУ</button>
                 </div>
 
