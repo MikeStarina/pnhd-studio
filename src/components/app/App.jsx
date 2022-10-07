@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { OPEN_MODAL_MENU, CLOSE_MODAL_MENU } from '../../services/actions/utility-actions';
 import { Route, Switch } from 'react-router-dom';
+import { getShopData } from '../../services/actions/shop-data-actions.jsx';
 
 
 
@@ -16,6 +17,9 @@ import ShopPage from '../../pages/shop-page/shop-page.jsx';
 import FaqPage from '../../pages/faq-page/faq-page.jsx';
 import PricesPage from '../../pages/prices-page/prices-page.jsx';
 import Constructor from '../../pages/constructor-page/constructor-page.jsx';
+import CartIcon from '../cart/cart-icon.jsx';
+import ItemPage from '../../pages/item-page/item-page.jsx';
+import CartPage from '../../pages/cart-page/cart-page.jsx';
 
 
 
@@ -23,6 +27,12 @@ function App() {
 
 const dispatch = useDispatch();
 const { mainMenu } = useSelector(store => store.utilityState);
+const { order } = useSelector(store => store.cartData);
+
+
+useEffect(() => {
+  dispatch(getShopData());
+}, [dispatch])
 
 
 useEffect(() => {
@@ -30,6 +40,8 @@ useEffect(() => {
       type: CLOSE_MODAL_MENU,
   })    
 }, [dispatch])
+
+
 
 
 const openMenu = () => {
@@ -40,7 +52,6 @@ const openMenu = () => {
 
 
 const closeMenu = (e) => {
-  console.log(e.target);
   dispatch({
     type: CLOSE_MODAL_MENU,
   })
@@ -50,6 +61,7 @@ const closeMenu = (e) => {
   return (
     <> 
     {mainMenu.isVisible ? (<MainMenu closeMenu={closeMenu} />) : (<BurgerIcon openMenu={openMenu} />)}
+    {order && order.length > 0 && <CartIcon qty={order.length} />}
     <Switch>     
 
       <Route exact path='/'>
@@ -72,8 +84,17 @@ const closeMenu = (e) => {
         <PricesPage />
       </Route>
 
-      <Route exact path='/constructor'>
+      <Route exact path='/shop/:id'>
+        <ItemPage />
+      </Route>
+
+
+      <Route exact path='/shop/:id/constructor'>
         <Constructor />
+      </Route>
+
+      <Route exact path='/checkout'>
+        <CartPage />
       </Route>
 
 

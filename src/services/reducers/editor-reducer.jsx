@@ -1,9 +1,10 @@
-import { IMAGE_SELECT, IMAGE_DESELECT } from "../actions/editor-actions";
+import { IMAGE_SELECT, IMAGE_DESELECT, ADD_FILE } from "../actions/editor-actions";
 
 
 
 const initialState = {
     isSelected: false,
+    file: '',
 }
 
 
@@ -25,6 +26,13 @@ export const editorReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isSelected: false,
+            }
+        }
+
+        case ADD_FILE: {
+            return {
+                ...state,
+                file: action.payload,
             }
         }
         

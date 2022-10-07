@@ -1,20 +1,20 @@
 import React from "react";
 import styles from './card-item.module.css';
-import man from '../images/man.jpg';
+//import man from '../images/man.jpg';
 
 
 
 
-const CardItem = () => {
+const CardItem = ({title, price, img}) => {
 
    
    
     return (
         <div className={styles.card}>
-            <img src={man} alt="card pic" className={styles.card_image} />
+            <img src={img} alt="card pic" className={styles.card_image} />
             <div className={styles.card_caption}>
-                <p className={styles.card_title}>Футболка оверсайз</p>
-                <p className={styles.card_price}>2000 Р.</p>
+                <p className={styles.card_title}>{title}</p>
+                <p className={styles.card_price}>{price} Р.</p>
             </div>
         </div>
     );

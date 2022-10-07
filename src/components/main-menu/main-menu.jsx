@@ -18,7 +18,6 @@ const MainMenu = ({ closeMenu }) => {
                 <Link className={styles.menu_link} to='/faq'>FAQ</Link>
                 <Link className={styles.menu_link} to='/prices'>ЦЕНЫ</Link>
                 <Link className={styles.menu_link} to='/contacts'>КОНТАКТЫ</Link>
-                <Link className={styles.menu_link} to='/constructor'>КОНСТРУКТОР</Link>
             </div>
         </div>
     );

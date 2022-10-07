@@ -2,15 +2,19 @@ import React, { useRef, useEffect } from "react";
 import { Image } from "react-konva";
 import { Transformer } from "react-konva";
 import useImage from "use-image";
-import circle50px from '../../components/images/circle50px.png';
+//import circle50px from '../../components/images/circle50px.png';
 
 
 
-const Print = ({ initialImageCoords, isSelected, onSelect, onChange }) => {
-    const imgRef = useRef();
+const Print = ({ initialImageCoords, isSelected, onSelect, onChange, file, imgRef }) => {
+    
     const trRef = useRef();
+    //console.log(circle50px);
 
-    const [imageTwo] = useImage(circle50px);
+
+    //const imageToRender = file ? file : circle50px;
+    const [imageTwo] = useImage(file);
+   
 
   
     useEffect(() => {
@@ -18,7 +22,7 @@ const Print = ({ initialImageCoords, isSelected, onSelect, onChange }) => {
         trRef.current.nodes([imgRef.current]);
         trRef.current.getLayer().batchDraw();
       }
-    }, [isSelected]);
+    }, [isSelected], [imgRef]);
   
     return (
       <>
