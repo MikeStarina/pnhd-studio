@@ -55,7 +55,7 @@ const ItemPage = () => {
                 </div>
 
                 <div className={styles.item_info_block}>
-                    <Link to='/constructor'>
+                    <Link to={{ pathname: `/shop/${id}/constructor`}}>
                         <button type='button' className={styles.item_button}>ДОБАВИТЬ ПРИНТ</button>
                     </Link>
                     <button type='button' className={styles.item_button} onClick={addToCart}>ДОБАВИТЬ В КОРЗИНУ</button>

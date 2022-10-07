@@ -1,4 +1,4 @@
-import { ADD_TO_CART } from "../actions/cart-actions.jsx";
+import { ADD_TO_CART, ADD_TO_CART_WITH_PRINT } from "../actions/cart-actions.jsx";
 
 
 
@@ -14,6 +14,18 @@ export const cartDataReducer = (state = initialState, action) => {
             const clonedOrder = state.order;
             clonedOrder.push(action.payload);
 
+
+            return {
+                
+
+                ...state,
+                order: clonedOrder,
+
+            }
+        }
+        case ADD_TO_CART_WITH_PRINT: {
+            const clonedOrder = state.order;
+            clonedOrder.push(action.payload);
 
             return {
                 

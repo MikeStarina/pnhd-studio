@@ -84,12 +84,13 @@ const closeMenu = (e) => {
         <PricesPage />
       </Route>
 
-      <Route exact path='/constructor'>
-        <Constructor />
-      </Route>
-
       <Route exact path='/shop/:id'>
         <ItemPage />
+      </Route>
+
+
+      <Route exact path='/shop/:id/constructor'>
+        <Constructor />
       </Route>
 
       <Route exact path='/checkout'>
