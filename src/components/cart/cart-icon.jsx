@@ -16,8 +16,11 @@ const CartIcon = ({ qty }) => {
     return (
         <div className={styles.cart_wrapper}>
             <Link to='/checkout' className={styles.link}>
-                 
-                <p className={styles.counter}>{qty}</p>
+                <div className={styles.counter_wrapper}>
+                    <p className={styles.counter}>{qty}</p>
+                </div> 
+                
+
             </Link>
         </div>
     )

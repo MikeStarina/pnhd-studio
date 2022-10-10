@@ -1,7 +1,7 @@
 .screen {
     width: 100%;
     margin: 0;
-    padding: 60px 0;
+    padding: 60px 0 200px 0;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -41,6 +41,7 @@
 
 .button {
     border: none;
+    height: 60px;;
     background-color: transparent;
     color: black;
     font-family: inherit;
@@ -52,13 +53,27 @@
     
 }
 
-.button_active {
-    color: gray;
+.button:hover {
+    border: none;
+    border-top: 3px solid transparent;
+    border-bottom: 3px solid black;
+    cursor: pointer;
 }
 
-.button:hover {
-    cursor: pointer;
-    text-decoration: underline;
+.button_active {
+    height: 60px;;
+    background-color: transparent;
+    color: black;
+    font-family: inherit;
+    font-size: 30px;
+    line-height: 30px;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-top: 3px solid transparent;
+    border-bottom: 3px solid black;
+
 }
 
 .price_table {
@@ -71,29 +86,6 @@
     width: 1000px;
 }
 
-.table_row {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 60px;
-    margin: 0;
-    padding: 5px 20px;
-    border: none;
-    border-radius: 15px;
-}
-
-.table_row:nth-of-type(2n) {
-    background-color: rgba(0, 0, 0, .1);
-}
-
-.row_heading {
-    font-size: 30px;
-    line-height: 30px;
-    font-weight: 600;
-    margin: 0;
-    padding: 0;
-}
 
 
 .action_button {

@@ -29,3 +29,24 @@
     z-index: 2;
 }
 
+.contacts_heading {
+    font-size: 30px;
+    line-height: 35px;
+    font-weight: 700;
+    margin: 0 0 50px 0;
+    padding: 0;
+
+}
+
+.description {
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+}
+
+.description:last-of-type {
+    margin-top: 50px;
+}
+

@@ -20,7 +20,11 @@ const MapScreen = () => {
                 </Map>
             </YMaps>
             <div className={styles.contact_box}>
-                <h5 className={styles.contect_heading}>КОНТАКТЫ</h5>
+                <h5 className={styles.contacts_heading}>КОНТАКТЫ</h5>
+                <p className={styles.description}>+7 (812) 904-61-56</p>
+                <p className={styles.description}>studio@pnhd.ru</p>
+                <p className={styles.description}>197022, Санкт-Петербург, ул. Чапыгина 1 /м. Петроградская/</p>
+                <p className={styles.description}>Каждый день с 11:00 до 20:00</p>
             </div>    
 
         </section>
