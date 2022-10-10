@@ -51,7 +51,7 @@
     justify-content: flex-start;
     align-items: center;
     width: 100%;
-    margin: 0 0 100px 0;
+    margin: 0 0 50px 0;
     padding: 0;
 }
 
@@ -66,17 +66,25 @@
 
 }
 
-.tab:first-of-type {
+.active_tab {
+    height: 40px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-top: 2px solid transparent;
     border-bottom: 2px solid black;
-    cursor: pointer;
 }
+
 
 .tab:hover {
+    border-top: 2px solid transparent;
     border-bottom: 2px solid black;
     cursor: pointer;
 }
 
-.tab caption {
+.tab_caption {
     margin: 0;
     padding: 0;
     text-align: center;
@@ -169,4 +177,22 @@
     padding: 0;
     margin: 20px 0 0 0;
     align-self: flex-end;
+}
+
+
+
+.order_info {
+    margin: 50px 0;
+    padding: 0;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+.order_info_line {
+    margin: 0;
+    padding: 0;
 }

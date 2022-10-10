@@ -3,7 +3,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { OPEN_MODAL_MENU, CLOSE_MODAL_MENU } from '../../services/actions/utility-actions';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { getShopData } from '../../services/actions/shop-data-actions.jsx';
 
 
@@ -27,7 +27,8 @@ function App() {
 
 const dispatch = useDispatch();
 const { mainMenu } = useSelector(store => store.utilityState);
-const { order } = useSelector(store => store.cartData);
+const { order, isVisible } = useSelector(store => store.cartData);
+
 
 
 useEffect(() => {
@@ -61,7 +62,7 @@ const closeMenu = (e) => {
   return (
     <> 
     {mainMenu.isVisible ? (<MainMenu closeMenu={closeMenu} />) : (<BurgerIcon openMenu={openMenu} />)}
-    {order && order.length > 0 && <CartIcon qty={order.length} />}
+    {order && order.length > 0 && isVisible && <CartIcon qty={order.length} />}
     <Switch>     
 
       <Route exact path='/'>
@@ -94,8 +95,13 @@ const closeMenu = (e) => {
       </Route>
 
       <Route exact path='/checkout'>
-        <CartPage />
+        {order.length > 0 ? (<CartPage />) : (<Redirect to='/shop' />)}
       </Route>
+
+
+
+
+
 
 
 

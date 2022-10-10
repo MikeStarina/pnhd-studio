@@ -96,5 +96,40 @@
     font-weight: 500;
     cursor: pointer;
     padding: 0;
-    margin: 20px 0 0 0;
+    margin: 0 0 0 20px;
 }
+
+.item_button_wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+
+.item_form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+    padding: 0px;
+    margin: 50px 0 0 0;
+}
+
+.select_label {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 400;
+    text-align: right;
+    padding: 0;
+    margin: 0 0 5px 0;
+}
+
+.form_select {
+    width: 75px;
+    height: 25px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+

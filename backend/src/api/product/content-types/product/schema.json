@@ -35,6 +35,13 @@
     },
     "image_url": {
       "type": "string"
+    },
+    "editor_front_view": {
+      "type": "string",
+      "required": false
+    },
+    "editor_back_view": {
+      "type": "string"
     }
   }
 }
