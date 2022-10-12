@@ -36,7 +36,7 @@ const ItemPage = () => {
     item[0].attributes.size = size;
     item[0].attributes.qty = 1;
     item[0].cart_item_id = uuidv4();
-    console.log(item[0]);
+    //console.log(item[0]);
 
    
 
@@ -57,7 +57,7 @@ const ItemPage = () => {
 
        
      
-       console.log(item[0]);
+       //console.log(item[0]);
         
        
         dispatch({

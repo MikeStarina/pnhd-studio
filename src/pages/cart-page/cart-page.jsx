@@ -3,7 +3,7 @@ import styles from './cart-page.module.css';
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
 import { CHANGE_ITEM_QTY, SET_CART_VISIBILITY } from "../../services/actions/cart-actions";
-
+import ItemPrint from "../../components/cart-page-components/item-print";
 import closeicon from '../../components/images/closeIcon.svg';
 
 
@@ -14,6 +14,7 @@ const CartPage = () => {
 
     const history = useHistory()
     const { order } = useSelector(store => store.cartData);
+    console.log(order);
     const dispatch = useDispatch();
 
 
@@ -32,7 +33,7 @@ const CartPage = () => {
         
     }, [] )
 
-    //console.log(totalPrice);
+    console.log(typeof order[0].print.front.cartParams.price);
 
 
     const onChange = (e) => {
@@ -79,12 +80,45 @@ const CartPage = () => {
                                             
                                         
 
-                                    </div>
+                                        </div>
                                     </div>
                                     <p className={styles.price}>= {item.attributes.price * item.attributes.qty} P.</p>
                                 </div>
 
-                                {item.print && 
+                                {item.print.front.file && <ItemPrint print={item.print.front} qty={item.attributes.qty} title={'Принт на груди:'} />}
+                                {item.print.back.file && <ItemPrint print={item.print.back} qty={item.attributes.qty} title={'Принт на спине:'} />}
+                                {item.print.lsleeve.file && <ItemPrint print={item.print.lsleeve} qty={item.attributes.qty} title={'Принт на левом рукаве:'} />}
+                                {item.print.rsleeve.file && <ItemPrint print={item.print.rsleeve} qty={item.attributes.qty} title={'Принт на правом рукаве:'} />}
+                                {item.print.badge.file && <ItemPrint print={item.print.badge} qty={item.attributes.qty} title={'Бейдж-принт:'} />}
+                                   
+
+                                
+                            
+                            </li>
+                    
+                )}
+                )}
+
+
+               
+            </ul>
+            <div className={styles.cart_controls}>
+                                            {order.length > 0 && <p className={styles.total_price}>Итого: = {totalPrice} P.</p>}    
+                                            <button type='button' className={styles.control_button}>Очистить корзину</button>
+                                            <button type='button' className={styles.control_button}>Оформить</button>
+            </div>
+
+           
+
+
+        </section>
+    );
+}
+
+export default CartPage;
+
+/**
+ *     {item.print && 
                                     <div className={styles.textile_description}>
                                        
                                         <div className={styles.desc_box}>
@@ -108,25 +142,4 @@ const CartPage = () => {
 
                                    
                                 }
-                            </li>
-                    
-                )}
-                )}
-
-
-               
-            </ul>
-            <div className={styles.cart_controls}>
-                                            {order.length > 0 && <p className={styles.total_price}>Итого: = {totalPrice} P.</p>}    
-                                            <button type='button' className={styles.control_button}>Очистить корзину</button>
-                                            <button type='button' className={styles.control_button}>Оформить</button>
-            </div>
-
-           
-
-
-        </section>
-    );
-}
-
-export default CartPage;
+ */

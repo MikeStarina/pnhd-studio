@@ -2,8 +2,8 @@ import React, { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styles from './constructor-page.module.css';
 import { Stage, Layer } from "react-konva";
-import front from '../../components/images/front.png';
-import { IMAGE_SELECT, IMAGE_DESELECT, ADD_FILE, DELETE_FILE, SET_ACTIVE_VIEW } from "../../services/actions/editor-actions.jsx";
+//import front from '../../components/images/front.png';
+import { IMAGE_SELECT, IMAGE_DESELECT, ADD_FILE, DELETE_FILE, SET_ACTIVE_VIEW, SET_FILE_STAGE_PARAMS, SET_FILE_CART_PARAMS } from "../../services/actions/editor-actions.jsx";
 import { ADD_TO_CART_WITH_PRINT } from "../../services/actions/cart-actions";
 import { useParams, useLocation, useHistory } from "react-router-dom";
 import Print from "./print.jsx";
@@ -28,13 +28,11 @@ import Print from "./print.jsx";
 
 
     
-    const [params, setParams] = useState(initialImageCoords);  //переписать в редакс
-    const [price, setPrice] = useState(0);
-    const [size, setSize] = useState('');
-    const [wh, setWH] = useState('');
     const { id } = useParams();
     const dispatch = useDispatch();
-    const { isSelected, file, activeView } = useSelector(store => store.editorState);
+    //const editor = useSelector(store => store.editorState);
+    //console.log(editor);
+    const { isSelected, front_file, back_file, lsleeve_file, rsleeve_file, badge_file, activeView } = useSelector(store => store.editorState);
     const { data } = useSelector(store => store.shopData);
     const history = useHistory();
     const { state } = useLocation();
@@ -48,6 +46,8 @@ import Print from "./print.jsx";
 
 
     const setActiveTab = (e) => {
+
+     
     
         dispatch({
             type: SET_ACTIVE_VIEW,
@@ -62,7 +62,6 @@ import Print from "./print.jsx";
         
         const width = newAttrs.width * 0.16;
         const height = newAttrs.height * 0.16;
-        setWH(`${Math.round(width)} x ${Math.round(height)} см.`);
         const printSqr = width * height;
 
         let screenSize = '';
@@ -90,8 +89,17 @@ import Print from "./print.jsx";
             priceCounter = 0;
         }
 
-        setPrice(priceCounter);
-        setSize(screenSize)
+      
+        dispatch({
+            type: SET_FILE_CART_PARAMS,
+            payload: {
+                price: priceCounter,
+                format: screenSize,
+                size: `${Math.round(width)} x ${Math.round(height)} см.`,
+                place: activeView
+            },
+            view: activeView
+        })
     }
  
 
@@ -110,6 +118,32 @@ import Print from "./print.jsx";
     };
 
 
+    const fileSelect = (activeView, front_file, back_file, lsleeve_file, rsleeve_file, badge_file) => {
+        if (activeView === 'front' && front_file) {
+            
+            if (labelRef.current) {
+                 labelRef.current.textContent = front_file.file && front_file.file.name;
+            }
+          
+           
+            return front_file
+        } else if (activeView === 'back' && back_file) {
+            labelRef.current.textContent = back_file.file ? back_file.file.name : 'Выберите файл';
+            return back_file
+        } else if (activeView === 'lsleeve' && lsleeve_file) {
+
+            labelRef.current.textContent = lsleeve_file.file ? lsleeve_file.file.name : 'Выберите файл';
+            return lsleeve_file
+        } else if (activeView === 'rsleeve' && rsleeve_file) {
+            labelRef.current.textContent = rsleeve_file.file ? rsleeve_file.file.name : 'Выберите файл';
+            return rsleeve_file
+        } else if (activeView === 'badge' && badge_file) {
+            labelRef.current.textContent = badge_file.file ? badge_file.file.name : 'Выберите файл';
+            return badge_file
+        }
+    }
+    const file = fileSelect(activeView, front_file, back_file, lsleeve_file, rsleeve_file, badge_file);
+    //console.log(file);
    
 
     const onChange = (e) => {
@@ -134,7 +168,11 @@ import Print from "./print.jsx";
             //console.log(res);
             dispatch({
                 type: ADD_FILE,
-                payload: `http://localhost:1337${res[0].url}`,
+                payload: {
+                    url: `http://localhost:1337${res[0].url}`,
+                    name: res[0].name,
+                },
+                view: activeView,
             })
             const currentImage = res[0];
             let imageCoords = {
@@ -167,7 +205,14 @@ import Print from "./print.jsx";
                     height: displayHeight,
                 }
             }
-            setParams(imageCoords);
+            dispatch({
+                type: SET_FILE_STAGE_PARAMS,
+                payload: imageCoords,
+                view: activeView,
+            })
+
+         
+           
             getSize(imageCoords);
         })
 
@@ -176,12 +221,15 @@ import Print from "./print.jsx";
 
 
     const addToCart = () => {
-        item[0].print = file && {
-            size: wh,
-            format: size,
-            price: price,
-            place: '',
-            print: file,
+
+       
+
+        item[0].print = {
+            front: front_file,
+            back: back_file,
+            lsleeve: lsleeve_file,
+            rsleeve: rsleeve_file,
+            badge: badge_file,
         };
 
         
@@ -191,12 +239,12 @@ import Print from "./print.jsx";
            
             
         });
-
+        /*
          
         dispatch({
             type: DELETE_FILE
-        })
-        console.log(history);
+        }) */
+       
         history.go(-2);
     }
 
@@ -223,15 +271,19 @@ import Print from "./print.jsx";
                             <Print
                                 isSelected={isSelected}
                                 onSelect={onSelect}
-                                file={file}
-                                initialImageCoords={params}
+                                file={file.file && file.file.url}
+                                initialImageCoords={file.stageParams}
                                 imgRef={imgRef}
                                 onChange={(newAttrs) => {
                                     
                                 
-                               
-                                setParams(newAttrs);
-                                getSize(newAttrs);
+                                    dispatch({
+                                        type: SET_FILE_STAGE_PARAMS,
+                                        payload: newAttrs,
+                                        view: activeView,
+                                    })
+                                    //setParams(newAttrs);
+                                    getSize(newAttrs);
                                 }}
                             />
 
@@ -279,10 +331,10 @@ import Print from "./print.jsx";
             <div className={styles.order_info}>
                 <p className={styles.order_info_line}>Текстиль: {textile.name}</p>
                 <p className={styles.order_info_line}>Стоимость: {textile.price}</p>
-                <p className={styles.order_info_line}>Формат печати: {size}</p>
-                <p className={styles.order_info_line}>Размеры принта: {wh}</p>
-                <p className={styles.order_info_line}>Стоимость печати: {price}</p>
-                <p className={styles.order_info_line}>Итого: {textile.price + price}</p>
+                <p className={styles.order_info_line}>Формат печати: {file.cartParams ? file.cartParams.format: ''}</p>
+                <p className={styles.order_info_line}>Размеры принта: {file.cartParams ? file.cartParams.size : ''}</p>
+                <p className={styles.order_info_line}>Стоимость печати: {file.cartParams ? file.cartParams.price : ''}</p>
+                <p className={styles.order_info_line}>Итого: {file.cartParams ? textile.price + file.cartParams.price : textile.price}</p>
             </div>
          
             
@@ -295,36 +347,5 @@ import Print from "./print.jsx";
   
 export default Constructor;
 
-// {file && <img src={file} alt='uploaded'></img>}
-  
 
-
-/**
- *  const onSubmit = (e) => {
-        e.preventDefault();
-     
-
-        const data = new FormData();
-        const print = e.target.file_input.files[0];
-        data.append(`files`, print, print.name);
-      
-       
-        
-
-        fetch('http://localhost:1337/api/upload', {
-            method: 'POST',
-            body: data
-        })
-        .then(res => res.json())
-        .then((res) => {
-            console.log(res);
-            dispatch({
-                type: ADD_FILE,
-                payload: `http://localhost:1337${res[0].url}`,
-            })
-        })
-        
-        
-    };
- */
 
