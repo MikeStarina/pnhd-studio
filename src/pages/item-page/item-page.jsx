@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { useState } from "react";
 import { useSelector } from "react-redux";
@@ -18,25 +18,23 @@ const ItemPage = () => {
     const [ size, setSize ] = useState('XS');
     const { id } = useParams();
     const { data } = useSelector(store => store.shopData);
-  
+    const { order } = useSelector(store => store.cartData);
+    //console.log(order);
     const history = useHistory();
     const dispatch = useDispatch();
 
     const intId = parseInt(id);
-
+  
     const onClick = () => {
         history.goBack();
     }
+    
+ 
+    
+    let item = data.length > 0 && data.filter(elem => elem.id === intId);
 
     
     
-
-
-    const item = data.filter(elem => elem.id === intId);
-    item[0].attributes.size = size;
-    item[0].attributes.qty = 1;
-    item[0].cart_item_id = uuidv4();
-    console.log(item[0]);
 
    
 
@@ -47,7 +45,8 @@ const ItemPage = () => {
   
     const onChange = (e) => {
         setSize(e.target.value);
-        item[0].attributes.sizes = size;
+       
+        
 
     } 
 
@@ -56,23 +55,30 @@ const ItemPage = () => {
     const addToCart = () => {
 
        
-     
-       console.log(item[0]);
+        const data = {
+            attributes: {...item[0].attributes},
+            cart_item_id: uuidv4(),
+        };
+        data.attributes.size = size;
+        data.attributes.key = uuidv4();
+        
+        data.attributes.qty = 1;
+        //data.cart_item_id = uuidv4();
         
        
         dispatch({
             type: ADD_TO_CART,
-            payload: item[0]
+            payload: {...data},
         });
         history.goBack();
     }
     
 
-
-    return (
+    
+    return (data.length > 0 && item &&
         <section className={styles.screen}>
             <div className={styles.gallery_wrapper}>
-            <img src={item[0].attributes.image_url} alt='item' className={styles.gallery_image}></img>
+                <img src={item[0].attributes.image_url} alt='item' className={styles.gallery_image}></img>
             </div>
             <div className={styles.item_info_wrapper}>
                 <div className={styles.item_info_block}>
@@ -97,7 +103,7 @@ const ItemPage = () => {
                 </div>
 
                 <div className={styles.item_button_wrapper}>
-                    <Link to={{ pathname: `/shop/${id}/constructor`, state: item[0] }}>
+                    <Link to={{ pathname: `/shop/${id}/constructor`, state: {size: size} }}>
                         <button type='button' className={styles.item_button}>ДОБАВИТЬ ПРИНТ</button>
                     </Link>
                     <button type='button' className={styles.item_button} onClick={addToCart}>ДОБАВИТЬ В КОРЗИНУ</button>

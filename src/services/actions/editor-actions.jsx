@@ -3,3 +3,5 @@ export const IMAGE_DESELECT = 'IMAGE_DESELECT';
 export const ADD_FILE = 'ADD_FILE';
 export const DELETE_FILE = 'DELETE_FILE';
 export const SET_ACTIVE_VIEW = 'SET_ACTIVE_VIEW';
+export const SET_FILE_STAGE_PARAMS = 'SET_FILE_PARAMS';
+export const SET_FILE_CART_PARAMS = 'SET_FILE_CART_PARAMS';

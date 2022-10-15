@@ -27,6 +27,8 @@
     justify-content: flex-start;
     align-items: center;
     list-style-type: none;
+    box-sizing: border-box;
+    padding: 0;
 }
 
 
@@ -137,4 +139,77 @@
     background-color: transparent;
     border-radius: 10px;
     margin: 0 0 10px 0;
+    cursor: pointer;
+}
+
+
+@media (max-width: 1250px) {
+    .cart_item {
+        width: 100%;
+    }
+
+    .screen {
+        padding: 100px 100px;
+       
+    }
+}
+
+
+@media (max-width: 700px) {
+    
+    .screen {
+        padding: 100px 20px;
+       
+    }
+
+
+
+    
+}
+
+@media (max-width: 600px) {
+
+    .textile_description {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-end;
+       
+       
+    }
+
+    .desc_box {
+        width: 100%;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+    
+    .textile_description {
+        align-items: flex-start;
+       
+       
+    }
+
+    
+
+    .title {
+        margin: 0;
+    }
+
+    .text_wrapper {
+        align-items: flex-start;
+    }
+
+    .item_img {
+        margin: 0;
+    }
+
+    .cart_item {
+        width: 100%;
+        
+    
+    }
+
+    .price {
+        align-self: flex-end;
+    }
 }
