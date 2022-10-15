@@ -1,10 +1,12 @@
+import { apiBaseUrl } from "../../utils/constants";
+
 export const GET_DATA = 'GET_DATA';
 
 
 
 export const getShopData = () => {
     return function (dispatch) {
-        fetch('http://localhost:1337/api/products', {
+        fetch(`${apiBaseUrl}/products`, {
             headers: { "Content-Type": "application/json" }
             })
             .then(res => res.json())
