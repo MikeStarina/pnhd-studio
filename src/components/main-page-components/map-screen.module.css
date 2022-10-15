@@ -27,6 +27,7 @@
     padding: 50px;
     margin: 0;
     z-index: 2;
+    box-sizing: border-box;
 }
 
 .contacts_heading {
@@ -48,5 +49,26 @@
 
 .description:last-of-type {
     margin-top: 50px;
+}
+
+@media (max-width: 750px) {
+
+    .screen {
+        height: 100vh;
+    }
+
+    .contact_box {
+        position: initial;
+        width: 100%;
+    }
+
+    .contacts_heading {
+        width: 100%
+    
+    }
+
+    .description {
+        width: 100%;
+    }
 }
 

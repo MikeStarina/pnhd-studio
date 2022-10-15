@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import styles from './constructor-page.module.css';
 import { Stage, Layer } from "react-konva";
 //import front from '../../components/images/front.png';
+import { v4 as uuidv4 } from "uuid";
 import { IMAGE_SELECT, IMAGE_DESELECT, ADD_FILE, DELETE_FILE, SET_ACTIVE_VIEW, SET_FILE_STAGE_PARAMS, SET_FILE_CART_PARAMS } from "../../services/actions/editor-actions.jsx";
 import { ADD_TO_CART_WITH_PRINT } from "../../services/actions/cart-actions";
 import { useParams, useLocation, useHistory } from "react-router-dom";
@@ -13,14 +14,7 @@ import Print from "./print.jsx";
 
 
 
-  
-  let initialImageCoords = 
-  {
-    x: 0,
-    y: 0,
-    width: 100,
-    height: 100,
-  };
+
    
   
   const Constructor = () => {
@@ -30,20 +24,21 @@ import Print from "./print.jsx";
     
     const { id } = useParams();
     const dispatch = useDispatch();
-    //const editor = useSelector(store => store.editorState);
-    //console.log(editor);
     const { isSelected, front_file, back_file, lsleeve_file, rsleeve_file, badge_file, activeView } = useSelector(store => store.editorState);
     const { data } = useSelector(store => store.shopData);
     const history = useHistory();
     const { state } = useLocation();
-    const textile = state.attributes;
+    //const textile = state && state.attributes;
     const labelRef = useRef(null);
     const imgRef = useRef();
 
     const intId = parseInt(id);
-    const item = data.filter(elem => elem.id === intId);
+   
 
 
+    const item = data.length > 0 && data.filter(elem => elem.id === intId);
+
+    
 
     const setActiveTab = (e) => {
 
@@ -222,9 +217,19 @@ import Print from "./print.jsx";
 
     const addToCart = () => {
 
+        const data = {
+            attributes: {...item[0].attributes},
+            cart_item_id: uuidv4(),
+        }
+
+        data.attributes.size = state.size;
+        data.attributes.qty = 1;
+        //data.cart_item_id = uuidv4();
+        data.attributes.key = uuidv4();
+
        
 
-        item[0].print = {
+        data.print = {
             front: front_file,
             back: back_file,
             lsleeve: lsleeve_file,
@@ -235,22 +240,22 @@ import Print from "./print.jsx";
         
         dispatch({
             type: ADD_TO_CART_WITH_PRINT,
-            payload: item[0],
+            payload: {...data},
            
             
         });
-        /*
+        
          
         dispatch({
             type: DELETE_FILE
-        }) */
+        }) 
        
         history.go(-2);
     }
 
    
   
-    return (
+    return (item &&
         <section className={styles.screen}>
             <div className={styles.mockup_container}>
                 {activeView === 'front' && <img src={item[0].attributes.editor_front_view} alt='mockup' className={styles.mockup_img}></img>}
@@ -291,7 +296,7 @@ import Print from "./print.jsx";
                         
                         </Layer>
                     </Stage>
-            </div>
+                </div>
         </div>
         <div className={styles.controls_container}>
             <div className={styles.tabs_container}>
@@ -329,12 +334,12 @@ import Print from "./print.jsx";
 
             </div>
             <div className={styles.order_info}>
-                <p className={styles.order_info_line}>Текстиль: {textile.name}</p>
-                <p className={styles.order_info_line}>Стоимость: {textile.price}</p>
+                <p className={styles.order_info_line}>Текстиль: {item[0].attributes.name}</p>
+                <p className={styles.order_info_line}>Стоимость: {item[0].attributes.price}</p>
                 <p className={styles.order_info_line}>Формат печати: {file.cartParams ? file.cartParams.format: ''}</p>
                 <p className={styles.order_info_line}>Размеры принта: {file.cartParams ? file.cartParams.size : ''}</p>
                 <p className={styles.order_info_line}>Стоимость печати: {file.cartParams ? file.cartParams.price : ''}</p>
-                <p className={styles.order_info_line}>Итого: {file.cartParams ? textile.price + file.cartParams.price : textile.price}</p>
+                <p className={styles.order_info_line}>Итого: {file.cartParams ? item[0].attributes.price + file.cartParams.price : item[0].attributes.price}</p>
             </div>
          
             

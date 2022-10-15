@@ -3,7 +3,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { OPEN_MODAL_MENU, CLOSE_MODAL_MENU } from '../../services/actions/utility-actions';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
 import { getShopData } from '../../services/actions/shop-data-actions.jsx';
 
 
@@ -20,6 +20,7 @@ import Constructor from '../../pages/constructor-page/constructor-page.jsx';
 import CartIcon from '../cart/cart-icon.jsx';
 import ItemPage from '../../pages/item-page/item-page.jsx';
 import CartPage from '../../pages/cart-page/cart-page.jsx';
+import { RESTORE_CART_FROM_SSTORAGE } from '../../services/actions/cart-actions';
 
 
 
@@ -30,6 +31,19 @@ const { mainMenu } = useSelector(store => store.utilityState);
 const { order, isVisible } = useSelector(store => store.cartData);
 
 
+
+
+
+useEffect(() => {
+  const autoSavedCart = sessionStorage.getItem('cart');
+  
+  if (autoSavedCart) {
+    dispatch({
+      type: RESTORE_CART_FROM_SSTORAGE,
+      payload: JSON.parse(autoSavedCart),
+    })
+  }
+}, [])
 
 useEffect(() => {
   dispatch(getShopData());
@@ -91,7 +105,7 @@ const closeMenu = (e) => {
 
 
       <Route exact path='/shop/:id/constructor'>
-        <Constructor />
+        {useLocation().state ? (<Constructor />) : (<Redirect to='/shop' />)}
       </Route>
 
       <Route exact path='/checkout'>

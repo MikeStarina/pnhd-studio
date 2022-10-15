@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import styles from './cart-page.module.css';
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
-import { CHANGE_ITEM_QTY, SET_CART_VISIBILITY } from "../../services/actions/cart-actions";
+import { CHANGE_ITEM_QTY, CLEAR_CART, proceedToPayment, SET_CART_VISIBILITY } from "../../services/actions/cart-actions";
+import { createOrder } from "../../services/actions/cart-actions";
 import ItemPrint from "../../components/cart-page-components/item-print";
 import closeicon from '../../components/images/closeIcon.svg';
 
@@ -14,13 +15,31 @@ const CartPage = () => {
 
     const history = useHistory()
     const { order } = useSelector(store => store.cartData);
-    console.log(order);
+    //console.log(order);
     const dispatch = useDispatch();
 
 
     const totalPrice = order.reduce((acc, item) => {
-        return item.print ? acc = acc + item.attributes.price * item.attributes.qty + item.print.price  * item.attributes.qty : acc = acc + item.attributes.price * item.attributes.qty;
+        let printTotalprice = 0;
+        //console.log(item.print)
+        //console.log(item.print.back)
+        const frontPrintPrice = item.print && item.print.front.file ? item.print.front.cartParams.price : 0;
+        const backPrintPrice = item.print && item.print.back.file ? item.print.back.cartParams.price : 0;
+        const lsleevePrintPrice = item.print && item.print.lsleeve.file ? item.print.lsleeve.cartParams.price : 0;
+        const rsleevePrintPrice = item.print && item.print.rsleeve.file ? item.print.rsleeve.cartParams.price : 0;
+        const badgePrintPrice = item.print && item.print.badge.file ? item.print.badge.cartParams.price : 0;
+       
+        printTotalprice = frontPrintPrice + backPrintPrice + lsleevePrintPrice + rsleevePrintPrice + badgePrintPrice;
+       
+
+        acc = acc + item.attributes.price * item.attributes.qty + printTotalprice * item.attributes.qty;
+        
+
+
+        return  acc;
     }, 0)
+
+
 
 
     useEffect(() => {
@@ -33,7 +52,7 @@ const CartPage = () => {
         
     }, [] )
 
-    console.log(typeof order[0].print.front.cartParams.price);
+    //console.log(typeof order[0].print.front.cartParams.price);
 
 
     const onChange = (e) => {
@@ -47,6 +66,15 @@ const CartPage = () => {
     const close = () => {
         history.goBack();
     }
+
+    const createOrderHandler = () => {
+        dispatch(createOrder(order, totalPrice));
+    }
+
+
+    const clearCartHandler = () => {
+        dispatch({ type: CLEAR_CART });
+    };
 
 
     
@@ -85,11 +113,11 @@ const CartPage = () => {
                                     <p className={styles.price}>= {item.attributes.price * item.attributes.qty} P.</p>
                                 </div>
 
-                                {item.print.front.file && <ItemPrint print={item.print.front} qty={item.attributes.qty} title={'Принт на груди:'} />}
-                                {item.print.back.file && <ItemPrint print={item.print.back} qty={item.attributes.qty} title={'Принт на спине:'} />}
-                                {item.print.lsleeve.file && <ItemPrint print={item.print.lsleeve} qty={item.attributes.qty} title={'Принт на левом рукаве:'} />}
-                                {item.print.rsleeve.file && <ItemPrint print={item.print.rsleeve} qty={item.attributes.qty} title={'Принт на правом рукаве:'} />}
-                                {item.print.badge.file && <ItemPrint print={item.print.badge} qty={item.attributes.qty} title={'Бейдж-принт:'} />}
+                                {item.print && item.print.front.file && <ItemPrint print={item.print.front} qty={item.attributes.qty} title={'Принт на груди:'} />}
+                                {item.print && item.print.back.file && <ItemPrint print={item.print.back} qty={item.attributes.qty} title={'Принт на спине:'} />}
+                                {item.print && item.print.lsleeve.file && <ItemPrint print={item.print.lsleeve} qty={item.attributes.qty} title={'Принт на левом рукаве:'} />}
+                                {item.print && item.print.rsleeve.file && <ItemPrint print={item.print.rsleeve} qty={item.attributes.qty} title={'Принт на правом рукаве:'} />}
+                                {item.print && item.print.badge.file && <ItemPrint print={item.print.badge} qty={item.attributes.qty} title={'Бейдж-принт:'} />}
                                    
 
                                 
@@ -104,8 +132,8 @@ const CartPage = () => {
             </ul>
             <div className={styles.cart_controls}>
                                             {order.length > 0 && <p className={styles.total_price}>Итого: = {totalPrice} P.</p>}    
-                                            <button type='button' className={styles.control_button}>Очистить корзину</button>
-                                            <button type='button' className={styles.control_button}>Оформить</button>
+                                            <button type='button' className={styles.control_button} onClick={clearCartHandler}>Очистить корзину</button>
+                                            <button type='button' className={styles.control_button} onClick={createOrderHandler}>Оформить</button>
             </div>
 
            

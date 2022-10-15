@@ -22,3 +22,9 @@
 .textStyle_italic {
     font-style: italic;
 }
+
+@media (max-width: 750px) {
+    .gallery_img {
+        width: calc(100% / 2);
+    }
+}

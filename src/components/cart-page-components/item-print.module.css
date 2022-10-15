@@ -45,3 +45,47 @@
     margin: 0 50px 0 0;
     padding: 0;
 }
+
+
+
+
+
+
+
+
+@media (max-width: 600px) {
+
+    .textile_description {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-end;
+        margin: 0;
+        padding: 0;
+       
+    }
+   
+
+
+    .desc_box {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+
+    .item_img {
+        margin: 0;
+    }
+
+    .title {
+        margin: 0;
+    }
+
+    .description {
+        margin: 0;
+    }
+
+    .price {
+        align-self: flex-end;
+    }
+}

@@ -21,3 +21,33 @@
     margin: 0;
     padding: 0;
 }
+
+
+
+@media (max-width: 750px) {
+    .row_heading {
+        font-size: 15px;
+        line-height: 15px;
+       
+    }
+
+    .table_row {
+       
+        height: 40px;
+        
+    }
+}
+
+
+@media (max-width: 650px) {
+    .row_heading {
+        font-size: 10px;
+        line-height: 10px;
+    }
+
+    .table_row {
+       
+        height: 40px;
+        
+    }
+}

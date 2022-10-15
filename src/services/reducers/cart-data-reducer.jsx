@@ -1,4 +1,4 @@
-import { ADD_TO_CART, ADD_TO_CART_WITH_PRINT, CHANGE_ITEM_QTY, SET_CART_VISIBILITY } from "../actions/cart-actions.jsx";
+import { ADD_TO_CART, ADD_TO_CART_WITH_PRINT, CHANGE_ITEM_QTY, CLEAR_CART, RESTORE_CART_FROM_SSTORAGE, SET_CART_VISIBILITY } from "../actions/cart-actions.jsx";
 
 
 
@@ -12,21 +12,27 @@ const initialState = {
 export const cartDataReducer = (state = initialState, action) => {
     switch(action.type) {
         case ADD_TO_CART: {
+
             const clonedOrder = state.order;
+
+            
             clonedOrder.push(action.payload);
+           
+            sessionStorage.setItem('cart', JSON.stringify(clonedOrder));
 
-
-            return {
-               
-
+            state = {
                 ...state,
                 order: clonedOrder,
                 isVisible: true,
             }
+           
+            return {...state}
         }
         case ADD_TO_CART_WITH_PRINT: {
+
             const clonedOrder = state.order;
-            clonedOrder.push(action.payload);
+            clonedOrder.push({...action.payload});
+            sessionStorage.setItem('cart', JSON.stringify(clonedOrder));
 
             return {
                 
@@ -64,6 +70,22 @@ export const cartDataReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isVisible: action.payload,
+            }
+        }
+        case CLEAR_CART: {
+
+            sessionStorage.setItem('cart', '');
+
+            return {
+                order: [],
+                isVisible: false
+            }
+        }
+        case RESTORE_CART_FROM_SSTORAGE: {
+            return {
+                ...state,
+                order: action.payload,
+                isVisible: true,
             }
         }
 

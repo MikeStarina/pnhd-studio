@@ -68,14 +68,8 @@ export const editorReducer = (state = initialState, action) => {
         }
 
         case DELETE_FILE: {
-            return {
-                ...state,
-                front_file: '',
-                back_file: '',
-                lsleeve_file: '',
-                rsleeve_file: '',
-                badge_file: '',
-            }
+            return state = initialState
+            
         }
         case SET_ACTIVE_VIEW: {
             return {
