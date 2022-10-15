@@ -6,6 +6,12 @@
 
 }
 
+@media (max-width: 1000px) {
+    .main_screen {
+        height: 100vh;
+    }
+}
+
 
 
 

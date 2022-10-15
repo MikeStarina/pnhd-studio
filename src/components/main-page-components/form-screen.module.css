@@ -1,7 +1,7 @@
 .screen {
     width: 100%;
     margin: 0;
-    padding: 60px 0;
+    padding: 60px 50px 200px 50px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -22,7 +22,9 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    width: 800px
+    width: 100%;
+    max-width: 800px;
+    box-sizing: border-box;
 }
 
 .form_input_label {
@@ -33,12 +35,32 @@
 
 .form_input {
     width: 100%;
+    box-sizing: border-box;
+    max-width: 800px;
     height: 60px;
     border: 1px solid black;
     border-radius: 15px;
     margin: 5px 0 40px;
-    padding: 0;
+    padding: 0 20px;
+    font-size: 20px;
+    line-height: 20px;
+    font-weight: 600;
 }
+
+.form_input_textarea {
+    width: 100%;
+    box-sizing: border-box;
+    height: 60px;
+    border: 1px solid black;
+    border-radius: 15px;
+    margin: 5px 0 40px;
+    padding: 20px;
+    font-size: 20px;
+    line-height: 20px;
+    font-weight: 600;
+    resize: none;
+}
+
 
 
 .form_submit_button {
@@ -52,4 +74,45 @@
     line-height: 20px;
     font-weight: bold;
     align-self: center;
+    cursor: pointer;
+}
+
+
+
+@media (max-width: 750px) {
+    .heading {
+        font-size: 50px;
+        line-height: 50px;
+    }
+}
+
+
+@media (max-width: 650px) {
+    .heading {
+        font-size: 30px;
+        line-height: 30px;
+        align-self: flex-start;
+        margin-bottom: 100px;
+    }
+
+    .form_input {
+        
+        height: 40px;
+        border-radius: 8px;
+    }
+
+    .form_submit_button {
+    
+        height: 40px;       
+        border-radius: 15px;       
+        font-size: 15px;
+        line-height: 15px;
+        
+    }
+
+    .form_input_label {
+        font-size: 15px;
+        line-height: 15px;
+        font-weight: bold;
+    }
 }
