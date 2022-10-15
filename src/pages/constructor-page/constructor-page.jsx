@@ -8,6 +8,7 @@ import { IMAGE_SELECT, IMAGE_DESELECT, ADD_FILE, DELETE_FILE, SET_ACTIVE_VIEW, S
 import { ADD_TO_CART_WITH_PRINT } from "../../services/actions/cart-actions";
 import { useParams, useLocation, useHistory } from "react-router-dom";
 import Print from "./print.jsx";
+import { apiBaseUrl } from "../../utils/constants";
 
 
 
@@ -154,7 +155,7 @@ import Print from "./print.jsx";
        
         
 
-        fetch('http://localhost:1337/api/upload', {
+        fetch(`${apiBaseUrl}/upload`, {
             method: 'POST',
             body: data
         })
@@ -164,7 +165,7 @@ import Print from "./print.jsx";
             dispatch({
                 type: ADD_FILE,
                 payload: {
-                    url: `http://localhost:1337${res[0].url}`,
+                    url: `http://194.58.122.162:1337${res[0].url}`,
                     name: res[0].name,
                 },
                 view: activeView,

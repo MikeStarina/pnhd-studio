@@ -1,3 +1,5 @@
+import { apiBaseUrl } from "../../utils/constants";
+
 export const ADD_TO_CART = 'ADD_TO_CART';
 export const ADD_TO_CART_WITH_PRINT = 'ADD_TO_CART_WITH_PRINT';
 export const CHANGE_ITEM_QTY = 'CHANGE_ITEM_QTY';
@@ -23,7 +25,7 @@ export const createOrder = (order, totalPrice) => {
    
 
     return function (dispatch) {
-        fetch ('http://localhost:1337/api/orders', {
+        fetch (`${apiBaseUrl}/orders`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
