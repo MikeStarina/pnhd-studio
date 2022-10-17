@@ -165,7 +165,7 @@ import { apiBaseUrl } from "../../utils/constants";
             dispatch({
                 type: ADD_FILE,
                 payload: {
-                    url: `http://194.58.122.162:1337${res[0].url}`,
+                    url: `${apiBaseUrl}/${res[0].url}`,
                     name: res[0].name,
                 },
                 view: activeView,

@@ -1,4 +1,4 @@
-import { OPEN_MODAL_MENU, CLOSE_MODAL_MENU, SET_ACTIVE_PRICE_TABLE } from "../actions/utility-actions.jsx";
+import { OPEN_MODAL_MENU, CLOSE_MODAL_MENU, SET_ACTIVE_PRICE_TABLE, GET_ORDER_FORM_DATA } from "../actions/utility-actions.jsx";
 
 
 
@@ -9,7 +9,16 @@ const initialState = {
     },
     mainMenuPriceTable: {
         activeTab: 'DTG',
-    }
+    },
+
+    orderFormData : {
+        name: '',
+        email: '',
+        phone: '',
+        message: '',
+    },
+
+    isFormDataSet: false,
 }
 
 
@@ -42,6 +51,21 @@ export const utilityReducer = (state = initialState, action) => {
                 }
             }
         }
+
+        case GET_ORDER_FORM_DATA: {
+            return {
+                ...state,
+                orderFormData: {
+                    name: action.name,
+                    email: action.email,
+                    phone: action.phone,
+                    message: action.message,
+                },
+                isFormDataSet: true,
+            }
+        }
+
+        
 
 
         default: return state;

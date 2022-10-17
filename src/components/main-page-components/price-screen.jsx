@@ -1,6 +1,5 @@
 import React from "react";
 import styles from './price-screen.module.css';
-import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { SET_ACTIVE_PRICE_TABLE } from "../../services/actions/utility-actions";
 import PriceTable from "./price-screen-components/price-table.jsx";
@@ -86,9 +85,9 @@ const PriceScreen = () => {
 
 
 
-            <Link  to='/'>
+            <a href='#order_form_heading'>
                 <button type='button' className={styles.action_button}>ЗАКАЗАТЬ</button>
-            </Link>
+            </a>
             
         </section>
     );

@@ -25,9 +25,9 @@ const FirstScreen = () => {
             <span className={styles.textStyle_italic}>
                 &nbsp;/трендовых/&nbsp;
             </span>
-                 футболках и худи за 15 минут! Клик, чтобы перейти в конструктор!</p>
-        <Link className={styles.link}  to='/'>
-            <button type='button' className={styles.button}>КОНСТРУКТОР</button>
+                 футболках и худи за 15 минут! Клик, чтобы начать!</p>
+        <Link className={styles.link}  to='/shop'>
+            <button type='button' className={styles.button}>КАТАЛОГ</button>
         </Link>
     </section>
     );
