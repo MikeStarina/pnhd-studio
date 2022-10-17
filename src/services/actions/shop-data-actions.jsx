@@ -6,7 +6,7 @@ export const GET_DATA = 'GET_DATA';
 
 export const getShopData = () => {
     return function (dispatch) {
-        fetch(`${apiBaseUrl}/products`, {
+        fetch(`${apiBaseUrl}/api/products`, {
             headers: { "Content-Type": "application/json" }
             })
             .then(res => res.json())

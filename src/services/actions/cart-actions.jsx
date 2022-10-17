@@ -25,7 +25,7 @@ export const createOrder = (order, totalPrice) => {
    
 
     return function (dispatch) {
-        fetch (`${apiBaseUrl}/orders`, {
+        fetch (`${apiBaseUrl}/api/orders`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

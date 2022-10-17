@@ -1,5 +1,6 @@
 import React from "react";
 import styles from './feedback-screen.module.css';
+import { Link } from "react-router-dom";
 import circle50px from '../images/circle50px.png';
 
 
@@ -56,8 +57,13 @@ const FeedbackScreen = () => {
             </div>
 
             <div className={styles.button_wrapper}>
-                <button type='button' className={styles.link_button}>ОТЗЫВЫ YANDEX</button>
-                <button type='button' className={styles.link_button}>ОТЗЫВЫ GOOGLE</button>
+
+                <a href='https://yandex.ru/maps/-/CCUZ5Wd1KB' target='blank'>
+                    <button type='button' className={styles.link_button}>ОТЗЫВЫ YANDEX</button>
+                </a>
+                <a href='https://goo.gl/maps/RePRmuUpzPVjYc7r7' target='blank'>
+                    <button type='button' className={styles.link_button}>ОТЗЫВЫ GOOGLE</button>
+                </a>
             </div>
         </section>
     );
