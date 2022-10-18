@@ -150,14 +150,14 @@ import { apiBaseUrl } from "../../utils/constants";
         
         const data = new FormData();
         const print = e.target.files[0];
-        data.append(`files`, print, print.name);
-      
-       
+        data.append(`files`, print, print.name)
+        console.log(data.files);
         
+       
 
-        fetch(`${apiBaseUrl}/upload`, {
+        fetch(`${apiBaseUrl}/api/upload/`, {
             method: 'POST',
-            body: data
+            body: data,
         })
         .then(res => res.json())
         .then((res) => {
@@ -165,7 +165,7 @@ import { apiBaseUrl } from "../../utils/constants";
             dispatch({
                 type: ADD_FILE,
                 payload: {
-                    url: `${apiBaseUrl}/${res[0].url}`,
+                    url: `${apiBaseUrl}${res[0].url}`,
                     name: res[0].name,
                 },
                 view: activeView,
