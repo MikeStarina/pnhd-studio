@@ -41,7 +41,7 @@ const ShopGallery = () => {
                         <h5 className={styles.card_heading}>
                             МУЖСКОЕ / <span className={styles.textStyle_italic}>MAN</span>
                         </h5>
-                        <Link to='#' className={styles.card_button}>СМОТРЕТЬ</Link>
+                        <Link to='/shop' className={styles.card_button}>СМОТРЕТЬ</Link>
                     </div>
                 </div>
 
@@ -54,7 +54,7 @@ const ShopGallery = () => {
                         <h5 className={styles.card_heading}>
                             ЖЕНСКОЕ / <span className={styles.textStyle_italic}>WOMAN</span>
                         </h5>
-                        <Link to='#' className={styles.card_button}>СМОТРЕТЬ</Link>
+                        <Link to='/shop' className={styles.card_button}>СМОТРЕТЬ</Link>
                     </div>
                 </div>
 
@@ -66,7 +66,7 @@ const ShopGallery = () => {
                         <h5 className={styles.card_heading}>
                             АКСЕССУАРЫ / <span className={styles.textStyle_italic}>??</span>
                         </h5>
-                        <Link to='#' className={styles.card_button}>СМОТРЕТЬ</Link>
+                        <Link to='/shop' className={styles.card_button}>СМОТРЕТЬ</Link>
                     </div>
                 </div>
 
