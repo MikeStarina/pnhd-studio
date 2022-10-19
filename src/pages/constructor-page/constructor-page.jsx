@@ -151,7 +151,7 @@ import { apiBaseUrl } from "../../utils/constants";
         const data = new FormData();
         const print = e.target.files[0];
         data.append(`files`, print, print.name)
-        console.log(data.files);
+        console.log('upload start');
         
        
 
@@ -161,7 +161,7 @@ import { apiBaseUrl } from "../../utils/constants";
         })
         .then(res => res.json())
         .then((res) => {
-            //console.log(res);
+            console.log('upload end');
             dispatch({
                 type: ADD_FILE,
                 payload: {

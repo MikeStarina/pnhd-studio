@@ -144,30 +144,3 @@ const CartPage = () => {
 }
 
 export default CartPage;
-
-/**
- *     {item.print && 
-                                    <div className={styles.textile_description}>
-                                       
-                                        <div className={styles.desc_box}>
-                                    
-                                            <img src={item.print.print} alt='print pic' className={styles.item_img}></img>
-                                                <div className={styles.text_wrapper}>
-                                                    <h3 className={styles.title}>Принт формата: {item.print.format}</h3>
-                                                    <p className={styles.description}>Размер: {item.print.size}</p>
-                                                    <p className={styles.description}>Количество: {item.attributes.qty}</p>
-                                                
-
-                                                </div>
-                                        </div>
-                                       
-                                            <p className={styles.price}>= {item.print.price * item.attributes.qty} P.</p>
-                                            
-                                       
-                                       
-                                    </div> 
-
-
-                                   
-                                }
- */

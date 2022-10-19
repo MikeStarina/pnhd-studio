@@ -14,16 +14,22 @@ export const RESTORE_CART_FROM_SSTORAGE = 'RESTORE_CART_FROM_SSTORAGE';
 
 export const createOrder = (order, totalPrice) => {
 
+    
+  
     const data = {data: {
         order: JSON.stringify(order),
-        order_price: totalPrice
+        order_price: totalPrice,
+        textile: order[0].attributes.name,
+        size: order[0].attributes.size,
+        qty: order[0].attributes.qty,
+        print: 'Без принта',
         }
     };
                
      
-    console.log(JSON.stringify(data));
+ 
    
-
+    
     return function (dispatch) {
         fetch (`${apiBaseUrl}/api/orders`, {
             method: 'POST',
@@ -37,6 +43,7 @@ export const createOrder = (order, totalPrice) => {
         .then(res => res.json())
         .then((res) => console.log(res));
     }
+    
 }
 
 
