@@ -113,11 +113,11 @@ const CartPage = () => {
                                     <p className={styles.price}>= {item.attributes.price * item.attributes.qty} P.</p>
                                 </div>
 
-                                {item.print && item.print.front.file && <ItemPrint print={item.print.front} qty={item.attributes.qty} title={'Принт на груди:'} />}
-                                {item.print && item.print.back.file && <ItemPrint print={item.print.back} qty={item.attributes.qty} title={'Принт на спине:'} />}
-                                {item.print && item.print.lsleeve.file && <ItemPrint print={item.print.lsleeve} qty={item.attributes.qty} title={'Принт на левом рукаве:'} />}
-                                {item.print && item.print.rsleeve.file && <ItemPrint print={item.print.rsleeve} qty={item.attributes.qty} title={'Принт на правом рукаве:'} />}
-                                {item.print && item.print.badge.file && <ItemPrint print={item.print.badge} qty={item.attributes.qty} title={'Бейдж-принт:'} />}
+                                {item.print && item.print.front.file && <ItemPrint print={item.print.front_preview.preview} params={item.print.front} qty={item.attributes.qty} title={'Принт на груди:'} />}
+                                {item.print && item.print.back.file && <ItemPrint print={item.print.back_preview.preview} params={item.print.back} qty={item.attributes.qty} title={'Принт на спине:'} />}
+                                {item.print && item.print.lsleeve.file && <ItemPrint print={item.print.lsleeve_preview.preview} params={item.print.lsleeve} qty={item.attributes.qty} title={'Принт на левом рукаве:'} />}
+                                {item.print && item.print.rsleeve.file && <ItemPrint print={item.print.rsleeve_preview.preview} params={item.print.rsleeve} qty={item.attributes.qty} title={'Принт на правом рукаве:'} />}
+                                
                                    
 
                                 

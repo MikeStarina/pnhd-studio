@@ -1,4 +1,4 @@
-import { OPEN_MODAL_MENU, CLOSE_MODAL_MENU, SET_ACTIVE_PRICE_TABLE, GET_ORDER_FORM_DATA } from "../actions/utility-actions.jsx";
+import { OPEN_MODAL_MENU, CLOSE_MODAL_MENU, SET_ACTIVE_PRICE_TABLE, GET_ORDER_FORM_DATA, IS_IMAGE_LOADING } from "../actions/utility-actions.jsx";
 
 
 
@@ -19,6 +19,7 @@ const initialState = {
     },
 
     isFormDataSet: false,
+    isImageLoading: false,
 }
 
 
@@ -62,6 +63,12 @@ export const utilityReducer = (state = initialState, action) => {
                     message: action.message,
                 },
                 isFormDataSet: true,
+            }
+        }
+        case IS_IMAGE_LOADING: {
+            return {
+                ...state,
+                isImageLoading: action.payload
             }
         }
 

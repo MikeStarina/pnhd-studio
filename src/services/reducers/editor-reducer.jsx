@@ -1,13 +1,17 @@
-import { IMAGE_SELECT, IMAGE_DESELECT, ADD_FILE, DELETE_FILE, SET_ACTIVE_VIEW, SET_FILE_STAGE_PARAMS, SET_FILE_CART_PARAMS } from "../actions/editor-actions";
+import { IMAGE_SELECT, IMAGE_DESELECT, ADD_FILE, DELETE_FILE, SET_ACTIVE_VIEW, SET_FILE_STAGE_PARAMS, SET_FILE_CART_PARAMS, CLEAR_ALL_PRINTS, ADD_PRINT_PREVIEW } from "../actions/editor-actions";
 
 
 
 const initialState = {
     isSelected: false,
     front_file: {},
+    front_file_preview: {},
     back_file: {},
+    back_file_preview: {},
     lsleeve_file: {},
+    lsleeve_file_preview: {},
     rsleeve_file: {},
+    rsleeve_file_preview: {},
     badge_file: {},
     activeView: 'front',
 }
@@ -67,7 +71,7 @@ export const editorReducer = (state = initialState, action) => {
             }
         }
 
-        case DELETE_FILE: {
+        case CLEAR_ALL_PRINTS: {
             return state = initialState
             
         }
@@ -75,6 +79,29 @@ export const editorReducer = (state = initialState, action) => {
             return {
                 ...state,
                 activeView: action.payload,
+            }
+        }
+        case DELETE_FILE: {
+            return {
+                ...state,
+                front_file: action.view === 'front' ? {} : state.front_file,
+                front_file_preview: action.view === 'front' ? {} : state.front_file_preview,
+                back_file: action.view === 'back' ? {} : state.back_file,
+                back_file_preview: action.view === 'back' ? {} : state.back_file_preview,
+                lsleeve_file: action.view === 'lsleeve' ? {} : state.lsleeve_file,
+                lsleeve_file_preview: action.view === 'lsleeve' ? {} : state.lsleeve_file_preview,
+                rsleeve_file: action.view === 'rsleeve' ? {} : state.rsleeve_file,
+                rsleeve_file_preview: action.view === 'rsleeve' ? {} : state.rsleeve_file_preview,
+                badge_file: action.view === 'badge' ? {} : state.badge_file,
+            }
+        }
+        case ADD_PRINT_PREVIEW: {
+            return {
+                ...state,
+                front_file_preview: action.view === 'front' ? {data: action.data, preview: action.preview} : state.front_file_preview,
+                back_file_preview: action.view === 'back' ? {data: action.data, preview: action.preview} : state.back_file_preview,
+                lsleeve_file_preview: action.view === 'lsleeve' ? {data: action.data, preview: action.preview} : state.lsleeve_file_preview,
+                rsleeve_file_preview: action.view === 'rsleeve' ? {data: action.data, preview: action.preview} : state.rsleeve_file_preview,
             }
         }
         
