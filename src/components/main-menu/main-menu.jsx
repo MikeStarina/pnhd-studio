@@ -25,7 +25,7 @@ const MainMenu = ({ closeMenu }) => {
                     <Link className={styles.menu_link} to='/contacts'>КОНТАКТЫ</Link>
                 </div>
                 <div className={styles.wrapper}>
-                    {userAuth.isAuthenticated ? (<Link to='/' className={styles.menu_link}>МОЙ ПРОФИЛЬ</Link>) : (
+                    {userAuth.isAuthenticated ? (<Link to='/profile' className={styles.menu_link}>МОЙ ПРОФИЛЬ</Link>) : (
                     <>
                         <Link to='/login' className={styles.menu_link}>ВХОД</Link>
                         <Link to='/register' className={styles.menu_link}>РЕГИСТРАЦИЯ</Link>

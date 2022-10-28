@@ -20,6 +20,7 @@ export const loginFunc = (userLoginData) => {
 
     return function(dispatch) {
         fetch (`${apiBaseUrl}/api/auth/local`, {
+            mode: 'no-cors',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -50,6 +51,7 @@ export const updateAuth = (token) => {
 
     return function(dispatch) {
         fetch (`${apiBaseUrl}/api/users/me`, {
+            mode: 'no-cors',
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`
@@ -84,6 +86,7 @@ export const createNewUser = (registerFormData) => {
     return function(dispatch) {
 
         fetch (`${apiBaseUrl}/api/auth/local/register`, {
+            mode: 'no-cors',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -117,6 +120,7 @@ export const forgotPasswordRequest = (forgotPasswordData) => {
     return function(dispatch) {
 
         fetch (`${apiBaseUrl}/api/auth/forgot-password`, {
+            mode: 'no-cors',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

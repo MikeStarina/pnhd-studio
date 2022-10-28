@@ -86,7 +86,6 @@ export const printUploadFunc = (data, activeView, getScene) => {
         });
 
         fetch(`${apiBaseUrl}/api/upload/`, {
-          
             method: "POST",
             body: data,
           })

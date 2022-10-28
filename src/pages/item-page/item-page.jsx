@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { ADD_TO_CART } from "../../services/actions/cart-actions.jsx";
 import { v4 as uuidv4 } from "uuid";
 import { Link } from "react-router-dom";
+import { apiBaseUrl } from "../../utils/constants";
 
 
 
@@ -84,7 +85,7 @@ const ItemPage = () => {
             
             <div className={styles.shop_item_wrapper}>
                 <div className={styles.gallery_wrapper}>
-                    <img src={item[0].attributes.image_url} alt='item' className={styles.gallery_image}></img>
+                    <img src={`${apiBaseUrl}${item[0].attributes.image_url}`} alt='item' className={styles.gallery_image}></img>
                 </div>
                 <div className={styles.item_info_wrapper}>
                     <div className={styles.item_info_block}>
