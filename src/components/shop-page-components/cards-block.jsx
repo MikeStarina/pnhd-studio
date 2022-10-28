@@ -3,6 +3,7 @@ import styles from './cards-block.module.css';
 import CardItem from "./card-item.jsx";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { apiBaseUrl } from "../../utils/constants";
 
 
 
@@ -15,9 +16,11 @@ const CardsBlock = () => {
         <section className={styles.screen}>
             
             {data && data.map((item) => {
+
+                const url = `${apiBaseUrl}${item.attributes.image_url}`
                 return (
                 <Link to={{ pathname: `/shop/${item.id}`}} className={styles.link} key={item.id}>
-                    <CardItem key={item.id} title={item.attributes.name} price={item.attributes.price} img={item.attributes.image_url} />
+                    <CardItem key={item.id} title={item.attributes.name} price={item.attributes.price} img={url} />
                 </Link>
             )}
             )}

@@ -25,9 +25,9 @@
 
 .mockup_container {
     width: 500px;
-    height: 496px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
     position: relative;
 }
@@ -38,15 +38,15 @@
 
 
 .loader_active {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     border: none;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 5;
-    width: 60px;
-    height: 50px;
-    margin-left: 20px;
-    box-sizing: border-box;
 }
 
 .loader_icon {
@@ -61,7 +61,16 @@
     object-fit: cover;
 }
 
+.stage_container {
+    width: 220px;
+    position: absolute;
+    top: 100px;
+    margin-right: 25px;
+}
 
+.stage {
+    border: 1px dotted black;
+}
 
 
 .controls_container {
@@ -158,46 +167,23 @@
 }
 
 .file_input_button_text {
-    max-width: 400px;
     line-height: 20px;
     font-size: 20px;
     font-weight: 600;
     color: #fff;
     margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .file_input_button {
     width: 100%;
     height: 60px;
-    box-sizing: border-box;
     background: rgb(0, 255, 0);
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 15px;
     cursor: pointer;
-    padding: 0 20px;
     margin: 0 auto;
-}
-
-.print_delete_button {
-    width: 60px;
-    height: 60px;
-    box-sizing: border-box;
-    background: rgb(0, 255, 0);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-    padding: 0 20px;
-    margin: 0 auto;
-    margin-left: 20px;
-    color: white;
 }
 
 .submit_button {

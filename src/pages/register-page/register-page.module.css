@@ -1,0 +1,82 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0 auto;
+    width: 100%;
+    padding: 50px 200px;
+    box-sizing: border-box;
+}
+
+
+.title {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    font-size: 80px;
+    line-height: 80px;
+    font-weight: 700;
+}
+
+.form {
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 100px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.input_label {
+    margin: 0 0 10px 0;
+    align-self: flex-start;
+}
+
+.input {
+    width: 300px;
+    height: 36px;
+    border: 2px solid black;
+    border-radius: 10px;
+    margin: 0 0 25px 0;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: white;
+}
+
+.submit_button {
+    width: 100%;
+    max-width: 300px;
+    height: 40px;
+    margin: 25px 0 0 0;
+    padding: 0;
+    border: none;
+    border-radius: 10px;
+    background-color: rgb(0, 255, 0);
+    color: white;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 15px;
+    font-weight: 500;
+}
+
+.link {
+    margin: 0;
+    width: 100%;
+    max-width: 300px;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+.link:first-of-type {
+    margin: 10px 0 0 0;
+}

@@ -20,7 +20,13 @@ import Constructor from '../../pages/constructor-page/constructor-page.jsx';
 import CartIcon from '../cart/cart-icon.jsx';
 import ItemPage from '../../pages/item-page/item-page.jsx';
 import CartPage from '../../pages/cart-page/cart-page.jsx';
+import LoginPage from '../../pages/login-page/login-page.jsx';
+import RegisterPage from '../../pages/register-page/register-page.jsx';
+import { updateAuth } from '../../services/actions/user-data-actions';
 import { RESTORE_CART_FROM_SSTORAGE } from '../../services/actions/cart-actions';
+import ForgotPassword from '../../pages/forgot-password/forgot-password';
+import ProfilePage from '../../pages/profile-page/profile-page';
+
 
 
 
@@ -29,6 +35,7 @@ function App() {
 const dispatch = useDispatch();
 const { mainMenu } = useSelector(store => store.utilityState);
 const { order, isVisible } = useSelector(store => store.cartData);
+const { userAuth } = useSelector(store => store.userData);
 
 
 
@@ -42,6 +49,11 @@ useEffect(() => {
       type: RESTORE_CART_FROM_SSTORAGE,
       payload: JSON.parse(autoSavedCart),
     })
+  }
+
+  const storageToken = localStorage.getItem('authToken');
+  if (storageToken) {
+    dispatch(updateAuth(storageToken));
   }
 }, [])
 
@@ -99,9 +111,34 @@ const closeMenu = (e) => {
         <PricesPage />
       </Route>
 
+      <Route exact path='/profile'>
+        {userAuth.isAuthenticated ? (<ProfilePage />) : (<Redirect to='/login' />)}
+      </Route>
+
       <Route exact path='/shop/:id'>
         <ItemPage />
       </Route>
+
+      <Route exact path='/login'>
+        {/*<LoginPage />*/}
+        {userAuth.isAuthenticated ? (<Redirect to='/shop' />) : (<LoginPage />)}
+      </Route>
+
+      <Route exact path='/register'>
+        {/*<RegisterPage />*/}
+        {userAuth.isAuthenticated ? (<Redirect to='/' />) : (<RegisterPage />)}
+      </Route>
+
+      <Route exact path='/forgot'>
+        {/*<ForgotPassword />*/}
+        {userAuth.isAuthenticated ? (<Redirect to='/' />) : (<RegisterPage />)}
+      </Route>
+
+      <Route exact path='/reset-password'>
+       
+        {/*userAuth.isAuthenticated ? (<Redirect to='/' />) : (<RegisterPage />)*/}
+      </Route>
+
 
 
       <Route exact path='/shop/:id/constructor'>
@@ -112,6 +149,7 @@ const closeMenu = (e) => {
         {order.length > 0 ? (<CartPage />) : (<Redirect to='/shop' />)}
       </Route>
 
+     
 
 
 

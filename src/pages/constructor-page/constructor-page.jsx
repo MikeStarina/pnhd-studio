@@ -1,357 +1,382 @@
-import React, { useState, useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import styles from './constructor-page.module.css';
-import { Stage, Layer } from "react-konva";
+import styles from "./constructor-page.module.css";
+import { Stage, Layer, Rect } from "react-konva";
 //import front from '../../components/images/front.png';
 import { v4 as uuidv4 } from "uuid";
-import { IMAGE_SELECT, IMAGE_DESELECT, ADD_FILE, DELETE_FILE, SET_ACTIVE_VIEW, SET_FILE_STAGE_PARAMS, SET_FILE_CART_PARAMS } from "../../services/actions/editor-actions.jsx";
+import {
+  IMAGE_SELECT,
+  IMAGE_DESELECT,
+  DELETE_FILE,
+  CLEAR_ALL_PRINTS,
+  SET_ACTIVE_VIEW,
+  SET_FILE_STAGE_PARAMS,
+  ADD_PRINT_PREVIEW,
+  printUploadFunc,
+  getSize,
+} from "../../services/actions/editor-actions.jsx";
 import { ADD_TO_CART_WITH_PRINT } from "../../services/actions/cart-actions";
 import { useParams, useLocation, useHistory } from "react-router-dom";
 import Print from "./print.jsx";
 import { apiBaseUrl } from "../../utils/constants";
+import Mockup from "./mockup";
+import { fileSelect } from "../../utils/utils";
+
+/**
+ * TODO:
+ * 
+ * - придумать как разобраться с ассетами размера и координат стейджа - добавить на бек к товарам 
+ * - поискать библиотеку для удаления фона
+ * - редактирование принтов из корзины
+ * - заменить в табах текст на иконки
+ * - починить деселект трансформера - пока оставил как есть
+ *
+ *
+ */
+
+const Constructor = () => {
 
 
 
 
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const {
+    isSelected,
+    front_file,
+    front_file_preview,
+    back_file,
+    back_file_preview,
+    lsleeve_file,
+    lsleeve_file_preview,
+    rsleeve_file,
+    rsleeve_file_preview,
+    badge_file,
+    activeView,
+  } = useSelector((store) => store.editorState);
+  const { data } = useSelector((store) => store.shopData);
+  const { isImageLoading } = useSelector((store) => store.utilityState);
+  const history = useHistory();
+  const { state } = useLocation();
+  const imgRef = useRef();
+  const stageRef = useRef();
+
+  const intId = parseInt(id);
+  const item = data.length > 0 && data.filter((elem) => elem.id === intId);
 
 
 
-   
-  
-  const Constructor = () => {
 
+  let initialParams = {
+    x: 140,
+    y: 100,
+    width: 220,
+    height: 300,
+  }
 
-
-    
-    const { id } = useParams();
-    const dispatch = useDispatch();
-    const { isSelected, front_file, back_file, lsleeve_file, rsleeve_file, badge_file, activeView } = useSelector(store => store.editorState);
-    const { data } = useSelector(store => store.shopData);
-    const history = useHistory();
-    const { state } = useLocation();
-    //const textile = state && state.attributes;
-    const labelRef = useRef(null);
-    const imgRef = useRef();
-
-    const intId = parseInt(id);
-   
-
-
-    const item = data.length > 0 && data.filter(elem => elem.id === intId);
-
-    
-
-    const setActiveTab = (e) => {
-
-     
-    
-        dispatch({
-            type: SET_ACTIVE_VIEW,
-            payload: e.currentTarget.id,
-        })
+  if (activeView === 'back') {
+    initialParams = {
+        x: 140,
+        y: 70,
+        width: 220,
+        height: 300,
     }
+  } else if (activeView === 'lsleeve' || activeView === 'rsleeve') {
+    initialParams = {
+        x: 205,
+        y: 50,
+        width: 90,
+        height: 100,
+    }
+  }
 
 
-   
 
-    const getSize = (newAttrs) => {
-        
-        const width = newAttrs.width * 0.16;
-        const height = newAttrs.height * 0.16;
-        const printSqr = width * height;
+  const setActiveTab = (e) => {
+    dispatch({
+      type: SET_ACTIVE_VIEW,
+      payload: e.currentTarget.id,
+    });
+  };
 
-        let screenSize = '';
-        let priceCounter = 0;
 
-        if (printSqr <= 150) {
-            screenSize = 'А6';
-            priceCounter = 300;
-        } else if (printSqr > 150 && printSqr <= 315) {
-        
-            screenSize = 'А5';
-            priceCounter = 400;
-            
-        } else if (printSqr > 315 && printSqr <= 609) {
-            screenSize = 'А4';
-            priceCounter = 500;
-        } else if (printSqr > 609 && printSqr <= 1218) {
-            screenSize = 'А3';
-            priceCounter = 600;
-        } else if (printSqr > 1218 && printSqr <= 1420) {
-            screenSize = 'А3+';
-            priceCounter = 700;
-        } else {
-            screenSize = 'недопустимый размер';
-            priceCounter = 0;
-        }
 
+  const onSelect = () => {
+    dispatch({ type: IMAGE_SELECT });
+  };
+
+
+
+  const checkDeselect = (e) => {
+    
+    
+    
+    const clickedOnEmpty = e.currentTarget === e.currentTarget.getStage();
+    if (clickedOnEmpty) {
+      dispatch({ type: IMAGE_DESELECT });
+    }
+  };
+
+  const file = fileSelect(
+    activeView,
+    front_file,
+    back_file,
+    lsleeve_file,
+    rsleeve_file,
+    badge_file
+  );
+
+  const onChange = (e) => {
+    e.preventDefault();
+    console.log(e.currentTarget);
+    const data = new FormData();
+    const print = e.target.files[0];
+    data.append(`files`, print, print.name);
+
+    dispatch(printUploadFunc(data, activeView));
+    e.currentTarget.reset();
+
+  };
+
+
+  const deletePrint = () => {
+    dispatch({
+        type: DELETE_FILE,
+        view: activeView,
+    })
+  }
+
+
+  function getScene(activeView) {
+
+
+    return async function(dispatch) {
+      const preview = await stageRef.current.toDataURL();
+      const scene = await stageRef.current.toBlob();
       
-        dispatch({
-            type: SET_FILE_CART_PARAMS,
-            payload: {
-                price: priceCounter,
-                format: screenSize,
-                size: `${Math.round(width)} x ${Math.round(height)} см.`,
-                place: activeView
-            },
-            view: activeView
-        })
-    }
- 
 
-    const onSelect = () => {
-        dispatch({type: IMAGE_SELECT})
-    }
-  
-    const checkDeselect = (e) => {
+      const data = new FormData();
+      data.append("files", scene, "image.png");
 
-       
-      
-      const clickedOnEmpty = e.target === e.target.getStage();
-      if (clickedOnEmpty) {
-        dispatch({type: IMAGE_DESELECT})
-      }
+      dispatch({
+          type: ADD_PRINT_PREVIEW,
+          data: data,
+          preview: preview,
+          view: activeView,
+      });
+    }
+  }
+
+
+
+
+  const addToCart = () => {
+    const data = {
+      attributes: { ...item[0].attributes },
+      cart_item_id: uuidv4(),
     };
 
+    
+    data.attributes.size = state.size;
+    data.attributes.qty = 1;
+    data.attributes.key = uuidv4();
 
-    const fileSelect = (activeView, front_file, back_file, lsleeve_file, rsleeve_file, badge_file) => {
-        if (activeView === 'front' && front_file) {
-            
-            if (labelRef.current) {
-                 labelRef.current.textContent = front_file.file && front_file.file.name;
-            }
-          
-           
-            return front_file
-        } else if (activeView === 'back' && back_file) {
-            labelRef.current.textContent = back_file.file ? back_file.file.name : 'Выберите файл';
-            return back_file
-        } else if (activeView === 'lsleeve' && lsleeve_file) {
-
-            labelRef.current.textContent = lsleeve_file.file ? lsleeve_file.file.name : 'Выберите файл';
-            return lsleeve_file
-        } else if (activeView === 'rsleeve' && rsleeve_file) {
-            labelRef.current.textContent = rsleeve_file.file ? rsleeve_file.file.name : 'Выберите файл';
-            return rsleeve_file
-        } else if (activeView === 'badge' && badge_file) {
-            labelRef.current.textContent = badge_file.file ? badge_file.file.name : 'Выберите файл';
-            return badge_file
-        }
-    }
-    const file = fileSelect(activeView, front_file, back_file, lsleeve_file, rsleeve_file, badge_file);
-    //console.log(file);
-   
-
-    const onChange = (e) => {
-        e.preventDefault();
-        const filename = e.target.files[0].name;
-        labelRef.current.textContent = filename;
-        
-        
-        const data = new FormData();
-        const print = e.target.files[0];
-        data.append(`files`, print, print.name)
-        console.log(data.files);
-        
-       
-
-        fetch(`${apiBaseUrl}/api/upload/`, {
-            method: 'POST',
-            body: data,
-        })
-        .then(res => res.json())
-        .then((res) => {
-            //console.log(res);
-            dispatch({
-                type: ADD_FILE,
-                payload: {
-                    url: `${apiBaseUrl}${res[0].url}`,
-                    name: res[0].name,
-                },
-                view: activeView,
-            })
-            const currentImage = res[0];
-            let imageCoords = {
-                x: 0,
-                y: 0,
-                width: 0,
-                height: 0,
-            };
-            if (currentImage.width >= currentImage.height) {
-                const proportion = currentImage.width / currentImage.height;
-                const displayWidth = 200;
-                const displayHeight = displayWidth / proportion;
-                
-                imageCoords = {
-                    x: 10,
-                    y: 0,
-                    width: displayWidth,
-                    height: displayHeight,
-                }
-            } else {
-                const proportion = currentImage.width / currentImage.height;
-                const displayHeight = 200;
-                const displayWidth = displayHeight / proportion;
-                const xCoord = (220 - displayWidth) / 2;
-
-                imageCoords = {
-                    x: xCoord,
-                    y: 0,
-                    width: displayWidth,
-                    height: displayHeight,
-                }
-            }
-            dispatch({
-                type: SET_FILE_STAGE_PARAMS,
-                payload: imageCoords,
-                view: activeView,
-            })
-
-         
-           
-            getSize(imageCoords);
-        })
-
-
+    data.print = {
+      front: front_file,
+      front_preview: front_file_preview,
+      back: back_file,
+      back_preview: back_file_preview,
+      lsleeve: lsleeve_file,
+      lsleeve_preview: lsleeve_file_preview,
+      rsleeve: rsleeve_file,
+      rsleeve_preview: rsleeve_file_preview,
+      badge: badge_file,
     };
 
-
-    const addToCart = () => {
-
-        const data = {
-            attributes: {...item[0].attributes},
-            cart_item_id: uuidv4(),
-        }
-
-        data.attributes.size = state.size;
-        data.attributes.qty = 1;
-        //data.cart_item_id = uuidv4();
-        data.attributes.key = uuidv4();
-
-       
-
-        data.print = {
-            front: front_file,
-            back: back_file,
-            lsleeve: lsleeve_file,
-            rsleeve: rsleeve_file,
-            badge: badge_file,
-        };
-
-        
-        dispatch({
-            type: ADD_TO_CART_WITH_PRINT,
-            payload: {...data},
-           
-            
-        });
-        
-         
-        dispatch({
-            type: DELETE_FILE
-        }) 
-       
-        history.go(-2);
-    }
-
-   
   
-    return (item &&
-        <section className={styles.screen}>
-            <div className={styles.mockup_container}>
-                {activeView === 'front' && <img src={item[0].attributes.editor_front_view} alt='mockup' className={styles.mockup_img}></img>}
-                {activeView === 'back' && <img src={item[0].attributes.editor_back_view} alt='mockup' className={styles.mockup_img}></img>}
+    dispatch({
+      type: ADD_TO_CART_WITH_PRINT,
+      payload: { ...data },
+    });
+    
+    dispatch({
+      type: CLEAR_ALL_PRINTS,
+    }); 
+    
+    history.go(-2);
+  };
+
+  let totalPrintPrice = 0;
+  totalPrintPrice = front_file.cartParams ? totalPrintPrice + front_file.cartParams.price : totalPrintPrice;
+  totalPrintPrice = back_file.cartParams ? totalPrintPrice + back_file.cartParams.price : totalPrintPrice;
+  totalPrintPrice = lsleeve_file.cartParams ? totalPrintPrice + lsleeve_file.cartParams.price : totalPrintPrice;
+  totalPrintPrice = rsleeve_file.cartParams ? totalPrintPrice + rsleeve_file.cartParams.price : totalPrintPrice;
+  totalPrintPrice = badge_file.cartParams ? totalPrintPrice + badge_file.cartParams.price : totalPrintPrice;
+  
+  /*
+  const printArea = (<Rect
+    {...initialParams}
+    stroke='black'
+    strokeWidth={.5}
+    dash={[2, 3]}
+    />) */
+  
+  return (
+    item && (
+      <section className={styles.screen}>
+        <div className={styles.mockup_container}>
+
+          <div className={styles.stage_container}>
+            <Stage
+              width={500}
+              height={496}
+              onMouseUp={checkDeselect}
+              onTouchEnd={checkDeselect}
+              className={styles.stage}
+              ref={stageRef}
+              
+            >
+              <Layer className={styles.layer}>
+                <Mockup item={item[0]} />
+              </Layer>
+              <Layer
+                className={styles.layer}
                 
-                <div className={styles.stage_container}>
-                    <Stage
-                        width={220}
-                        height={300}
-                        onMouseDown={checkDeselect}
-                        onTouchStart={checkDeselect}
-                        className={styles.stage}
-                    >
-
-                        <Layer className={styles.layer}>
-                            
-                        
-                            <Print
-                                isSelected={isSelected}
-                                onSelect={onSelect}
-                                file={file.file && file.file.url}
-                                initialImageCoords={file.stageParams}
-                                imgRef={imgRef}
-                                onChange={(newAttrs) => {
-                                    
-                                
-                                    dispatch({
-                                        type: SET_FILE_STAGE_PARAMS,
-                                        payload: newAttrs,
-                                        view: activeView,
-                                    })
-                                    //setParams(newAttrs);
-                                    getSize(newAttrs);
-                                }}
-                            />
-
-                            
-                        
-                        </Layer>
-                    </Stage>
-                </div>
+              >
+                
+                
+                <Print
+                  initialParams={initialParams}
+                  isSelected={isSelected}
+                  onSelect={onSelect}
+                  file={file && file.file.file.url}
+                  initialImageCoords={file && file.file.stageParams}
+                  imgRef={imgRef}
+                  scene={getScene}
+                  onChange={(newAttrs) => {
+                    dispatch({
+                      type: SET_FILE_STAGE_PARAMS,
+                      payload: newAttrs,
+                      view: activeView,
+                    });
+                    dispatch(getScene(activeView));
+                    dispatch(getSize(newAttrs, activeView));
+                  }}
+                />
+              </Layer>
+            </Stage>
+          </div>
         </div>
         <div className={styles.controls_container}>
-            <div className={styles.tabs_container}>
-                <div className={activeView === 'front' ? styles.active_tab : styles.tab} id='front' onClick={setActiveTab}>
-                    <p className={styles.tab_caption}>Грудь</p>
-                </div>
-                <div className={activeView === 'back' ? styles.active_tab : styles.tab} id='back' onClick={setActiveTab}>
-                    <p className={styles.tab_caption}>Спина</p>
-                </div>
-                <div className={activeView === 'lsleeve' ? styles.active_tab : styles.tab} id='lsleeve' onClick={setActiveTab}>
-                    <p className={styles.tab_caption}>Л. рукав</p>
-                </div>
-                <div className={activeView === 'rsleeve' ? styles.active_tab : styles.tab} id='rsleeve' onClick={setActiveTab}>
-                    <p className={styles.tab_caption}>П. рукав</p>
-                </div>
-                <div className={activeView === 'badge' ? styles.active_tab : styles.tab} id='badge' onClick={setActiveTab}>
-                    <p className={styles.tab_caption}>Бирка</p>
-                </div>
+          <div className={styles.tabs_container}>
+            <div
+              className={
+                activeView === "front" ? styles.active_tab : styles.tab
+              }
+              id="front"
+              onClick={setActiveTab}
+            >
+              <p className={styles.tab_caption}>Грудь</p>
             </div>
-           
-            <div className={styles.input_container}>
-                <form className={styles.input_form} onChange={onChange}>
-                    <div className={styles.input_wrapper}>
-                        <input type='file' className={styles.file_input} name='file_input'></input>
-                        <label htmlFor='file_input' className={styles.file_input_button}>
-                            <span className={styles.file_input_button_text} name='input_button_text' ref={labelRef}>Выберите файл</span>
-                        </label>
-                    </div>
-                    
-                   
-                </form>
+            <div
+              className={activeView === "back" ? styles.active_tab : styles.tab}
+              id="back"
+              onClick={setActiveTab}
+            >
+              <p className={styles.tab_caption}>Спина</p>
             </div>
-            <div className={styles.stage_controls}>
-                
-
+            <div
+              className={
+                activeView === "lsleeve" ? styles.active_tab : styles.tab
+              }
+              id="lsleeve"
+              onClick={setActiveTab}
+            >
+              <p className={styles.tab_caption}>Л. рукав</p>
             </div>
-            <div className={styles.order_info}>
-                <p className={styles.order_info_line}>Текстиль: {item[0].attributes.name}</p>
-                <p className={styles.order_info_line}>Стоимость: {item[0].attributes.price}</p>
-                <p className={styles.order_info_line}>Формат печати: {file.cartParams ? file.cartParams.format: ''}</p>
-                <p className={styles.order_info_line}>Размеры принта: {file.cartParams ? file.cartParams.size : ''}</p>
-                <p className={styles.order_info_line}>Стоимость печати: {file.cartParams ? file.cartParams.price : ''}</p>
-                <p className={styles.order_info_line}>Итого: {file.cartParams ? item[0].attributes.price + file.cartParams.price : item[0].attributes.price}</p>
+            <div
+              className={
+                activeView === "rsleeve" ? styles.active_tab : styles.tab
+              }
+              id="rsleeve"
+              onClick={setActiveTab}
+            >
+              <p className={styles.tab_caption}>П. рукав</p>
             </div>
-         
             
+          </div>
+
+          <div className={styles.input_container}>
+            <form className={styles.input_form} onChange={onChange}>
+              <div className={styles.input_wrapper}>
+                <input
+                  type="file"
+                  className={styles.file_input}
+                  name="file_input"
+                ></input>
+                <label
+                  htmlFor="file_input"
+                  className={styles.file_input_button}
+                >
+                  <span
+                    className={styles.file_input_button_text}
+                    name="input_button_text"
+                  >
+                    {file && file.name ? file.name : "Выберите файл"}
+                  </span>
+                  
+                </label>
+              </div>
+              {isImageLoading && <div className={isImageLoading ? styles.loader_active : styles.loader}>
+                <div className={styles.loader_icon}></div>
+                </div>}
+              {!isImageLoading && file && file.name && <button type='button' className={styles.print_delete_button} onClick={deletePrint}>X</button>}
+            </form>
+          </div>
+          <div className={styles.stage_controls}></div>
+          <div className={styles.order_info}>
+            <p className={styles.order_info_line}>
+              Текстиль: {item[0].attributes.name}, размер: {state.size}, цвет:
+            </p>
+            <p className={styles.order_info_line}>
+              Стоимость текстиля: {item[0].attributes.price} Р.
+            </p>
+            <p className={styles.order_info_line}>
+              Печать на груди:{" "}
+              {front_file && front_file.cartParams ? `${front_file.cartParams.format}, ${front_file.cartParams.size}, ${front_file.cartParams.price} Р.` : "-"}
+            </p>
+            <p className={styles.order_info_line}>
+              Печать на спине:{" "}
+              {back_file && back_file.cartParams ? `${back_file.cartParams.format}, ${back_file.cartParams.size}, ${back_file.cartParams.price} Р.` : "-"}
+            </p>
+            <p className={styles.order_info_line}>
+              Печать на левом рукаве:{" "}
+              {lsleeve_file && lsleeve_file.cartParams ? `${lsleeve_file.cartParams.format}, ${lsleeve_file.cartParams.size}, ${lsleeve_file.cartParams.price} Р.` : "-"}
+            </p>
+            <p className={styles.order_info_line}>
+              Печать на правом рукаве:{" "}
+              {rsleeve_file && rsleeve_file.cartParams ? `${rsleeve_file.cartParams.format}, ${rsleeve_file.cartParams.size}, ${rsleeve_file.cartParams.price} Р.` : "-"}
+            </p>
            
-            <button type='button' className={styles.item_button} onClick={addToCart}>ДОБАВИТЬ В КОРЗИНУ</button>
+            <p className={styles.order_info_line}>
+              Итого текстиль и печать:{" "}
+              {
+                item[0].attributes.price + totalPrintPrice
+                } Р.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            className={styles.item_button}
+            onClick={addToCart}
+          >
+            ДОБАВИТЬ В КОРЗИНУ
+          </button>
         </div>
       </section>
-    );
-  };
-  
+    )
+  );
+};
+
 export default Constructor;
-
-
-
