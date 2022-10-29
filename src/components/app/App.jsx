@@ -125,8 +125,8 @@ const closeMenu = (e) => {
       </Route>
 
       <Route exact path='/register'>
-        {/*<RegisterPage />*/}
-        {userAuth.isAuthenticated ? (<Redirect to='/' />) : (<RegisterPage />)}
+        <RegisterPage />
+        {/*userAuth.isAuthenticated ? (<Redirect to='/' />) : (<RegisterPage />)*/}
       </Route>
 
       <Route exact path='/forgot'>
