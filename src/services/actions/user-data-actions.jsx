@@ -25,7 +25,7 @@ export const loginFunc = (userLoginData) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Content-Length': '',
-                'Host': '',
+                'Host': 'pnhdstudioapi.ru',
             },
 
             body: JSON.stringify(data),
@@ -54,7 +54,7 @@ export const updateAuth = (token) => {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
-                'Host': '',
+                'Host': 'pnhdstudioapi.ru',
             }
         })
         .then(res => res.json())
@@ -90,7 +90,7 @@ export const createNewUser = (registerFormData) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Content-Length': '',
-                'Host': '',
+                'Host': 'pnhdstudioapi.ru',
             },
             body: JSON.stringify(data),
         })
@@ -124,7 +124,7 @@ export const forgotPasswordRequest = (forgotPasswordData) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Content-Length': '',
-                'Host': '',
+                'Host': 'pnhdstudioapi.ru',
             },
             body: JSON.stringify({'email': forgotPasswordData})
         })
