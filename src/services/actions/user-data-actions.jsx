@@ -24,8 +24,8 @@ export const loginFunc = (userLoginData) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Content-Length': '*',
-                'Host': '*',
+                'Content-Length': '',
+                'Host': '',
             },
 
             body: JSON.stringify(data),
@@ -54,7 +54,7 @@ export const updateAuth = (token) => {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
-                'Host': '*',
+                'Host': '',
             }
         })
         .then(res => res.json())
@@ -89,8 +89,8 @@ export const createNewUser = (registerFormData) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Content-Length': '*',
-                'Host': '*',
+                'Content-Length': '',
+                'Host': '',
             },
             body: JSON.stringify(data),
         })
@@ -124,7 +124,7 @@ export const forgotPasswordRequest = (forgotPasswordData) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Content-Length': '',
-                'Host': '*',
+                'Host': '',
             },
             body: JSON.stringify({'email': forgotPasswordData})
         })
