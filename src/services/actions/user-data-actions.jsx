@@ -24,8 +24,8 @@ export const loginFunc = (userLoginData) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Content-Length': '',
-
+                'Content-Length': '*',
+                'Host': '*',
             },
 
             body: JSON.stringify(data),
@@ -51,10 +51,10 @@ export const updateAuth = (token) => {
 
     return function(dispatch) {
         fetch (`${apiBaseUrl}/api/users/me`, {
-            mode: 'no-cors',
             method: 'GET',
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
+                'Host': '*',
             }
         })
         .then(res => res.json())
@@ -86,17 +86,17 @@ export const createNewUser = (registerFormData) => {
     return function(dispatch) {
 
         fetch (`${apiBaseUrl}/api/auth/local/register`, {
-            mode: 'no-cors',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Content-Length': '',
+                'Content-Length': '*',
+                'Host': '*',
             },
             body: JSON.stringify(data),
         })
         .then(res => res.json())
         .then((res) => {
-
+            console.log(res);
             localStorage.setItem('authToken', res.jwt);
             dispatch({
                 type: CREATE_NEW_USER,
@@ -120,11 +120,11 @@ export const forgotPasswordRequest = (forgotPasswordData) => {
     return function(dispatch) {
 
         fetch (`${apiBaseUrl}/api/auth/forgot-password`, {
-            mode: 'no-cors',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Content-Length': '',
+                'Host': '*',
             },
             body: JSON.stringify({'email': forgotPasswordData})
         })
