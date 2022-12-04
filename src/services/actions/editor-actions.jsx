@@ -126,3 +126,29 @@ export const printUploadFunc = (data, activeView, getScene) => {
 }
 
 
+
+export const uploadPreview = (data, activeView) => {
+
+  //console.log(data);
+
+  return function (dispatch) {
+      fetch(`${apiBaseUrl}/api/upload/`, {
+          method: "POST",
+          body: data,
+        })
+          .then((res) => res.json())
+          .then((res) => {
+              //console.log(res)
+              dispatch({
+                type: ADD_PRINT_PREVIEW,
+                data: data,
+                preview: `${apiBaseUrl}${res[0].url}`,
+                view: activeView,
+              })
+          })
+  }
+
+}
+
+
+

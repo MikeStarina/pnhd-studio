@@ -11,7 +11,7 @@ const LoginPage = () => {
 
     const dispatch = useDispatch();
     const { userLoginData } = useSelector(store => store.userData);
-    //console.log(userLoginData.login);
+    console.log(userLoginData.login);
 
 
     const onChange = (e) => {

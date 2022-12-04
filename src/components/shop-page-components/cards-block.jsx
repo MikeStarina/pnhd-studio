@@ -17,7 +17,8 @@ const CardsBlock = () => {
             
             {data && data.map((item) => {
 
-                const url = `${apiBaseUrl}${item.attributes.image_url}`
+
+                const url = `${apiBaseUrl}${item.attributes.image_url.slice(27)}`
                 return (
                 <Link to={{ pathname: `/shop/${item.id}`}} className={styles.link} key={item.id}>
                     <CardItem key={item.id} title={item.attributes.name} price={item.attributes.price} img={url} />

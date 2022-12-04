@@ -1,10 +1,11 @@
-import { ADD_TO_CART, ADD_TO_CART_WITH_PRINT, CHANGE_ITEM_QTY, CLEAR_CART, RESTORE_CART_FROM_SSTORAGE, SET_CART_VISIBILITY } from "../actions/cart-actions.jsx";
+import { ADD_TO_CART, ADD_TO_CART_WITH_PRINT, CHANGE_ITEM_QTY, CLEAR_CART, RESTORE_CART_FROM_SSTORAGE, SET_CART_VISIBILITY, SET_PAYMENT_URL } from "../actions/cart-actions.jsx";
 
 
 
 const initialState = {
     order: [],
-    isVisible: false
+    isVisible: false,
+    paymentUrl: ''
 }
 
 
@@ -87,6 +88,13 @@ export const cartDataReducer = (state = initialState, action) => {
                 order: action.payload,
                 isVisible: true,
             }
+        }
+        case SET_PAYMENT_URL: {
+            return {
+                ...state,
+                paymentUrl: action.payload,
+            }
+
         }
 
         default: return state;

@@ -13,6 +13,8 @@
 
 .gallery_img {
     width: calc(100% / 3);
+    object-fit: cover;
+    height: 50vh;
 }
 
 
@@ -26,5 +28,6 @@
 @media (max-width: 750px) {
     .gallery_img {
         width: calc(100% / 2);
+        height: 30vh;
     }
 }
