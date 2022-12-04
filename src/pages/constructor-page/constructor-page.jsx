@@ -14,6 +14,7 @@ import {
   ADD_PRINT_PREVIEW,
   printUploadFunc,
   getSize,
+  uploadPreview,
 } from "../../services/actions/editor-actions.jsx";
 import { ADD_TO_CART_WITH_PRINT } from "../../services/actions/cart-actions";
 import { useParams, useLocation, useHistory } from "react-router-dom";
@@ -131,6 +132,7 @@ const Constructor = () => {
     console.log(e.currentTarget);
     const data = new FormData();
     const print = e.target.files[0];
+    //console.log(print);
     data.append(`files`, print, print.name);
 
     dispatch(printUploadFunc(data, activeView));
@@ -153,17 +155,29 @@ const Constructor = () => {
     return async function(dispatch) {
       const preview = await stageRef.current.toDataURL();
       const scene = await stageRef.current.toBlob();
-      
 
+      
       const data = new FormData();
-      data.append("files", scene, "image.png");
+      data.append("files", scene, `${activeView}_preview`);
+      /*
+      fetch(`${apiBaseUrl}/api/upload/`, {
+        method: "POST",
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((res) => {console.log(res)}) //работает! 
+
+      
 
       dispatch({
           type: ADD_PRINT_PREVIEW,
           data: data,
+          data: data,
           preview: preview,
           view: activeView,
-      });
+      });*/
+
+      dispatch(uploadPreview(data, activeView));
     }
   }
 
@@ -192,6 +206,10 @@ const Constructor = () => {
       rsleeve_preview: rsleeve_file_preview,
       badge: badge_file,
     };
+
+    //dispatch({
+
+    //})
 
   
     dispatch({

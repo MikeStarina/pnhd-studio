@@ -6,8 +6,7 @@ export const UPDATE_USER_AUTH = 'UPDATE_USER_AUTH';
 export const SET_NEW_USER_DATA = 'SET_NEW_USER_DATA';
 export const CREATE_NEW_USER = 'CREATE_NEW_USER';
 export const SET_FORGOT_PASSWORD_DATA = 'SET_FORGOT_PASSWORD_DATA';
-
-
+export const SET_USER_DATA = 'SET_USER_DATA';
 
 
 
@@ -20,19 +19,17 @@ export const loginFunc = (userLoginData) => {
 
     return function(dispatch) {
         fetch (`${apiBaseUrl}/api/auth/local`, {
-            mode: 'no-cors',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Content-Length': '',
-                'Host': '',
             },
 
             body: JSON.stringify(data),
         })
         .then(res => res.json())
         .then((res) => {
-            console.log(res);
+            //console.log(res);
             localStorage.setItem('authToken', res.jwt);
             dispatch({
                 type: USER_LOGGING_IN,
@@ -54,19 +51,20 @@ export const updateAuth = (token) => {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
-                'Host': '',
             }
         })
         .then(res => res.json())
         .then((res) => {
             //console.log(res);
-            dispatch({
-                type: UPDATE_USER_AUTH,
-                id: res.id,
-                username: res.username,
-                email: res.email,
-                token: token
-            })
+            if (!res.error) {
+                dispatch({
+                    type: UPDATE_USER_AUTH,
+                    id: res.id,
+                    username: res.username,
+                    email: res.email,
+                    token: token
+                })
+            }
         })
     }
 }
@@ -90,7 +88,7 @@ export const createNewUser = (registerFormData) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Content-Length': '',
-                'Host': '',
+                'Host': 'pnhdstudioapi.ru',
             },
             body: JSON.stringify(data),
         })
@@ -115,7 +113,7 @@ export const createNewUser = (registerFormData) => {
 
 export const forgotPasswordRequest = (forgotPasswordData) => {
 
-    console.log(forgotPasswordData);
+    //console.log(forgotPasswordData);
 
     return function(dispatch) {
 
@@ -124,7 +122,7 @@ export const forgotPasswordRequest = (forgotPasswordData) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Content-Length': '',
-                'Host': '',
+                'Host': 'pnhdstudioapi.ru',
             },
             body: JSON.stringify({'email': forgotPasswordData})
         })

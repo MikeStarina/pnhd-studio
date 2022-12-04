@@ -1,6 +1,7 @@
 .screen {
   width: 100%;
-  margin: 0;
+  max-width: 1560px;
+  margin: 0 auto;
   padding: 60px 0;
   box-sizing: border-box;
   display: flex;
@@ -46,7 +47,6 @@
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  width: 100%;
 }
 
 .card_image {

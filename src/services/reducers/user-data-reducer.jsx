@@ -5,6 +5,7 @@ import {
     SET_NEW_USER_DATA,
     CREATE_NEW_USER,
     SET_FORGOT_PASSWORD_DATA,
+    SET_USER_DATA,
 } from "../actions/user-data-actions";
 
 
@@ -29,6 +30,15 @@ const initialState = {
         password: '',
     },
     forgotPasswordData: '',
+    userCartData: {
+        name: '',
+        isNameValid: false,
+        email: '',
+        isEmailValid: false,
+        phone: '',
+        isPhoneValid: false,
+        isFormValid: false,
+    }
 }
 
 
@@ -112,6 +122,21 @@ export const userDataReducer = (state = initialState, action) => {
             return {
                 ...state,
                 forgotPasswordData: action.email,
+            }
+        }
+        case SET_USER_DATA: {
+            
+            return {
+                ...state,
+                userCartData: {
+                    name: action.inputName === 'name' ? action.inputValue : state.userCartData.name,
+                    isNameValid: action.inputName === 'name' ? action.validity : state.userCartData.isNameValid,
+                    phone: action.inputName === 'phone' ? action.inputValue : state.userCartData.phone,
+                    isPhoneValid: action.inputName === 'phone' ? action.validity : state.userCartData.isPhoneValid,
+                    email: action.inputName === 'email' ? action.inputValue : state.userCartData.email,
+                    isEmailValid: action.inputName === 'email' ? action.validity : state.userCartData.isEmailValid,
+                   
+                }
             }
         }
 

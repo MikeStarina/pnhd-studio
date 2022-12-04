@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 
 const MainMenu = ({ closeMenu }) => {
 
-    const { userAuth } = useSelector(store => store.userData);
+    //const { userAuth } = useSelector(store => store.userData);
 
     return (
         <div className={styles.menu_screen}>
@@ -20,10 +20,11 @@ const MainMenu = ({ closeMenu }) => {
                     </button>
                     <Link className={styles.menu_link} to='/'>ГЛАВНАЯ</Link>
                     <Link className={styles.menu_link} to='/shop'>КАТАЛОГ</Link>
-                    <Link className={styles.menu_link} to='/faq'>FAQ</Link>
+                    {/*<Link className={styles.menu_link} to='/faq'>FAQ</Link>
                     <Link className={styles.menu_link} to='/prices'>ЦЕНЫ</Link>
-                    <Link className={styles.menu_link} to='/contacts'>КОНТАКТЫ</Link>
+                    <Link className={styles.menu_link} to='/contacts'>КОНТАКТЫ</Link>*/}
                 </div>
+                {/*
                 <div className={styles.wrapper}>
                     {userAuth.isAuthenticated ? (<Link to='/profile' className={styles.menu_link}>МОЙ ПРОФИЛЬ</Link>) : (
                     <>
@@ -34,6 +35,7 @@ const MainMenu = ({ closeMenu }) => {
 
                    
                 </div>
+                */}
             </div>
         </div>
     );
