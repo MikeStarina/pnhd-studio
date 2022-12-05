@@ -20,8 +20,8 @@ export const SET_EDITOR_VIEW = 'SET_EDITOR_VIEW';
 
 
 
-export const getSize = (newAttrs, activeView) => {
-
+export const getSize = (newAttrs, activeView, color) => {
+    //console.log(color)
     
     return function(dispatch) {
     
@@ -34,24 +34,24 @@ export const getSize = (newAttrs, activeView) => {
 
     if (printSqr <= 150) {
         screenSize = 'А6';
-        priceCounter = 300;
+        priceCounter = color && color === 'белый' ? 300 : 400;
     } else if (printSqr > 150 && printSqr <= 315) {
     
         screenSize = 'А5';
-        priceCounter = 400;
+        priceCounter = color && color === 'белый' ? 400 : 500;
         
     } else if (printSqr > 315 && printSqr <= 609) {
         screenSize = 'А4';
-        priceCounter = 500;
+        priceCounter = color && color === 'белый' ? 500 : 650;
     } else if (printSqr > 609 && printSqr <= 1218) {
         screenSize = 'А3';
-        priceCounter = 600;
+        priceCounter = color && color === 'белый' ? 650 : 750;
     } else if (printSqr > 1218 && printSqr <= 1420) {
         screenSize = 'А3+';
-        priceCounter = 700;
+        priceCounter = color && color === 'белый' ? 750 : 900;
     } else {
         screenSize = 'А3+';
-        priceCounter = 700;
+        priceCounter = color && color === 'белый' ? 750 : 900;
     }
 
     const displayWidth = Math.round(width) > 35 ? 35 : Math.round(width);

@@ -76,26 +76,65 @@ const Constructor = () => {
   }
 
   if (activeView === 'back') {
-    initialParams = {
-        x: 140,
-        y: 70,
-        width: 220,
-        height: 300,
-    }
+   
+      if (item[0].attributes.type === 'hoodie') {
+        initialParams = {
+          x: 150,
+          y: 140,
+          width: 200,
+          height: 290,
+        }
+
+      } else {
+        initialParams = {
+          x: 140,
+          y: 70,
+          width: 220,
+          height: 300,
+        }
+      }
+    
+  } else if (activeView === 'front' && item[0].attributes.type === 'hoodie') {
+      initialParams = {
+        x: 150,
+        y: 130,
+        width: 200,
+        height: 200,
+      }
   } else if (activeView === 'lsleeve') {
-    initialParams = {
+
+    if (item[0].attributes.type === 'hoodie' || item[0].attributes.type === 'longsleeve' || item[0].attributes.type === 'sweatshirt') {
+      initialParams = {
         x: 230,
+        y: 125,
+        width: 55,
+        height: 200,
+      }
+    } else {
+      initialParams = {
+          x: 230,
+          y: 105,
+          width: 80,
+          height: 90,
+      }
+    }
+  } else if (activeView === 'rsleeve') {
+    
+    if (item[0].attributes.type === 'hoodie' || item[0].attributes.type === 'longsleeve' || item[0].attributes.type === 'sweatshirt') {
+      initialParams = {
+        x: 215,
+        y: 125,
+        width: 55,
+        height: 200,
+      }
+    } else {
+      initialParams = {
+        x: 190,
         y: 105,
         width: 80,
         height: 90,
+      }
     }
-  } else if (activeView === 'rsleeve') {
-    initialParams = {
-      x: 190,
-      y: 105,
-      width: 80,
-      height: 90,
-  }
   }
 
 
@@ -139,7 +178,7 @@ const Constructor = () => {
     console.log(e.currentTarget);
     const data = new FormData();
     const print = e.target.files[0];
-    //console.log(print);
+ 
     data.append(`files`, print, print.name);
 
     dispatch(printUploadFunc(data, activeView));
@@ -166,23 +205,7 @@ const Constructor = () => {
       
       const data = new FormData();
       data.append("files", scene, `${activeView}_preview`);
-      /*
-      fetch(`${apiBaseUrl}/api/upload/`, {
-        method: "POST",
-        body: data,
-      })
-        .then((res) => res.json())
-        .then((res) => {console.log(res)}) //работает! 
 
-      
-
-      dispatch({
-          type: ADD_PRINT_PREVIEW,
-          data: data,
-          data: data,
-          preview: preview,
-          view: activeView,
-      });*/
 
       dispatch(uploadPreview(data, activeView));
     }
@@ -285,7 +308,7 @@ const Constructor = () => {
                       view: activeView,
                     });
                     dispatch(getScene(activeView));
-                    dispatch(getSize(newAttrs, activeView));
+                    dispatch(getSize(newAttrs, activeView, item[0].attributes.color));
                   }}
                 />
               </Layer>
