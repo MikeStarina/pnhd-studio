@@ -11,8 +11,7 @@ const Footer = () => {
             
             <Link className={styles.footer_link} to='/shop'>Каталог</Link>
             <Link className={styles.footer_link} to='/#contacts'>Контакты</Link>
-            <Link className={styles.footer_link} to='/'>Конфиденциальность</Link>
-            <Link className={styles.footer_link} to='/'>Оферта</Link>
+            <Link className={styles.footer_link} to='/oferta'>Оферта</Link>
         </footer>
     );
 }

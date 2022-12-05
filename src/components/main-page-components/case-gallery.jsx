@@ -12,6 +12,7 @@ import sample5 from '../images/sample5.jpg';
 
 const CaseGallery = () => {
     return (
+        <>
         <section className={styles.fourth_screen}>
             <img className={styles.gallery_img} alt='print sample' src={IMG_0404}></img>
             <img className={styles.gallery_img} alt='print sample' src={sample1}></img>
@@ -19,7 +20,19 @@ const CaseGallery = () => {
             <img className={styles.gallery_img} alt='print sample' src={sample3}></img>
             <img className={styles.gallery_img} alt='print sample' src={sample4}></img>
             <img className={styles.gallery_img} alt='print sample' src={sample5}></img>
+
+           
         </section>
+         <div className={styles.button_wrapper}>
+
+         <a href='https://www.instagram.com/pnhd.studio/' target='blank'>
+             <button type='button' className={styles.link_button}>INSTAGRAM</button>
+         </a>
+         <a href='https://vk.com/pinheadspb' target='blank'>
+             <button type='button' className={styles.link_button}>VK</button>
+         </a>
+         </div>
+         </>
     );
 };
 

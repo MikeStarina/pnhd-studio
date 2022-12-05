@@ -26,6 +26,7 @@ import { updateAuth } from '../../services/actions/user-data-actions';
 import { RESTORE_CART_FROM_SSTORAGE } from '../../services/actions/cart-actions';
 import ForgotPassword from '../../pages/forgot-password/forgot-password';
 import ProfilePage from '../../pages/profile-page/profile-page';
+import Oferta from '../../pages/oferta-page/oferta-page';
 
 
 
@@ -91,6 +92,10 @@ const closeMenu = (e) => {
 
       <Route exact path='/'>
         <MainPage />
+      </Route>
+
+      <Route exact path='/oferta'>
+        <Oferta />
       </Route>
 
       {/*<Route exact path='/contacts'>

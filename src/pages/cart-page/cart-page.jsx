@@ -132,9 +132,7 @@ const CartPage = () => {
                 <div className={styles.textile_description}>
                   <div className={styles.desc_box}>
                     <img
-                      src={`${apiBaseUrl}${item.attributes.image_url.slice(
-                        27
-                      )}`}
+                      src={`${apiBaseUrl}${item.attributes.image_url}`}
                       alt="item pic"
                       className={styles.item_img}
                     ></img>
@@ -207,7 +205,7 @@ const CartPage = () => {
           <label htmfor='name' className={styles.input_label}>Имя*:</label>
           <input type='text' minLength='2' placeholder='Ваше имя' id='name' name='name' className={styles.user_form_input} required={true} onChange={inputChangeHandler} value={userCartData.name}></input>
           <label htmfor='phone' className={styles.input_label}>Телефон*:</label>
-          <input type='phone' minLength='11' placeholder='+7(999)999-99-99' id='phone' name='phone' className={styles.user_form_input} required={true} onChange={inputChangeHandler} value={userCartData.phone}></input>
+          <input type='tel' minLength='11' placeholder='+7(999)999-99-99' id='phone' name='phone' className={styles.user_form_input} required={true} onChange={inputChangeHandler} value={userCartData.phone}></input>
           <label htmfor='email' className={styles.input_label}>Email*:</label>
           <input type='email' placeholder='boss@example.com' id='email' name='email' className={styles.user_form_input} required={true} onChange={inputChangeHandler} value={userCartData.email}></input>
       </form>
