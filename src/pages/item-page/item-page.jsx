@@ -20,7 +20,7 @@ const ItemPage = () => {
     const { id } = useParams();
     const { data } = useSelector(store => store.shopData);
     const { order } = useSelector(store => store.cartData);
-    //console.log(order);
+ 
     const history = useHistory();
     const dispatch = useDispatch();
 
@@ -91,7 +91,7 @@ const ItemPage = () => {
                         
                         <h1 className={styles.item_title}>{item[0].attributes.name}</h1>
                         <p className={styles.item_description}>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum magnam esse maiores, nam, veritatis vitae ipsam incidunt sit delectus velit distinctio. Deleniti reprehenderit corrupti rerum id natus laudantium soluta vero.
+                            {item[0].attributes.description}    
                         </p>
                         <form className={styles.item_form}>
                             <label className={styles.select_label} htmfor='sizeSelect'>Выберите размер:</label>
