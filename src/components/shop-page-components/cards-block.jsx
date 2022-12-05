@@ -9,16 +9,23 @@ import { apiBaseUrl } from "../../utils/constants";
 
 const CardsBlock = () => {
 
-    const { data } = useSelector(store => store.shopData);
+    const { data, filter } = useSelector(store => store.shopData);
+    let filteredData = [];
+
+    if (filter) {
+        filteredData = data.filter(item => item.attributes.category === filter)
+    } else {
+        filteredData = data;
+    }
  
 
     return (
         <section className={styles.screen}>
             
-            {data && data.map((item) => {
+            {filteredData && filteredData.map((item) => {
 
 
-                const url = `${apiBaseUrl}${item.attributes.image_url.slice(27)}`
+                const url = `${apiBaseUrl}${item.attributes.image_url}`
                 return (
                 <Link to={{ pathname: `/shop/${item.id}`}} className={styles.link} key={item.id}>
                     <CardItem key={item.id} title={item.attributes.name} price={item.attributes.price} img={url} />

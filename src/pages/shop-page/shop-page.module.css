@@ -4,3 +4,55 @@
     margin: 0 auto;
     padding: 0;
 }
+
+.filter_wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+    margin: 0 auto;
+    padding: 50px 100px 20px 100px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+.filter {
+    padding: 5px 0;
+    margin: 0 0 0 20px;
+    font-size: 15px;
+    line-height: 15px;
+    font-weight: 200;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.filter_active {
+    padding: 5px 0;
+    margin: 0 0 0 20px;
+    font-size: 15px;
+    line-height: 15px;
+    font-weight: 200;
+    background-color: transparent;
+    border: none;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid black;
+}
+
+
+
+@media (max-width: 750px) {
+    .filter_wrapper {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 30px 0 20px 30px;
+    }
+
+    .filter {
+    
+        margin: 0 0 20px 0;
+      
+    }
+}

@@ -82,13 +82,20 @@ const Constructor = () => {
         width: 220,
         height: 300,
     }
-  } else if (activeView === 'lsleeve' || activeView === 'rsleeve') {
+  } else if (activeView === 'lsleeve') {
     initialParams = {
-        x: 205,
-        y: 50,
-        width: 90,
-        height: 100,
+        x: 230,
+        y: 105,
+        width: 80,
+        height: 90,
     }
+  } else if (activeView === 'rsleeve') {
+    initialParams = {
+      x: 190,
+      y: 105,
+      width: 80,
+      height: 90,
+  }
   }
 
 
