@@ -16,9 +16,10 @@ const FaqScreen = () => {
                 <div className={styles.block_wrapper}>
                     <img src={circle50px} className={styles.screen_circle} alt='circle'></img>
                     <div className={styles.text_wrapper}>
-                        <h5 className={styles.screen_heading}>ДИЗАЙН / <span className={styles.textStyle_italic}>DESIGN</span></h5>
+                        <h5 className={styles.screen_heading}>ТЕКСТИЛЬ / <span className={styles.textStyle_italic}>GARMENT</span></h5>
                         <p className={styles.screen_description}>
-                            Отправь нам дизайн или приходи в студию. Наши дизайнеры помогут, если что-то пойдет не так!
+                            Выбери нужный текстиль в нашем каталоге, размер и нажми "добавить принт"! Если просто нужна бланковая футболка или худи, то есть опция
+                            добавить в корзину без принта.
                         </p>
                     </div>    
                 </div>
@@ -30,9 +31,11 @@ const FaqScreen = () => {
                 <div className={styles.block_wrapper}>
                     <img src={circle50px} className={styles.screen_circle} alt='circle'></img>
                     <div className={styles.text_wrapper}>
-                        <h5 className={styles.screen_heading}>ТЕКСТИЛЬ / <span className={styles.textStyle_italic}>GARMENT</span></h5>
+                        <h5 className={styles.screen_heading}>ДИЗАЙН / <span className={styles.textStyle_italic}>DESIGN</span></h5>
                         <p className={styles.screen_description}>
-                            Мы следим за трендами. Текстиль актуального кроя и цветов всегда в наличии. Просто выбери то, что подойдет именно тебе!
+                            Выбери место для принта и загрузи изображение для печати - конструктор сразу посчитает стоимость!<br></br>
+                            П.С. если чувствуешь, что функционала конструктора не хватает под твои задачи, то лучше связаться с нашими дизайнерами - они
+                            отредактируют принты и сформируют задание на печать. Это бесплатно.
                         </p>
                     </div>    
                 </div>
@@ -45,16 +48,17 @@ const FaqScreen = () => {
                     <div className={styles.text_wrapper}>
                         <h5 className={styles.screen_heading}>ПЕЧАТЬ / <span className={styles.textStyle_italic}>SOME MAGIC</span></h5>
                         <p className={styles.screen_description}>
-                            Куча методов нанесений, а все для того чтобы именно твой принт выглядел идеально!
+                            Введи свои контактные данные в корзине и нажми "оформить заказ". Через пару часов после оплаты мы позвоним и расскажем как
+                            можно получить готовый заказ!
                         </p>
                     </div>    
                 </div>
 
 
-
+                {/*
                 <Link  to='/faq'>
                     <button type='button' className={styles.faq_button}>FAQ</button>
-                </Link>
+                </Link> */}
 
             </section>
     );

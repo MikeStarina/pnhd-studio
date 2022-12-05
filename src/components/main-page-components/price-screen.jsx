@@ -66,7 +66,7 @@ const PriceScreen = () => {
         <section className={styles.screen}>
             <h4 className={styles.heading}>А СКОЛЬКО <span className={styles.textStyle_italic}>СТОИТ</span> ПЕЧАТЬ?</h4>
             <p className={styles.description}>
-                Приведена стоимость для тиражей до 10 штук. Скидки для больших тиражей можно посмотреть в полной версии тут.
+                Приведена стоимость для тиражей до 10 штук. Скидки для больших тиражей уточняйте у наших менеджеров!
             </p>
 
             <div className={styles.button_wrapper}>
@@ -85,7 +85,7 @@ const PriceScreen = () => {
 
 
 
-            <a href='#order_form_heading'>
+            <a href='#contacts'>
                 <button type='button' className={styles.action_button}>ЗАКАЗАТЬ</button>
             </a>
             

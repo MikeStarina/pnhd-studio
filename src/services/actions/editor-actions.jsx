@@ -12,6 +12,7 @@ export const SET_ACTIVE_VIEW = 'SET_ACTIVE_VIEW';
 export const SET_FILE_STAGE_PARAMS = 'SET_FILE_PARAMS';
 export const SET_FILE_CART_PARAMS = 'SET_FILE_CART_PARAMS';
 export const ADD_PRINT_PREVIEW = 'ADD_PRINT_PREVIEW';
+export const SET_EDITOR_VIEW = 'SET_EDITOR_VIEW';
 
 
 
@@ -124,5 +125,31 @@ export const printUploadFunc = (data, activeView, getScene) => {
 
     }
 }
+
+
+
+export const uploadPreview = (data, activeView) => {
+
+  //console.log(data);
+
+  return function (dispatch) {
+      fetch(`${apiBaseUrl}/api/upload/`, {
+          method: "POST",
+          body: data,
+        })
+          .then((res) => res.json())
+          .then((res) => {
+              //console.log(res)
+              dispatch({
+                type: ADD_PRINT_PREVIEW,
+                data: data,
+                preview: `${apiBaseUrl}${res[0].url}`,
+                view: activeView,
+              })
+          })
+  }
+
+}
+
 
 

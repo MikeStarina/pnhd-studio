@@ -27,9 +27,9 @@ const FeedbackScreen = () => {
                     <div className={styles.text_wrapper}>
                         <p className={styles.feedback}>
                                 
-                            Ребята, спасибо! Очень выручили когда нужно было срочно напечатать! Качество отличное!
+                            Отличные футболки, особенно порадовал оверсайз /обычно его никто не делает/ ну и качество печати!
                         </p>  
-                        <p className={styles.feedback_sign}>Саша М.</p>          
+                        <p className={styles.feedback_sign}>Дарья Т.</p>          
                     </div>
                 </div>
             </div>
@@ -39,9 +39,9 @@ const FeedbackScreen = () => {
                     <div className={styles.text_wrapper}>
                         <p className={styles.feedback}>
                                 
-                            Ребята, спасибо! Очень выручили когда нужно было срочно напечатать! Качество отличное!
+                            Делала худи подарок. Качество огонь, клиент доволен :)
                         </p>  
-                        <p className={styles.feedback_sign}>Саша М.</p>          
+                        <p className={styles.feedback_sign}>Наташа П.</p>          
                     </div>
                 </div>
                 <div className={styles.feedback_card}>
@@ -49,9 +49,9 @@ const FeedbackScreen = () => {
                     <div className={styles.text_wrapper}>
                         <p className={styles.feedback}>
                                 
-                            Ребята, спасибо! Очень выручили когда нужно было срочно напечатать! Качество отличное!
+                            Стирала толстовку уже раз 10. Печать как новая!
                         </p>  
-                        <p className={styles.feedback_sign}>Саша М.</p>          
+                        <p className={styles.feedback_sign}>Ира М.</p>          
                     </div>
                 </div>
             </div>

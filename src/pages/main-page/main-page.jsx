@@ -40,7 +40,7 @@ const MainPage = () => {
       <ShopGallery />
       <PriceScreen />
       <FeedbackScreen />
-      <FormScreen />
+      {/*<FormScreen />*/}
       <MapScreen />
     </main>
   );

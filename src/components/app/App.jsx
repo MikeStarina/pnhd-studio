@@ -26,6 +26,7 @@ import { updateAuth } from '../../services/actions/user-data-actions';
 import { RESTORE_CART_FROM_SSTORAGE } from '../../services/actions/cart-actions';
 import ForgotPassword from '../../pages/forgot-password/forgot-password';
 import ProfilePage from '../../pages/profile-page/profile-page';
+import Oferta from '../../pages/oferta-page/oferta-page';
 
 
 
@@ -37,6 +38,7 @@ const { mainMenu } = useSelector(store => store.utilityState);
 const { order, isVisible } = useSelector(store => store.cartData);
 const { userAuth } = useSelector(store => store.userData);
 
+//console.log(userAuth);
 
 
 
@@ -51,10 +53,7 @@ useEffect(() => {
     })
   }
 
-  const storageToken = localStorage.getItem('authToken');
-  if (storageToken) {
-    dispatch(updateAuth(storageToken));
-  }
+
 }, [])
 
 useEffect(() => {
@@ -95,49 +94,53 @@ const closeMenu = (e) => {
         <MainPage />
       </Route>
 
-      <Route exact path='/contacts'>
-        <ContactsPage />
+      <Route exact path='/oferta'>
+        <Oferta />
       </Route>
+
+      {/*<Route exact path='/contacts'>
+        <ContactsPage />
+      </Route> */}
 
       <Route exact path='/shop'>
         <ShopPage />
       </Route>
 
-      <Route exact path='/faq'>
+      {/*<Route exact path='/faq'>
         <FaqPage />
-      </Route>
+      </Route>*/}
 
-      <Route exact path='/prices'>
+      {/*<Route exact path='/prices'>
         <PricesPage />
-      </Route>
+      </Route> */}
 
-      <Route exact path='/profile'>
+      {/*<Route exact path='/profile'>
         {userAuth.isAuthenticated ? (<ProfilePage />) : (<Redirect to='/login' />)}
-      </Route>
+      </Route>    */}
 
       <Route exact path='/shop/:id'>
         <ItemPage />
       </Route>
 
-      <Route exact path='/login'>
-        {/*<LoginPage />*/}
+      {/*<Route exact path='/login'>
+      
         {userAuth.isAuthenticated ? (<Redirect to='/shop' />) : (<LoginPage />)}
-      </Route>
+      </Route> */}
 
-      <Route exact path='/register'>
+      {/*<Route exact path='/register'>
         <RegisterPage />
-        {/*userAuth.isAuthenticated ? (<Redirect to='/' />) : (<RegisterPage />)*/}
-      </Route>
+        userAuth.isAuthenticated ? (<Redirect to='/' />) : (<RegisterPage />)
+      </Route>*/}
 
-      <Route exact path='/forgot'>
-        {/*<ForgotPassword />*/}
+      {/*<Route exact path='/forgot'>
+        <ForgotPassword />
         {userAuth.isAuthenticated ? (<Redirect to='/' />) : (<RegisterPage />)}
-      </Route>
+      </Route>*/}
 
-      <Route exact path='/reset-password'>
+      {/*<Route exact path='/reset-password'>
        
-        {/*userAuth.isAuthenticated ? (<Redirect to='/' />) : (<RegisterPage />)*/}
-      </Route>
+        userAuth.isAuthenticated ? (<Redirect to='/' />) : (<RegisterPage />)
+      </Route>*/}
 
 
 

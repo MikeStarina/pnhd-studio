@@ -65,6 +65,14 @@
     align-items: flex-start;
 }
 
+.menu_contacts {
+    color: black;
+    text-decoration: none;
+    margin: 0;
+    margin-bottom: 10px;
+    padding: 0;
+}
+
 @media (max-width: 630px) {
     .menu_box {
         width: 100%;

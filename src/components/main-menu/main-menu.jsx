@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 
 const MainMenu = ({ closeMenu }) => {
 
-    const { userAuth } = useSelector(store => store.userData);
+    //const { userAuth } = useSelector(store => store.userData);
 
     return (
         <div className={styles.menu_screen}>
@@ -20,20 +20,26 @@ const MainMenu = ({ closeMenu }) => {
                     </button>
                     <Link className={styles.menu_link} to='/'>ГЛАВНАЯ</Link>
                     <Link className={styles.menu_link} to='/shop'>КАТАЛОГ</Link>
-                    <Link className={styles.menu_link} to='/faq'>FAQ</Link>
-                    <Link className={styles.menu_link} to='/prices'>ЦЕНЫ</Link>
-                    <Link className={styles.menu_link} to='/contacts'>КОНТАКТЫ</Link>
+                    <Link className={styles.menu_link} to='/oferta'>ОФЕРТА</Link>
+                    <a className={styles.menu_link} href='https://instagram.com/pnhd.studio' target='blank'>ИНСТАГРАМ</a>
+                    <a className={styles.menu_link} href='https://vk.com/pinheadspb' target='blank'>ВК</a>
+                    
+                  
                 </div>
+                
                 <div className={styles.wrapper}>
-                    {userAuth.isAuthenticated ? (<Link to='/profile' className={styles.menu_link}>МОЙ ПРОФИЛЬ</Link>) : (
+                    {/*{userAuth.isAuthenticated ? (<Link to='/profile' className={styles.menu_link}>МОЙ ПРОФИЛЬ</Link>) : (
                     <>
                         <Link to='/login' className={styles.menu_link}>ВХОД</Link>
                         <Link to='/register' className={styles.menu_link}>РЕГИСТРАЦИЯ</Link>
                     </>
-                    )}
+                    )}*/}
 
-                   
+                    <a href='tel:+78129046156' className={styles.menu_contacts}>+7(812)904-61-56</a>
+                    <p className={styles.menu_contacts}>studio@pnhd.ru</p>
+                    <p className={styles.menu_contacts}>ул. Чапыгина 1</p>
                 </div>
+                
             </div>
         </div>
     );

@@ -8,7 +8,7 @@ import styles from './card-item.module.css';
 const CardItem = ({title, price, img}) => {
 
    
-   
+   //console.log(img);
     return (
         <div className={styles.card}>
             <img src={img} alt="card pic" className={styles.card_image} />

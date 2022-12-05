@@ -142,6 +142,56 @@
     cursor: pointer;
 }
 
+.control_button:disabled {
+    border: 2px solid rgba(0, 0, 0, .2);
+    color: rgba(0, 0, 0, .2);
+    cursor: default;
+}
+
+
+
+
+.user_form {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 75%;
+    margin: 0;
+    padding: 50px 0;
+    box-sizing: border-box;
+}
+
+
+.input_label {
+    padding: 0;
+    margin: 0;
+    margin-left: 30px;
+}
+
+.user_form_input {
+    width: 150px;
+    height: 20px;
+    margin: 0;
+    margin-left: 10px;
+    border: 1px solid black;
+    border-radius: 6px;
+    padding: 0 5px;
+}
+
+.user_form_input:invalid:focus {
+    outline: 1px solid red;
+    border: 1px solid red;
+    color: red;
+}
+
+.user_form_input:valid:focus {
+    outline: 1px solid green;
+    border: 1px solid green;
+    color: green;
+}
+
+
+
 
 @media (max-width: 1250px) {
     .cart_item {
