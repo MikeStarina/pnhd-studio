@@ -23,6 +23,8 @@ export const loginFunc = (userLoginData) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Content-Length': '',
+
+
             },
 
             body: JSON.stringify(data),
@@ -51,6 +53,8 @@ export const updateAuth = (token) => {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
+
+
             }
         })
         .then(res => res.json())
