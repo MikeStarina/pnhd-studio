@@ -5,3 +5,9 @@
     margin: 0 auto;
     box-sizing: border-box;
 }
+
+@media (max-width: 900px) {
+    .page {
+        padding: 100px 20px;
+    }
+}

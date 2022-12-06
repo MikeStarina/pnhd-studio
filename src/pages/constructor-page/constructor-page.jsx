@@ -334,7 +334,7 @@ const Constructor = () => {
               id="lsleeve"
               onClick={setActiveTab}
             >
-              <p className={styles.tab_caption}>Л. рукав</p>
+              <p className={styles.tab_caption}>Л.&nbsp;рукав</p>
             </div>
             <div
               className={
@@ -343,7 +343,7 @@ const Constructor = () => {
               id="rsleeve"
               onClick={setActiveTab}
             >
-              <p className={styles.tab_caption}>П. рукав</p>
+              <p className={styles.tab_caption}>П.&nbsp;рукав</p>
             </div>
             
           </div>

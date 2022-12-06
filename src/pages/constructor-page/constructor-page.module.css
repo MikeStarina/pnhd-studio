@@ -21,6 +21,7 @@
     margin: 0;
     padding: 100px 200px;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 .mockup_container {
@@ -219,7 +220,8 @@
 
 .item_button {
     width: 300px;
-    height: 40px;
+    height: 60px;
+    box-sizing: border-box;
     border: 2px solid black;
     border-radius: 15px;
     background-color: transparent;
@@ -227,7 +229,7 @@
     line-height: 20px;
     font-weight: 500;
     cursor: pointer;
-    padding: 0;
+    padding: 20px;
     margin: 20px 0 0 0;
     align-self: flex-end;
 }
@@ -295,11 +297,17 @@
 
 @media (max-width: 650px) {
     .tabs_container {
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        width: 150px;
+        width: 100%;
         box-sizing: border-box;
+    }
+
+    .tab_caption {
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        font-size: 12px;
+        line-height: 12px;
+        font-weight: 400;
     }
 
 
@@ -307,5 +315,8 @@
       
         font-size: 15px;
         line-height: 15px;
+    }
+    .order_info {
+        text-align: center;
     }
 }

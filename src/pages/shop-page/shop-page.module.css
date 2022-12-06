@@ -26,6 +26,13 @@
     background-color: transparent;
     border: none;
     cursor: pointer;
+    border-top: 2px solid transparent;
+    border-bottom: 2px solid transparent;
+}
+
+.filter:hover {
+    
+    border-bottom: 2px solid black;
 }
 
 .filter_active {
@@ -36,8 +43,8 @@
     font-weight: 200;
     background-color: transparent;
     border: none;
-    border-top: 1px solid transparent;
-    border-bottom: 1px solid black;
+    border-top: 2px solid transparent;
+    border-bottom: 2px solid black;
 }
 
 
@@ -54,5 +61,10 @@
     
         margin: 0 0 20px 0;
       
+    }
+
+    .filter_active {
+        
+        margin: 0 0 20px 0;
     }
 }

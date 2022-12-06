@@ -45,7 +45,7 @@ const ShopPage = () => {
         dispatch({
             type: CLOSE_MODAL_MENU,
         })    
-    }, [dispatch])
+    }, [])
 
 
 
