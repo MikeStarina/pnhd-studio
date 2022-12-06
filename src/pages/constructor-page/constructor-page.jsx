@@ -181,7 +181,7 @@ const Constructor = () => {
  
     data.append(`files`, print, print.name);
 
-    dispatch(printUploadFunc(data, activeView, item[0].attributes.type));
+    dispatch(printUploadFunc(data, activeView, item[0].attributes.type, item[0].attributes.color));
     e.currentTarget.reset();
 
   };
