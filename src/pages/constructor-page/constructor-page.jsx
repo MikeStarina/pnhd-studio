@@ -88,7 +88,7 @@ const Constructor = () => {
       } else {
         initialParams = {
           x: 140,
-          y: 70,
+          y: 100,
           width: 220,
           height: 300,
         }
@@ -175,13 +175,13 @@ const Constructor = () => {
 
   const onChange = (e) => {
     e.preventDefault();
-    console.log(e.currentTarget);
+   
     const data = new FormData();
     const print = e.target.files[0];
  
     data.append(`files`, print, print.name);
 
-    dispatch(printUploadFunc(data, activeView));
+    dispatch(printUploadFunc(data, activeView, item[0].attributes.type));
     e.currentTarget.reset();
 
   };
@@ -261,13 +261,7 @@ const Constructor = () => {
   totalPrintPrice = rsleeve_file.cartParams ? totalPrintPrice + rsleeve_file.cartParams.price : totalPrintPrice;
   totalPrintPrice = badge_file.cartParams ? totalPrintPrice + badge_file.cartParams.price : totalPrintPrice;
   
-  /*
-  const printArea = (<Rect
-    {...initialParams}
-    stroke='black'
-    strokeWidth={.5}
-    dash={[2, 3]}
-    />) */
+
   
   return (
     item && (

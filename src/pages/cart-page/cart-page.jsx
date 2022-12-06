@@ -83,13 +83,26 @@ const CartPage = () => {
   }, []);
 
 
+  const qtyChangeHandler = (e, qty) => {
 
-  const onChange = (e) => {
+    let newValue = qty;
+    if (e.target.name === 'increase') {
+      newValue++;
+    } else {
+      newValue--;
+    }
+
     dispatch({
       type: CHANGE_ITEM_QTY,
-      qty: e.target.value,
+      qty: newValue,
       id: e.target.id,
     });
+  }
+  const onChange = (e) => {
+
+    
+     
+    
   };
 
 
@@ -150,13 +163,17 @@ const CartPage = () => {
                         >
                           Количество:
                         </label>
+                        <button type='button' className={styles.input_control_button} name='decrease' onClick={(e) => qtyChangeHandler(e, item.attributes.qty)} id={item.cart_item_id}>&larr;</button>
                         <input
                           type="number"
                           className={styles.qty_input}
                           value={item.attributes.qty}
                           id={item.cart_item_id}
                           onChange={onChange}
+                          readOnly={true}
+                          disabled
                         ></input>
+                        <button type='button' className={styles.input_control_button} name='increase' id={item.cart_item_id} onClick={(e) => qtyChangeHandler(e, item.attributes.qty)}>&rarr;</button>
                       </div>
                     </div>
                   </div>

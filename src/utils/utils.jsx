@@ -29,7 +29,7 @@ export const fileSelect = (activeView, front_file, back_file, lsleeve_file, rsle
 
 
 
-export const setCoords = (currentImage, activeView) => {
+export const setCoords = (currentImage, activeView, itemType) => {
     
 
     let imageCoords = {
@@ -51,7 +51,7 @@ export const setCoords = (currentImage, activeView) => {
 
             imageCoords = {
             x: 150,
-            y: 100,
+            y: itemType === 'hoodie' ? 140 : 100,
             width: displayWidth,
             height: displayHeight,
             };
@@ -63,23 +63,23 @@ export const setCoords = (currentImage, activeView) => {
 
             imageCoords = {
             x: 140 + xCoord,
-            y: 100,
+            y: itemType === 'hoodie' ? 140 : 100,
             width: displayWidth,
             height: displayHeight,
             };
         }
 
-    } else if(activeView === 'lsleeve' || activeView === 'rsleeve') {
+    } else if (activeView === 'lsleeve') {
 
         if (currentImage.width >= currentImage.height) {
             
             const proportion = currentImage.width / currentImage.height;
-            const displayWidth = 80;
+            const displayWidth =  itemType === 'hoodie' ? 50 : 80;
             const displayHeight = displayWidth / proportion;
 
             imageCoords = {
-            x: 210,
-            y: 50,
+            x: 230,
+            y:  itemType === 'hoodie' ? 125 : 105,
             width: displayWidth,
             height: displayHeight,
             };
@@ -90,12 +90,40 @@ export const setCoords = (currentImage, activeView) => {
             const xCoord = (90 - displayWidth) / 2;
 
             imageCoords = {
-            x: 205 + xCoord,
-            y: 50,
+            x: itemType === 'hoodie' ? 230 : 230 + xCoord,
+            y: itemType === 'hoodie' ? 125 : 105,
             width: displayWidth,
             height: displayHeight,
             };
         }
+    } else if (activeView === 'rsleeve') {
+
+        if (currentImage.width >= currentImage.height) {
+            
+            const proportion = currentImage.width / currentImage.height;
+            const displayWidth =  itemType === 'hoodie' ? 50 : 80;
+            const displayHeight = displayWidth / proportion;
+
+            imageCoords = {
+            x:  itemType === 'hoodie' ? 215 : 190,
+            y: itemType === 'hoodie' ? 125 : 105,
+            width: displayWidth,
+            height: displayHeight,
+            };
+        } else {
+            const proportion = currentImage.width / currentImage.height;
+            const displayHeight = 80;
+            const displayWidth = displayHeight * proportion;
+            const xCoord = (90 - displayWidth) / 2;
+
+            imageCoords = {
+            x: itemType === 'hoodie' ? 215 : 190 + xCoord,
+            y: itemType === 'hoodie' ? 125 : 105,
+            width: displayWidth,
+            height: displayHeight,
+            };
+        }
+
     }
 
     return imageCoords;

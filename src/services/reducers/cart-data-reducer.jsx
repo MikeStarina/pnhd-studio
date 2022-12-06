@@ -46,21 +46,18 @@ export const cartDataReducer = (state = initialState, action) => {
         case CHANGE_ITEM_QTY: {
             const newOrder = state.order;
 
-            if (action.qty > 0) {
+            
                 newOrder.map((item) => {
                     if (item.cart_item_id === action.id) {
-                        item.attributes.qty = action.qty;
+                        item.attributes.qty = action.qty > 0 ? action.qty : 1;
                         if (item.print) {
-                            item.print.qty = action.qty
+                            item.print.qty = action.qty > 0 ? action.qty : 1;
                         }
                     }
 
                     return item;
                 })
-            } else {
-                const index = newOrder.findIndex(item => item.cart_item_id === action.id);
-                newOrder.splice(index, 1);
-            }
+           
 
             return {
                 ...state,
