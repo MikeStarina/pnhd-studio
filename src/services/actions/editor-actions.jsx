@@ -75,7 +75,7 @@ export const getSize = (newAttrs, activeView, color) => {
 
 
 
-export const printUploadFunc = (data, activeView, getScene) => {
+export const printUploadFunc = (data, activeView, itemType) => {
 
 
 
@@ -110,7 +110,7 @@ export const printUploadFunc = (data, activeView, getScene) => {
               });
       
               const currentImage = res[0];
-              let imageCoords = setCoords(currentImage, activeView);
+              let imageCoords = setCoords(currentImage, activeView, itemType);
               
               dispatch(getSize(imageCoords, activeView));
               dispatch({

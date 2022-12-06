@@ -84,13 +84,14 @@
 }
 
 .qty_input {
-    width: 50px;
+    width: 34px;
     height: 24px;
-    padding: 2px;
-    margin: 0 0 0 20px;
+    padding: 0;
+    margin: 0 5px;
     box-sizing: border-box;
     border: 1px solid black;
     border-radius: 5px;
+    text-align: center;
 }
 
 
@@ -190,6 +191,18 @@
     color: green;
 }
 
+.input_control_button {
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+    color: black;
+    cursor: pointer;
+}
+
+.input_control_button:first-of-type {
+    margin-left: 20px;
+}
+
 
 
 
@@ -201,6 +214,24 @@
     .screen {
         padding: 100px 100px;
        
+    }
+}
+
+@media (max-width: 1100px) {
+    .user_form {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-end;
+    }
+
+    .input_label {
+        margin: 0;
+        margin-bottom: 5px;
+    }
+
+    .user_form_input {
+        margin: 0;
+        margin-bottom: 15px;
     }
 }
 
