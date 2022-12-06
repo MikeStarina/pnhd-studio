@@ -34,7 +34,7 @@ const ItemPage = () => {
     
     let item = data.length > 0 && data.filter(elem => elem.id === intId);
 
-    
+    console.log(item[0]);
     
 
  
