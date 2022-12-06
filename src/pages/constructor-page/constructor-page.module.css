@@ -128,15 +128,16 @@
     padding: 0;
     width: 100%;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
+    box-sizing: border-box;
 }
 
 
 .input_form {
     width: 100%;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     box-sizing: border-box;
 }
@@ -152,14 +153,14 @@
 }
 
 .input_wrapper {
-    width: 100%;
+    width: calc(100% - 80px);
     position: relative;
     margin: 0;
     text-align: center;
 }
 
 .file_input_button_text {
-    max-width: 400px;
+    max-width: 320px;
     line-height: 20px;
     font-size: 20px;
     font-weight: 600;
