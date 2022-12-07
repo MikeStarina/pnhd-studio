@@ -5,12 +5,14 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
+  max-width: 1560px;
   box-sizing: border-box;
   position: relative;
 
   font-family: 'Neue_machina', Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: black;
 }
 
 code {
