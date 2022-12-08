@@ -58,13 +58,19 @@
     }
 
     .filter {
-    
+        border-top: 1px solid transparent;
+        border-bottom: 1px solid transparent;
         margin: 0 0 20px 0;
       
     }
+    .filter:hover {
+    
+        border-bottom: 1px solid black;
+    }
 
     .filter_active {
-        
+        border-top: 1px solid transparent;
+        border-bottom: 1px solid black;
         margin: 0 0 20px 0;
     }
 }

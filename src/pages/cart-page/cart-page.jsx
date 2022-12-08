@@ -12,6 +12,11 @@ import { createOrder } from "../../services/actions/cart-actions";
 import ItemPrint from "../../components/cart-page-components/item-print";
 import closeicon from "../../components/images/closeIcon.svg";
 import { apiBaseUrl } from "../../utils/constants";
+import mir from '../../components/images/mir.png';
+import visa from '../../components/images/visa.png';
+import kassa from '../../components/images/kassa.png';
+import Mastercard from '../../components/images/Mastercard.png';
+
 
 
 const CartPage = () => {
@@ -224,12 +229,14 @@ const CartPage = () => {
           <label htmfor='phone' className={styles.input_label}>Телефон*:</label>
           <input type='tel' minLength='11' placeholder='+7(999)999-99-99' id='phone' name='phone' className={styles.user_form_input} required={true} onChange={inputChangeHandler} value={userCartData.phone}></input>
           <label htmfor='email' className={styles.input_label}>Email*:</label>
-          <input type='email' placeholder='boss@example.com' id='email' name='email' className={styles.user_form_input} required={true} onChange={inputChangeHandler} value={userCartData.email}></input>
+          <input type='email' placeholder='name@pnhd.ru' id='email' name='email' className={styles.user_form_input} required={true} onChange={inputChangeHandler} value={userCartData.email}></input>
       </form>
       <div className={styles.cart_controls}>
+        
         {order.length > 0 && (
           <p className={styles.total_price}>Итого: = {totalPrice} P.</p>
         )}
+        {!isUserFormValid && <p className={styles.total_price}>Введите ваше имя, телефон, почту и нажмите "оформить заказ" чтобы перейти к оплате</p>}
         <button
           type="button"
           className={styles.control_button}
@@ -245,6 +252,21 @@ const CartPage = () => {
         >
           Оформить
         </button>
+      </div>
+      <div className={styles.payment_info}>
+        <div className={styles.payment_logo_wrapper}>
+          <img src={kassa} alt='Юкасса' className={styles.payment_logo}></img>
+          <img src={visa} alt='visa' className={styles.payment_logo}></img>
+          <img src={Mastercard} alt='Mastercard' className={styles.payment_logo}></img>
+          <img src={mir} alt='Мир' className={styles.payment_logo}></img>
+        </div>
+        <div className={styles.shipping_info}>
+          <h4 className={styles.shipping_heading}>Как получить заказ?</h4>
+          <p className={styles.shipping_description}>Мы обрабатываем заказы ежедневно с 11 до 20. После оформления заказ и оплаты наши менеджеры свяжутся с вами для его подтверждения.</p>
+          <p className={styles.shipping_description}>Способ получения заказа по умолчанию - самовывоз из нашей студии по адресу: Санкт-Петербург, ул. Чапыгина 1. Студия работает с 11 до 20 без выходных</p>
+          <p className={styles.shipping_description}>Мы можем доставить заказ по Санкт-Петербургу и России. Если вам требуется доставка, то, пожалуйста, сообщите об этом менеджеру, который сообщит вам о готовности заказа и он(а) расскажет как сделать это удобно и поможет с оформлением</p>
+        </div>
+
       </div>
 
     </section>
