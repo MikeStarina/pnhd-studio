@@ -27,6 +27,7 @@ import { RESTORE_CART_FROM_SSTORAGE } from '../../services/actions/cart-actions'
 import ForgotPassword from '../../pages/forgot-password/forgot-password';
 import ProfilePage from '../../pages/profile-page/profile-page';
 import Oferta from '../../pages/oferta-page/oferta-page';
+import Page404 from '../../pages/page-404/page-404';
 
 
 
@@ -98,49 +99,18 @@ const closeMenu = (e) => {
         <Oferta />
       </Route>
 
-      {/*<Route exact path='/contacts'>
-        <ContactsPage />
-      </Route> */}
-
+   
       <Route exact path='/shop'>
         <ShopPage />
       </Route>
 
-      {/*<Route exact path='/faq'>
-        <FaqPage />
-      </Route>*/}
-
-      {/*<Route exact path='/prices'>
-        <PricesPage />
-      </Route> */}
-
-      {/*<Route exact path='/profile'>
-        {userAuth.isAuthenticated ? (<ProfilePage />) : (<Redirect to='/login' />)}
-      </Route>    */}
+  
 
       <Route exact path='/shop/:id'>
         <ItemPage />
       </Route>
 
-      {/*<Route exact path='/login'>
-      
-        {userAuth.isAuthenticated ? (<Redirect to='/shop' />) : (<LoginPage />)}
-      </Route> */}
-
-      {/*<Route exact path='/register'>
-        <RegisterPage />
-        userAuth.isAuthenticated ? (<Redirect to='/' />) : (<RegisterPage />)
-      </Route>*/}
-
-      {/*<Route exact path='/forgot'>
-        <ForgotPassword />
-        {userAuth.isAuthenticated ? (<Redirect to='/' />) : (<RegisterPage />)}
-      </Route>*/}
-
-      {/*<Route exact path='/reset-password'>
-       
-        userAuth.isAuthenticated ? (<Redirect to='/' />) : (<RegisterPage />)
-      </Route>*/}
+   
 
 
 
@@ -150,6 +120,10 @@ const closeMenu = (e) => {
 
       <Route exact path='/checkout'>
         {order.length > 0 ? (<CartPage />) : (<Redirect to='/shop' />)}
+      </Route>
+
+      <Route path='/'>
+        <Page404 />
       </Route>
 
      

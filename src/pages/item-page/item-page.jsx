@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { ADD_TO_CART } from "../../services/actions/cart-actions.jsx";
 import { v4 as uuidv4 } from "uuid";
 import { Link } from "react-router-dom";
+import Swiper from "swiper";
 import { apiBaseUrl } from "../../utils/constants";
 
 
@@ -34,7 +35,7 @@ const ItemPage = () => {
     
     let item = data.length > 0 && data.filter(elem => elem.id === intId);
 
-    console.log(item[0]);
+    //console.log(item[0]);
     
 
  
