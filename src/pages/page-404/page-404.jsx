@@ -9,7 +9,7 @@ const Page404 = () => {
         <section className={styles.page}>
             <h1 className={styles.title}>404</h1>
             <p className={styles.subtitle}>Page not found / Такой страницы не существует</p>
-            <p className={styles.subtitle}>Вернуться на <Link className={styles.link}>главную</Link></p>
+            <p className={styles.subtitle}>Вернуться на <Link className={styles.link} to='/'>главную</Link></p>
         </section>
     )
 }

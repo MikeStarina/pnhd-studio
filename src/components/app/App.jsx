@@ -6,8 +6,6 @@ import { OPEN_MODAL_MENU, CLOSE_MODAL_MENU } from '../../services/actions/utilit
 import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
 import { getShopData } from '../../services/actions/shop-data-actions.jsx';
 
-
-
 import MainPage from '../../pages/main-page/main-page.jsx';
 import BurgerIcon from '../main-menu/burger-icon.jsx';
 import MainMenu from '../main-menu/main-menu.jsx';
@@ -41,7 +39,8 @@ const { userAuth } = useSelector(store => store.userData);
 
 //console.log(userAuth);
 
-
+const location = useLocation();
+useEffect(() => {window.scrollTo(0, 0);}, [location])
 
 
 useEffect(() => {

@@ -3,6 +3,7 @@ import styles from './price-screen.module.css';
 import { useSelector, useDispatch } from "react-redux";
 import { SET_ACTIVE_PRICE_TABLE } from "../../services/actions/utility-actions";
 import PriceTable from "./price-screen-components/price-table.jsx";
+import { Link } from "react-router-dom";
 
 
 const price = {
@@ -85,9 +86,9 @@ const PriceScreen = () => {
 
 
 
-            <a href='#contacts'>
+            <Link to='/shop'>
                 <button type='button' className={styles.action_button}>ЗАКАЗАТЬ</button>
-            </a>
+            </Link>
             
         </section>
     );

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import styles from "./cart-page.module.css";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import {
   CHANGE_ITEM_QTY,
   CLEAR_CART,
@@ -23,13 +23,14 @@ const CartPage = () => {
   const history = useHistory();
   const { order, paymentUrl } = useSelector((store) => store.cartData);
   const { userCartData } = useSelector((store) => store.userData);
+  
   const dispatch = useDispatch();
   //console.log(userCartData);
 
 
   const isUserFormValid = userCartData.isNameValid && userCartData.isPhoneValid && userCartData.isEmailValid;
   //console.log(isUserFormValid);
-
+ 
   if (paymentUrl) {
     window.location.href = paymentUrl;
 

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import styles from './item-page.module.css';
