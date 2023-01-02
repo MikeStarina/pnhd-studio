@@ -17,6 +17,8 @@ const CardsBlock = () => {
     } else {
         filteredData = data;
     }
+
+    
  
 
     return (

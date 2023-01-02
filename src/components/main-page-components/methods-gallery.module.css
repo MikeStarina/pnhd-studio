@@ -36,7 +36,6 @@
 }
 
 .card_img:hover {
-    cursor: pointer;
     transform: scale(110%);
 }
 
