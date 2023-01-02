@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { CLOSE_MODAL_MENU } from "../../services/actions/utility-actions";
 import styles from './oferta-page.module.css';
 
 
@@ -6,6 +8,14 @@ import styles from './oferta-page.module.css';
 
 
 const Oferta = () => {
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch({
+            type: CLOSE_MODAL_MENU,
+        })    
+    }, [])
 
     return (
         <section className={styles.page}>

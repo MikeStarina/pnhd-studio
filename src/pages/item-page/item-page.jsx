@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import styles from './item-page.module.css';
@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { ADD_TO_CART } from "../../services/actions/cart-actions.jsx";
 import { v4 as uuidv4 } from "uuid";
 import { Link } from "react-router-dom";
+import Swiper from "swiper";
 import { apiBaseUrl } from "../../utils/constants";
 
 
@@ -16,7 +17,7 @@ import { apiBaseUrl } from "../../utils/constants";
 
 const ItemPage = () => {
 
-    const [ size, setSize ] = useState('XS');
+    
     const { id } = useParams();
     const { data } = useSelector(store => store.shopData);
     const { order } = useSelector(store => store.cartData);
@@ -33,10 +34,11 @@ const ItemPage = () => {
  
     
     let item = data.length > 0 && data.filter(elem => elem.id === intId);
-
+    const [ size, setSize ] = useState(item[0].attributes.sizes[0]);
+    console.log(item[0]);
     
     
-
+    
  
    
    
@@ -95,14 +97,11 @@ const ItemPage = () => {
                         </p>
                         <form className={styles.item_form}>
                             <label className={styles.select_label} htmfor='sizeSelect'>Выберите размер:</label>
-                            <select className={styles.form_select} id='sizeSelect' name='sizeSelect' autoFocus onChange={onChange}>
-                                <option value='XS'>XS</option>
-                                <option value='S'>S</option>
-                                <option value='M'>M</option>
-                                <option value='L'>L</option>
-                                <option value='XL'>XL</option>
-                                <option value='XXL'>XXL</option>
-                                <option value='XXL'>XXL</option>
+                            <select className={styles.form_select} id='sizeSelect' name='sizeSelect' onChange={onChange}>
+                                {item[0].attributes.sizes && item[0].attributes.sizes.map((item, index) => (
+                                    <option key={index} value={item}>{item}</option>
+                                ))}
+                               
                             </select>
                         </form>
                         <p className={styles.item_price}>{item[0].attributes.price} Р.</p>

@@ -23,17 +23,7 @@ import { apiBaseUrl } from "../../utils/constants";
 import Mockup from "./mockup";
 import { fileSelect } from "../../utils/utils";
 
-/**
- * TODO:
- * 
- * - придумать как разобраться с ассетами размера и координат стейджа - добавить на бек к товарам 
- * - поискать библиотеку для удаления фона
- * - редактирование принтов из корзины
- * - заменить в табах текст на иконки
- * - починить деселект трансформера - пока оставил как есть
- *
- *
- */
+
 
 const Constructor = () => {
 
@@ -85,6 +75,13 @@ const Constructor = () => {
           height: 290,
         }
 
+      } else if(item[0].attributes.type === 'totebag') {
+        initialParams = {
+          x: 150,
+          y: 160,
+          width: 200,
+          height: 220,
+        }
       } else {
         initialParams = {
           x: 140,
@@ -101,6 +98,15 @@ const Constructor = () => {
         width: 200,
         height: 200,
       }
+  } else if (item[0].attributes.type === 'totebag' && activeView === 'front') {
+      initialParams = {
+        x: 150,
+        y: 160,
+        width: 200,
+        height: 220,
+      }
+ 
+  
   } else if (activeView === 'lsleeve') {
 
     if (item[0].attributes.type === 'hoodie' || item[0].attributes.type === 'longsleeve' || item[0].attributes.type === 'sweatshirt') {
@@ -181,7 +187,7 @@ const Constructor = () => {
  
     data.append(`files`, print, print.name);
 
-    dispatch(printUploadFunc(data, activeView, item[0].attributes.type));
+    dispatch(printUploadFunc(data, activeView, item[0].attributes.type, item[0].attributes.color));
     e.currentTarget.reset();
 
   };
@@ -327,24 +333,24 @@ const Constructor = () => {
             >
               <p className={styles.tab_caption}>Спина</p>
             </div>
-            <div
+            {item[0].attributes.type !== 'totebag' && <div
               className={
                 activeView === "lsleeve" ? styles.active_tab : styles.tab
               }
               id="lsleeve"
               onClick={setActiveTab}
             >
-              <p className={styles.tab_caption}>Л. рукав</p>
-            </div>
-            <div
+              <p className={styles.tab_caption}>Л.&nbsp;рукав</p>
+            </div>}
+            {item[0].attributes.type !== 'totebag' && <div
               className={
                 activeView === "rsleeve" ? styles.active_tab : styles.tab
               }
               id="rsleeve"
               onClick={setActiveTab}
             >
-              <p className={styles.tab_caption}>П. рукав</p>
-            </div>
+              <p className={styles.tab_caption}>П.&nbsp;рукав</p>
+            </div>}
             
           </div>
 

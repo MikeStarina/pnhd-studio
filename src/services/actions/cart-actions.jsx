@@ -29,11 +29,40 @@ export const createOrder = (order, totalPrice, userCartData) => {
     }
     order.forEach((order_item) => {
        
+        let printTotalprice = 0;
+        
+        const frontPrintPrice =
+          order_item.print && order_item.print.front.file
+            ? order_item.print.front.cartParams.price
+            : 0;
+        const backPrintPrice =
+          order_item.print && order_item.print.back.file ? order_item.print.back.cartParams.price : 0;
+        const lsleevePrintPrice =
+          order_item.print && order_item.print.lsleeve.file
+            ? order_item.print.lsleeve.cartParams.price
+            : 0;
+        const rsleevePrintPrice =
+          order_item.print && order_item.print.rsleeve.file
+            ? order_item.print.rsleeve.cartParams.price
+            : 0;
+        const badgePrintPrice =
+          order_item.print && order_item.print.badge.file
+            ? order_item.print.badge.cartParams.price
+            : 0;
+    
+        printTotalprice =
+          frontPrintPrice +
+          backPrintPrice +
+          lsleevePrintPrice +
+          rsleevePrintPrice +
+          badgePrintPrice;
 
+          //console.log(printTotalprice);
       
         const item = {
             textile: `${order_item.attributes.name}, размер: ${order_item.attributes.size}`,
             qty: order_item.attributes.qty,
+            item_price: printTotalprice ? order_item.attributes.price + printTotalprice : order_item.attributes.price,
             print: order_item.print ? true : false,
             front_print: order_item.print?.front.file ? `Печать на груди. Файл: ${order_item.print.front.file.url}, Превью: ${order_item.print.front_preview.preview}; Размер: ${order_item.print.front.cartParams.size}` : '',
             back_print: order_item.print?.back.file ? `Печать на спине. Файл: ${order_item.print.back.file.url}, Превью: ${order_item.print.back_preview.preview}; Размер: ${order_item.print.back.cartParams.size}` : '',
