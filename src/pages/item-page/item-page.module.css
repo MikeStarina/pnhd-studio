@@ -148,10 +148,21 @@
 }
 
 .form_select {
-    width: 75px;
+    width: 140px;
     height: 25px;
     border: 1px solid black;
     border-radius: 5px;
+}
+
+.size_chart_link {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 400;
+    text-align: right;
+    padding: 0;
+    margin: 5px 0;
+    color: black;
+    text-decoration: underline;
 }
 
 

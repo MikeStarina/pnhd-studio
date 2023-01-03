@@ -113,12 +113,14 @@ const ItemPage = () => {
                         </p>
                         <form className={styles.item_form}>
                             <label className={styles.select_label} htmfor='sizeSelect'>Выберите размер:</label>
+                            
                             <select className={styles.form_select} id='sizeSelect' name='sizeSelect' onChange={onChange}>
                                 {item[0].attributes.sizes && item[0].attributes.sizes.map((item, index) => (
                                     <option key={index} value={item}>{item}</option>
                                 ))}
                                
                             </select>
+                            <Link to='/size_chart' className={styles.size_chart_link} target='blank'>(Гид по размерам)</Link>
                         </form>
                         <p className={styles.item_price}>{item[0].attributes.price} Р.</p>
                     </div>

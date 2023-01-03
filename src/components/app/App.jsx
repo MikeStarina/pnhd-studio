@@ -26,6 +26,7 @@ import ForgotPassword from '../../pages/forgot-password/forgot-password';
 import ProfilePage from '../../pages/profile-page/profile-page';
 import Oferta from '../../pages/oferta-page/oferta-page';
 import Page404 from '../../pages/page-404/page-404';
+import SizesPage from '../../pages/sizes-page/sizes-page';
 
 
 
@@ -107,6 +108,11 @@ const closeMenu = (e) => {
 
       <Route exact path='/shop/:id'>
         <ItemPage />
+      </Route>
+
+
+      <Route exact path='/size_chart'>
+        <SizesPage />
       </Route>
 
    
