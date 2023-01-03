@@ -237,7 +237,7 @@ const CartPage = () => {
         {order.length > 0 && (
           <p className={styles.total_price}>Итого: = {totalPrice} P.</p>
         )}
-        {!isUserFormValid && <p className={styles.total_price}>Введите ваше имя, телефон, почту и нажмите "оформить заказ" чтобы перейти к оплате</p>}
+        {!isUserFormValid && <p className={styles.total_price}>Введите ваше имя, телефон, почту и нажмите кнопку "Оформить" ниже, чтобы перейти к оплате</p>}
         <button
           type="button"
           className={styles.control_button}
