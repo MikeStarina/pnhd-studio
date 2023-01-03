@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useParams, useHistory, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import styles from './item-page.module.css';
 import closeicon from '../../components/images/closeIcon.svg';
@@ -8,8 +8,13 @@ import { useDispatch } from "react-redux";
 import { ADD_TO_CART } from "../../services/actions/cart-actions.jsx";
 import { v4 as uuidv4 } from "uuid";
 import { Link } from "react-router-dom";
-import Swiper from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper";
 import { apiBaseUrl } from "../../utils/constants";
+
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 
 
@@ -85,9 +90,20 @@ const ItemPage = () => {
             </div>
             
             <div className={styles.shop_item_wrapper}>
-                <div className={styles.gallery_wrapper}>
-                    <img src={`${apiBaseUrl}${item[0].attributes.image_url}`} alt='item' className={styles.gallery_image}></img>
-                </div>
+                {item[0].attributes.galleryPhotos ? 
+                (<Swiper className={styles.gallery_wrapper} navigation={true} pagination={true} modules={[Navigation, Pagination]}>
+                    {item[0].attributes.galleryPhotos.map((image, index) => (
+                        <SwiperSlide className={styles.swiper_slide} key={index}>                        
+                            <img src={`${apiBaseUrl}${image}`} alt='item' />
+                        </SwiperSlide>
+                    ))}       
+                
+                    
+                </Swiper>) : (
+                    <div className={styles.gallery_wrapper}>
+                        <img src={`${apiBaseUrl}${item[0].attributes.image_url}`} alt='item' className={styles.gallery_image} />
+                    </div>
+                )}
                 <div className={styles.item_info_wrapper}>
                     <div className={styles.item_info_block}>
                         
@@ -122,3 +138,22 @@ const ItemPage = () => {
 
 
 export default ItemPage;
+
+
+/**
+ * 
+ *              <Swiper className={styles.swiper} navigation={true} modules={[Navigation]}>
+                
+                    <SwiperSlide key={0} className={styles.swiper_slide}>
+                        
+                        <img src={`${apiBaseUrl}${item[0].attributes.image_url}`} alt='item' />
+                    </SwiperSlide>
+                    <SwiperSlide key={1} className={styles.swiper_slide}>
+                        
+                        <img src={`${apiBaseUrl}${item[0].attributes.image_url}`} alt='item' />
+                    </SwiperSlide>
+                   
+                   
+                    
+                </Swiper>
+ */
