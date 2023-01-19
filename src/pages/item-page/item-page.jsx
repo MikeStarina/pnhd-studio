@@ -39,8 +39,8 @@ const ItemPage = () => {
  
     
     let item = data.length > 0 && data.filter(elem => elem.id === intId);
-    const [ size, setSize ] = useState(item[0].attributes.sizes[0]);
-    console.log(item[0]);
+    const [ size, setSize ] = useState(item[0]?.attributes.sizes[0]);
+    //console.log(item[0]);
     
     
     
@@ -79,6 +79,9 @@ const ItemPage = () => {
         });
         history.goBack();
     }
+
+    const descriptionArray = item[0]?.attributes.description.split('=');
+    //console.log(descriptionArray);
     
 
     
@@ -108,11 +111,20 @@ const ItemPage = () => {
                     <div className={styles.item_info_block}>
                         
                         <h1 className={styles.item_title}>{item[0].attributes.name}</h1>
-                        <p className={styles.item_description}>
+                        {!item[0].attributes.sale && <p className={styles.item_description}>
                             {item[0].attributes.description}    
-                        </p>
+                        </p>}
+                        {item[0].attributes.sale && descriptionArray && descriptionArray.map((item, index) => (
+                            <p className={styles.item_description} key={index}>
+                            {item}    
+                            </p>
+                        )) }
+                        <br />
+                        {item[0].attributes.sale && <a href='https://instagram.com/easyvisa_inc' target='blank'>instagram</a>}
+                        {item[0].attributes.sale && <a href='https://easyvisainc.ru' target='blank'>сайт</a>}
                         <form className={styles.item_form}>
-                            <label className={styles.select_label} htmfor='sizeSelect'>Выберите размер:</label>
+                            {!item[0].attributes.sale && <label className={styles.select_label} htmfor='sizeSelect'>Выберите размер:</label>}
+                            {item[0].attributes.sale && <label className={styles.select_label} htmfor='sizeSelect'>Выберите код:</label>}
                             
                             <select className={styles.form_select} id='sizeSelect' name='sizeSelect' onChange={onChange}>
                                 {item[0].attributes.sizes && item[0].attributes.sizes.map((item, index) => (
@@ -120,15 +132,16 @@ const ItemPage = () => {
                                 ))}
                                
                             </select>
-                            <Link to='/size_chart' className={styles.size_chart_link} target='blank'>(Гид по размерам)</Link>
+                            {!item[0].attributes.sale &&
+                            <Link to='/size_chart' className={styles.size_chart_link} target='blank'>(Гид по размерам)</Link>}
                         </form>
                         <p className={styles.item_price}>{item[0].attributes.price} Р.</p>
                     </div>
 
                     <div className={styles.item_button_wrapper}>
-                        <Link to={{ pathname: `/shop/${id}/constructor`, state: {size: size} }}>
+                        {!item[0].attributes.sale && <Link to={{ pathname: `/shop/${id}/constructor`, state: {size: size} }}>
                             <button type='button' className={styles.item_button}>ДОБАВИТЬ ПРИНТ</button>
-                        </Link>
+                        </Link>}
                         <button type='button' className={styles.item_button} onClick={addToCart}>ДОБАВИТЬ В КОРЗИНУ</button>
                     </div>
 
@@ -142,20 +155,3 @@ const ItemPage = () => {
 export default ItemPage;
 
 
-/**
- * 
- *              <Swiper className={styles.swiper} navigation={true} modules={[Navigation]}>
-                
-                    <SwiperSlide key={0} className={styles.swiper_slide}>
-                        
-                        <img src={`${apiBaseUrl}${item[0].attributes.image_url}`} alt='item' />
-                    </SwiperSlide>
-                    <SwiperSlide key={1} className={styles.swiper_slide}>
-                        
-                        <img src={`${apiBaseUrl}${item[0].attributes.image_url}`} alt='item' />
-                    </SwiperSlide>
-                   
-                   
-                    
-                </Swiper>
- */
