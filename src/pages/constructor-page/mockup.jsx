@@ -9,12 +9,14 @@ const Mockup = ({ item }) => {
     
 
     const { activeView } = useSelector(store => store.editorState);
-    const mockup = activeView === 'front' ? `${apiBaseUrl}${item.attributes.editor_front_view}`
-    : activeView === 'back' ? `${apiBaseUrl}${item.attributes.editor_back_view}`
-    : activeView === 'lsleeve' ? `${apiBaseUrl}${item.attributes.editor_lsleeve_view}`
-    : activeView === 'rsleeve' ? `${apiBaseUrl}${item.attributes.editor_rsleeve_view}` : null;
-
+    
+    const mockup = activeView === 'front' ? `${apiBaseUrl}${item.editor_front_view}`
+    : activeView === 'back' ? `${apiBaseUrl}${item.editor_back_view}`
+    : activeView === 'lsleeve' ? `${apiBaseUrl}${item.editor_lsleeve_view}`
+    : activeView === 'rsleeve' ? `${apiBaseUrl}${item.editor_rsleeve_view}` : null;
+    
     const [mockupImg] = useImage(mockup, 'Anonymous');
+   
 
     return (
         <Image

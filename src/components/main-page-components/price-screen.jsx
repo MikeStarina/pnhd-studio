@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { SET_ACTIVE_PRICE_TABLE } from "../../services/actions/utility-actions";
 import PriceTable from "./price-screen-components/price-table.jsx";
 import { Link } from "react-router-dom";
+import { SET_POPUP_VISIBILITY } from "../../services/actions/utility-actions";
 
 
 const price = {
@@ -54,6 +55,13 @@ const PriceScreen = () => {
     const dispatch = useDispatch();
 
 
+    const popupOpen = () => {
+        dispatch({
+            type: SET_POPUP_VISIBILITY
+        })
+    }
+
+
     const setActiveTab = (e) => {
         
         dispatch({
@@ -85,10 +93,16 @@ const PriceScreen = () => {
             </div>
 
 
+            <div className={styles.action_button_wrapper}>
 
-            <Link to='/shop'>
-                <button type='button' className={styles.action_button}>ЗАКАЗАТЬ</button>
-            </Link>
+
+                <Link to='/shop'>
+                    <button type='button' className={styles.action_button}>ВЫБРАТЬ ТЕКCТИЛЬ</button>
+                </Link>
+
+                    <button type='button' className={styles.action_button} onClick={popupOpen} >ЕСТЬ СВОЙ?</button>
+
+            </div>
             
         </section>
     );

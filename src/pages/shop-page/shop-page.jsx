@@ -57,7 +57,7 @@ const ShopPage = () => {
                 <button type='button' className={filter === 'woman' ? styles.filter_active : styles.filter} value='woman' onClick={filterHandler}>ЖЕНСКОЕ</button>
                 <button type='button' className={filter === 'kids' ? styles.filter_active : styles.filter} value='kids' onClick={filterHandler}>ДЕТСКОЕ</button>
                 <button type='button' className={filter === 'accesorize' ? styles.filter_active : styles.filter} value='accesorize' onClick={filterHandler}>АКСЕССУАРЫ</button>
-                <button type='button' className={filter === 'friends' ? styles.filter_active : styles.filter} value='friends' onClick={filterHandler}>...& FRIENDS</button>
+                <button type='button' className={filter === 'friends' ? styles.filter_active : styles.filter} value='friends' onClick={filterHandler}>PNHD&nbsp;&&nbsp;FRIENDS</button>
                 <button type='button' className={styles.filter} value='' onClick={filterHandler}>СБРОСИТЬ</button>
                
 

@@ -1,4 +1,4 @@
-import { OPEN_MODAL_MENU, CLOSE_MODAL_MENU, SET_ACTIVE_PRICE_TABLE, GET_ORDER_FORM_DATA, IS_IMAGE_LOADING } from "../actions/utility-actions.jsx";
+import { OPEN_MODAL_MENU, CLEAR_LEAD_FORM_DATA, CLOSE_MODAL_MENU, SET_ACTIVE_PRICE_TABLE, GET_ORDER_FORM_DATA, IS_IMAGE_LOADING, SET_POPUP_VISIBILITY } from "../actions/utility-actions.jsx";
 
 
 
@@ -7,15 +7,14 @@ const initialState = {
     mainMenu: {
         isVisible: false,
     },
+    isPopupVisible: false,
     mainMenuPriceTable: {
         activeTab: 'DTG',
     },
 
     orderFormData : {
         name: '',
-        email: '',
         phone: '',
-        message: '',
     },
 
     isFormDataSet: false,
@@ -33,6 +32,24 @@ export const utilityReducer = (state = initialState, action) => {
                 }
             }
         }
+
+        case CLEAR_LEAD_FORM_DATA: {
+
+            return {
+                ...state,
+                orderFormData: {
+                    name: '',
+                    phone: ''
+                }
+            }
+        }
+
+        case SET_POPUP_VISIBILITY: {
+            return {
+                ...state,
+                isPopupVisible: !state.isPopupVisible
+            }
+        };
 
 
         case CLOSE_MODAL_MENU: {
@@ -57,10 +74,8 @@ export const utilityReducer = (state = initialState, action) => {
             return {
                 ...state,
                 orderFormData: {
-                    name: action.name,
-                    email: action.email,
-                    phone: action.phone,
-                    message: action.message,
+                    name: action.field === 'name' ? action.data : state.orderFormData.name,
+                    phone: action.field === 'phone' ? action.data : state.orderFormData.phone
                 },
                 isFormDataSet: true,
             }
