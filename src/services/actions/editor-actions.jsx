@@ -1,6 +1,7 @@
 import { IS_IMAGE_LOADING } from "./utility-actions";
 import { apiBaseUrl } from "../../utils/constants";
 import { setCoords } from "../../utils/utils";
+import useImage from "use-image";
 
 
 export const IMAGE_SELECT = 'IMAGE_SELECT';
@@ -86,19 +87,20 @@ export const printUploadFunc = (data, activeView, itemType, itemColor) => {
           payload: true,
         });
 
-        fetch(`${apiBaseUrl}/api/upload/`, {
+        fetch(`${apiBaseUrl}/api/uploads/`, {
             method: "POST",
             body: data,
           })
             .then((res) => res.json())
             .then((res) => {
 
-
+              console.log(res);
+              
               dispatch({
                 type: ADD_FILE,
                 payload: {
-                  url: `${apiBaseUrl}${res[0].url}`,
-                  name: res[0].name,
+                  url: `${apiBaseUrl}${res.url}`,
+                  name: res.name,
                 },
                 view: activeView,
               });
@@ -108,8 +110,9 @@ export const printUploadFunc = (data, activeView, itemType, itemColor) => {
                 type: IS_IMAGE_LOADING,
                 payload: false,
               });
-      
-              const currentImage = res[0];
+              
+             
+              const currentImage = res;
               let imageCoords = setCoords(currentImage, activeView, itemType);
               
               dispatch(getSize(imageCoords, activeView, itemColor));
@@ -119,7 +122,7 @@ export const printUploadFunc = (data, activeView, itemType, itemColor) => {
                 view: activeView,
               });
               
-      
+              
               
             });
 
@@ -133,7 +136,7 @@ export const uploadPreview = (data, activeView) => {
   //console.log(data);
 
   return function (dispatch) {
-      fetch(`${apiBaseUrl}/api/upload/`, {
+      fetch(`${apiBaseUrl}/api/uploads/`, {
           method: "POST",
           body: data,
         })
@@ -143,7 +146,7 @@ export const uploadPreview = (data, activeView) => {
               dispatch({
                 type: ADD_PRINT_PREVIEW,
                 data: data,
-                preview: `${apiBaseUrl}${res[0].url}`,
+                preview: `${apiBaseUrl}${res.url}`,
                 view: activeView,
               })
           })

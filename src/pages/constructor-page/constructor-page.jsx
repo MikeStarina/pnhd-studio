@@ -52,8 +52,8 @@ const Constructor = () => {
   const imgRef = useRef();
   const stageRef = useRef();
 
-  const intId = parseInt(id);
-  const item = data.length > 0 && data.filter((elem) => elem.id === intId);
+
+  const item = data.length > 0 && data.filter((elem) => elem._id === id)[0];
 
 
 
@@ -67,7 +67,7 @@ const Constructor = () => {
 
   if (activeView === 'back') {
    
-      if (item[0].attributes.type === 'hoodie') {
+      if (item.type === 'hoodie') {
         initialParams = {
           x: 150,
           y: 140,
@@ -75,7 +75,7 @@ const Constructor = () => {
           height: 290,
         }
 
-      } else if(item[0].attributes.type === 'totebag') {
+      } else if(item.type === 'totebag') {
         initialParams = {
           x: 150,
           y: 160,
@@ -91,14 +91,14 @@ const Constructor = () => {
         }
       }
     
-  } else if (activeView === 'front' && item[0].attributes.type === 'hoodie') {
+  } else if (activeView === 'front' && item.type === 'hoodie') {
       initialParams = {
         x: 150,
         y: 130,
         width: 200,
         height: 200,
       }
-  } else if (item[0].attributes.type === 'totebag' && activeView === 'front') {
+  } else if (item.type === 'totebag' && activeView === 'front') {
       initialParams = {
         x: 150,
         y: 160,
@@ -109,7 +109,7 @@ const Constructor = () => {
   
   } else if (activeView === 'lsleeve') {
 
-    if (item[0].attributes.type === 'hoodie' || item[0].attributes.type === 'longsleeve' || item[0].attributes.type === 'sweatshirt') {
+    if (item.type === 'hoodie' || item.type === 'longsleeve' || item.type === 'sweatshirt') {
       initialParams = {
         x: 230,
         y: 125,
@@ -126,7 +126,7 @@ const Constructor = () => {
     }
   } else if (activeView === 'rsleeve') {
     
-    if (item[0].attributes.type === 'hoodie' || item[0].attributes.type === 'longsleeve' || item[0].attributes.type === 'sweatshirt') {
+    if (item.type === 'hoodie' || item.type === 'longsleeve' || item.type === 'sweatshirt') {
       initialParams = {
         x: 215,
         y: 125,
@@ -184,10 +184,11 @@ const Constructor = () => {
    
     const data = new FormData();
     const print = e.target.files[0];
+    //console.log(print);
  
-    data.append(`files`, print, print.name);
+    data.append(`files`, print, `${uuidv4()}_${print.name}`);
 
-    dispatch(printUploadFunc(data, activeView, item[0].attributes.type, item[0].attributes.color));
+    dispatch(printUploadFunc(data, activeView, item.type, item.color));
     e.currentTarget.reset();
 
   };
@@ -205,12 +206,12 @@ const Constructor = () => {
 
 
     return async function(dispatch) {
-      const preview = await stageRef.current.toDataURL();
+      //const preview = await stageRef.current.toDataURL();
       const scene = await stageRef.current.toBlob();
 
       
       const data = new FormData();
-      data.append("files", scene, `${activeView}_preview`);
+      data.append("files", scene, `${activeView}_preview_${uuidv4()}.jpg`);
 
 
       dispatch(uploadPreview(data, activeView));
@@ -222,7 +223,7 @@ const Constructor = () => {
 
   const addToCart = () => {
     const data = {
-      attributes: { ...item[0].attributes },
+      attributes: { ...item },
       cart_item_id: uuidv4(),
     };
 
@@ -243,9 +244,6 @@ const Constructor = () => {
       badge: badge_file,
     };
 
-    //dispatch({
-
-    //})
 
   
     dispatch({
@@ -267,7 +265,7 @@ const Constructor = () => {
   totalPrintPrice = rsleeve_file.cartParams ? totalPrintPrice + rsleeve_file.cartParams.price : totalPrintPrice;
   totalPrintPrice = badge_file.cartParams ? totalPrintPrice + badge_file.cartParams.price : totalPrintPrice;
   
-
+  
   
   return (
     item && (
@@ -285,7 +283,7 @@ const Constructor = () => {
               
             >
               <Layer className={styles.layer}>
-                <Mockup item={item[0]} />
+                <Mockup item={item} />
               </Layer>
               <Layer
                 className={styles.layer}
@@ -308,7 +306,7 @@ const Constructor = () => {
                       view: activeView,
                     });
                     dispatch(getScene(activeView));
-                    dispatch(getSize(newAttrs, activeView, item[0].attributes.color));
+                    dispatch(getSize(newAttrs, activeView, item.color));
                   }}
                 />
               </Layer>
@@ -333,7 +331,7 @@ const Constructor = () => {
             >
               <p className={styles.tab_caption}>Спина</p>
             </div>
-            {item[0].attributes.type !== 'totebag' && <div
+            {item.type !== 'totebag' && <div
               className={
                 activeView === "lsleeve" ? styles.active_tab : styles.tab
               }
@@ -342,7 +340,7 @@ const Constructor = () => {
             >
               <p className={styles.tab_caption}>Л.&nbsp;рукав</p>
             </div>}
-            {item[0].attributes.type !== 'totebag' && <div
+            {item.type !== 'totebag' && <div
               className={
                 activeView === "rsleeve" ? styles.active_tab : styles.tab
               }
@@ -355,7 +353,7 @@ const Constructor = () => {
           </div>
 
           <div className={styles.input_container}>
-            <form className={styles.input_form} onChange={onChange}>
+            <form className={styles.input_form} onChange={onChange} encType='multipart/form-data'>
               <div className={styles.input_wrapper}>
                 <input
                   type="file"
@@ -384,10 +382,10 @@ const Constructor = () => {
           <div className={styles.stage_controls}></div>
           <div className={styles.order_info}>
             <p className={styles.order_info_line}>
-              Текстиль: {item[0].attributes.name}, размер: {state.size}, цвет:
+              Текстиль: {item.name}, размер: {state.size}, цвет:
             </p>
             <p className={styles.order_info_line}>
-              Стоимость текстиля: {item[0].attributes.price} Р.
+              Стоимость текстиля: {item.price} Р.
             </p>
             <p className={styles.order_info_line}>
               Печать на груди:{" "}
@@ -409,7 +407,7 @@ const Constructor = () => {
             <p className={styles.order_info_line}>
               Итого текстиль и печать:{" "}
               {
-                item[0].attributes.price + totalPrintPrice
+                item.price + totalPrintPrice
                 } Р.
             </p>
           </div>

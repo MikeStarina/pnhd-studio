@@ -13,7 +13,7 @@ const CardsBlock = () => {
     let filteredData = [];
 
     if (filter) {
-        filteredData = data.filter(item => item.attributes.category === filter)
+        filteredData = data.filter(item => item.category === filter)
     } else {
         filteredData = data;
     }
@@ -24,13 +24,13 @@ const CardsBlock = () => {
     return (
         <section className={styles.screen}>
             
-            {filteredData && filteredData.map((item) => {
+            {filteredData && filteredData.map((item, index) => {
 
 
-                const url = `${apiBaseUrl}${item.attributes.image_url}`
+                const url = `${apiBaseUrl}${item.image_url}`
                 return (
-                <Link to={{ pathname: `/shop/${item.id}`}} className={styles.link} key={item.id}>
-                    <CardItem key={item.id} title={item.attributes.name} price={item.attributes.price} img={url} />
+                <Link to={{ pathname: `/shop/${item._id}`}} className={styles.link} key={index}>
+                    <CardItem title={item.name} price={item.price} img={url} />
                 </Link>
             )}
             )}

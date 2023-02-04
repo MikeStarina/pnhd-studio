@@ -15,6 +15,7 @@ const Print = ({ initialImageCoords, isSelected, onSelect, onChange, file, imgRe
 
     
     const [imageTwo] = useImage(file, 'Anonymous');
+    console.log(file);
 
    
    
