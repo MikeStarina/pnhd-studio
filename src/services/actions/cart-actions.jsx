@@ -18,14 +18,14 @@ export const createOrder = (order, totalPrice, userCartData) => {
 
     
     
-    const data = {data: {
+    const data = {
             order_price: totalPrice,
             owner_name: userCartData.name,
             owner_phone: userCartData.phone,
             owner_email: userCartData.email,
             order_key: uuidv4(),
             items: [],
-        }
+        
     }
     order.forEach((order_item) => {
        
@@ -71,7 +71,7 @@ export const createOrder = (order, totalPrice, userCartData) => {
 
         }
 
-        data.data.items.push(item);
+        data.items.push(item);
     })
 
     
@@ -96,7 +96,7 @@ export const createOrder = (order, totalPrice, userCartData) => {
         })
         .then(res => res.json())
         .then((res) => {
-            //console.log(res);
+            console.log(res);
             if (res.paymentUrl) {
                 dispatch({
                     type: SET_PAYMENT_URL,

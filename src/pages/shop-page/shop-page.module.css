@@ -11,7 +11,7 @@
     justify-content: center;
     align-items: flex-end;
     margin: 0 auto;
-    padding: 50px 100px 20px 100px;
+    padding: 100px 100px 20px 100px;
     width: 100%;
     box-sizing: border-box;
 }
@@ -19,7 +19,7 @@
 
 .filter {
     padding: 5px 0;
-    margin: 0 0 0 20px;
+    margin: 0 20px 0 20px;
     font-size: 15px;
     line-height: 15px;
     font-weight: 200;
@@ -37,7 +37,7 @@
 
 .filter_active {
     padding: 5px 0;
-    margin: 0 0 0 20px;
+    margin: 0 20px 0 20px;
     font-size: 15px;
     line-height: 15px;
     font-weight: 200;
@@ -54,13 +54,14 @@
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
-        padding: 30px 0 20px 30px;
+        padding: 100px 0 20px 30px;
     }
 
     .filter {
         border-top: 1px solid transparent;
         border-bottom: 1px solid transparent;
-        margin: 0 0 20px 0;
+        margin: 0 0 10px 0;
+        padding: 0;
       
     }
     .filter:hover {

@@ -19,7 +19,7 @@ const FaqScreen = () => {
                         <h5 className={styles.screen_heading}>ТЕКСТИЛЬ / <span className={styles.textStyle_italic}>GARMENT</span></h5>
                         <p className={styles.screen_description}>
                             Выбери нужный текстиль в нашем каталоге, размер и нажми "добавить принт"! Если просто нужна бланковая футболка или худи, то есть опция
-                            добавить в корзину без принта.
+                            добавить в корзину без принта. Ну а чтобы напечатать на своей футболке просто принеси ее в студию :)
                         </p>
                     </div>    
                 </div>

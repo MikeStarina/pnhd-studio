@@ -2,28 +2,21 @@ import React from 'react';
 //import styles from './app.module.css';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { OPEN_MODAL_MENU, CLOSE_MODAL_MENU } from '../../services/actions/utility-actions';
+import { OPEN_MODAL_MENU, CLOSE_MODAL_MENU, SET_POPUP_VISIBILITY } from '../../services/actions/utility-actions';
 import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
 import { getShopData } from '../../services/actions/shop-data-actions.jsx';
 
+import Popup from '../popup/popup';
 import MainPage from '../../pages/main-page/main-page.jsx';
 import BurgerIcon from '../main-menu/burger-icon.jsx';
 import MainMenu from '../main-menu/main-menu.jsx';
-import ContactsPage from '../../pages/contacts/contacts-page.jsx';
 import Footer from '../footer/footer.jsx';
 import ShopPage from '../../pages/shop-page/shop-page.jsx';
-import FaqPage from '../../pages/faq-page/faq-page.jsx';
-import PricesPage from '../../pages/prices-page/prices-page.jsx';
 import Constructor from '../../pages/constructor-page/constructor-page.jsx';
 import CartIcon from '../cart/cart-icon.jsx';
 import ItemPage from '../../pages/item-page/item-page.jsx';
 import CartPage from '../../pages/cart-page/cart-page.jsx';
-import LoginPage from '../../pages/login-page/login-page.jsx';
-import RegisterPage from '../../pages/register-page/register-page.jsx';
-import { updateAuth } from '../../services/actions/user-data-actions';
 import { RESTORE_CART_FROM_SSTORAGE } from '../../services/actions/cart-actions';
-import ForgotPassword from '../../pages/forgot-password/forgot-password';
-import ProfilePage from '../../pages/profile-page/profile-page';
 import Oferta from '../../pages/oferta-page/oferta-page';
 import Page404 from '../../pages/page-404/page-404';
 import SizesPage from '../../pages/sizes-page/sizes-page';
@@ -34,11 +27,9 @@ import SizesPage from '../../pages/sizes-page/sizes-page';
 function App() {
 
 const dispatch = useDispatch();
-const { mainMenu } = useSelector(store => store.utilityState);
+const { mainMenu, isPopupVisible } = useSelector(store => store.utilityState);
 const { order, isVisible } = useSelector(store => store.cartData);
-const { userAuth } = useSelector(store => store.userData);
 
-//console.log(userAuth);
 
 const location = useLocation();
 useEffect(() => {window.scrollTo(0, 0);}, [location])
@@ -46,6 +37,7 @@ useEffect(() => {window.scrollTo(0, 0);}, [location])
 
 useEffect(() => {
   const autoSavedCart = sessionStorage.getItem('cart');
+  console.log(autoSavedCart);
   
   if (autoSavedCart) {
     dispatch({
@@ -59,7 +51,7 @@ useEffect(() => {
 
 useEffect(() => {
   dispatch(getShopData());
-}, [dispatch])
+}, [])
 
 
 useEffect(() => {
@@ -77,6 +69,12 @@ const openMenu = () => {
   })
 }
 
+const openPopup = () => {
+  dispatch({
+    type: SET_POPUP_VISIBILITY,
+  })
+}
+
 
 const closeMenu = (e) => {
   dispatch({
@@ -87,7 +85,8 @@ const closeMenu = (e) => {
 
   return (
     <> 
-    {mainMenu.isVisible ? (<MainMenu closeMenu={closeMenu} />) : (<BurgerIcon openMenu={openMenu} />)}
+    {isPopupVisible && <Popup openPopup={openPopup} />}
+    {mainMenu.isVisible ? (<MainMenu closeMenu={closeMenu} />) : (<BurgerIcon openMenu={openMenu} openPopup={openPopup} />)}
     {order && order.length > 0 && isVisible && <CartIcon qty={order.length} />}
     <Switch>     
 
