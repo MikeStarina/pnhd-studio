@@ -1,4 +1,4 @@
-import { ADD_TO_CART, ADD_TO_CART_WITH_PRINT, CHANGE_ITEM_QTY, CLEAR_CART, RESTORE_CART_FROM_SSTORAGE, SET_CART_VISIBILITY, SET_PAYMENT_URL } from "../actions/cart-actions.jsx";
+import { ADD_TO_CART, ADD_TO_CART_WITH_PRINT, CHANGE_ITEM_QTY, CLEAR_CART, RESTORE_CART_FROM_SSTORAGE, SET_CART_VISIBILITY, SET_PAYMENT_URL, DELETE_ITEM_FROM_CART, DELETE_PRINT_FROM_CART } from "../actions/cart-actions.jsx";
 
 
 
@@ -93,6 +93,76 @@ export const cartDataReducer = (state = initialState, action) => {
                 paymentUrl: action.payload,
             }
 
+        }
+
+        case DELETE_ITEM_FROM_CART: {
+            const clonedOrder = state.order;
+
+            const newOrderList = [];
+
+            clonedOrder.map((item) => {
+                if (item.cart_item_id !== action.payload) {
+                    newOrderList.push(item);
+                }
+            })
+
+            sessionStorage.setItem('cart', JSON.stringify(newOrderList));
+
+            return {
+                ...state,
+                order: newOrderList,
+            }
+        }
+
+        case DELETE_PRINT_FROM_CART: {
+        
+            let clonedOrder = state.order;
+
+            clonedOrder.map((item) => {
+                if (item.cart_item_id === action.item_id) {
+            
+                    if (action.print_id === 'front_print') {
+                        item.print.front = {
+                            cartParams: undefined,
+                            file: undefined,
+                            stageParams: {},
+                        };
+                        item.print.front_preview.preview = {};
+                       
+                    }
+                    if (action.print_id === 'back_print') {
+                        item.print.back = {
+                            cartParams: undefined,
+                            file: undefined,
+                            stageParams: {},
+                        };
+                        item.print.back_preview.preview = {};
+                    }
+                    if (action.print_id === 'lsleeve_print') {
+                        item.print.lsleeve = {
+                            cartParams: undefined,
+                            file: undefined,
+                            stageParams: {},
+                        };
+                        item.print.lsleeve_preview.preview = {};
+                    }
+                    if (action.print_id === 'lsleeve_print') {
+                        item.print.rsleeve = {
+                            cartParams: undefined,
+                            file: undefined,
+                            stageParams: {},
+                        };
+                        item.print.rsleeve_preview.preview = {};
+                    }
+                }
+            })
+
+            sessionStorage.setItem('cart', JSON.stringify(clonedOrder));
+
+            return {
+                ...state,
+                order: clonedOrder,
+            }
         }
 
         default: return state;

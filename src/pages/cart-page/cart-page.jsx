@@ -6,6 +6,8 @@ import {
   CHANGE_ITEM_QTY,
   CLEAR_CART,
   SET_CART_VISIBILITY,
+  DELETE_ITEM_FROM_CART,
+  DELETE_PRINT_FROM_CART,
 } from "../../services/actions/cart-actions";
 import { SET_USER_DATA } from '../../services/actions/user-data-actions';
 import { createOrder } from "../../services/actions/cart-actions";
@@ -29,6 +31,7 @@ const CartPage = () => {
 
 
   const isUserFormValid = userCartData.isNameValid && userCartData.isPhoneValid && userCartData.isEmailValid;
+  const validationMessage = `${!userCartData.isNameValid ? 'Имя' : ''} ${!userCartData.isPhoneValid ? 'Телефон': ''} ${!userCartData.isEmailValid ? 'Email' : ''}`;
   //console.log(isUserFormValid);
  
   if (paymentUrl) {
@@ -134,20 +137,32 @@ const CartPage = () => {
     dispatch({ type: CLEAR_CART });
   };
 
+
+  const deleteItemFromCart = (e) => {
+
+    dispatch({
+      type: DELETE_ITEM_FROM_CART,
+      payload: e.target.id,
+    })
+  }
+
+
+
+
   return (
     <section className={styles.screen}>
-      <img
-        src={closeicon}
-        alt="close icon"
-        className={styles.close}
-        onClick={close}
-      ></img>
+      <div className={styles.cart_title_box}>
+        <h1 className={styles.cart_title}>КОРЗИНА / <i>CART</i></h1>
+        <button type='button' className={styles.goback_button} onClick={close}>&larr; НАЗАД</button>
+      </div>
+      
 
       <ul className={styles.cart_container}>
         {order &&
           order.map((item) => {
             return (
               <li className={styles.cart_item} key={item.cart_item_id}>
+                <button type='button' className={styles.delete_item_from_cart} id={item.cart_item_id} onClick={deleteItemFromCart}>x</button>
                 <div className={styles.textile_description}>
                   <div className={styles.desc_box}>
                     <img
@@ -157,7 +172,7 @@ const CartPage = () => {
                     ></img>
                     <div className={styles.text_wrapper}>
                       <h3 className={styles.title}>
-                        {item.attributes.name} {!item.print && "(Без принта)"}
+                        {item.attributes.name}
                       </h3>
                       <p className={styles.description}>
                         Размер: {item.attributes.size}
@@ -194,6 +209,9 @@ const CartPage = () => {
                     params={item.print.front}
                     qty={item.attributes.qty}
                     title={"Принт на груди:"}
+                    print_id={'front_print'}
+                    item_id={item.cart_item_id}
+                    
                   />
                 )}
                 {item.print && item.print.back.file && (
@@ -202,6 +220,9 @@ const CartPage = () => {
                     params={item.print.back}
                     qty={item.attributes.qty}
                     title={"Принт на спине:"}
+                    print_id={'back_print'}
+                    item_id={item.cart_item_id}
+                    
                   />
                 )}
                 {item.print && item.print.lsleeve.file && (
@@ -210,6 +231,9 @@ const CartPage = () => {
                     params={item.print.lsleeve}
                     qty={item.attributes.qty}
                     title={"Принт на левом рукаве:"}
+                    print_id={'lsleeve_print'}
+                    item_id={item.cart_item_id}
+                    
                   />
                 )}
                 {item.print && item.print.rsleeve.file && (
@@ -218,13 +242,19 @@ const CartPage = () => {
                     params={item.print.rsleeve}
                     qty={item.attributes.qty}
                     title={"Принт на правом рукаве:"}
+                    print_id={'rsleeve_print'}
+                    item_id={item.cart_item_id}
+                    
                   />
                 )}
               </li>
             );
           })}
       </ul>
-      <form className={styles.user_form}>
+      <div className={styles.checkout_container}>
+
+      
+      <form className={styles.user_form} id='checkout_form'>
           <label htmfor='name' className={styles.input_label}>Имя*:</label>
           <input type='text' minLength='2' placeholder='Ваше имя' id='name' name='name' className={styles.user_form_input} required={true} onChange={inputChangeHandler} value={userCartData.name}></input>
           <label htmfor='phone' className={styles.input_label}>Телефон*:</label>
@@ -235,24 +265,27 @@ const CartPage = () => {
       <div className={styles.cart_controls}>
         
         {order.length > 0 && (
-          <p className={styles.total_price}>Итого: = {totalPrice} P.</p>
+          <p className={styles.total_price}>Итого: {totalPrice} P.</p>
         )}
-        {!isUserFormValid && <p className={styles.total_price}>Введите ваше имя, телефон, почту и нажмите кнопку "Оформить" ниже, чтобы перейти к оплате</p>}
+        {/*
         <button
           type="button"
           className={styles.control_button}
           onClick={clearCartHandler}
         >
           Очистить корзину
-        </button>
+        </button> */}
         <button
           type="button"
           className={styles.control_button}
           onClick={createOrderHandler}
           disabled={!isUserFormValid}
         >
-          Оформить
+          ОФОРМИТЬ
         </button>
+        {!isUserFormValid && <p className={styles.validation_message}>Заполните поля:</p>}
+        {!isUserFormValid && <p className={styles.validation_message}>{validationMessage}</p>}
+      </div>
       </div>
       <div className={styles.payment_info}>
         <div className={styles.payment_logo_wrapper}>
