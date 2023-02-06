@@ -8,7 +8,9 @@ export const SET_FILTER = 'SET_FILTER';
 export const getShopData = () => {
     return function (dispatch) {
         fetch(`${apiBaseUrl}/api/products`, {
-            headers: { "Content-Type": "application/json" }
+            headers: { 
+                "Content-Type": "application/json",
+            }
             })
             .then(res => res.json())
             .then((res) => {
