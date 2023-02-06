@@ -96,16 +96,21 @@
     .desc_box {
         width: 100%;
         flex-direction: row;
-        justify-content: space-evenly;
+        justify-content: flex-start;
         align-items: center;
+        padding: 50px 0;
     }
 
     .item_img {
-        margin: 0;
+        margin: 0 20px 0 0;
+        height: 75px;
+        min-width: 75px;
     }
 
     .title {
-        margin: 0;
+        margin: 0 0 15px 0;
+        font-size: 15px;
+        line-height: 15px;
     }
 
     .description {

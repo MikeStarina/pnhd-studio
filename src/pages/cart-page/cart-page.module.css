@@ -350,30 +350,49 @@
     }
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 910px) {
     .user_form {
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-end;
+        padding: 25px 50px;
+
+    }
+    .cart_container {
+        padding: 25px;
     }
 
-    .input_label {
-        margin: 0;
-        margin-bottom: 5px;
+    .screen {
+        padding: 100px 20px;
     }
 
-    .user_form_input {
-        margin: 0;
-        margin-bottom: 15px;
-    }
 }
 
+@media (max-width: 800px) {
+
+    .total_price {
+        font-size: 20px;
+        line-height: 20px;
+    }
+
+    .control_button {
+        width: 180px;
+        font-size: 15px;
+        line-height: 15px;
+    }
+
+    .validation_message {
+        font-size: 10px;
+    }
+
+}
 
 @media (max-width: 700px) {
     
     .screen {
         padding: 100px 20px;
        
+    }
+
+    .cart_item {
+        padding: 25px 0;
     }
 
 
@@ -387,7 +406,8 @@
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-end;
-       
+        align-items: flex-start;
+        gap: 30px;
        
     }
 
@@ -397,33 +417,92 @@
         align-items: center;
     }
     
-    .textile_description {
-        align-items: flex-start;
-       
-       
+  
+
+    .cart_title {
+
+        font-size: 20px;
+        line-height: 20px;
+        font-weight: 600;
     }
 
-    
+    .goback_button {
+       
+        font-size: 10px;
+        line-height: 10px;
+    }
 
     .title {
         margin: 0;
+        margin-bottom: 15px;
+        font-size: 15px;
+        line-height: 15px;
+    }
+
+    .description {
+        font-size: 10px;
+        line-height: 10px;
     }
 
     .text_wrapper {
         align-items: flex-start;
     }
 
+    .qty_input {
+        width: 25px;
+        height: 20px;
+    }
+
+    .input_control_button {
+        font-size: 10px;
+    }
+
+    .price {
+        font-size: 15px;
+    }
+
     .item_img {
         margin: 0 20px 0 0;
+        height: 75px;
+        width: auto;
+        min-width: 75px;
     }
 
     .cart_item {
         width: 100%;
-        
+        padding: 50px 0 25px 0;
     
     }
 
     .price {
         align-self: flex-end;
+    }
+
+    .checkout_container {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .user_form {
+        width: 100%;
+    }
+
+    .cart_controls {
+        width: 100%;
+        align-items: center;
+    }
+
+    .validation_message {
+        text-align: center;
+    }
+
+
+}
+
+
+@media (max-width: 400px) {
+    .user_form {
+        padding: 35px 25px;
     }
 }
