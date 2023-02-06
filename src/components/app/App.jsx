@@ -37,7 +37,7 @@ useEffect(() => {window.scrollTo(0, 0);}, [location])
 
 useEffect(() => {
   const autoSavedCart = sessionStorage.getItem('cart');
-  console.log(autoSavedCart);
+  //console.log(autoSavedCart);
   
   if (autoSavedCart) {
     dispatch({

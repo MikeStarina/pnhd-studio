@@ -354,6 +354,10 @@ const Constructor = () => {
 
           <div className={styles.input_container}>
             <form className={styles.input_form} onChange={onChange} encType='multipart/form-data'>
+              {isImageLoading && <div className={isImageLoading ? styles.loader_active : styles.loader}>
+                <div className={styles.loader_icon}></div>
+                </div>}
+              {!isImageLoading && file && file.name && <button type='button' className={styles.print_delete_button} onClick={deletePrint}>X</button>}
               <div className={styles.input_wrapper}>
                 <input
                   type="file"
@@ -373,10 +377,7 @@ const Constructor = () => {
                   
                 </label>
               </div>
-              {isImageLoading && <div className={isImageLoading ? styles.loader_active : styles.loader}>
-                <div className={styles.loader_icon}></div>
-                </div>}
-              {!isImageLoading && file && file.name && <button type='button' className={styles.print_delete_button} onClick={deletePrint}>X</button>}
+              
             </form>
           </div>
           <div className={styles.stage_controls}></div>
