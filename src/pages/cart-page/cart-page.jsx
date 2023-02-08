@@ -25,6 +25,19 @@ const CartPage = () => {
   const history = useHistory();
   const { order, paymentUrl } = useSelector((store) => store.cartData);
   const { userCartData } = useSelector((store) => store.userData);
+
+  
+
+    const { phone } = userCartData.phone; 
+
+    let regex = /[^0-9]/gi;
+   
+    
+   
+
+    
+  
+  
   
   const dispatch = useDispatch();
   //console.log(userCartData);
@@ -117,6 +130,10 @@ const CartPage = () => {
 
   const inputChangeHandler = (e) => {
     //console.log(e.target.validity.valid);
+
+   
+
+  
     dispatch({
         type: SET_USER_DATA,
         inputName: e.target.name,
@@ -258,7 +275,7 @@ const CartPage = () => {
           <label htmfor='name' className={styles.input_label}>Имя*:</label>
           <input type='text' minLength='2' placeholder='Ваше имя' id='name' name='name' className={styles.user_form_input} required={true} onChange={inputChangeHandler} value={userCartData.name}></input>
           <label htmfor='phone' className={styles.input_label}>Телефон*:</label>
-          <input type='tel' minLength='11' placeholder='+7(999)999-99-99' id='phone' name='phone' className={styles.user_form_input} required={true} onChange={inputChangeHandler} value={userCartData.phone}></input>
+          <input type='tel' minLength='11' placeholder='89990009900' id='phone' name='phone' className={styles.user_form_input} required={true} onChange={inputChangeHandler} value={userCartData.phone.replace(regex, '')}></input>
           <label htmfor='email' className={styles.input_label}>Email*:</label>
           <input type='email' placeholder='name@pnhd.ru' id='email' name='email' className={styles.user_form_input} required={true} onChange={inputChangeHandler} value={userCartData.email}></input>
       </form>
