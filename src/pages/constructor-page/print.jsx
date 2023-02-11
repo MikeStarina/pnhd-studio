@@ -9,12 +9,13 @@ import useImage from "use-image";
 
 const Print = ({ initialImageCoords, isSelected, onSelect, onChange, file, imgRef, initialParams, scene }) => {
     
-    const trRef = useRef();
+    const trRef = useRef(null);
     const dispatch = useDispatch();
     const { activeView } = useSelector((store) => store.editorState);
-
+    
     
     const [imageTwo] = useImage(file, 'Anonymous');
+  
 
 
    
@@ -54,21 +55,25 @@ const Print = ({ initialImageCoords, isSelected, onSelect, onChange, file, imgRe
                 y: e.target.y(),
               });
             }}
+            onTransform={(e) => {
+              const node = imgRef.current;
+              
+            }}
             onTransformEnd={(e) => {
               const node = imgRef.current;
               const scaleX = node.scaleX();
               const scaleY = node.scaleY();
     
-              
+             
               node.scaleX(1);
               node.scaleY(1);
               onChange({
                 ...initialImageCoords,
                 x: node.x(),
-                y: node.y(),
-                
+                y: node.y(),                
                 width: Math.max(5, node.width() * scaleX),
                 height: Math.max(node.height() * scaleY),
+                rotation: node.attrs.rotation
               });
             }}
           />

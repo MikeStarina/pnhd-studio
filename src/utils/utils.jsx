@@ -37,6 +37,7 @@ export const setCoords = (currentImage, activeView, itemType) => {
         y: 100,
         width: 220,
         height: 300,
+        rotation: 0
     }
 
     if (activeView === 'front' || activeView === 'back') {
@@ -54,6 +55,7 @@ export const setCoords = (currentImage, activeView, itemType) => {
             y: itemType === 'hoodie' ? 140 : 100,
             width: displayWidth,
             height: displayHeight,
+            rotation: 0
             };
         } else {
             const proportion = currentImage.width / currentImage.height;
@@ -66,6 +68,7 @@ export const setCoords = (currentImage, activeView, itemType) => {
             y: itemType === 'hoodie' ? 140 : 100,
             width: displayWidth,
             height: displayHeight,
+            rotation: 0
             };
         }
 
@@ -82,6 +85,7 @@ export const setCoords = (currentImage, activeView, itemType) => {
             y:  itemType === 'hoodie' ? 125 : 105,
             width: displayWidth,
             height: displayHeight,
+            rotation: 0
             };
         } else {
             const proportion = currentImage.width / currentImage.height;
@@ -94,6 +98,7 @@ export const setCoords = (currentImage, activeView, itemType) => {
             y: itemType === 'hoodie' ? 125 : 105,
             width: displayWidth,
             height: displayHeight,
+            rotation: 0
             };
         }
     } else if (activeView === 'rsleeve') {
@@ -109,6 +114,7 @@ export const setCoords = (currentImage, activeView, itemType) => {
             y: itemType === 'hoodie' ? 125 : 105,
             width: displayWidth,
             height: displayHeight,
+            rotation: 0
             };
         } else {
             const proportion = currentImage.width / currentImage.height;
@@ -121,6 +127,7 @@ export const setCoords = (currentImage, activeView, itemType) => {
             y: itemType === 'hoodie' ? 125 : 105,
             width: displayWidth,
             height: displayHeight,
+            rotation: 0
             };
         }
 
