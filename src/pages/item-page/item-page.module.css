@@ -106,15 +106,37 @@
 .item_button {
     width: 300px;
     height: 40px;
-    border: 2px solid black;
-    border-radius: 15px;
-    background-color: transparent;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 10px;
+    background-color: rgb(0, 255, 0);
+    font-family: inherit;
+    color: white;
     font-size: 20px;
     line-height: 20px;
     font-weight: 500;
     cursor: pointer;
     padding: 0;
-    margin: 0 0 20px 0;
+    margin: 20px 0 0 0;
+    align-self: flex-end;
+    box-shadow: 0 0 20px rgba(0, 0, 0, .3);
+}
+
+.item_button:first-child::after {
+    content: 'Добавить принт';
+}
+.item_button::after {
+    content: 'Добавить в корзину';
+}
+
+.item_button:hover {
+    content: '';
+    transform: translateY(-5px);
+    transition: transform .15s ease-out;
+}
+.item_button:hover::after {
+    transform: translateY(-5px);
+    content: '+++';
 }
 
 .item_button_wrapper {

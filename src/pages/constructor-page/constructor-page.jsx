@@ -325,40 +325,44 @@ const Constructor = () => {
         </div>
         <div className={styles.controls_container}>
           <div className={styles.tabs_container}>
-            <div
+            <button
+              type='button'
               className={
                 activeView === "front" ? styles.active_tab : styles.tab
               }
               id="front"
               onClick={setActiveTab}
             >
-              <p className={styles.tab_caption}>Грудь</p>
-            </div>
-            <div
+              Грудь
+            </button>
+            <button
+              type='button'
               className={activeView === "back" ? styles.active_tab : styles.tab}
               id="back"
               onClick={setActiveTab}
             >
-              <p className={styles.tab_caption}>Спина</p>
-            </div>
-            {item.type !== 'totebag' && <div
+              Спина
+            </button>
+            {item.type !== 'totebag' && <button
               className={
                 activeView === "lsleeve" ? styles.active_tab : styles.tab
               }
               id="lsleeve"
               onClick={setActiveTab}
+              type='button'
             >
-              <p className={styles.tab_caption}>Л.&nbsp;рукав</p>
-            </div>}
-            {item.type !== 'totebag' && <div
+              Л.&nbsp;рукав
+            </button>}
+            {item.type !== 'totebag' && <button
               className={
                 activeView === "rsleeve" ? styles.active_tab : styles.tab
               }
               id="rsleeve"
               onClick={setActiveTab}
+              type='button'
             >
-              <p className={styles.tab_caption}>П.&nbsp;рукав</p>
-            </div>}
+              П.&nbsp;рукав
+            </button>}
             
           </div>
 
@@ -428,7 +432,7 @@ const Constructor = () => {
             className={styles.item_button}
             onClick={addToCart}
           >
-            ДОБАВИТЬ В КОРЗИНУ
+           
           </button>
         </div>
       </section>

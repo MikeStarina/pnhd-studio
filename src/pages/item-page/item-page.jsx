@@ -156,9 +156,9 @@ const ItemPage = () => {
 
                     <div className={styles.item_button_wrapper}>
                         {!item.isSale && item.sizes.length > 0 && <Link to={{ pathname: `/shop/${id}/constructor`, state: {size: size} }}>
-                            <button type='button' className={styles.item_button}>ДОБАВИТЬ ПРИНТ</button>
+                            <button type='button' className={styles.item_button}></button>
                         </Link>}
-                        {item.sizes.length > 0 && <button type='button' className={styles.item_button} onClick={addToCart}>ДОБАВИТЬ В КОРЗИНУ</button>}
+                        {item.sizes.length > 0 && <button type='button' className={styles.item_button} onClick={addToCart}></button>}
                     </div>
 
                 </div>

@@ -34,6 +34,14 @@ const { order, isVisible } = useSelector(store => store.cartData);
 const location = useLocation();
 useEffect(() => {window.scrollTo(0, 0);}, [location])
 
+useEffect(() => {
+
+  
+  window.ym(86217584, 'reachGoal', 'TEST_HIT');
+
+
+}, [])
+
 
 useEffect(() => {
   const autoSavedCart = sessionStorage.getItem('cart');
