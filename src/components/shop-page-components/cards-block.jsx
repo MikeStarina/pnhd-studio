@@ -30,7 +30,7 @@ const CardsBlock = () => {
                 const url = `${apiBaseUrl}${item.image_url}`
                 return (
                 <Link to={{ pathname: `/shop/${item._id}`}} className={styles.link} key={index}>
-                    <CardItem title={item.name} price={item.price} img={url} />
+                    <CardItem title={item.name} price={item.price} img={url} sizes={item.sizes} />
                 </Link>
             )}
             )}

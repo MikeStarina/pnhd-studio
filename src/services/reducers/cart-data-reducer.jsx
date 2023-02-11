@@ -18,7 +18,7 @@ export const cartDataReducer = (state = initialState, action) => {
 
             
             clonedOrder.push(action.payload);
-            console.log('test');
+
             sessionStorage.setItem('cart', JSON.stringify(clonedOrder));
 
             state = {

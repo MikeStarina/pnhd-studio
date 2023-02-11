@@ -29,7 +29,7 @@ export const sendLeadFormData = (name, phone) => {
         })
         .then(res => res.json())
         .then((res) => {
-            console.log(res);
+
 
             if (res.message === 'заявка отправлена') {
                 //alert('Заявка успешно отправлена');

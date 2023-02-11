@@ -94,7 +94,7 @@ export const printUploadFunc = (data, activeView, itemType, itemColor) => {
             .then((res) => res.json())
             .then((res) => {
 
-              console.log(res);
+
               
               dispatch({
                 type: ADD_FILE,

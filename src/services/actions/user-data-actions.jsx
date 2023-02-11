@@ -83,7 +83,7 @@ export const createNewUser = (registerFormData) => {
         'password': registerFormData.password
     }
 
-    console.log(data);
+
 
     return function(dispatch) {
 
@@ -98,7 +98,6 @@ export const createNewUser = (registerFormData) => {
         })
         .then(res => res.json())
         .then((res) => {
-            console.log(res);
             localStorage.setItem('authToken', res.jwt);
             dispatch({
                 type: CREATE_NEW_USER,

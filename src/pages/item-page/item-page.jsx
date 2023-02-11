@@ -47,7 +47,7 @@ const ItemPage = () => {
     
     
     useEffect(() => {
-        item && setSize(item.sizes[0].name);
+        item && item.sizes.length > 0 && setSize(item.sizes[0].name);
     }, [item])
    
    
@@ -143,9 +143,9 @@ const ItemPage = () => {
                             
                             <select className={styles.form_select} id='sizeSelect' name='sizeSelect' onChange={onChange}>
                                 
-                                {item.sizes && item.sizes.map((item, index) => (
+                                {item.sizes.length > 0 ? item.sizes.map((item, index) => (
                                     <option key={index} value={item.name}>{item.name}</option>
-                                ))} 
+                                )) : (<option>Нет в наличии</option>)} 
                                
                                 </select> 
                             {!item.sale &&
@@ -155,10 +155,10 @@ const ItemPage = () => {
                     </div>
 
                     <div className={styles.item_button_wrapper}>
-                        {!item.isSale && <Link to={{ pathname: `/shop/${id}/constructor`, state: {size: size} }}>
+                        {!item.isSale || item.sizes.length > 0 && <Link to={{ pathname: `/shop/${id}/constructor`, state: {size: size} }}>
                             <button type='button' className={styles.item_button}>ДОБАВИТЬ ПРИНТ</button>
                         </Link>}
-                        <button type='button' className={styles.item_button} onClick={addToCart}>ДОБАВИТЬ В КОРЗИНУ</button>
+                        {item.sizes.length > 0 && <button type='button' className={styles.item_button} onClick={addToCart}>ДОБАВИТЬ В КОРЗИНУ</button>}
                     </div>
 
                 </div>
