@@ -122,20 +122,17 @@
     box-shadow: 0 0 20px rgba(0, 0, 0, .3);
 }
 
-.item_button:first-child::after {
-    content: 'Добавить принт';
-}
-.item_button::after {
-    content: 'Добавить в корзину';
-}
+
 
 .item_button:hover {
     content: '';
     transform: translateY(-5px);
     transition: transform .15s ease-out;
+    color: rgb(0, 255, 0);
 }
 .item_button:hover::after {
     transform: translateY(-5px);
+    color: white;
     content: '+++';
 }
 
