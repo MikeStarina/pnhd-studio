@@ -49,10 +49,10 @@ const Constructor = () => {
   const { isImageLoading } = useSelector((store) => store.utilityState);
   const history = useHistory();
   const { state } = useLocation();
-  const imgRef = useRef();
+  const imgRef = useRef(null);
   const stageRef = useRef();
 
-
+  
   const item = data.length > 0 && data.filter((elem) => elem._id === id)[0];
 
 
@@ -63,6 +63,7 @@ const Constructor = () => {
     y: 100,
     width: 220,
     height: 300,
+   
   }
 
   if (activeView === 'back') {
@@ -73,6 +74,7 @@ const Constructor = () => {
           y: 140,
           width: 200,
           height: 290,
+        
         }
 
       } else if(item.type === 'totebag') {
@@ -81,6 +83,7 @@ const Constructor = () => {
           y: 160,
           width: 200,
           height: 220,
+         
         }
       } else {
         initialParams = {
@@ -88,6 +91,7 @@ const Constructor = () => {
           y: 100,
           width: 220,
           height: 300,
+        
         }
       }
     
@@ -97,6 +101,7 @@ const Constructor = () => {
         y: 130,
         width: 200,
         height: 200,
+        
       }
   } else if (item.type === 'totebag' && activeView === 'front') {
       initialParams = {
@@ -104,6 +109,7 @@ const Constructor = () => {
         y: 160,
         width: 200,
         height: 220,
+        
       }
  
   
@@ -115,6 +121,7 @@ const Constructor = () => {
         y: 125,
         width: 55,
         height: 200,
+        
       }
     } else {
       initialParams = {
@@ -122,6 +129,7 @@ const Constructor = () => {
           y: 105,
           width: 80,
           height: 90,
+          
       }
     }
   } else if (activeView === 'rsleeve') {
@@ -132,6 +140,7 @@ const Constructor = () => {
         y: 125,
         width: 55,
         height: 200,
+        
       }
     } else {
       initialParams = {
@@ -139,6 +148,7 @@ const Constructor = () => {
         y: 105,
         width: 80,
         height: 90,
+        
       }
     }
   }
