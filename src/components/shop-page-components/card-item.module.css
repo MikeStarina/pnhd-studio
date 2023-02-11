@@ -10,6 +10,23 @@
     margin: 0;
     padding: 0;
     overflow: hidden;
+    position: relative;
+}
+
+.no_stock_icon {
+    width: 130px;
+    height: 30px;
+    position: absolute;
+    left: 20px;
+    bottom: 130px;
+    background-color: red;
+    border-radius: 15px;
+    color: white;
+    font-family: inherit;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 

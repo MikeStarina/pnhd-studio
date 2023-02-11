@@ -98,7 +98,6 @@ export const createOrder = (order, totalPrice, userCartData) => {
         })
         .then(res => res.json())
         .then((res) => {
-            console.log(res);
             if (res.paymentUrl) {
                 dispatch({
                     type: SET_PAYMENT_URL,
