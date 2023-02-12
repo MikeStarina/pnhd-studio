@@ -35,10 +35,7 @@ const location = useLocation();
 useEffect(() => {window.scrollTo(0, 0);}, [location])
 
 useEffect(() => {
-
   
-  window.ym(86217584, 'reachGoal', 'TEST_HIT');
-
 
 }, [])
 
