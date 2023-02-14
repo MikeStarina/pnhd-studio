@@ -260,7 +260,7 @@
     transition: transform .15s ease-out;
 }
 .item_button:hover::after {
-    transform: translateY(-5px);
+    
     content: '+++';
 }
 

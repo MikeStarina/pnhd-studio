@@ -1,12 +1,28 @@
-import { ADD_TO_CART, ADD_TO_CART_WITH_PRINT, CHANGE_ITEM_QTY, CLEAR_CART, RESTORE_CART_FROM_SSTORAGE, SET_CART_VISIBILITY, SET_PAYMENT_URL, DELETE_ITEM_FROM_CART, DELETE_PRINT_FROM_CART } from "../actions/cart-actions.jsx";
+import { ADD_TO_CART, DELETE_ACTIVE_PROMOCODE, IS_PROMOCODE_LOADING, SET_CHECKED_PROMOCODE, IS_PROMOCODE_FAIL, GET_USER_PROMOCODE, ADD_TO_CART_WITH_PRINT, CHANGE_ITEM_QTY, CLEAR_CART, RESTORE_CART_FROM_SSTORAGE, SET_CART_VISIBILITY, SET_PAYMENT_URL, DELETE_ITEM_FROM_CART, DELETE_PRINT_FROM_CART } from "../actions/cart-actions.jsx";
 
 
 
 const initialState = {
     order: [],
     isVisible: false,
-    paymentUrl: ''
+    paymentUrl: '',
+    user_promocode: '',
+    isPromocodeLoading: false,
+    promocodeFail: false,
+    validPromoCode: {
+        discount_ratio: null,
+        discounted_item: "",
+        mechanic: "",
+        message: "",
+        name: "",
+        qty: null,
+        discount: null,
+        message: '',
+        _id: ""
+    },
 }
+
+
 
 
 
@@ -162,6 +178,53 @@ export const cartDataReducer = (state = initialState, action) => {
             return {
                 ...state,
                 order: clonedOrder,
+            }
+        }
+
+        case GET_USER_PROMOCODE: {
+            return {
+                ...state,
+                user_promocode: action.payload,
+            }
+        }
+
+        case IS_PROMOCODE_LOADING: {
+            return {
+                ...state,
+                isPromocodeLoading: action.payload,
+            }
+        }
+        case IS_PROMOCODE_FAIL: {
+            return {
+                ...state,
+                promocodeFail: action.payload,
+            }
+        }
+        case SET_CHECKED_PROMOCODE: {
+
+            
+            return {
+                ...state,
+                validPromoCode: action.payload
+            }
+        }
+        case DELETE_ACTIVE_PROMOCODE: {
+            return {
+                ...state,
+                user_promocode: '',
+                isPromocodeLoading: false,
+                promocodeFail: false,
+                validPromoCode: {
+                    discount_ratio: null,
+                    discounted_item: "",
+                    mechanic: "",
+                    message: "",
+                    name: "",
+                    qty: null,
+                    discount: null,
+                    message: '',
+                    _id: ""
+                },
             }
         }
 
