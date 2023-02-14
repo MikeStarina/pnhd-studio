@@ -18,16 +18,7 @@ export const SET_CHECKED_PROMOCODE = 'SET_CHECKED_PROMOCODE';
 export const DELETE_ACTIVE_PROMOCODE = 'DELETE_ACTIVE_PROMOCODE';
 
 
-/**
- * 
- *  order_key: { type: String, required: false},
-    owner_name: { type: String, minlength: 1, maxlength: 40, required: false },
-    owner_phone: { type: String, required: false },
-    owner_email: { type: String, required: false },
-    total_price: { type: Number, required: false },
-    promocode: { type: String },
-    discounted_price: { type: Number },
- */
+
 
 
 
