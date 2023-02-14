@@ -494,6 +494,14 @@
 
 @media (max-width: 600px) {
 
+    .promocode_wrapper {
+        align-items: center;
+    }
+
+    .promocode_message {
+        text-align: center;
+    }
+
     .shipping_info {
         padding: 50px;
     }
