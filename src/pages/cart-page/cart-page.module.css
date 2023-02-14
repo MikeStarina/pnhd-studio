@@ -50,7 +50,8 @@
     list-style-type: none;
     box-sizing: border-box;
     padding: 50px 100px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    border: 1px solid rgb(0,255,0);
+    /*box-shadow: 0 0 10px rgba(0, 0, 0, .1);*/
     border-radius: 20px;
 }
 
@@ -190,6 +191,10 @@
     font-weight: 600;
 }
 
+.total_price:last-of-type {
+    margin-bottom: 30px;
+}
+
 .cart_controls {
     width: 30%;
     display: flex;
@@ -199,12 +204,80 @@
     margin: 0;
     padding: 0;
 }
+.promo_form {
+    width: 220px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+.promo_submit {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    border-radius: 5px;
+    background-color: rgb(0,255,0);
+    border: none;
+    color: white;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 20px;
+    line-height: 20px;
+    padding-bottom: 2px;
+}
+
+.promo_input {
+    width: 100%;
+    height: 36px;
+    border-radius: 5px;
+    border: 1px solid black;
+    padding: 0px 20px;
+    box-sizing: border-box;
+   
+}
+
+.promo_input:focus {
+    outline: 1px solid black;
+}
+
+
+.promocode_wrapper {
+    width: 220px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+.promocode_message {
+    text-align: right;
+    margin: 0;
+    padding: 0;
+}
+
+.promocode_cancellation {
+    background-color: transparent;
+    border: none;
+    text-decoration: underline;
+    text-align: right;
+    font-family: inherit;
+    margin: 10px 0;
+    padding: 0;
+    cursor: pointer;
+}
 
 .control_button {
     width: 220px;
     height: 50px;
     border: none;
     background-color: rgb(0,255,0);
+    box-shadow: 0 0 20px rgba(0, 0, 0, .2);
     border-radius: 10px;
     margin: 0 0 10px 0;
     cursor: pointer;
@@ -215,9 +288,21 @@
     line-height: 20px;
 }
 
-.control_button:hover {
-    color: rgb(0,255,0);
+.control_button::after {
+    content: 'Оформить'
 }
+
+.control_button:hover {
+   
+    transform: translateY(-5px);
+    transition: transform .15s ease-out;
+}
+
+.control_button:hover::after {
+    content: '$$$';
+}
+
+
 
 .validation_message {
     width: 250px;
@@ -237,7 +322,7 @@
     align-items: flex-start;
     width: 70%;
     margin: 0;
-    padding: 50px 75px;
+    padding: 70px 75px;
     box-sizing: border-box;
     background-color: rgba(0,0,0, .1);
     border-radius: 20px;
@@ -315,9 +400,13 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-end;
-    width: 80%;
+    width: 100%;
     margin: 0 auto;
-    padding: 0 0 100px 0;
+    padding: 100px;
+    border: 1px solid rgb(0,255,0);
+    border-radius: 20px;
+    box-sizing: border-box;
+
 }
 
 .shipping_heading {
@@ -330,7 +419,7 @@
 
 .shipping_description {
     font-size: 15px;
-    line-height: 15px;
+    line-height: 20px;
     text-align: right;
     margin: 50px 0 0 0;
     padding: 0;
@@ -381,6 +470,9 @@
     .validation_message {
         font-size: 10px;
     }
+    .promo_form {
+        width: 180px;
+    }
 
 }
 
@@ -401,6 +493,10 @@
 }
 
 @media (max-width: 600px) {
+
+    .shipping_info {
+        padding: 50px;
+    }
 
     .textile_description {
         flex-direction: column;

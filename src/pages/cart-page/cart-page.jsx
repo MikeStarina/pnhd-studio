@@ -8,6 +8,8 @@ import {
   SET_CART_VISIBILITY,
   DELETE_ITEM_FROM_CART,
   DELETE_PRINT_FROM_CART,
+  GET_USER_PROMOCODE,
+  DELETE_ACTIVE_PROMOCODE
 } from "../../services/actions/cart-actions";
 import { SET_USER_DATA } from '../../services/actions/user-data-actions';
 import { createOrder } from "../../services/actions/cart-actions";
@@ -18,12 +20,13 @@ import mir from '../../components/images/mir.png';
 import visa from '../../components/images/visa.png';
 import kassa from '../../components/images/kassa.png';
 import Mastercard from '../../components/images/Mastercard.png';
+import { checkPromoCodeValidity } from "../../services/actions/cart-actions";
 
 
 
 const CartPage = () => {
   const history = useHistory();
-  const { order, paymentUrl } = useSelector((store) => store.cartData);
+  const { order, paymentUrl, user_promocode, isPromocodeLoading, promocodeFail, validPromoCode } = useSelector((store) => store.cartData);
   const { userCartData } = useSelector((store) => store.userData);
 
   
@@ -103,6 +106,9 @@ const CartPage = () => {
     return acc;
   }, 0);
 
+
+  const discounted_price = validPromoCode.discount_ratio ? totalPrice * validPromoCode.discount_ratio : totalPrice;
+
   useEffect(() => {
     dispatch({
       type: SET_CART_VISIBILITY,
@@ -159,7 +165,7 @@ const CartPage = () => {
   };
 
   const createOrderHandler = () => {
-    dispatch(createOrder(order, totalPrice, userCartData));
+    dispatch(createOrder(order, totalPrice, discounted_price, userCartData, validPromoCode));
   };
 
   const clearCartHandler = () => {
@@ -175,8 +181,26 @@ const CartPage = () => {
     })
   }
 
+  const promoOnChangeHandler = (e) => {
+    const value = e.target.value.toUpperCase()
+    dispatch({
+      type: GET_USER_PROMOCODE,
+      payload: value
+    })
+  }
+
+  const promoSubmitHandler = (e) => {
+      e.preventDefault();
+      dispatch(checkPromoCodeValidity(user_promocode));
+  }
 
 
+  const cancelPromocodeFunc = () => {
+    dispatch({ type: DELETE_ACTIVE_PROMOCODE });
+  }
+
+
+  console.log(validPromoCode)
 
   return (
     <section className={styles.screen}>
@@ -294,23 +318,29 @@ const CartPage = () => {
       <div className={styles.cart_controls}>
         
         {order.length > 0 && (
-          <p className={styles.total_price}>Итого: {totalPrice} P.</p>
+          <p className={styles.total_price}>= {totalPrice} P.</p>
         )}
-        {/*
-        <button
-          type="button"
-          className={styles.control_button}
-          onClick={clearCartHandler}
-        >
-          Очистить корзину
-        </button> */}
+        {!validPromoCode.message && !promocodeFail ? (<form className={styles.promo_form} onSubmit={promoSubmitHandler}>
+          <input type='text' placeholder="Промокод" id="promocode" name="promocode" minLength='5' className={styles.promo_input} onChange={promoOnChangeHandler} value={user_promocode}></input>
+          <button type='submit' className={styles.promo_submit}>&rarr;</button>
+        </form>) : promocodeFail ? (
+          <div className={styles.promocode_wrapper}>
+             <p className={styles.promocode_message}>Что-то пошло не так :(</p>
+              <button type='button' className={styles.promocode_cancellation} onClick={cancelPromocodeFunc}>отменить</button>
+          </div>
+        ) : (<div className={styles.promocode_wrapper}>
+            <p className={styles.promocode_message}>Промокод: {validPromoCode.name}</p>
+            <p className={styles.promocode_message}>{validPromoCode.message}</p>
+            <button type='button' className={styles.promocode_cancellation} onClick={cancelPromocodeFunc}>отменить</button>
+          </div>)}
+          <p className={styles.total_price}>Итого: {discounted_price} P.</p>
         <button
           type="button"
           className={styles.control_button}
           onClick={createOrderHandler}
           disabled={!isUserFormValid}
         >
-          ОФОРМИТЬ
+          
         </button>
         {!isUserFormValid && <p className={styles.validation_message}>Заполните поля:</p>}
         {!isUserFormValid && <p className={styles.validation_message}>{validationMessage}</p>}
