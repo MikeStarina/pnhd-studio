@@ -21,8 +21,11 @@ const MainMenu = ({ closeMenu }) => {
                     <Link className={styles.menu_link} to='/'>ГЛАВНАЯ</Link>
                     <Link className={styles.menu_link} to='/shop'>КАТАЛОГ</Link>
                     <Link className={styles.menu_link} to='/oferta'>ОФЕРТА</Link>
+                    <a className={styles.menu_link} href='https://pnhd.ru' target='blank'>ОПТОВЫЙ ОТДЕЛ</a>
                     <a className={styles.menu_link} href='https://instagram.com/pnhd.studio' target='blank'>ИНСТАГРАМ</a>
                     <a className={styles.menu_link} href='https://vk.com/pinheadspb' target='blank'>ВК</a>
+
+                    
                     
                   
                 </div>

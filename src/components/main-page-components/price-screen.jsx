@@ -72,7 +72,7 @@ const PriceScreen = () => {
 
 
     return (
-        <section className={styles.screen}>
+        <section className={styles.screen} id='pricelist'>
             <h4 className={styles.heading}>А СКОЛЬКО <span className={styles.textStyle_italic}>СТОИТ</span> ПЕЧАТЬ?</h4>
             <p className={styles.description}>
                 Приведена стоимость для тиражей до 10 штук. Скидки для больших тиражей уточняйте у наших менеджеров!
@@ -92,6 +92,7 @@ const PriceScreen = () => {
                {mainMenuPriceTable.activeTab === 'ВЫШИВКА' && <PriceTable priceType={mainMenuPriceTable.activeTab} price={price.emb}/>}
             </div>
 
+            <p className={styles.description}>* Стоимость не увеличивается при печати на своем текстиле 👌👌👌</p>
 
             <div className={styles.action_button_wrapper}>
 

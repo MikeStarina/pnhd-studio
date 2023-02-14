@@ -2,6 +2,7 @@ import React from "react";
 import styles from './first-screen.module.css';
 import { Link } from "react-router-dom";
 import bgvideo from '../../bgvideo.mp4';
+import { HashLink } from "react-router-hash-link";
 
 
 
@@ -26,9 +27,9 @@ const FirstScreen = () => {
                 &nbsp;/трендовых/&nbsp;
             </span>
                  футболках и худи за 15 минут! Клик, чтобы начать!</p>
-        <Link className={styles.link}  to='/shop'>
-            <button type='button' className={styles.button}>КАТАЛОГ</button>
-        </Link>
+        <HashLink className={styles.link}  to='/#pricelist'>
+            <button type='button' className={styles.button}>ЦЕНЫ</button>
+        </HashLink>
     </section>
     );
 }

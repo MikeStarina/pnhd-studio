@@ -25,12 +25,18 @@ const CaseGallery = () => {
         </section>
          <div className={styles.button_wrapper}>
 
-         <a href='https://www.instagram.com/pnhd.studio/' target='blank'>
-             <button type='button' className={styles.link_button}>INSTAGRAM</button>
-         </a>
-         <a href='https://vk.com/pinheadspb' target='blank'>
-             <button type='button' className={styles.link_button}>VK</button>
-         </a>
+            <a href='https://www.instagram.com/pnhd.studio/' target='blank'>
+                <button type='button' className={styles.link_button}>INSTAGRAM</button>
+            </a>
+            <a href='https://vk.com/pinheadspb' target='blank'>
+                <button type='button' className={styles.link_button}>VK</button>
+            </a>
+            <a href='https://t.me/pnhd_studio' target='blank'>
+                <button type='button' className={styles.link_button}>TELEGRAM</button>
+            </a>
+            <a href='whatsapp://send?phone=79313566552' target='blank'>
+                <button type='button' className={styles.link_button}>WHATSAPP</button>
+            </a>
          </div>
          </>
     );

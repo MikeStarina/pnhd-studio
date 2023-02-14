@@ -78,3 +78,9 @@
         width: 100%;
     }
 }
+@media (max-width: 450px) {
+    .menu_link {
+        font-size: 25px;
+        line-height: 25px;
+    }
+}
