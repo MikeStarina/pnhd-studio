@@ -18,12 +18,15 @@
 }
 
 .button_wrapper {
+    width: 100%;
+    box-sizing: border-box;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     margin: 100px 0;
     padding: 0;
     justify-self: center;
+    gap: 5px;
   }
 
   
@@ -37,7 +40,6 @@
     font-size: 20px;
     line-height: 20px;
     font-weight: 600;
-    margin: 0 20px;
     padding: 0;
     background-color: transparent;
     cursor: pointer;
@@ -55,6 +57,22 @@
     font-style: italic;
 }
 
+@media (max-width: 1200px) {
+  .link_button {
+    width: 200px;
+  }
+}
+@media (max-width: 850px) {
+  .button_wrapper {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+  }
+  .link_button {
+    width: 250px;
+  }
+}
 @media (max-width: 750px) {
     .gallery_img {
         width: calc(100% / 2);
@@ -65,12 +83,6 @@
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
-      }
-
-      .link_button {
-        
-        margin: 20px 0;
-       
       }
       
 }
