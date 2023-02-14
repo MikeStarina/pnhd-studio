@@ -38,7 +38,7 @@ const MainMenu = ({ closeMenu }) => {
                     </>
                     )}*/}
 
-                    <a href='tel:+78129046156' className={styles.menu_contacts}>+7(812)904-61-56</a>
+                    <a href='tel:+78129046156' className={styles.menu_contacts} id='calltracking'>+7(812)904-61-56</a>
                     <a href='https://t.me/pnhd_studio' className={styles.menu_contacts} target='blank'>Telegram</a>
                     <a href='whatsapp://send?phone=79313566552' className={styles.menu_contacts} target='blank'>Whatsapp</a>
                     <p className={styles.menu_contacts}>studio@pnhd.ru</p>
