@@ -146,6 +146,10 @@
     justify-self: flex-end;
 }
 
+.stock_type {
+    color: rgb(0, 255, 0);
+}
+
 
 .item_form {
     width: 100%;
