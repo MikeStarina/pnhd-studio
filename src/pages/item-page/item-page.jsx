@@ -129,6 +129,7 @@ const ItemPage = () => {
                         {item.isSale && <a href='https://instagram.com/easyvisa_inc' target='blank'>instagram</a>}
                         {item.isSale && <a href='https://easyvisainc.ru' target='blank'>сайт</a>}
                         <form className={styles.item_form}>
+                            {item.stock === 'supplier' && <span className={styles.stock_type}>В наличии на удаленном складе. Срок изготовления заказа 2-4 дня!</span>}
                             {!item.isSale && <label className={styles.select_label} htmfor='sizeSelect'>Выберите размер:</label>}
                             {item.isSale && <label className={styles.select_label} htmfor='sizeSelect'>Выберите код:</label>}
 
