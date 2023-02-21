@@ -4,9 +4,10 @@
     margin: 0;
     padding: 0 5px;
     display: grid;
-    grid-template-columns: repeat(4, minmax(25%, 1fr));
+    grid-template-columns: repeat(4, minmax(24%, 1fr));
     grid-template-rows: auto;
     gap: 5px;
+    overflow: hidden;
 }
 
 .link {
