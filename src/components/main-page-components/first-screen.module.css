@@ -72,14 +72,22 @@
 }
 
 
-.background_video {
+.video_container {
     position: absolute;
-    right: -10px;
+    right: 0;
     bottom: 0;
-    left: -10px;
+    left: 0;
     top: 0;
     z-index: 1;
+    
+}
+
+
+.background_video {
     object-fit: cover;
+    object-position: right;
+    height: auto;
+    width: auto;
 }
 
 .video_overlay {
@@ -132,4 +140,11 @@
         font-weight: 700;
     }
 
+}
+
+
+@media (max-width: 500px) {
+    .background_video {
+        object-position: -300px;
+    }
 }
