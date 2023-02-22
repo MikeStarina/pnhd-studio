@@ -1,7 +1,8 @@
 import React from "react";
 import styles from './first-screen.module.css';
 import { Link } from "react-router-dom";
-import bgvideo from '../../bgvideo.mp4';
+//import bgvideo from '../../bgvideo.mp4';
+import bgvideo from '../../bgvideo.webm';
 import { HashLink } from "react-router-hash-link";
 
 
