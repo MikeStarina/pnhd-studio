@@ -25,8 +25,7 @@ const FirstScreen = () => {
         </span>
         <h3 className={styles.main_heading}>НАПЕЧАТАЕМ!</h3>
 
-        <p className={styles.main_description}>ы
-                На наших или твоих  
+        <p className={styles.main_description}>На наших или твоих  
             <span className={styles.textStyle_italic}>
                 &nbsp;/трендовых/&nbsp;
             </span>
