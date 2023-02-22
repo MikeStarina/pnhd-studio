@@ -85,8 +85,9 @@
 
 .background_video {
     object-fit: cover;
-    object-position: center center;
-    height: 100%;
+    object-position: right;
+    height: auto;
+    width: auto;
 }
 
 .video_overlay {
