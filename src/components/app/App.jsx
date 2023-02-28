@@ -36,13 +36,19 @@ useEffect(() => {window.scrollTo(0, 0);}, [location])
 
 console.log('test');
 
+
+
 useEffect(() => {
+
+  const oldScript = document.querySelector('#calltr');
+  document.body.removeChild(oldScript);
   const script = document.createElement('script');
   script.src = "https://cdn.callibri.ru/callibri.js";
   script.type = 'text/javascript';
   script.charset = 'utf-8';
   script.defer=true;
-  document.body.appendChild(script);
+  script.id='calltr'
+  document.body.prepend(script);
   return () => {
     document.body.removeChild(script);
   }
