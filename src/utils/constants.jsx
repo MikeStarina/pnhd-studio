@@ -4,5 +4,5 @@ export const apiBaseUrl = 'https://pnhdstudioapi.ru';
 //export const apiBaseUrl = 'http://localhost:9000';
 
 
-export const contactPhone = '+7 (812) 904-61-56';
+export const contactPhone = '+7-(812)-904-61-56';
 export const staticCalltrackingPhone = '+7 (812) 704-81-92';

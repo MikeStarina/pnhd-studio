@@ -10,7 +10,7 @@ const Footer = () => {
     
     
     return (
-        <footer className={styles.footer}>
+        <footer className={styles.footer} id='footer'>
             <a className={styles.footer_link} href='https://pnhd.ru' target='blank'>Оптовый отдел</a>
             
             <Link className={styles.footer_link} to='/shop'>Каталог</Link>

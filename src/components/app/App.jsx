@@ -38,10 +38,10 @@ console.log('test');
 
 useEffect(() => {
   const script = document.createElement('script');
-  script.src = "//cdn.callibri.ru/callibri.js";
-  script.defer = true;
+  script.src = "https://cdn.callibri.ru/callibri.js";
   script.type = 'text/javascript';
   script.charset = 'utf-8';
+  script.defer=true;
   document.body.appendChild(script);
   return () => {
     document.body.removeChild(script);
