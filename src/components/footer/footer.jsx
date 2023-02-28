@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from './footer.module.css';
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
@@ -6,6 +6,9 @@ import { HashLink } from "react-router-hash-link";
 
 
 const Footer = () => {
+
+    
+    
     return (
         <footer className={styles.footer}>
             <a className={styles.footer_link} href='https://pnhd.ru' target='blank'>Оптовый отдел</a>

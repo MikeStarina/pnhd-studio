@@ -34,6 +34,20 @@ const { order, isVisible } = useSelector(store => store.cartData);
 const location = useLocation();
 useEffect(() => {window.scrollTo(0, 0);}, [location])
 
+console.log('test');
+
+useEffect(() => {
+  const script = document.createElement('script');
+  script.src = "//cdn.callibri.ru/callibri.js";
+  script.defer = true;
+  script.type = 'text/javascript';
+  script.charset = 'utf-8';
+  document.body.appendChild(script);
+  return () => {
+    document.body.removeChild(script);
+  }
+}, []); 
+
 
 
 
