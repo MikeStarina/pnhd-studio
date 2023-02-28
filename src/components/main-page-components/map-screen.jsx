@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styles from './map-screen.module.css';
 import { YMaps, Map, Placemark, ZoomControl } from '@pbe/react-yandex-maps';
 import { contactPhone } from "../../utils/constants";
