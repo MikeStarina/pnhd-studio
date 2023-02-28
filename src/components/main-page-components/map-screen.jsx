@@ -1,12 +1,18 @@
 import React from "react";
 import styles from './map-screen.module.css';
 import { YMaps, Map, Placemark, ZoomControl } from '@pbe/react-yandex-maps';
+import { contactPhone } from "../../utils/constants";
 
 
 
 
 
 const MapScreen = () => {
+
+    
+
+
+
     return (
         <section className={styles.screen} id='contacts'>
             <YMaps>
@@ -17,7 +23,7 @@ const MapScreen = () => {
             </YMaps>
             <div className={styles.contact_box}>
                 <h5 className={styles.contacts_heading}>КОНТАКТЫ</h5>
-                <a className={styles.description} href='tel:+78127048192'>+7 (812) 704-81-92</a>
+                <a className={styles.description} href='tel:+78129046156' id='calltracking'>{contactPhone}</a>
                 <p className={styles.description}>studio@pnhd.ru</p>
                 <p className={styles.description}>197022, Санкт-Петербург, ул. Чапыгина 1 /м. Петроградская/</p>
                 <p className={styles.description}>Каждый день с 11:00 до 20:00</p>

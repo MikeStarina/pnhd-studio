@@ -3,6 +3,7 @@ import styles from './main-menu.module.css';
 import { Link } from "react-router-dom";
 import closeIcon from '../images/closeIcon.svg';
 import { useSelector } from "react-redux";
+import { contactPhone } from "../../utils/constants";
 
 
 
@@ -41,7 +42,7 @@ const MainMenu = ({ closeMenu }) => {
                     </>
                     )}*/}
 
-                    <a href='tel:+78127048192' className={styles.menu_contacts} id='calltracking'>+7 (812) 704-81-92</a>
+                    <a href='tel:+78129046156' className={styles.menu_contacts} id='calltracking'>{contactPhone}</a>
                     <a href='https://t.me/pnhd_studio' className={styles.menu_contacts} target='blank'>Telegram</a>
                     <a href='whatsapp://send?phone=79313566552' className={styles.menu_contacts} target='blank'>Whatsapp</a>
                     <p className={styles.menu_contacts}>studio@pnhd.ru</p>
