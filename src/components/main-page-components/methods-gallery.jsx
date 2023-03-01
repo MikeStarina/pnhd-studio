@@ -11,7 +11,7 @@ const MethodsGallery = () => {
     return (
         <section className={styles.screen}>
             <div className={styles.gallery_card}>
-                <img src={methods01} alt="tee" className={styles.card_img} />
+                <img src={methods01} alt="tee" className={styles.card_img} loading='lazy' decoding='async'/>
                 
                 <div className={styles.card_title}>
                     <h5 className={styles.card_heading}>ФЛЕКС</h5>
@@ -21,7 +21,7 @@ const MethodsGallery = () => {
                 </div>
             </div>
             <div className={styles.gallery_card}>
-                <img src={methods05} alt="tee" className={styles.card_img} />
+                <img src={methods05} alt="tee" className={styles.card_img} loading='lazy' decoding='async'/>
                 <div className={styles.card_title}>
                     <h5 className={styles.card_heading}>DTG</h5>
                     <p className={styles.card_description}>
@@ -31,7 +31,7 @@ const MethodsGallery = () => {
                 
             </div>
             <div className={styles.gallery_card}>
-                <img src={methods04} alt="tee" className={styles.card_img} />
+                <img src={methods04} alt="tee" className={styles.card_img} loading='lazy' decoding='async'/>
                 <div className={styles.card_title}>
                     <h5 className={styles.card_heading}>ВЫШИВКА</h5>
                     <p className={styles.card_description}>
@@ -40,7 +40,7 @@ const MethodsGallery = () => {
                 </div>
             </div>
             <div className={styles.gallery_card}>
-                <img src={methods02} alt="tee" className={styles.card_img} />
+                <img src={methods02} alt="tee" className={styles.card_img} loading='lazy' decoding='async'/>
                 <div className={styles.card_title}>
                     <h5 className={styles.card_heading}>DTF</h5>
                     <p className={styles.card_description}>
@@ -49,7 +49,7 @@ const MethodsGallery = () => {
                 </div>
             </div>
             <div className={styles.gallery_card}>
-                <img src={methods03} alt="tee" className={styles.card_img} />
+                <img src={methods03} alt="tee" className={styles.card_img} loading='lazy' decoding='async'/>
                 <div className={styles.card_title}>
                     <h5 className={styles.card_heading}>ШЕЛКОГРАФИЯ</h5>
                     <p className={styles.card_description}>
