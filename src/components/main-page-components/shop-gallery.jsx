@@ -1,10 +1,10 @@
 import React from "react";
 import styles from './shop-gallery.module.css';
 import { Link } from "react-router-dom";
-import all from '../images/all.jpg';
-import man from '../images/man.jpg';
-import wman from '../images/wman.jpg';
-import acc from '../images/acc.jpg';
+import all from '../images/all.webp';
+import man from '../images/man.webp';
+import wman from '../images/wman.webp';
+import acc from '../images/acc.webp';
 
 
 
