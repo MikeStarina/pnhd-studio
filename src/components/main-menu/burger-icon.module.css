@@ -9,7 +9,8 @@
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
-    z-index: 3;
+    z-index: 2;
+    visibility: hidden;
 }
 
 .burger_icon {
@@ -38,6 +39,12 @@
 
 }
 
+@media (max-width: 960px) {
+    .burger {
+        visibility: visible;
+        z-index: 4;
+    }
+}
 @media (max-width: 550px) {
     .link {
         display: none;
