@@ -33,6 +33,12 @@ const MapScreen = () => {
                 <p className={styles.description}>studio@pnhd.ru</p>
                 <p className={styles.description}>197022, Санкт-Петербург, ул. Чапыгина 1 /м. Петроградская/</p>
                 <p className={styles.description}>Каждый день с 11:00 до 20:00</p>
+                <div className={styles.socials_container}>
+                    <a href='https://t.me/pnhd_studio' className={styles.socials} target='blank'>/ TG</a>
+                    <a href='whatsapp://send?phone=79313566552' className={styles.socials} target='blank'>/ WA</a>
+                    <a href='https://vk.com/pinheadspb' className={styles.socials} target='blank'>/ VK</a>
+                    <a href='https://instagram.com/pnhd.studio' className={styles.socials} target='blank'>/ INST</a>
+                </div>
             </div>    
 
         </section>

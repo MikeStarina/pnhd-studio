@@ -20,6 +20,7 @@ import { RESTORE_CART_FROM_SSTORAGE } from '../../services/actions/cart-actions'
 import Oferta from '../../pages/oferta-page/oferta-page';
 import Page404 from '../../pages/page-404/page-404';
 import SizesPage from '../../pages/sizes-page/sizes-page';
+import FullscreenMenu from '../main-menu/fullscreen-menu';
 
 
 
@@ -104,11 +105,13 @@ const closeMenu = (e) => {
   })
 }
 
-
+  
   return (
     <> 
     {isPopupVisible && <Popup openPopup={openPopup} />}
-    {mainMenu.isVisible ? (<MainMenu closeMenu={closeMenu} />) : (<BurgerIcon openMenu={openMenu} openPopup={openPopup} />)}
+    {mainMenu.isVisible && <MainMenu closeMenu={closeMenu} />}
+    {!mainMenu.isVisible && <FullscreenMenu openPopup={openPopup} />}
+    {!mainMenu.isVisible && <BurgerIcon openMenu={openMenu} openPopup={openPopup} />}
     {order && order.length > 0 && isVisible && <CartIcon qty={order.length} />}
     <Switch>     
 

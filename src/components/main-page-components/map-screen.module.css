@@ -48,6 +48,21 @@
     text-decoration: none;
     color: white;
 }
+.socials_container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+}
+.socials {
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    color: white;
+}
 
 .description:last-of-type {
     margin-top: 50px;
@@ -62,6 +77,7 @@
     .contact_box {
         position: initial;
         width: 100%;
+        padding: 50px 25px;
     }
 
     .contacts_heading {
@@ -71,6 +87,10 @@
 
     .description {
         width: 100%;
+    }
+
+    .socials_container {
+        gap: 10px;
     }
 }
 
