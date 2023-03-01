@@ -1,5 +1,6 @@
 import React from "react";
 import styles from './case-gallery.module.css';
+import IMG_0404 from '../images/IMG_0404.webp';
 import sample1 from '../images/sample1.webp';
 import sample2 from '../images/sample2.webp';
 import sample3 from '../images/sample3.webp';
