@@ -35,12 +35,7 @@ const MainMenu = ({ closeMenu }) => {
                 </div>
                 
                 <div className={styles.wrapper}>
-                    {/*{userAuth.isAuthenticated ? (<Link to='/profile' className={styles.menu_link}>МОЙ ПРОФИЛЬ</Link>) : (
-                    <>
-                        <Link to='/login' className={styles.menu_link}>ВХОД</Link>
-                        <Link to='/register' className={styles.menu_link}>РЕГИСТРАЦИЯ</Link>
-                    </>
-                    )}*/}
+             
 
                     <a href='tel:+78129046156' className={styles.menu_contacts} id='calltracking'>{contactPhone}</a>
                     <a href='https://t.me/pnhd_studio' className={styles.menu_contacts} target='blank'>Telegram</a>
@@ -50,6 +45,7 @@ const MainMenu = ({ closeMenu }) => {
                 </div>
                 
             </div>
+            <script src="//cdn.callibri.ru/callibri.js" async id="calltr"></script>
         </div>
     );
 }
