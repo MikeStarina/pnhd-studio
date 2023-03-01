@@ -22,7 +22,7 @@ const ShopGallery = () => {
 
                 <div className={styles.card}>
 
-                    <img className={styles.card_img} src={all} alt='shop'></img>
+                    <img className={styles.card_img} src={all} alt='shop' loading='lazy' decoding='async'></img>
                     
                     <div className={styles.card_title}>
                         <h5 className={styles.card_heading}>
@@ -36,7 +36,7 @@ const ShopGallery = () => {
 
                 <div className={styles.card}>
 
-                    <img className={styles.card_img} src={man} alt='shop'></img>
+                    <img className={styles.card_img} src={man} alt='shop' loading='lazy' decoding='async'></img>
                     <div className={styles.card_title}>
                         <h5 className={styles.card_heading}>
                             МУЖСКОЕ / <span className={styles.textStyle_italic}>MAN</span>
@@ -49,7 +49,7 @@ const ShopGallery = () => {
 
                 <div className={styles.card}>
 
-                    <img className={styles.card_img} src={wman} alt='shop'></img>
+                    <img className={styles.card_img} src={wman} alt='shop' loading='lazy' decoding='async'></img>
                     <div className={styles.card_title}>
                         <h5 className={styles.card_heading}>
                             ЖЕНСКОЕ / <span className={styles.textStyle_italic}>WOMAN</span>
@@ -61,7 +61,7 @@ const ShopGallery = () => {
 
 
                 <div className={styles.card}>
-                    <img className={styles.card_img} src={acc} alt='shop'></img>
+                    <img className={styles.card_img} src={acc} alt='shop' loading='lazy' decoding='async'></img>
                     <div className={styles.card_title}>
                         <h5 className={styles.card_heading}>
                             АКСЕССУАРЫ / <span className={styles.textStyle_italic}>??</span>

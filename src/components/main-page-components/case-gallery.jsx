@@ -14,12 +14,12 @@ const CaseGallery = () => {
     return (
         <>
         <section className={styles.fourth_screen}>
-            <img className={styles.gallery_img} alt='print sample' src={IMG_0404}></img>
-            <img className={styles.gallery_img} alt='print sample' src={sample1}></img>
-            <img className={styles.gallery_img} alt='print sample' src={sample2}></img>
-            <img className={styles.gallery_img} alt='print sample' src={sample3}></img>
-            <img className={styles.gallery_img} alt='print sample' src={sample4}></img>
-            <img className={styles.gallery_img} alt='print sample' src={sample5}></img>
+            <img className={styles.gallery_img} alt='print sample' src={IMG_0404} loading='lazy' decoding='async'></img>
+            <img className={styles.gallery_img} alt='print sample' src={sample1} loading='lazy' decoding='async'></img>
+            <img className={styles.gallery_img} alt='print sample' src={sample2} loading='lazy' decoding='async'></img>
+            <img className={styles.gallery_img} alt='print sample' src={sample3} loading='lazy' decoding='async'></img>
+            <img className={styles.gallery_img} alt='print sample' src={sample4} loading='lazy' decoding='async'></img>
+            <img className={styles.gallery_img} alt='print sample' src={sample5} loading='lazy' decoding='async'></img>
 
            
         </section>
