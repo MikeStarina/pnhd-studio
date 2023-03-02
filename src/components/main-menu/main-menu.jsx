@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import closeIcon from '../images/closeIcon.svg';
 import { useSelector } from "react-redux";
 import { contactPhone } from "../../utils/constants";
+import { HashLink } from "react-router-hash-link";
 
 
 
@@ -37,11 +38,7 @@ const MainMenu = ({ closeMenu }) => {
                 <div className={styles.wrapper}>
              
 
-                    <a href='tel:+78129046156' className={styles.menu_contacts} id='calltracking'>{contactPhone}</a>
-                    <a href='https://t.me/pnhd_studio' className={styles.menu_contacts} target='blank'>Telegram</a>
-                    <a href='whatsapp://send?phone=79313566552' className={styles.menu_contacts} target='blank'>Whatsapp</a>
-                    <p className={styles.menu_contacts}>studio@pnhd.ru</p>
-                    <p className={styles.menu_contacts}>ул. Чапыгина 1</p>
+                   <HashLink to='/#contacts' className={styles.menu_link} onClick={closeMenu}>КОНТАКТЫ</HashLink>
                 </div>
                 
             </div>
