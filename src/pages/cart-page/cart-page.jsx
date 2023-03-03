@@ -30,7 +30,7 @@ const CartPage = () => {
   const { order, paymentUrl, user_promocode, isPromocodeLoading, promocodeFail, validPromoCode } = useSelector((store) => store.cartData);
   const { userCartData } = useSelector((store) => store.userData);
 
-  console.log(order);
+
 
     const { phone } = userCartData; 
 
