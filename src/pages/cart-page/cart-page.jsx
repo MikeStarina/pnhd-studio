@@ -21,6 +21,7 @@ import visa from '../../components/images/visa.png';
 import kassa from '../../components/images/kassa.png';
 import Mastercard from '../../components/images/Mastercard.png';
 import { checkPromoCodeValidity } from "../../services/actions/cart-actions";
+import { v4 as uuidv4 } from "uuid";
 
 
 
@@ -29,7 +30,7 @@ const CartPage = () => {
   const { order, paymentUrl, user_promocode, isPromocodeLoading, promocodeFail, validPromoCode } = useSelector((store) => store.cartData);
   const { userCartData } = useSelector((store) => store.userData);
 
-  
+  console.log(order);
 
     const { phone } = userCartData; 
 
@@ -165,6 +166,62 @@ const CartPage = () => {
   };
 
   const createOrderHandler = () => {
+
+
+    const metrikaProducts = [];
+    order.forEach((item) => {
+
+
+      const frontPrintPrice =
+      item.print && item.print.front.file
+        ? item.print.front.cartParams.price
+        : 0;
+    const backPrintPrice =
+      item.print && item.print.back.file ? item.print.back.cartParams.price : 0;
+    const lsleevePrintPrice =
+      item.print && item.print.lsleeve.file
+        ? item.print.lsleeve.cartParams.price
+        : 0;
+    const rsleevePrintPrice =
+      item.print && item.print.rsleeve.file
+        ? item.print.rsleeve.cartParams.price
+        : 0;
+   
+
+    const printTotalprice =
+      frontPrintPrice +
+      backPrintPrice +
+      lsleevePrintPrice +
+      rsleevePrintPrice;
+
+
+
+
+
+      metrikaProducts.push({
+        "id": item.attributes._id,
+        "name": item.attributes.name,
+        "price": item.attributes.price + printTotalprice,
+        "category": item.attributes.category,
+        "variant": item.print ? 'с печатью' : 'без печати',
+        "quantity": item.attributes.qty
+      })
+    })
+
+    
+    window.dataLayer.push({
+      "ecommerce": {
+          "currencyCode": "RUB",
+          "purchase": {
+              "actionField": {
+                  "id" : uuidv4(),
+                  "revenue": totalPrice
+              },
+              "products": metrikaProducts,
+          }
+      }
+    });
+    
     dispatch(createOrder(order, totalPrice, discounted_price, userCartData, validPromoCode));
   };
 
@@ -200,7 +257,7 @@ const CartPage = () => {
   }
 
 
-  console.log(validPromoCode)
+  //console.log(validPromoCode)
 
   return (
     <section className={styles.screen}>

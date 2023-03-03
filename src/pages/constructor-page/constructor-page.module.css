@@ -258,10 +258,11 @@
 .item_button:hover {
     transform: translateY(-5px);
     transition: transform .15s ease-out;
+    color: black
 }
 .item_button:hover::after {
     
-    content: '+++';
+    content: 'Добавить в корзину >>';
 }
 
 
