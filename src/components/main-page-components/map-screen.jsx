@@ -20,7 +20,7 @@ const MapScreen = () => {
     return (
         <section className={styles.screen} id='contacts'>
             <Suspense fallback={<div>...loading</div>}>
-                <YMaps className={styles.map}>
+                <YMaps>
                     <Map defaultState={{ center: [ 59.972621, 30.306432 ], zoom: 15 }} instanceRef={ref => { ref && ref.behaviors.disable('scrollZoom'); }} width={'100%'} height={'100%'} className={styles.map}>
                         <Placemark defaultGeometry={[ 59.972621, 30.306432 ]} />
                         <ZoomControl options={{ float: 'left' }} />

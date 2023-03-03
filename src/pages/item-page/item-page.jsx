@@ -51,6 +51,7 @@ const ItemPage = () => {
     }, [item])
 
     useEffect(() => {
+        if (item) {
         window.dataLayer.push({
             "ecommerce": {
                 "currencyCode": "RUB",
@@ -66,7 +67,9 @@ const ItemPage = () => {
                 }
             }
         })
-    }, [])
+
+        }
+    }, [item])
    
    
 
