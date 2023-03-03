@@ -125,15 +125,13 @@
 
 
 .item_button:hover {
-    content: '';
     transform: translateY(-5px);
     transition: transform .15s ease-out;
-    color: rgb(0, 255, 0);
+    color: black
 }
 .item_button:hover::after {
     transform: translateY(-5px);
-    color: white;
-    content: '+++';
+    content: ' >>';
 }
 
 .item_button_wrapper {

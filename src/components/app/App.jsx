@@ -35,7 +35,7 @@ const { order, isVisible } = useSelector(store => store.cartData);
 const location = useLocation();
 useEffect(() => {window.scrollTo(0, 0);}, [location])
 
-console.log('test');
+
 
 
 

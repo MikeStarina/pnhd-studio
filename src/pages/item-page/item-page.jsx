@@ -40,7 +40,7 @@ const ItemPage = () => {
  
     
     let item = data && data.length > 0 && data.filter(elem => elem._id === id)[0];
-    //console.log(item);
+
     const [ size, setSize ] = useState('');
     
     
@@ -49,6 +49,24 @@ const ItemPage = () => {
     useEffect(() => {
         item && item.sizes.length > 0 && setSize(item.sizes[0].name);
     }, [item])
+
+    useEffect(() => {
+        window.dataLayer.push({
+            "ecommerce": {
+                "currencyCode": "RUB",
+                "detail": {
+                    "products": [
+                        {
+                            "id": item._id,
+                            "name" : item.name,
+                            "price": item.price,
+                            "category": item.category,
+                        }
+                    ]
+                }
+            }
+        })
+    }, [])
    
    
 

@@ -113,7 +113,7 @@
 }
 
 .action_button:hover {
-    color: rgb(0, 255, 0);
+    color: black;
     cursor: pointer;
 }
 

@@ -97,6 +97,11 @@
     background-color: transparent;
 }
 
+.card_button:hover {
+    color: white;
+    background-color: black;
+}
+
 
 
 
