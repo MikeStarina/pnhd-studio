@@ -13,7 +13,7 @@ const FirstScreen = () => {
     return (
         <section className={styles.main_screen}>
             <div className={styles.video_container}>
-                <video autoPlay='autoPlay' muted='muted' loop='loop' poster={videoposter} className={styles.background_video} buffered>
+                <video autoPlay='autoPlay' muted='muted' loop='loop' poster={videoposter} className={styles.background_video}>
                     <source src={bgvideo} type="video/webm" className={styles.video}></source>
                 </video>
             </div>

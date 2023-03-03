@@ -296,10 +296,11 @@
    
     transform: translateY(-5px);
     transition: transform .15s ease-out;
+    color: black;
 }
 
 .control_button:hover::after {
-    content: '$$$';
+    content: 'Оформить > $';
 }
 
 
