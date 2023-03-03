@@ -86,6 +86,25 @@ const ItemPage = () => {
 
     const addToCart = () => {
 
+
+        window.dataLayer.push({
+            "ecommerce": {
+                "currencyCode": "RUB",    
+                "add": {
+                    "products": [
+                        {
+                            "id": item._id,
+                            "name": item.name,
+                            "price": item.price,
+                            "size": size,
+                            "category": item.category,
+                            "variant": 'без принта',
+                        }
+                    ]
+                }
+            }
+        })
+
        
         const data = {
             attributes: {...item},

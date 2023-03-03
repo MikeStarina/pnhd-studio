@@ -228,10 +228,36 @@ const Constructor = () => {
     }
   }
 
-
+  let totalPrintPrice = 0;
+  totalPrintPrice = front_file.cartParams ? totalPrintPrice + front_file.cartParams.price : totalPrintPrice;
+  totalPrintPrice = back_file.cartParams ? totalPrintPrice + back_file.cartParams.price : totalPrintPrice;
+  totalPrintPrice = lsleeve_file.cartParams ? totalPrintPrice + lsleeve_file.cartParams.price : totalPrintPrice;
+  totalPrintPrice = rsleeve_file.cartParams ? totalPrintPrice + rsleeve_file.cartParams.price : totalPrintPrice;
+  totalPrintPrice = badge_file.cartParams ? totalPrintPrice + badge_file.cartParams.price : totalPrintPrice;
 
 
   const addToCart = () => {
+
+    window.dataLayer.push({
+      "ecommerce": {
+          "currencyCode": "RUB",    
+          "add": {
+              "products": [
+                  {
+                      "id": item._id,
+                      "name": item.name,
+                      "price": item.price + totalPrintPrice,
+                      "size": state.size,
+                      "category": item.category,
+                      "variant": 'с принтом',
+                  }
+              ]
+          }
+      }
+  })
+
+
+
     const data = {
       attributes: { ...item },
       cart_item_id: uuidv4(),
@@ -268,12 +294,7 @@ const Constructor = () => {
     history.go(-2);
   };
 
-  let totalPrintPrice = 0;
-  totalPrintPrice = front_file.cartParams ? totalPrintPrice + front_file.cartParams.price : totalPrintPrice;
-  totalPrintPrice = back_file.cartParams ? totalPrintPrice + back_file.cartParams.price : totalPrintPrice;
-  totalPrintPrice = lsleeve_file.cartParams ? totalPrintPrice + lsleeve_file.cartParams.price : totalPrintPrice;
-  totalPrintPrice = rsleeve_file.cartParams ? totalPrintPrice + rsleeve_file.cartParams.price : totalPrintPrice;
-  totalPrintPrice = badge_file.cartParams ? totalPrintPrice + badge_file.cartParams.price : totalPrintPrice;
+  
   
   
   
