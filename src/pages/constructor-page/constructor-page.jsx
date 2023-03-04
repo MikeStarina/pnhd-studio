@@ -245,7 +245,7 @@ const Constructor = () => {
               "products": [
                   {
                       "id": item._id,
-                      "name": item.name,
+                      "name": `${item.name} c печатью`,
                       "price": item.price + totalPrintPrice,
                       "size": state.size,
                       "category": item.category,
