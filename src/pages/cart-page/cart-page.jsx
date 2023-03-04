@@ -38,7 +38,7 @@ const CartPage = () => {
 
     let newPhone;
     if (phone) {
-      if (phone[0] === '8') {
+      if (phone[0] === '8') { 
         newPhone = phone.replace('8', '7');
       }
     }
@@ -200,7 +200,7 @@ const CartPage = () => {
 
       metrikaProducts.push({
         "id": item.attributes._id,
-        "name": item.attributes.name,
+        "name": printTotalprice > 0 ? `${item.attributes.name} с печатью` : item.attributes.name,
         "price": item.attributes.price + printTotalprice,
         "category": item.attributes.category,
         "variant": item.print ? 'с печатью' : 'без печати',
