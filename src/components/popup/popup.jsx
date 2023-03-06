@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from './popup.module.css';
 import { useSelector, useDispatch } from "react-redux";
 import { GET_ORDER_FORM_DATA } from "../../services/actions/utility-actions";
@@ -13,12 +13,17 @@ const Popup = ({ openPopup }) => {
 
     const dispatch = useDispatch()
     const { orderFormData } = useSelector(store => store.utilityState);
+    const [ isMessageSent, setIsMessageSent ] = useState(false);
 
 
 
-    const formSubmitHandler = (e) => {
+    const formSubmitHandler = async (e) => {
+        e.preventDefault();
         dispatch(sendLeadFormData(orderFormData.name, orderFormData.phone));
+        setIsMessageSent(true);
+        await new Promise(resolve => setTimeout(resolve, 5000));
         openPopup();
+        setIsMessageSent(false);
     }
 
     const formOnchangeHandler = (e) => {
@@ -54,7 +59,7 @@ const Popup = ({ openPopup }) => {
                 <input className={styles.input} type='text' name='phone' id='phone' value={orderFormData.phone} onChange={formOnchangeHandler}></input>
 
 
-                <button type='submit' className={styles.submit_button}>Отправить</button>
+                {!isMessageSent ? <button type='submit' className={styles.submit_button}>Отправить</button> : <label className={styles.input_label}>Сообщение отправлено!</label>}
             </form>
         </div>
     )
