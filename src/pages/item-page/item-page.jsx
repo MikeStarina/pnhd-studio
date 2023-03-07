@@ -1,4 +1,5 @@
 import React from "react";
+import { Helmet } from "react-helmet";
 import { useParams, useHistory } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -133,6 +134,12 @@ const ItemPage = () => {
     
     return (data.length > 0 && item &&
         <section className={styles.screen}>
+            <Helmet
+                title={`PINHEAD STUDIO | ${item.name}`}
+               
+
+
+            />
             
             <div className={styles.close_icon_wrapper}>
                 <img src={closeicon} alt='close icon' onClick={onClick} className={styles.close_icon}></img>
