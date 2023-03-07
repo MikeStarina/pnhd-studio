@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import React from "react";
+import { Helmet } from "react-helmet";
 import { SET_FILTER } from '../../services/actions/shop-data-actions';
 import { useDispatch, useSelector } from "react-redux";
 import { CLOSE_MODAL_MENU } from "../../services/actions/utility-actions.jsx";
@@ -51,6 +52,45 @@ const ShopPage = () => {
 
     return (
         <main className={styles.main_screen}>
+            <Helmet
+                title='PINHEAD STUDIO | Печать на футболках и толстовках | Магазин и конструктор'
+                script = {[
+                    { 
+                    type: "application/ld+json",
+                    innerHTML:
+                        `{
+                            "@context": "https://schema.org",
+                            "@type": "Organization",
+                            "url": "https://studio.pnhd.ru",
+                            "logo": "/icon_logo.svg",
+                            "address": {
+                                "@type": "PostalAddress",
+                                "streetAddress": "ул. Чапыгина 1",
+                                "addressLocality": "Санкт-Петербург",
+                                "addressRegion": "RU",
+                                "postalCode": "197022",
+                                "addressCountry": "RU"
+                            },
+                            "contactPoint" : [
+                            {
+                            "@type" : "ContactPoint",
+                            "telephone" : "+78129046156",
+                            "contactType" : "студия"
+                            }
+                            ],
+                            "sameAs": [
+                              'https://vk.com/pinheadspb',
+                              'https://instagram.com/pnhd.studio'
+                            ]
+                        }
+                        }
+                        }`
+                    }
+                    
+                ]}
+
+
+            />
              <div className={styles.filter_wrapper}>
             
                 <button type='button' className={filter === 'man' ? styles.filter_active : styles.filter} value='man' onClick={filterHandler}>МУЖСКОЕ</button>
