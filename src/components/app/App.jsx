@@ -21,6 +21,7 @@ import Oferta from '../../pages/oferta-page/oferta-page';
 import Page404 from '../../pages/page-404/page-404';
 import SizesPage from '../../pages/sizes-page/sizes-page';
 import FullscreenMenu from '../main-menu/fullscreen-menu';
+import PrintingMethod from '../../pages/printing-method/printing-method';
 
 
 
@@ -137,6 +138,10 @@ const closeMenu = (e) => {
 
       <Route exact path='/size_chart'>
         <SizesPage />
+      </Route>
+
+      <Route exact path='/pryamaya-dtg-pechat'>
+        <PrintingMethod />
       </Route>
 
    
