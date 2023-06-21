@@ -53,11 +53,31 @@ const Footer = () => {
                 </li>
             </ul>
             <ul className={styles.list}>
-                <li className={styles.item}>Печать изображений</li>
-                <li className={styles.item}>Печать фото</li>
-                <li className={styles.item}>Печать надписей</li>
-                <li className={styles.item}>Печать имени и номера</li>
-                <li className={styles.item}>Печать логотипов</li>
+                <li>
+                    <Link className={styles.item} to="/pechat-printov">
+                        Печать изображений
+                    </Link>
+                </li>
+                <li>
+                    <Link className={styles.item} to="/pechat-photo">
+                        Печать фото
+                    </Link>
+                </li>
+                <li>
+                    <Link className={styles.item} to="/pechat-nadpisej">
+                        Печать надписей
+                    </Link>
+                </li>
+                <li>
+                    <Link className={styles.item} to="/pechat-familii">
+                        Печать имени и номера
+                    </Link>
+                </li>
+                <li>
+                    <Link className={styles.item} to="/pechat-flogotipa">
+                        Печать логотипов
+                    </Link>
+                </li>
             </ul>
         </footer>
     );
