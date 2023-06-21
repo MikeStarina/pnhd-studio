@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { OPEN_MODAL_MENU, CLOSE_MODAL_MENU, SET_POPUP_VISIBILITY } from '../../services/actions/utility-actions';
 import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
 import { getShopData } from '../../services/actions/shop-data-actions.jsx';
+import { methodsData } from '../../data/printing-methods/methods-data';
 
 import Popup from '../popup/popup';
 import MainPage from '../../pages/main-page/main-page.jsx';
@@ -141,7 +142,7 @@ const closeMenu = (e) => {
       </Route>
 
       <Route exact path='/pryamaya-dtg-pechat'>
-        <PrintingMethod />
+        <PrintingMethod method={methodsData.termo}/>
       </Route>
 
    

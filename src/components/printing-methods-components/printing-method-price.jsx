@@ -6,17 +6,8 @@ import { SET_POPUP_VISIBILITY } from "../../services/actions/utility-actions";
 
 import PriceTable from "../main-page-components/price-screen-components/price-table";
 
-const price = {
-  hTransfer: {
-    A6: 400,
-    A5: 500,
-    A4: 650,
-    A3: 750,
-    A33: 900,
-  },
-};
-
-const PrintingMethodPrice = () => {
+const PrintingMethodPrice = (prices) => {
+  const price = prices.price;
   const dispatch = useDispatch();
 
   const popupOpen = () => {
@@ -36,7 +27,7 @@ const PrintingMethodPrice = () => {
       </p>
 
       <div className={styles.price_table}>
-        <PriceTable priceType={true} price={price.hTransfer} />
+        <PriceTable priceType={prices.priceType} price={price} />
       </div>
 
       <p className={styles.description}>

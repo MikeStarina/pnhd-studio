@@ -7,7 +7,8 @@ import PrintingFaq from "../../components/printing-methods-components/printing-f
 import PrintingMethodPrice from "../../components/printing-methods-components/printing-method-price.jsx";
 import MapScreen from "../../components/main-page-components/map-screen.jsx";
 
-const PrintingMethod = () => {
+const PrintingMethod = (data) => {
+  const info = data.method;
   return (
     <>
       <section className={styles.main_head}>
@@ -51,7 +52,7 @@ const PrintingMethod = () => {
 
         /> */}
         <div className={styles.main_wrap}>
-          <h1 className={styles.main_heading}>METHODS&gt; DTF&nbsp;ПЕЧАТЬ</h1>
+          <h1 className={styles.main_heading}>METHODS&gt; {info.main_heading}</h1>
           <HashLink className={styles.link} to="#pricelistmethod">
             <button type="button" className={styles.button}>
               ЦЕНЫ
@@ -60,23 +61,18 @@ const PrintingMethod = () => {
         </div>
       </section>
       <section className={styles.brief}>
-        <h2 className={styles.brief_title}>Термотрансферная печать</h2>
-        <p className={styles.brief_subtitle}>
-          Термотрансферная печать (флекс) — отличный способ создать яркие,
-          долговечные и высококачественные изображения на футболках. PINHEAD
-          STUDIO в Санкт-Петербурге предлагает услуги термотрансферной печати на
-          футболках и другой одежде, заказать которые вы можете полностью онлайн
-          на нашем сайте.
+        <h2 className={styles.brief_title}>{info.brief_title}</h2>
+        <p className={styles.brief_subtitle}>{info.brief_subtitle}
         </p>
       </section>
       <section className={styles.gallery}>
         <PrintingGallery />
       </section>
       <section className={styles.faq}>
-        <PrintingFaq />
+        <PrintingFaq faq={info.faq}/>
       </section>
       <section className={styles.price}>
-        <PrintingMethodPrice />
+        <PrintingMethodPrice price={info.price} priceType={info.price_type}/>
       </section>
       <section className={styles.map}>
         <MapScreen />
