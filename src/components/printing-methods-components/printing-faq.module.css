@@ -1,6 +1,6 @@
 .screen {
   width: 100%;
-  margin: 0;
+  margin: 0 auto;
   padding: 200px 200px;
   box-sizing: border-box;
   overflow: hidden;
@@ -45,6 +45,7 @@
   font-weight: 600;
   margin: 0 0 20px;
   padding: 0;
+  text-transform: uppercase;
 }
 
 .screen_description {
@@ -94,11 +95,14 @@
   }
 }
 
-@media (max-width: 650px) {
+@media (max-width: 750px) {
   .screen {
-    padding: 100px 20px;
+    padding: 100px 50px;
   }
+}
 
+@media (max-width: 650px) {
+  
   .screen_heading {
     margin-top: 3px;
     font-size: 20px;
@@ -112,7 +116,7 @@
     border-radius: 18px;
   }
 
-  .screen_description {
+  .screen_description,.bottom_description {
     font-size: 15px;
     line-height: 15px;
   }

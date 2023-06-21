@@ -26,7 +26,7 @@ const PrintingMethodPrice = () => {
   };
 
   return (
-    <section className={styles.screen} id="pricelist">
+    <section className={styles.screen} id="pricelistmethod">
       <h4 className={styles.heading}>
         А СКОЛЬКО <span className={styles.textStyle_italic}>СТОИТ</span> ПЕЧАТЬ?
       </h4>
