@@ -100,11 +100,11 @@
   line-height: 20px;
 }
 
-.screen_description_bottom{
+.screen_description_bottom {
   padding-bottom: 20px;
 }
 
-.screen_description_bottom:last-child{
+.screen_description_bottom:last-child {
   padding-bottom: 0;
 }
 
@@ -121,7 +121,7 @@
 }
 
 @media (max-width: 650px) {
-  
+
   .screen_heading {
     margin-top: 3px;
     font-size: 20px;
@@ -135,7 +135,8 @@
     border-radius: 18px;
   }
 
-  .screen_description,.bottom_description {
+  .screen_description,
+  .bottom_description {
     font-size: 15px;
     line-height: 15px;
   }
@@ -146,5 +147,13 @@
     border-radius: 20px;
     font-size: 15px;
     line-height: 15px;
+  }
+
+  .heading {
+
+    font-size: 30px;
+    line-height: 30px;
+    max-width: 300px;
+
   }
 }

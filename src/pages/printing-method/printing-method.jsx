@@ -19,30 +19,29 @@ const PrintingMethod = (data) => {
             ? `${styles.main_head} ${styles.main_head_vishivka}`
             : info.price_type === "ШЕЛКОГРАФИЯ"
             ? `${styles.main_head} ${styles.main_head_silk}`
-            :info.price_type === "DTG"
+            : info.price_type === "DTG"
             ? `${styles.main_head} ${styles.main_head_dtg}`
-            :info.price_type === "DTF"
+            : info.price_type === "DTF"
             ? `${styles.main_head} ${styles.main_head_dtf}`
-            :styles.main_head
+            : styles.main_head
         }
       >
         <Helmet
-                title={info.metaTitle}
-                meta={[
-                  {
-                    name: 'description',
-                    content: info.metaDescription,
-                  },
-                  {
-                    name: 'keywords',
-                    content: info.metaKeywords,
-                  },
-                ]}
-                script = {[
-                    { 
-                    type: "application/ld+json",
-                    innerHTML:
-                        `{
+          title={info.metaTitle}
+          meta={[
+            {
+              name: "description",
+              content: info.metaDescription,
+            },
+            {
+              name: "keywords",
+              content: info.metaKeywords,
+            },
+          ]}
+          script={[
+            {
+              type: "application/ld+json",
+              innerHTML: `{
                             "@context": "https://schema.org",
                             "@type": "Organization",
                             "url": "https://studio.pnhd.ru",
@@ -68,22 +67,14 @@ const PrintingMethod = (data) => {
                             ]
                         }
                         }
-                        }`
-                    }
-                    
-                ]}
-
-
+                        }`,
+            },
+          ]}
         />
         <div className={styles.main_wrap}>
           <h1 className={styles.main_heading}>
-            METHODS&gt; {info.main_heading}
+            METHODS&nbsp;&gt; {info.main_heading}
           </h1>
-          <HashLink className={styles.link} to="#pricelistmethod">
-            <button type="button" className={styles.button}>
-              ЦЕНЫ
-            </button>
-          </HashLink>
         </div>
       </section>
       <section className={styles.brief}>
@@ -91,7 +82,7 @@ const PrintingMethod = (data) => {
         <p className={styles.brief_subtitle}>{info.brief_subtitle}</p>
       </section>
       <section className={styles.gallery}>
-        <PrintingGallery gallery={data.method.images.gallery}/>
+        <PrintingGallery gallery={data.method.images.gallery} />
       </section>
       <section className={styles.faq}>
         <PrintingFaq faq={info.faq} />
