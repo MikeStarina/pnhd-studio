@@ -3,12 +3,12 @@ import styles from "./printing-faq.module.css";
 import circle50px from "../images/circle50px.png";
 
 const PrintingFaq = (data) => {
-  const info = data.faq;
+  const { title, description, variants } = data;
 
   return (
     <section className={styles.screen}>
-      <h4 className={styles.heading}>{info.title}</h4>
-      {info.variants.map((item, index) => {
+      <h4 className={styles.heading}>{title}</h4>
+      {variants.map((item, index) => {
         return (
           <div className={styles.block_wrapper} key={index}>
             <img
@@ -38,9 +38,9 @@ const PrintingFaq = (data) => {
           </div>
         );
       })}
-      {Array.isArray(info.description) && (
+      {Array.isArray(description) && (
         <>
-          {info.description.map((item, index) => {
+          {description.map((item, index) => {
             return (
               <div className={styles.block_wrapper} key={index}>
                 <p className={styles.bottom_description}>{item}</p>
@@ -49,9 +49,9 @@ const PrintingFaq = (data) => {
           })}
         </>
       )}
-      {(!Array.isArray(info.description) && info.description.length) > 3 && (
+      {(!Array.isArray(description) && description.length) > 3 && (
         <div className={styles.block_wrapper}>
-          <p className={styles.bottom_description}>{info.description}</p>
+          <p className={styles.bottom_description}>{description}</p>
         </div>
       )}
     </section>

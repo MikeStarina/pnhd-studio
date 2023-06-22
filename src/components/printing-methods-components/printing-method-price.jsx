@@ -7,7 +7,7 @@ import { SET_POPUP_VISIBILITY } from "../../services/actions/utility-actions";
 import PriceTable from "../main-page-components/price-screen-components/price-table";
 
 const PrintingMethodPrice = (prices) => {
-  const price = prices.price;
+  const { price, priceType, priceVar} = prices;
   const dispatch = useDispatch();
 
   const popupOpen = () => {
@@ -18,9 +18,9 @@ const PrintingMethodPrice = (prices) => {
 
   return (
     <section className={styles.screen} id="pricelistmethod">
-      {prices.priceType === "ШЕЛКОГРАФИЯ" ? (
+      {priceType === "ШЕЛКОГРАФИЯ" ? (
         <>
-          <h4 className={styles.heading}>{prices.priceVar}</h4>
+          <h4 className={styles.heading}>{priceVar}</h4>
           <p className={styles.description}>{price}</p>
         </>
       ) : (
@@ -35,7 +35,7 @@ const PrintingMethodPrice = (prices) => {
           </p>
        
       <div className={styles.price_table}>
-        <PriceTable priceType={prices.priceType} price={price} />
+        <PriceTable priceType={priceType} price={price} />
       </div>
       </>
       )}

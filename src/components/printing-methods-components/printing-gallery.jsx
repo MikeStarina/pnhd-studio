@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styles from "./printing-gallery.module.css";
 
-const PrintingGallery = (gallery) => {
+const PrintingGallery = (data) => {
+  const {gallery} = data;
   return (
       <section className={styles.fourth_screen}>
-        {gallery.gallery.map((item, index) => {
+        {gallery.map((item, index) => {
           return (
             <img
               className={styles.gallery_img}

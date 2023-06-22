@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./printing-method.module.css";
 import { Helmet } from "react-helmet";
-import { HashLink } from "react-router-hash-link";
 import PrintingGallery from "../../components/printing-methods-components/printing-gallery.jsx";
 import PrintingFaq from "../../components/printing-methods-components/printing-faq.jsx";
 import PrintingMethodPrice from "../../components/printing-methods-components/printing-method-price.jsx";
@@ -9,6 +8,7 @@ import MapScreen from "../../components/main-page-components/map-screen.jsx";
 
 const PrintingMethod = (data) => {
   const info = data.method;
+  const methodFaq = info.faq;
   return (
     <>
       <section
@@ -85,7 +85,7 @@ const PrintingMethod = (data) => {
         <PrintingGallery gallery={data.method.images.gallery} />
       </section>
       <section className={styles.faq}>
-        <PrintingFaq faq={info.faq} />
+        <PrintingFaq faq={methodFaq} title={methodFaq.title} description={methodFaq.description} variants={methodFaq.variants}/>
       </section>
       <section className={styles.price}>
         <PrintingMethodPrice

@@ -56,25 +56,6 @@
   font-weight: 500;
 }
 
-.faq_button {
-  width: 200px;
-  height: 60px;
-  border: 3px solid black;
-  border-radius: 20px;
-  background-color: transparent;
-  font-family: inherit;
-  font-size: 20px;
-  line-height: 20px;
-  font-weight: 600;
-  padding: 0;
-  margin: 100px 0 0 0;
-}
-
-.faq_button:hover {
-  cursor: pointer;
-  background-color: black;
-}
-
 .textStyle_italic {
   font-style: italic;
 }
@@ -140,15 +121,6 @@
     font-size: 15px;
     line-height: 15px;
   }
-
-  .faq_button {
-    height: 40px;
-    border: 2px solid black;
-    border-radius: 20px;
-    font-size: 15px;
-    line-height: 15px;
-  }
-
   .heading {
 
     font-size: 30px;
