@@ -11,9 +11,33 @@ const PrintingMethod = (data) => {
   const info = data.method;
   return (
     <>
-      <section className={styles.main_head}>
-        {/* <Helmet
-                title='PINHEAD STUDIO | Печать на футболках и толстовках | Контакты и цены'
+      <section
+        className={
+          info.price_type === "Термотрансфер"
+            ? `${styles.main_head} ${styles.main_head_termo}`
+            : info.price_type === "ВЫШИВКА"
+            ? `${styles.main_head} ${styles.main_head_vishivka}`
+            : info.price_type === "ШЕЛКОГРАФИЯ"
+            ? `${styles.main_head} ${styles.main_head_silk}`
+            :info.price_type === "DTG"
+            ? `${styles.main_head} ${styles.main_head_dtg}`
+            :info.price_type === "DTF"
+            ? `${styles.main_head} ${styles.main_head_dtf}`
+            :styles.main_head
+        }
+      >
+        <Helmet
+                title={info.metaTitle}
+                meta={[
+                  {
+                    name: 'description',
+                    content: info.metaDescription,
+                  },
+                  {
+                    name: 'keywords',
+                    content: info.metaKeywords,
+                  },
+                ]}
                 script = {[
                     { 
                     type: "application/ld+json",
@@ -22,7 +46,7 @@ const PrintingMethod = (data) => {
                             "@context": "https://schema.org",
                             "@type": "Organization",
                             "url": "https://studio.pnhd.ru",
-                            "logo": "/icon_logo.svg",
+                            "logo": "/icon_logo.svg",                            
                             "address": {
                                 "@type": "PostalAddress",
                                 "streetAddress": "ул. Чапыгина 1",
@@ -50,9 +74,11 @@ const PrintingMethod = (data) => {
                 ]}
 
 
-        /> */}
+        />
         <div className={styles.main_wrap}>
-          <h1 className={styles.main_heading}>METHODS&gt; {info.main_heading}</h1>
+          <h1 className={styles.main_heading}>
+            METHODS&gt; {info.main_heading}
+          </h1>
           <HashLink className={styles.link} to="#pricelistmethod">
             <button type="button" className={styles.button}>
               ЦЕНЫ
@@ -61,18 +87,21 @@ const PrintingMethod = (data) => {
         </div>
       </section>
       <section className={styles.brief}>
-        <h2 className={styles.brief_title}>{info.brief_title}</h2>
-        <p className={styles.brief_subtitle}>{info.brief_subtitle}
-        </p>
+        <h2 className={styles.brief_title}>КРАТКО</h2>
+        <p className={styles.brief_subtitle}>{info.brief_subtitle}</p>
       </section>
       <section className={styles.gallery}>
-        <PrintingGallery />
+        <PrintingGallery gallery={data.method.images.gallery}/>
       </section>
       <section className={styles.faq}>
-        <PrintingFaq faq={info.faq}/>
+        <PrintingFaq faq={info.faq} />
       </section>
       <section className={styles.price}>
-        <PrintingMethodPrice price={info.price} priceType={info.price_type}/>
+        <PrintingMethodPrice
+          price={info.price}
+          priceType={info.price_type}
+          priceVar={info.price_var}
+        />
       </section>
       <section className={styles.map}>
         <MapScreen />

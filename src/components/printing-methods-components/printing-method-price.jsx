@@ -18,18 +18,27 @@ const PrintingMethodPrice = (prices) => {
 
   return (
     <section className={styles.screen} id="pricelistmethod">
-      <h4 className={styles.heading}>
-        А СКОЛЬКО <span className={styles.textStyle_italic}>СТОИТ</span> ПЕЧАТЬ?
-      </h4>
-      <p className={styles.description}>
-        Приведена стоимость для тиражей до 10 штук. Скидки для больших тиражей
-        уточняйте у наших менеджеров!
-      </p>
-
+      {prices.priceType === "ШЕЛКОГРАФИЯ" ? (
+        <>
+          <h4 className={styles.heading}>{prices.priceVar}</h4>
+          <p className={styles.description}>{price}</p>
+        </>
+      ) : (
+        <>
+          <h4 className={styles.heading}>
+            А СКОЛЬКО <span className={styles.textStyle_italic}>СТОИТ</span>{" "}
+            ПЕЧАТЬ?
+          </h4>
+          <p className={styles.description}>
+            Приведена стоимость для тиражей до 10 штук. Скидки для больших
+            тиражей уточняйте у наших менеджеров!
+          </p>
+       
       <div className={styles.price_table}>
         <PriceTable priceType={prices.priceType} price={price} />
       </div>
-
+      </>
+      )}
       <p className={styles.description}>
         * Стоимость не увеличивается при печати на своем текстиле 👌👌👌
       </p>

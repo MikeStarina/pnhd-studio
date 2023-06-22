@@ -7,6 +7,7 @@ const PrintingFaq = (data) => {
 
   return (
     <section className={styles.screen}>
+      <h4 className={styles.heading}>{info.title}</h4>
       {info.variants.map((item, index) => {
         return (
           <div className={styles.block_wrapper} key={index}>
@@ -17,23 +18,40 @@ const PrintingFaq = (data) => {
             ></img>
             <div className={styles.text_wrapper}>
               <h5 className={styles.screen_heading}>{item.screen_heading}</h5>
-              <p className={styles.screen_description}>
-                {item.screen_description}
-              </p>
+              {Array.isArray(item.screen_description) ? (
+                item.screen_description.map((item, index) => {
+                  return (
+                    <p
+                      className={`${styles.screen_description} ${styles.screen_description_bottom}`}
+                      key={index}
+                    >
+                      {item}
+                    </p>
+                  );
+                })
+              ) : (
+                <p className={styles.screen_description}>
+                  {item.screen_description}
+                </p>
+              )}
             </div>
           </div>
         );
       })}
-
-      {info.description.length > 3 && (
+      {Array.isArray(info.description) && (
+        <>
+          {info.description.map((item, index) => {
+            return (
+              <div className={styles.block_wrapper} key={index}>
+                <p className={styles.bottom_description}>{item}</p>
+              </div>
+            );
+          })}
+        </>
+      )}
+      {(!Array.isArray(info.description) && info.description.length) > 3 && (
         <div className={styles.block_wrapper}>
-          <p className={styles.bottom_description}>
-            Если вы ищете надежную и профессиональную студию для заказа
-            термотрансферной печати на футболках в Санкт-Петербурге, обратитесь
-            к нам в Studio Pinhead. Мы гарантируем высокое качество,
-            индивидуальный подход и оперативное выполнение заказа. Создайте
-            яркий и оригинальный стиль вместе с нами!
-          </p>
+          <p className={styles.bottom_description}>{info.description}</p>
         </div>
       )}
     </section>

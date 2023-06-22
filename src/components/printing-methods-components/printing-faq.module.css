@@ -79,6 +79,17 @@
   font-style: italic;
 }
 
+.heading {
+  padding: 0;
+  margin: 0;
+  font-size: 60px;
+  line-height: 60px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-align: center;
+  max-width: 80%;
+}
+
 .bottom_description {
   padding-top: 46px;
   margin: 0 auto;
@@ -87,6 +98,14 @@
   font-size: 20px;
   font-weight: 500;
   line-height: 20px;
+}
+
+.screen_description_bottom{
+  padding-bottom: 20px;
+}
+
+.screen_description_bottom:last-child{
+  padding-bottom: 0;
 }
 
 @media (max-width: 1100px) {

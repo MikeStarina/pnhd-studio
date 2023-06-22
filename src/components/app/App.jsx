@@ -141,13 +141,25 @@ const closeMenu = (e) => {
         <SizesPage />
       </Route>
 
-      <Route exact path='/pryamaya-dtg-pechat'>
+      <Route exact path='/termotransfernaya-pechat'>
         <PrintingMethod method={methodsData.termo}/>
       </Route>
 
+      <Route exact path='/vishivka'>
+        <PrintingMethod method={methodsData.vishivka}/>
+      </Route>
    
+      <Route exact path='/shelkografiya'>
+        <PrintingMethod method={methodsData.silk}/>
+      </Route>
 
+      <Route exact path='/pryamaya-dtg-pechat'>
+        <PrintingMethod method={methodsData.dtg}/>
+      </Route>
 
+      <Route exact path='/dtf-pechat'>
+        <PrintingMethod method={methodsData.dtf}/>
+      </Route>
 
       <Route exact path='/shop/:id/constructor'>
         {useLocation().state ? (<Constructor />) : (<Redirect to='/shop' />)}

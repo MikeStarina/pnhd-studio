@@ -4,7 +4,6 @@
   box-sizing: border-box;
   margin: 0 auto;
   padding: 0;
-  background-image: url(../../components/images/printingTypes.png);
   background-clip: none;
   background-position: center;
   background-size: cover;
@@ -12,6 +11,27 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  background-image: url(../../components/images/printingTypes.png);
+}
+
+.main_head_termo {
+  background-image: url(../../components/images/printingMethods/termo/main.webp);
+}
+
+.main_head_vishivka {
+  background-image: url(../../components/images/printingMethods/vishivka/main.webp);
+}
+
+.main_head_silk {
+  background-image: url(../../components/images/printingMethods/silk/main.webp);
+}
+
+.main_head_dtg {
+  background-image: url(../../components/images/printingMethods/DTG/main.webp);
+}
+
+.main_head_dtf {
+  background-image: url(../../components/images/printingMethods/DTF/main.webp);
 }
 
 .main_heading {
@@ -55,7 +75,7 @@
   line-height: 20px;
 }
 
-.map{
+.map {
   overflow: hidden;
 }
 
@@ -85,57 +105,69 @@
   z-index: 3;
 }
 
-.main_wrap{  
+.main_wrap {
   margin-left: 139px;
 }
+
+.trus_wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 /*media query*/
-@media (max-width: 1000px) {  
+@media (max-width: 1000px) {
   .main_heading {
     padding: 0;
     font-size: 70px;
-}
+  }
 }
 
-@media (max-width: 750px){
+@media (max-width: 750px) {
   .main_wrap {
     margin: 0 auto;
   }
 }
 
-@media (max-width: 730px){
-  .brief_title{
+@media (max-width: 730px) {
+  .brief_title {
     font-size: 55px;
   }
-  .brief_subtitle{
+
+  .brief_subtitle {
     font-size: 20px;
-    max-width: 90%;    
-  }  
+    max-width: 90%;
+  }
 }
 
-@media (max-width: 700px){
-  .brief_title{
-    font-size: 50px; 
+@media (max-width: 700px) {
+  .brief_title {
+    font-size: 50px;
   }
-  .brief_subtitle{
-    font-size: 20px;    
+
+  .brief_subtitle {
+    font-size: 20px;
   }
 }
-@media (max-width: 650px){
+
+@media (max-width: 650px) {
   .main_heading {
     max-width: 330px;
     font-size: 40px;
     line-height: 40px;
   }
-  .brief_title{
-    font-size: 45px; 
+
+  .brief_title {
+    font-size: 45px;
   }
 }
 
-@media (max-width: 570px){  
-  .brief_title{
-    font-size: 35px; 
+@media (max-width: 570px) {
+  .brief_title {
+    font-size: 35px;
     line-height: 40px;
   }
+
   .main_heading {
     font-size: 40px;
   }
