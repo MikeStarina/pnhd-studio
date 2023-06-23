@@ -2,10 +2,15 @@ import React from 'react';
 //import styles from './app.module.css';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { OPEN_MODAL_MENU, CLOSE_MODAL_MENU, SET_POPUP_VISIBILITY } from '../../services/actions/utility-actions';
+import {
+    OPEN_MODAL_MENU,
+    CLOSE_MODAL_MENU,
+    SET_POPUP_VISIBILITY,
+} from '../../services/actions/utility-actions';
 import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
 import { getShopData } from '../../services/actions/shop-data-actions.jsx';
 import { methodsData } from '../../data/printing-methods/methods-data';
+import { typeOfPrintData } from '../../data/type-of-print-data/data';
 
 import Popup from '../popup/popup';
 import MainPage from '../../pages/main-page/main-page.jsx';
@@ -23,173 +28,167 @@ import Page404 from '../../pages/page-404/page-404';
 import SizesPage from '../../pages/sizes-page/sizes-page';
 import FullscreenMenu from '../main-menu/fullscreen-menu';
 import PrintingMethod from '../../pages/printing-method/printing-method';
-
-
-
+import TypeOfPrint from '../../pages/type-of-print/type-of-print';
 
 function App() {
+    const dispatch = useDispatch();
+    const { mainMenu, isPopupVisible } = useSelector(
+        (store) => store.utilityState,
+    );
+    const { order, isVisible } = useSelector((store) => store.cartData);
 
-const dispatch = useDispatch();
-const { mainMenu, isPopupVisible } = useSelector(store => store.utilityState);
-const { order, isVisible } = useSelector(store => store.cartData);
+    const location = useLocation();
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [location]);
 
+    useEffect(() => {
+        const oldScript = document.querySelector('#calltr');
+        document.body.removeChild(oldScript);
+        const script = document.createElement('script');
+        script.src = 'https://cdn.callibri.ru/callibri.js';
+        script.type = 'text/javascript';
+        script.charset = 'utf-8';
+        script.defer = true;
+        script.id = 'calltr';
+        document.body.prepend(script);
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, []);
 
-const location = useLocation();
-useEffect(() => {window.scrollTo(0, 0);}, [location])
+    useEffect(() => {
+        const autoSavedCart = sessionStorage.getItem('cart');
+        //console.log(autoSavedCart);
 
+        if (autoSavedCart) {
+            dispatch({
+                type: RESTORE_CART_FROM_SSTORAGE,
+                payload: JSON.parse(autoSavedCart),
+            });
+        }
+    }, []);
 
+    useEffect(() => {
+        dispatch(getShopData());
+    }, []);
 
+    useEffect(() => {
+        dispatch({
+            type: CLOSE_MODAL_MENU,
+        });
+    }, [dispatch]);
 
+    const openMenu = () => {
+        dispatch({
+            type: OPEN_MODAL_MENU,
+        });
+    };
 
-useEffect(() => {
+    const openPopup = () => {
+        dispatch({
+            type: SET_POPUP_VISIBILITY,
+        });
+    };
 
-  const oldScript = document.querySelector('#calltr');
-  document.body.removeChild(oldScript);
-  const script = document.createElement('script');
-  script.src = "https://cdn.callibri.ru/callibri.js";
-  script.type = 'text/javascript';
-  script.charset = 'utf-8';
-  script.defer=true;
-  script.id='calltr'
-  document.body.prepend(script);
-  return () => {
-    document.body.removeChild(script);
-  }
-}, []); 
+    const closeMenu = (e) => {
+        dispatch({
+            type: CLOSE_MODAL_MENU,
+        });
+    };
 
+    return (
+        <>
+            {isPopupVisible && <Popup openPopup={openPopup} />}
+            {mainMenu.isVisible && <MainMenu closeMenu={closeMenu} />}
+            {!mainMenu.isVisible && <FullscreenMenu openPopup={openPopup} />}
+            {!mainMenu.isVisible && (
+                <BurgerIcon openMenu={openMenu} openPopup={openPopup} />
+            )}
+            {order && order.length > 0 && isVisible && (
+                <CartIcon qty={order.length} />
+            )}
+            <Switch>
+                <Route exact path="/">
+                    <MainPage />
+                </Route>
 
+                <Route exact path="/oferta">
+                    <Oferta />
+                </Route>
 
+                <Route exact path="/shop">
+                    <ShopPage />
+                </Route>
 
-useEffect(() => {
-  const autoSavedCart = sessionStorage.getItem('cart');
-  //console.log(autoSavedCart);
-  
-  if (autoSavedCart) {
-    dispatch({
-      type: RESTORE_CART_FROM_SSTORAGE,
-      payload: JSON.parse(autoSavedCart),
-    })
-  }
+                <Route exact path="/shop/:id">
+                    <ItemPage />
+                </Route>
 
+                <Route exact path="/size_chart">
+                    <SizesPage />
+                </Route>
 
-}, [])
+                <Route exact path="/termotransfernaya-pechat">
+                    <PrintingMethod method={methodsData.termo} />
+                </Route>
 
-useEffect(() => {
-  dispatch(getShopData());
-}, [])
+                <Route exact path="/vishivka">
+                    <PrintingMethod method={methodsData.vishivka} />
+                </Route>
 
+                <Route exact path="/shelkografiya">
+                    <PrintingMethod method={methodsData.silk} />
+                </Route>
 
-useEffect(() => {
-  dispatch({
-      type: CLOSE_MODAL_MENU,
-  })    
-}, [dispatch])
+                <Route exact path="/pryamaya-dtg-pechat">
+                    <PrintingMethod method={methodsData.dtg} />
+                </Route>
 
+                <Route exact path="/dtf-pechat">
+                    <PrintingMethod method={methodsData.dtf} />
+                </Route>
 
+                <Route exact path="/pechat-logotipa">
+                    <TypeOfPrint method={typeOfPrintData.logo} />
+                </Route>
 
+                <Route exact path="/pechat-familii">
+                    <TypeOfPrint method={typeOfPrintData.numberAndSurname} />
+                </Route>
 
-const openMenu = () => {
-  dispatch({
-    type: OPEN_MODAL_MENU,
-  })
-}
+                <Route exact path="/pechat-photo">
+                    <TypeOfPrint method={typeOfPrintData.photo} />
+                </Route>
 
-const openPopup = () => {
-  dispatch({
-    type: SET_POPUP_VISIBILITY,
-  })
-}
+                <Route exact path="/pechat-printov">
+                    <TypeOfPrint method={typeOfPrintData.image} />
+                </Route>
 
+                <Route exact path="/pechat-nadpisej">
+                    <TypeOfPrint method={typeOfPrintData.inscriptions} />
+                </Route>
 
-const closeMenu = (e) => {
-  dispatch({
-    type: CLOSE_MODAL_MENU,
-  })
-}
+                <Route exact path="/shop/:id/constructor">
+                    {useLocation().state ? (
+                        <Constructor />
+                    ) : (
+                        <Redirect to="/shop" />
+                    )}
+                </Route>
 
-  
-  return (
-    <> 
-    {isPopupVisible && <Popup openPopup={openPopup} />}
-    {mainMenu.isVisible && <MainMenu closeMenu={closeMenu} />}
-    {!mainMenu.isVisible && <FullscreenMenu openPopup={openPopup} />}
-    {!mainMenu.isVisible && <BurgerIcon openMenu={openMenu} openPopup={openPopup} />}
-    {order && order.length > 0 && isVisible && <CartIcon qty={order.length} />}
-    <Switch>     
+                <Route exact path="/checkout">
+                    {order.length > 0 ? <CartPage /> : <Redirect to="/shop" />}
+                </Route>
 
-      <Route exact path='/'>
-        <MainPage />
-      </Route>
+                <Route path="/">
+                    <Page404 />
+                </Route>
+            </Switch>
 
-      <Route exact path='/oferta'>
-        <Oferta />
-      </Route>
-
-   
-      <Route exact path='/shop'>
-        <ShopPage />
-      </Route>
-
-  
-
-      <Route exact path='/shop/:id'>
-        <ItemPage />
-      </Route>
-
-
-      <Route exact path='/size_chart'>
-        <SizesPage />
-      </Route>
-
-      <Route exact path='/termotransfernaya-pechat'>
-        <PrintingMethod method={methodsData.termo}/>
-      </Route>
-
-      <Route exact path='/vishivka'>
-        <PrintingMethod method={methodsData.vishivka}/>
-      </Route>
-   
-      <Route exact path='/shelkografiya'>
-        <PrintingMethod method={methodsData.silk}/>
-      </Route>
-
-      <Route exact path='/pryamaya-dtg-pechat'>
-        <PrintingMethod method={methodsData.dtg}/>
-      </Route>
-
-      <Route exact path='/dtf-pechat'>
-        <PrintingMethod method={methodsData.dtf}/>
-      </Route>
-
-      <Route exact path='/shop/:id/constructor'>
-        {useLocation().state ? (<Constructor />) : (<Redirect to='/shop' />)}
-      </Route>
-
-      <Route exact path='/checkout'>
-        {order.length > 0 ? (<CartPage />) : (<Redirect to='/shop' />)}
-      </Route>
-
-      <Route path='/'>
-        <Page404 />
-      </Route>
-
-     
-
-
-
-
-
-
-
-    </Switch>
-
-    <Footer />
-    </>
-
-  
-  );
+            <Footer />
+        </>
+    );
 }
 
 export default App;
-
-
