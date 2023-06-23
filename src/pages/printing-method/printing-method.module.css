@@ -11,27 +11,34 @@
   flex-direction: column;
   justify-content: center;
   /* align-items: flex-start; */
-  background-image: url(../../components/images/printingTypes.png);
+  background: linear-gradient(#000, #000), url(../../components/images/printingTypes.png) center/cover;
+  background-blend-mode: color;
 }
 
 .main_head_termo {
-  background-image: url(../../components/images/printingMethods/termo/main.webp);
+  background: linear-gradient(#000, #000),
+    url(../../components/images/printingMethods/termo/main.webp) center/cover;
+  background-blend-mode: color;
 }
 
 .main_head_vishivka {
-  background-image: url(../../components/images/printingMethods/vishivka/main.webp);
+  background: linear-gradient(#000, #000), url(../../components/images/printingMethods/vishivka/main.webp) center/cover;
+  background-blend-mode: color;
 }
 
 .main_head_silk {
-  background-image: url(../../components/images/printingMethods/silk/main.webp);
+  background: linear-gradient(#000, #000), url(../../components/images/printingMethods/silk/main.webp) center/cover;
+  background-blend-mode: color;
 }
 
 .main_head_dtg {
-  background-image: url(../../components/images/printingMethods/DTG/main.webp);
+  background: linear-gradient(#000, #000), url(../../components/images/printingMethods/DTG/main.webp) center/cover;
+  background-blend-mode: color;
 }
 
 .main_head_dtf {
-  background-image: url(../../components/images/printingMethods/DTF/main.webp);
+  background: linear-gradient(#000, #000), url(../../components/images/printingMethods/DTF/main.webp) center/cover;
+  background-blend-mode: color;
 }
 
 .main_heading {
