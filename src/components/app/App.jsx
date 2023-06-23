@@ -2,7 +2,11 @@ import React from 'react';
 //import styles from './app.module.css';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { OPEN_MODAL_MENU, CLOSE_MODAL_MENU, SET_POPUP_VISIBILITY } from '../../services/actions/utility-actions';
+import {
+    OPEN_MODAL_MENU,
+    CLOSE_MODAL_MENU,
+    SET_POPUP_VISIBILITY,
+} from '../../services/actions/utility-actions';
 import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
 import { getShopData } from '../../services/actions/shop-data-actions.jsx';
 import { methodsData } from '../../data/printing-methods/methods-data';
@@ -26,40 +30,32 @@ import FullscreenMenu from '../main-menu/fullscreen-menu';
 import PrintingMethod from '../../pages/printing-method/printing-method';
 import TypeOfPrint from '../../pages/type-of-print/type-of-print';
 
-
-
 function App() {
-
     const dispatch = useDispatch();
-    const { mainMenu, isPopupVisible } = useSelector(store => store.utilityState);
-    const { order, isVisible } = useSelector(store => store.cartData);
-
+    const { mainMenu, isPopupVisible } = useSelector(
+        (store) => store.utilityState,
+    );
+    const { order, isVisible } = useSelector((store) => store.cartData);
 
     const location = useLocation();
-    useEffect(() => {window.scrollTo(0, 0);}, [location])
-
-
-
-
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [location]);
 
     useEffect(() => {
-
         const oldScript = document.querySelector('#calltr');
         document.body.removeChild(oldScript);
         const script = document.createElement('script');
-        script.src = "https://cdn.callibri.ru/callibri.js";
+        script.src = 'https://cdn.callibri.ru/callibri.js';
         script.type = 'text/javascript';
         script.charset = 'utf-8';
-        script.defer=true;
-        script.id='calltr'
+        script.defer = true;
+        script.id = 'calltr';
         document.body.prepend(script);
         return () => {
             document.body.removeChild(script);
-        }
+        };
     }, []);
-
-
-
 
     useEffect(() => {
         const autoSavedCart = sessionStorage.getItem('cart');
@@ -69,148 +65,130 @@ function App() {
             dispatch({
                 type: RESTORE_CART_FROM_SSTORAGE,
                 payload: JSON.parse(autoSavedCart),
-            })
+            });
         }
-
-
-    }, [])
+    }, []);
 
     useEffect(() => {
         dispatch(getShopData());
-    }, [])
-
+    }, []);
 
     useEffect(() => {
         dispatch({
             type: CLOSE_MODAL_MENU,
-        })
-    }, [dispatch])
-
-
-
+        });
+    }, [dispatch]);
 
     const openMenu = () => {
         dispatch({
             type: OPEN_MODAL_MENU,
-        })
-    }
+        });
+    };
 
     const openPopup = () => {
         dispatch({
             type: SET_POPUP_VISIBILITY,
-        })
-    }
-
+        });
+    };
 
     const closeMenu = (e) => {
         dispatch({
             type: CLOSE_MODAL_MENU,
-        })
-    }
-
+        });
+    };
 
     return (
         <>
             {isPopupVisible && <Popup openPopup={openPopup} />}
             {mainMenu.isVisible && <MainMenu closeMenu={closeMenu} />}
             {!mainMenu.isVisible && <FullscreenMenu openPopup={openPopup} />}
-            {!mainMenu.isVisible && <BurgerIcon openMenu={openMenu} openPopup={openPopup} />}
-            {order && order.length > 0 && isVisible && <CartIcon qty={order.length} />}
+            {!mainMenu.isVisible && (
+                <BurgerIcon openMenu={openMenu} openPopup={openPopup} />
+            )}
+            {order && order.length > 0 && isVisible && (
+                <CartIcon qty={order.length} />
+            )}
             <Switch>
-
-                <Route exact path='/'>
+                <Route exact path="/">
                     <MainPage />
                 </Route>
 
-                <Route exact path='/oferta'>
+                <Route exact path="/oferta">
                     <Oferta />
                 </Route>
 
-
-                <Route exact path='/shop'>
+                <Route exact path="/shop">
                     <ShopPage />
                 </Route>
 
-
-
-                <Route exact path='/shop/:id'>
+                <Route exact path="/shop/:id">
                     <ItemPage />
                 </Route>
 
-
-                <Route exact path='/size_chart'>
+                <Route exact path="/size_chart">
                     <SizesPage />
                 </Route>
 
-                <Route exact path='/termotransfernaya-pechat'>
-                    <PrintingMethod method={methodsData.termo}/>
+                <Route exact path="/termotransfernaya-pechat">
+                    <PrintingMethod method={methodsData.termo} />
                 </Route>
 
-                <Route exact path='/vishivka'>
-                    <PrintingMethod method={methodsData.vishivka}/>
+                <Route exact path="/vishivka">
+                    <PrintingMethod method={methodsData.vishivka} />
                 </Route>
 
-                <Route exact path='/shelkografiya'>
-                    <PrintingMethod method={methodsData.silk}/>
+                <Route exact path="/shelkografiya">
+                    <PrintingMethod method={methodsData.silk} />
                 </Route>
 
-                <Route exact path='/pryamaya-dtg-pechat'>
-                    <PrintingMethod method={methodsData.dtg}/>
+                <Route exact path="/pryamaya-dtg-pechat">
+                    <PrintingMethod method={methodsData.dtg} />
                 </Route>
 
-                <Route exact path='/dtf-pechat'>
-                    <PrintingMethod method={methodsData.dtf}/>
+                <Route exact path="/dtf-pechat">
+                    <PrintingMethod method={methodsData.dtf} />
                 </Route>
 
-                <Route exact path='/pechat-logotipa'>
-                    <TypeOfPrint method={typeOfPrintData.logo}/>
+                <Route exact path="/pechat-logotipa">
+                    <TypeOfPrint method={typeOfPrintData.logo} />
                 </Route>
 
-                <Route exact path='/pechat-familii'>
-                    <TypeOfPrint method={typeOfPrintData.numberAndSurname}/>
+                <Route exact path="/pechat-familii">
+                    <TypeOfPrint method={typeOfPrintData.numberAndSurname} />
                 </Route>
 
-                <Route exact path='/pechat-photo'>
-                    <TypeOfPrint method={typeOfPrintData.photo}/>
+                <Route exact path="/pechat-photo">
+                    <TypeOfPrint method={typeOfPrintData.photo} />
                 </Route>
 
-                <Route exact path='/pechat-printov'>
-                    <TypeOfPrint method={typeOfPrintData.image}/>
+                <Route exact path="/pechat-printov">
+                    <TypeOfPrint method={typeOfPrintData.image} />
                 </Route>
 
-                <Route exact path='/pechat-nadpisej'>
-                    <TypeOfPrint method={typeOfPrintData.inscriptions}/>
+                <Route exact path="/pechat-nadpisej">
+                    <TypeOfPrint method={typeOfPrintData.inscriptions} />
                 </Route>
 
-                <Route exact path='/shop/:id/constructor'>
-                    {useLocation().state ? (<Constructor />) : (<Redirect to='/shop' />)}
+                <Route exact path="/shop/:id/constructor">
+                    {useLocation().state ? (
+                        <Constructor />
+                    ) : (
+                        <Redirect to="/shop" />
+                    )}
                 </Route>
 
-                <Route exact path='/checkout'>
-                    {order.length > 0 ? (<CartPage />) : (<Redirect to='/shop' />)}
+                <Route exact path="/checkout">
+                    {order.length > 0 ? <CartPage /> : <Redirect to="/shop" />}
                 </Route>
 
-                <Route path='/'>
+                <Route path="/">
                     <Page404 />
                 </Route>
-
-
-
-
-
-
-
-
-
             </Switch>
 
             <Footer />
         </>
-
-
     );
 }
 
 export default App;
-
-

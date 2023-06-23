@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './type-of-print.module.css';
-import { Helmet } from "react-helmet";
+import { Helmet } from 'react-helmet';
 import FeedbackScreen from '../../components/main-page-components/feedback-screen';
 import MapScreen from '../../components/main-page-components/map-screen';
 import Brief from '../../components/brief/brief';
@@ -16,13 +16,13 @@ const TypeOfPrint = (props) => {
     // Для первого компанента Brief, без масива subtitle
     const data = {
         title: props.method.main_heading,
-        subtitle: props.method.brief_subtitle
+        subtitle: props.method.brief_subtitle,
     };
     //Для второго компанента Brief, с масивом subtitle
     const dataArray = {
         title: props.method.faq.title,
         subtitle: props.method.faq.subtitle,
-    }
+    };
 
     return (
         <>
@@ -31,19 +31,18 @@ const TypeOfPrint = (props) => {
                     title={info.metaTitle}
                     meta={[
                         {
-                            name: "description",
+                            name: 'description',
                             content: info.metaDescription,
                         },
                         {
-                            name: "keywords",
+                            name: 'keywords',
                             content: info.metaKeywords,
                         },
                     ]}
-                    script = {[
+                    script={[
                         {
-                        type: "application/ld+json",
-                        innerHTML:
-                            `{
+                            type: 'application/ld+json',
+                            innerHTML: `{
                                 "@context": "https://schema.org",
                                 "@type": "Organization",
                                 "url": "https://studio.pnhd.ru",
@@ -69,22 +68,27 @@ const TypeOfPrint = (props) => {
                                 ]
                             }
                             }
-                            }`
-                        }
-
+                            }`,
+                        },
                     ]}
-            />
-                <div className={styles.main_wrap}>
-                </div>
-                <h1 className={styles.main_heading}>А&nbsp;ЧТО&nbsp;ПЕЧАТАТЬ?&nbsp;&gt; {info.main_heading.toUpperCase()}</h1>
+                />
+                <div className={styles.main_wrap}></div>
+                <h1 className={styles.main_heading}>
+                    А&nbsp;ЧТО&nbsp;ПЕЧАТАТЬ?&nbsp;&gt;{' '}
+                    {info.main_heading.toUpperCase()}
+                </h1>
             </section>
             <Brief {...data} />
             <PrintingGallery gallery={galleryProps} />
-            {description ? (<PrintingFaq {...faqProps} />) : (<Brief {...dataArray} />)}
+            {description ? (
+                <PrintingFaq {...faqProps} />
+            ) : (
+                <Brief {...dataArray} />
+            )}
             <FeedbackScreen />
             <MapScreen />
         </>
-    )
-}
+    );
+};
 
 export default TypeOfPrint;
