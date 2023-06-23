@@ -1,0 +1,136 @@
+.main_head {
+  width: 100%;
+  height: 100vh;
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 0;
+  background-clip: none;
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: flex-start; */
+  background-image: url(../../components/images/printingTypes.png);
+}
+
+.main_head_termo {
+  background-image: url(../../components/images/printingMethods/termo/main.webp);
+}
+
+.main_head_vishivka {
+  background-image: url(../../components/images/printingMethods/vishivka/main.webp);
+}
+
+.main_head_silk {
+  background-image: url(../../components/images/printingMethods/silk/main.webp);
+}
+
+.main_head_dtg {
+  background-image: url(../../components/images/printingMethods/DTG/main.webp);
+}
+
+.main_head_dtf {
+  background-image: url(../../components/images/printingMethods/DTF/main.webp);
+}
+
+.main_heading {
+  padding: 0;
+  font-size: 80px;
+  line-height: 80px;
+  font-weight: 700;
+  color: rgb(0, 255, 0);
+  z-index: 3;
+  max-width: 80%;
+  width: 519px;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.brief {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  margin-bottom: 149px;
+  text-align: center;
+}
+
+.brief_title {
+  margin: 0 auto;
+  font-size: 60px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  line-height: 60px;
+  max-width: 80%;
+  padding: 200px 20px 0 20px;
+}
+
+.brief_subtitle {
+  padding: 66px 20px 0 20px;
+  max-width: 760px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.map {
+  overflow: hidden;
+}
+
+.main_wrap {
+  margin-left: 139px;
+}
+
+/*media query*/
+
+@media (max-width: 1000px) {
+  .main_heading {
+    padding: 0;
+    margin: 0 0 5px 0;
+    font-size: 70px;
+    line-height: 70px;
+    max-width: 80%;
+  }
+
+}
+
+@media (max-width: 850px) {
+  .main_wrap {
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 650px) {
+  .main_heading {
+    padding: 0;
+    margin: 0 0 5px 0;
+    font-size: 40px;
+    line-height: 40px;
+    max-width: 300px;
+  }
+
+  .main_description {
+    font-size: 15px;
+    line-height: 15px;
+    font-weight: 500;
+    max-width: 300px;
+  }
+
+  .button {
+    font-size: 15px;
+    line-height: 15px;
+    font-weight: 700;
+  }
+
+  .brief_title {
+    font-size: 30px;
+    line-height: 30px;
+  }
+
+  .brief_subtitle {
+    font-size: 15px;
+    line-height: 15px;
+  }
+}
