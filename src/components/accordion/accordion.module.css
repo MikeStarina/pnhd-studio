@@ -6,6 +6,7 @@
   flex-direction: column;
   max-width: 791px;
   padding-bottom: 20px;
+  position: relative;
 }
 
 .accordion_mainText {
@@ -16,6 +17,7 @@
   text-align: center;
   padding-bottom: 70px;
 }
+
 
 .accordion_item:last-child {
   border-bottom: 1px #00FF00 solid;
@@ -32,11 +34,12 @@
   font-weight: 400;
   line-height: 41px;
   letter-spacing: 0em; 
+  padding: 10px 0;
 }
 
 .accordion_content {
   max-height: 0;
-  margin: 0;
+  margin-left: 100px;
   overflow: hidden;
   transition: all 0.5s cubic-bezier(0, 1, 0, 1);
 }
@@ -45,4 +48,26 @@
   height: auto;
   max-height: 999px;
   transition: all 0.5s cubic-bezier(1, 0, 1, 0);
+}
+
+.accordion_gt{
+  text-align: right;
+  width: 45px;
+  font-weight: 700;
+  color:#00FF00;
+  margin-bottom: 10px;
+}
+
+.accordion_gtRight{
+  width: 45px;
+  margin-left: -6px;
+}
+
+.accordion_text{
+  position: absolute;
+  left: 100px;    
+}
+
+.accordion_contentText{
+  padding-bottom: 15px;
 }
