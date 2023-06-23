@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from './type-of-print.module.css';
 import { Helmet } from "react-helmet";
-import TypeOfPrintGallery from '../../components/type-of-print-page-components/type-of-print-gallery';
 import FeedbackScreen from '../../components/main-page-components/feedback-screen';
 import MapScreen from '../../components/main-page-components/map-screen';
 import Brief from '../../components/brief/brief';
-import TypeOfPrintFaq from '../../components/type-of-print-page-components/type-of-print-faq';
+import PrintingGallery from '../../components/printing-gallery/printing-gallery';
+import PrintingFaq from '../../components/printing-faq/printing-faq';
 
 const TypeOfPrint = (props) => {
     const info = props.method;
@@ -79,8 +79,8 @@ const TypeOfPrint = (props) => {
                 <h1 className={styles.main_heading}>А&nbsp;ЧТО&nbsp;ПЕЧАТАТЬ?&nbsp;&gt; {info.main_heading.toUpperCase()}</h1>
             </section>
             <Brief {...data} />
-            <TypeOfPrintGallery gallery={galleryProps} />
-            {description ? (<TypeOfPrintFaq {...faqProps} />) : (<Brief {...dataArray} />)}
+            <PrintingGallery gallery={galleryProps} />
+            {description ? (<PrintingFaq {...faqProps} />) : (<Brief {...dataArray} />)}
             <FeedbackScreen />
             <MapScreen />
         </>
