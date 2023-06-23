@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { OPEN_MODAL_MENU, CLOSE_MODAL_MENU, SET_POPUP_VISIBILITY } from '../../services/actions/utility-actions';
 import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
 import { getShopData } from '../../services/actions/shop-data-actions.jsx';
+import { methodsData } from '../../data/printing-methods/methods-data';
 
 import Popup from '../popup/popup';
 import MainPage from '../../pages/main-page/main-page.jsx';
@@ -21,6 +22,7 @@ import Oferta from '../../pages/oferta-page/oferta-page';
 import Page404 from '../../pages/page-404/page-404';
 import SizesPage from '../../pages/sizes-page/sizes-page';
 import FullscreenMenu from '../main-menu/fullscreen-menu';
+import PrintingMethod from '../../pages/printing-method/printing-method';
 
 
 
@@ -139,9 +141,25 @@ const closeMenu = (e) => {
         <SizesPage />
       </Route>
 
+      <Route exact path='/termotransfernaya-pechat'>
+        <PrintingMethod method={methodsData.termo}/>
+      </Route>
+
+      <Route exact path='/vishivka'>
+        <PrintingMethod method={methodsData.vishivka}/>
+      </Route>
    
+      <Route exact path='/shelkografiya'>
+        <PrintingMethod method={methodsData.silk}/>
+      </Route>
 
+      <Route exact path='/pryamaya-dtg-pechat'>
+        <PrintingMethod method={methodsData.dtg}/>
+      </Route>
 
+      <Route exact path='/dtf-pechat'>
+        <PrintingMethod method={methodsData.dtf}/>
+      </Route>
 
       <Route exact path='/shop/:id/constructor'>
         {useLocation().state ? (<Constructor />) : (<Redirect to='/shop' />)}
