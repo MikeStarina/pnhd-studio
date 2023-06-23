@@ -21,6 +21,8 @@ import Oferta from '../../pages/oferta-page/oferta-page';
 import Page404 from '../../pages/page-404/page-404';
 import SizesPage from '../../pages/sizes-page/sizes-page';
 import FullscreenMenu from '../main-menu/fullscreen-menu';
+import TypeOfPrint from '../../pages/type-of-print/type-of-print';
+import { typeOfPrintData } from '../../data/type-of-print-data/data';
 
 
 
@@ -139,7 +141,25 @@ const closeMenu = (e) => {
         <SizesPage />
       </Route>
 
-   
+      <Route exact path='/pechat-logotipa'>
+        <TypeOfPrint method={typeOfPrintData.logo}/>
+      </Route>
+
+      <Route exact path='/pechat-familii'>
+        <TypeOfPrint method={typeOfPrintData.numberAndSurname}/>
+      </Route>
+
+      <Route exact path='/pechat-photo'>
+        <TypeOfPrint method={typeOfPrintData.photo}/>
+      </Route>
+
+      <Route exact path='/pechat-printov'>
+        <TypeOfPrint method={typeOfPrintData.image}/>
+      </Route>
+
+      <Route exact path='/pechat-nadpisej'>
+        <TypeOfPrint method={typeOfPrintData.inscriptions}/>
+      </Route>
 
 
 

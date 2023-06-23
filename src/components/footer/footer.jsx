@@ -74,7 +74,7 @@ const Footer = () => {
                     </Link>
                 </li>
                 <li>
-                    <Link className={styles.item} to="/pechat-flogotipa">
+                    <Link className={styles.item} to="/pechat-logotipa">
                         Печать логотипов
                     </Link>
                 </li>
