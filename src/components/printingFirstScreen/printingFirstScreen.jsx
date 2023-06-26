@@ -4,7 +4,6 @@ import { Helmet } from "react-helmet";
 
 const PrintingFirstScreen = ({ data, typePage }) => {
   const info = data;
-  console.log(typePage);
   return (
     <section className={styles.section_print_pages}>
       <Helmet
