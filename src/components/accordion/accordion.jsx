@@ -15,7 +15,7 @@ const Accordion = () => {
   };
 
   return (
-    <div className={styles.wrapper}>
+    <section className={styles.wrapper}>
       <div className={styles.accordion}>
         <p className={styles.accordion_mainText}>{main_text}</p>
         {data.map((item, index) => (
@@ -27,7 +27,7 @@ const Accordion = () => {
               <span className={styles.accordion_gt}>
                 {isActive === index ? "-" : gt}
               </span>
-              <span className={styles.accordion_text}>
+              <h2 className={styles.accordion_text}>
                 {item.title_italicFirst ? (
                   <i>{item.title_italicFirst}&#32;</i>
                 ) : (
@@ -35,7 +35,7 @@ const Accordion = () => {
                 )}
                 {item.title || ""}&#32;
                 {item.title_italicLast ? <i>{item.title_italicLast}</i> : ""}
-              </span>              
+              </h2>              
                 {isActive != index && <span className={styles.accordion_gt}>&#62;<span className={styles.accordion_gtRight}>&#62;</span></span>}
                 {isActive === index && <span className={styles.accordion_gt}> </span>}              
             </div>
@@ -53,7 +53,7 @@ const Accordion = () => {
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

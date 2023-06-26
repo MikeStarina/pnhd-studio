@@ -66,6 +66,8 @@
 
 .accordion_text{
   position: absolute;
+  font-size: 40px;
+  font-weight: 400;
   left: 100px;    
 }
 
@@ -93,6 +95,10 @@
   
   .accordion_gtRight{
     margin-left: -2px;    
+  }
+
+  .accordion_text{
+    font-size: 20px;
   }
 }
 
