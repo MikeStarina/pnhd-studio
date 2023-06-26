@@ -13,6 +13,7 @@ import ShopGallery from "../../components/main-page-components/shop-gallery.jsx"
 import PriceScreen from "../../components/main-page-components/price-screen.jsx";
 import FeedbackScreen from "../../components/main-page-components/feedback-screen.jsx";
 import MapScreen from "../../components/main-page-components/map-screen.jsx";
+import Accordion from "../../components/accordion/accordion.jsx";
 
 
 const MainPage = () => {
@@ -31,7 +32,17 @@ const MainPage = () => {
   return (
     <main className={styles.main_page}>
        <Helmet
-                title='PINHEAD STUDIO | Печать на футболках и толстовках | Контакты и цены'
+                title='Печать на футболках заказать в Санкт-Петербурге цена от 1 штуки в Studio Pinhead'
+                meta={[
+                  {
+                    name: 'description',
+                    content: 'Заказать печать на футболке в Санкт-Петербурге онлайн с доставкой можно по выгодной цене в нашей студии. Печать на футболках на заказ от 1 штуки недорого от Studio Pinhead.',
+                  },
+                  {
+                    name: 'keywords',
+                    content: 'печать на футболках, санкт-петербург, недорого, на заказ, цена, от 1 шт, срочный, заказать, хороший, сделать, стоимость, доставка, быстрый, качественный, черный, оверсайз, белый, онлайн, спортивный, свой дизайн, конструктор, создать макет, нанесение, собственный, толстовка, худи, студия, услуги, каталог, а3, а4, одежда, свитшот',
+                  },
+                ]}
                 script = {[
                     { 
                     type: "application/ld+json",
@@ -78,6 +89,7 @@ const MainPage = () => {
       <ShopGallery />
       <PriceScreen />
       <FeedbackScreen />
+      <Accordion/>
       {/*<FormScreen />*/}
       <MapScreen />
     </main>
