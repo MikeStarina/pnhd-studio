@@ -11,29 +11,24 @@ const PrintingMethod = (data) => {
   const methodFaq = info.faq;
   return (
     <>
-      <section>
-        <PrintingFirstScreen data={info} typePage={'method'}/>
-      </section>
+      <PrintingFirstScreen data={info} typePage={"method"} />
       <section className={styles.brief}>
         <h2 className={styles.brief_title}>КРАТКО</h2>
         <p className={styles.brief_subtitle}>{info.brief_subtitle}</p>
       </section>
-      <section className={styles.gallery}>
-        <PrintingGallery gallery={data.method.images.gallery} />
-      </section>
-      <section className={styles.faq}>
-        <PrintingFaq faq={methodFaq} title={methodFaq.title} description={methodFaq.description} variants={methodFaq.variants}/>
-      </section>
-      <section className={styles.price}>
-        <PrintingMethodPrice
-          price={info.price}
-          priceType={info.price_type}
-          priceVar={info.price_var}
-        />
-      </section>
-      <section className={styles.map}>
-        <MapScreen />
-      </section>
+      <PrintingGallery gallery={data.method.images.gallery} />
+      <PrintingFaq
+        faq={methodFaq}
+        title={methodFaq.title}
+        description={methodFaq.description}
+        variants={methodFaq.variants}
+      />
+      <PrintingMethodPrice
+        price={info.price}
+        priceType={info.price_type}
+        priceVar={info.price_var}
+      />
+      <MapScreen />
     </>
   );
 };
