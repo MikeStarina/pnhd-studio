@@ -36,7 +36,6 @@ export const sendLeadFormData = (name, phone) => {
         })
             .then(checkResponse)
             .then((res) => {
-                console.log(res, 'utility-action 39 line');
                 if (res.message === 'Заявка отправлена') {
                     //alert('Заявка успешно отправлена');
                     dispatch({
