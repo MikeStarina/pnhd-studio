@@ -18,7 +18,6 @@
     margin-bottom: 50px;
 }
 
-
 .cart_title {
     margin: 0;
     padding: 0;
@@ -26,7 +25,6 @@
     line-height: 40px;
     font-weight: 600;
 }
-
 
 .goback_button {
     background-color: transparent;
@@ -38,9 +36,6 @@
     cursor: pointer;
 }
 
-
-
-
 .cart_container {
     width: 100%;
     display: flex;
@@ -50,11 +45,10 @@
     list-style-type: none;
     box-sizing: border-box;
     padding: 50px 100px;
-    border: 1px solid rgb(0,255,0);
+    border: 1px solid rgb(0, 255, 0);
     /*box-shadow: 0 0 10px rgba(0, 0, 0, .1);*/
     border-radius: 20px;
 }
-
 
 .cart_item {
     width: 100%;
@@ -64,8 +58,8 @@
     align-items: center;
     margin: 0;
     margin-bottom: 25px;
-    padding: 25px;   
-    border-bottom: 1px solid rgb(0,255,0);
+    padding: 25px;
+    border-bottom: 1px solid rgb(0, 255, 0);
     position: relative;
 }
 
@@ -76,11 +70,11 @@
     background-color: transparent;
     width: 16px;
     height: 16px;
-    border: 1px solid rgb(0,255,0);
+    border: 1px solid rgb(0, 255, 0);
     border-radius: 8px;
     margin: 0;
     padding: 0;
-    color: rgb(0,255,0);
+    color: rgb(0, 255, 0);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -88,7 +82,7 @@
 }
 
 .delete_item_from_cart:hover {
-    background-color: rgb(0,255,0);
+    background-color: rgb(0, 255, 0);
     color: white;
 }
 
@@ -97,7 +91,6 @@
     margin: 0;
 }
 
-
 .textile_description {
     display: flex;
     justify-content: space-between;
@@ -105,7 +98,6 @@
     width: 100%;
     margin: 0 0 10px 0;
     box-sizing: border-box;
-   
 }
 
 .desc_box {
@@ -113,8 +105,6 @@
     justify-content: flex-start;
     align-items: flex-start;
 }
-
-
 
 .item_img {
     height: 100px;
@@ -147,7 +137,6 @@
     font-weight: 600;
 }
 
-
 .text_wrapper {
     display: flex;
     flex-direction: column;
@@ -162,14 +151,13 @@
 }
 
 .description {
-   margin: 0 50px 0 0;
-   padding: 0 
+    margin: 0 50px 0 0;
+    padding: 0;
 }
 
 .description:last-of-type {
     margin: 0;
 }
-
 
 .checkout_container {
     width: 100%;
@@ -180,9 +168,6 @@
     gap: 50px;
     box-sizing: border-box;
 }
-
-
-
 
 .total_price {
     margin: 0 0 50px 0;
@@ -219,7 +204,7 @@
     min-width: 36px;
     height: 36px;
     border-radius: 5px;
-    background-color: rgb(0,255,0);
+    background-color: rgb(0, 255, 0);
     border: none;
     color: white;
     margin: 0;
@@ -238,13 +223,11 @@
     border: 1px solid black;
     padding: 0px 20px;
     box-sizing: border-box;
-   
 }
 
 .promo_input:focus {
     outline: 1px solid black;
 }
-
 
 .promocode_wrapper {
     width: 220px;
@@ -276,8 +259,8 @@
     width: 220px;
     height: 50px;
     border: none;
-    background-color: rgb(0,255,0);
-    box-shadow: 0 0 20px rgba(0, 0, 0, .2);
+    background-color: rgb(0, 255, 0);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     margin: 0 0 10px 0;
     cursor: pointer;
@@ -289,13 +272,12 @@
 }
 
 .control_button::after {
-    content: 'Оформить'
+    content: 'Оформить';
 }
 
 .control_button:hover {
-   
     transform: translateY(-5px);
-    transition: transform .15s ease-out;
+    transition: transform 0.15s ease-out;
     color: black;
 }
 
@@ -303,18 +285,27 @@
     content: 'Оформить > $';
 }
 
-
+.popupBlock {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-self: center;
+}
 
 .validation_message {
-    width: 250px;
-    text-align: right;
+    width: 100%;
+    text-align: center;
     font-size: 15px;
     margin: 0;
     padding: 0;
     font-weight: 400;
+    color: rgb(0, 255, 0);
 }
 
-
+.popupBlock_message {
+    padding-top: 30px;
+}
 
 .user_form {
     display: flex;
@@ -325,10 +316,9 @@
     margin: 0;
     padding: 70px 75px;
     box-sizing: border-box;
-    background-color: rgba(0,0,0, .1);
+    background-color: rgba(0, 0, 0, 0.1);
     border-radius: 20px;
 }
-
 
 .input_label {
     padding: 0;
@@ -348,11 +338,9 @@
     border: 1px solid transparent;
 }
 
-
-
 .user_form_input:focus {
-    outline: 1px solid rgba(0,0,0, .3);
-    border: 1px solid rgba(0,0,0, .3);
+    outline: 1px solid rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 .input_control_button {
@@ -367,7 +355,6 @@
     margin-left: 20px;
 }
 
-
 .payment_info {
     display: flex;
     flex-direction: column;
@@ -377,7 +364,6 @@
     width: 100%;
     margin: 0 auto;
     padding: 0;
-
 }
 
 .payment_logo_wrapper {
@@ -393,7 +379,6 @@
 
 .payment_logo {
     width: 100px;
-
 }
 
 .shipping_info {
@@ -404,10 +389,9 @@
     width: 100%;
     margin: 0 auto;
     padding: 100px;
-    border: 1px solid rgb(0,255,0);
+    border: 1px solid rgb(0, 255, 0);
     border-radius: 20px;
     box-sizing: border-box;
-
 }
 
 .shipping_heading {
@@ -426,9 +410,6 @@
     padding: 0;
 }
 
-
-
-
 @media (max-width: 1250px) {
     .cart_item {
         width: 100%;
@@ -436,14 +417,12 @@
 
     .screen {
         padding: 100px 100px;
-       
     }
 }
 
 @media (max-width: 910px) {
     .user_form {
         padding: 25px 50px;
-
     }
     .cart_container {
         padding: 25px;
@@ -452,11 +431,9 @@
     .screen {
         padding: 100px 20px;
     }
-
 }
 
 @media (max-width: 800px) {
-
     .total_price {
         font-size: 20px;
         line-height: 20px;
@@ -474,27 +451,19 @@
     .promo_form {
         width: 180px;
     }
-
 }
 
 @media (max-width: 700px) {
-    
     .screen {
         padding: 100px 20px;
-       
     }
 
     .cart_item {
         padding: 25px 0;
     }
-
-
-
-    
 }
 
 @media (max-width: 600px) {
-
     .promocode_wrapper {
         align-items: center;
     }
@@ -513,7 +482,6 @@
         align-items: flex-end;
         align-items: flex-start;
         gap: 30px;
-       
     }
 
     .desc_box {
@@ -521,18 +489,14 @@
         justify-content: space-evenly;
         align-items: center;
     }
-    
-  
 
     .cart_title {
-
         font-size: 20px;
         line-height: 20px;
         font-weight: 600;
     }
 
     .goback_button {
-       
         font-size: 10px;
         line-height: 10px;
     }
@@ -576,7 +540,6 @@
     .cart_item {
         width: 100%;
         padding: 50px 0 25px 0;
-    
     }
 
     .price {
@@ -601,10 +564,7 @@
     .validation_message {
         text-align: center;
     }
-
-
 }
-
 
 @media (max-width: 400px) {
     .user_form {
