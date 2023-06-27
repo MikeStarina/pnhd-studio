@@ -12,7 +12,7 @@ import { getShopData } from '../../services/actions/shop-data-actions.jsx';
 import { methodsData } from '../../data/printing-methods/methods-data';
 import { typeOfPrintData } from '../../data/type-of-print-data/data';
 
-import Popup from '../popup/popup';
+import PopupModel from '../popupModel/popupModel';
 import MainPage from '../../pages/main-page/main-page.jsx';
 import BurgerIcon from '../main-menu/burger-icon.jsx';
 import MainMenu from '../main-menu/main-menu.jsx';
@@ -29,6 +29,7 @@ import SizesPage from '../../pages/sizes-page/sizes-page';
 import FullscreenMenu from '../main-menu/fullscreen-menu';
 import PrintingMethod from '../../pages/printing-method/printing-method';
 import TypeOfPrint from '../../pages/type-of-print/type-of-print';
+import PopupCallBack from '../popupCallBack/popupCallBack';
 
 function App() {
     const dispatch = useDispatch();
@@ -99,7 +100,11 @@ function App() {
 
     return (
         <>
-            {isPopupVisible && <Popup openPopup={openPopup} />}
+            {isPopupVisible && (
+                <PopupModel openPopup={openPopup}>
+                    <PopupCallBack />
+                </PopupModel>
+            )}
             {mainMenu.isVisible && <MainMenu closeMenu={closeMenu} />}
             {!mainMenu.isVisible && <FullscreenMenu openPopup={openPopup} />}
             {!mainMenu.isVisible && (
