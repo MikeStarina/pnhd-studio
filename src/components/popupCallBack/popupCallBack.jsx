@@ -26,14 +26,16 @@ const PopupCallBack = () => {
     };
 
     useEffect(() => {
+        let timer;
         if (message === 'Заявка отправлена') {
             setIsMessageSent(true);
-            setTimeout(() => {
+            timer = setTimeout(() => {
                 setIsMessageSent(false);
                 dispatch({ type: GET_ORDER_FORM_DATA });
                 dispatch({ type: SET_POPUP_VISIBILITY });
             }, 3000);
         }
+        return () => clearTimeout(timer);
     }, [message]);
 
     const formOnchangeHandler = (e) => {
