@@ -1,5 +1,4 @@
 import { apiBaseUrl } from '../../utils/constants';
-import { getError } from '../../utils/utils';
 
 export const OPEN_MODAL_MENU = 'OPEN_MODAL_MENU';
 export const CLOSE_MODAL_MENU = 'CLOSE_MODAL_MENU';
@@ -52,16 +51,4 @@ export const sendLeadFormData = (name, phone) => {
                 });
             });
     };
-
-    function getError(text) {
-        return {
-            type: ORDER_ERROR,
-            text,
-        };
-    }
-    function closeError() {
-        return {
-            type: CLOSE_ORDER_ERROR,
-        };
-    }
 };

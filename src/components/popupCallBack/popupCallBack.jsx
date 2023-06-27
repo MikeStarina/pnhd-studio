@@ -29,11 +29,10 @@ const PopupCallBack = () => {
         if (message === 'Заявка отправлена') {
             setIsMessageSent(true);
             setTimeout(() => {
-                console.log('openPopup()');
                 setIsMessageSent(false);
                 dispatch({ type: GET_ORDER_FORM_DATA });
                 dispatch({ type: SET_POPUP_VISIBILITY });
-            }, 5000);
+            }, 3000);
         }
     }, [message]);
 
@@ -49,29 +48,33 @@ const PopupCallBack = () => {
 
     return (
         <form className={styles.form} onSubmit={formSubmitHandler}>
-            <h1 className={styles.title}>ПЕРЕЗВОНИТЬ?</h1>
-            <p className={styles.description}>
-                Мы с радостью! Проконсультируем уже через 10 минут, просто
-                оставь номер телефона!
-            </p>
-            <label className={styles.input_label}>Ваше имя:</label>
-            <input
-                className={styles.input}
-                type="text"
-                name="name"
-                id="name"
-                value={orderFormData.name}
-                onChange={formOnchangeHandler}
-            />
-            <label className={styles.input_label}>Ваше телефон:</label>
-            <input
-                className={styles.input}
-                type="text"
-                name="phone"
-                id="phone"
-                value={orderFormData.phone}
-                onChange={formOnchangeHandler}
-            />
+            {!isMessageSent && (
+                <>
+                    <h1 className={styles.title}>ПЕРЕЗВОНИТЬ?</h1>
+                    <p className={styles.description}>
+                        Мы с радостью! Проконсультируем уже через 10 минут,
+                        просто оставь номер телефона!
+                    </p>
+                    <label className={styles.input_label}>Ваше имя:</label>
+                    <input
+                        className={styles.input}
+                        type="text"
+                        name="name"
+                        id="name"
+                        value={orderFormData.name}
+                        onChange={formOnchangeHandler}
+                    />
+                    <label className={styles.input_label}>Ваше телефон:</label>
+                    <input
+                        className={styles.input}
+                        type="text"
+                        name="phone"
+                        id="phone"
+                        value={orderFormData.phone}
+                        onChange={formOnchangeHandler}
+                    />
+                </>
+            )}
             <label
                 className={`${styles.input_label} ${styles.input_label_center} ${visual}`}
             >
