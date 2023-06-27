@@ -13,6 +13,7 @@ import ShopGallery from "../../components/main-page-components/shop-gallery.jsx"
 import PriceScreen from "../../components/main-page-components/price-screen.jsx";
 import FeedbackScreen from "../../components/main-page-components/feedback-screen.jsx";
 import MapScreen from "../../components/main-page-components/map-screen.jsx";
+import Accordion from "../../components/accordion/accordion.jsx";
 
 
 const MainPage = () => {
@@ -88,6 +89,7 @@ const MainPage = () => {
       <ShopGallery />
       <PriceScreen />
       <FeedbackScreen />
+      <Accordion/>
       {/*<FormScreen />*/}
       <MapScreen />
     </main>
