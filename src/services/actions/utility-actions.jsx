@@ -9,6 +9,7 @@ export const SET_POPUP_VISIBILITY = 'SET_POPUP_VISIBILITY';
 export const CLEAR_LEAD_FORM_DATA = 'CLEAR_LEAD_FORM_DATA';
 export const ORDER_ERROR = 'ORDER_ERROR';
 export const CLOSE_ORDER_ERROR = 'CLOSE_ORDER_ERROR';
+
 export const CLOSE_POPUP_HEADER = 'CLOSE_POPUP_HEADER';
 export const OPEN_POPUP_HEADER = 'OPEN_POPUP_HEADER';
 export const CLOSE_POPUP = 'CLOSE_POPUP';
@@ -18,9 +19,11 @@ export const closePopup = () => ({
     type: CLOSE_POPUP,
 });
 
-export const openPopup = () => ({
-    type: OPEN_POPUP,
-});
+export const openPopup = (arr) => {
+    return function (dispatch) {
+        dispatch({ type: OPEN_POPUP, arr });
+    };
+};
 
 export const closePopupHeader = () => ({
     type: CLOSE_POPUP_HEADER,

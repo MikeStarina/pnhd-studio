@@ -172,7 +172,7 @@ const CartPage = () => {
 
     const createOrderHandler = () => {
         if (!isUserFormValid) {
-            dispatch(openPopup());
+            dispatch(openPopup([validationMessage]));
         } else {
             const metrikaProducts = [];
             order.forEach((item) => {
@@ -544,13 +544,14 @@ const CartPage = () => {
                                         Заполните поля:
                                     </p>
                                 )}
-                                {!isUserFormValid && (
+                                {isOtherPopupVisible.map((el, index) => (
                                     <p
                                         className={`${styles.validation_message} ${styles.popupBlock_message}`}
+                                        key={index}
                                     >
-                                        {validationMessage}
+                                        {el}
                                     </p>
-                                )}
+                                ))}
                             </div>
                         </PopupModel>
                     )}

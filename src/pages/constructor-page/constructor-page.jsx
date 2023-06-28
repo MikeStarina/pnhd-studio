@@ -27,6 +27,7 @@ import {
     SET_POPUP_VISIBILITY,
 } from '../../services/actions/utility-actions';
 import { instructionForPopup } from '../../data/instructionForPopup/instructionForPopup';
+import { photoProcessing } from '../../data/photo-processing/photo-processing';
 
 const Constructor = () => {
     const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
@@ -171,12 +172,14 @@ const Constructor = () => {
         e.preventDefault();
 
         const data = new FormData();
-        const print = e.target.files[0];
-        //console.log(print);
-
-        data.append(`files`, print, `${uuidv4()}_${print.name}`);
-
-        dispatch(printUploadFunc(data, activeView, item.type, item.color));
+        const print = photoProcessing(e.target.files[0]);
+        if (print === undefined) {
+            dispatch(openPopup(['Не тот формат файла']));
+        } else {
+            // console.log(print);
+            data.append(`files`, print, `${uuidv4()}_${print.name}`);
+            dispatch(printUploadFunc(data, activeView, item.type, item.color));
+        }
         e.currentTarget.reset();
     };
 
@@ -273,7 +276,7 @@ const Constructor = () => {
     };
 
     const openPopupConstructor = () => {
-        dispatch(openPopup());
+        dispatch(openPopup(instructionForPopup));
     };
 
     const closePopupConstructor = () => {
@@ -412,6 +415,7 @@ const Constructor = () => {
                             <div className={styles.input_wrapper}>
                                 <input
                                     type="file"
+                                    accept=".jpg, .png"
                                     className={styles.file_input}
                                     name="file_input"
                                 />
@@ -478,9 +482,13 @@ const Constructor = () => {
                         />
                         {isOtherPopupVisible && (
                             <PopupModel onClose={closePopupConstructor}>
-                                {instructionForPopup.map((el, index) => (
+                                {isOtherPopupVisible.map((el, index) => (
                                     <p
-                                        className={styles.instruction}
+                                        className={
+                                            isOtherPopupVisible.length > 1
+                                                ? styles.instruction
+                                                : styles.error
+                                        }
                                         key={index}
                                     >
                                         {el}

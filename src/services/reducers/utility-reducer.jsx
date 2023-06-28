@@ -18,7 +18,7 @@ const initialState = {
         isVisible: false,
     },
     isPopupVisible: false,
-    isOtherPopupVisible: false,
+    isOtherPopupVisible: null,
     mainMenuPriceTable: {
         activeTab: 'DTG',
     },
@@ -58,14 +58,14 @@ export const utilityReducer = (state = initialState, action) => {
         case OPEN_POPUP: {
             return {
                 ...state,
-                isOtherPopupVisible: true,
+                isOtherPopupVisible: action.arr,
             };
         }
 
         case CLOSE_POPUP: {
             return {
                 ...state,
-                isOtherPopupVisible: false,
+                isOtherPopupVisible: null,
             };
         }
 

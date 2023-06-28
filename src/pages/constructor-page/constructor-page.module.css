@@ -300,6 +300,13 @@
     line-height: 20px;
 }
 
+.error {
+    font-size: 20px;
+    line-height: 20px;
+    text-align: center;
+    color: rgb(0, 255, 0);
+}
+
 .order_info {
     margin: 50px 0;
     padding: 0;
@@ -377,6 +384,11 @@
     }
 
     .instruction {
+        font-size: 15px;
+        line-height: 15px;
+    }
+
+    .error {
         font-size: 15px;
         line-height: 15px;
     }
