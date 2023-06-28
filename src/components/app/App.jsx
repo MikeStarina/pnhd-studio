@@ -6,6 +6,8 @@ import {
     OPEN_MODAL_MENU,
     CLOSE_MODAL_MENU,
     SET_POPUP_VISIBILITY,
+    closePopupHeader,
+    openPopupHeader,
 } from '../../services/actions/utility-actions';
 import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
 import { getShopData } from '../../services/actions/shop-data-actions.jsx';
@@ -86,10 +88,12 @@ function App() {
         });
     };
 
-    const openPopup = () => {
-        dispatch({
-            type: SET_POPUP_VISIBILITY,
-        });
+    const handelClosePopupHeader = () => {
+        dispatch(closePopupHeader());
+    };
+
+    const handelOpenPopupHeader = () => {
+        dispatch(openPopupHeader());
     };
 
     const closeMenu = (e) => {
@@ -101,14 +105,19 @@ function App() {
     return (
         <>
             {isPopupVisible && (
-                <PopupModel openPopup={openPopup}>
+                <PopupModel onClose={handelClosePopupHeader}>
                     <PopupCallBack />
                 </PopupModel>
             )}
             {mainMenu.isVisible && <MainMenu closeMenu={closeMenu} />}
-            {!mainMenu.isVisible && <FullscreenMenu openPopup={openPopup} />}
             {!mainMenu.isVisible && (
-                <BurgerIcon openMenu={openMenu} openPopup={openPopup} />
+                <FullscreenMenu openPopup={handelOpenPopupHeader} />
+            )}
+            {!mainMenu.isVisible && (
+                <BurgerIcon
+                    openMenu={openMenu}
+                    openPopup={handelOpenPopupHeader}
+                />
             )}
             {order && order.length > 0 && isVisible && (
                 <CartIcon qty={order.length} />

@@ -10,6 +10,29 @@ export const CLEAR_LEAD_FORM_DATA = 'CLEAR_LEAD_FORM_DATA';
 export const ORDER_ERROR = 'ORDER_ERROR';
 export const CLOSE_ORDER_ERROR = 'CLOSE_ORDER_ERROR';
 
+export const CLOSE_POPUP_HEADER = 'CLOSE_POPUP_HEADER';
+export const OPEN_POPUP_HEADER = 'OPEN_POPUP_HEADER';
+export const CLOSE_POPUP = 'CLOSE_POPUP';
+export const OPEN_POPUP = 'OPEN_POPUP';
+
+export const closePopup = () => ({
+    type: CLOSE_POPUP,
+});
+
+export const openPopup = (arr) => {
+    return function (dispatch) {
+        dispatch({ type: OPEN_POPUP, arr });
+    };
+};
+
+export const closePopupHeader = () => ({
+    type: CLOSE_POPUP_HEADER,
+});
+
+export const openPopupHeader = () => ({
+    type: OPEN_POPUP_HEADER,
+});
+
 export const sendLeadFormData = (name, phone) => {
     const data = {
         name,
@@ -44,7 +67,6 @@ export const sendLeadFormData = (name, phone) => {
                 }
             })
             .catch((err) => {
-                // console.log(err, 'line 47 utility-actions');
                 dispatch({
                     type: ORDER_ERROR,
                     text: 'Заявка не отправлена, заполните поля корректно',

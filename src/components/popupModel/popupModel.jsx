@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react';
 import styles from './popupModel.module.css';
 
-const PopupModel = ({ openPopup, children }) => {
+const PopupModel = ({ onClose, children }) => {
     const closeByBGClick = (e) => {
-        if (e.target.id === 'container') {
-            openPopup();
-        }
+        if (e.target.id === 'container') onClose();
     };
 
     const handleEscKeydown = (e) => {
-        e.key === 'Escape' && openPopup();
+        e.key === 'Escape' && onClose();
     };
 
     useEffect(() => {
@@ -29,7 +27,7 @@ const PopupModel = ({ openPopup, children }) => {
                 <button
                     type="button"
                     className={styles.close_button}
-                    onMouseDown={openPopup}
+                    onMouseDown={onClose}
                 >
                     X
                 </button>

@@ -2,16 +2,13 @@
     from {
         transform: rotate(0deg);
     }
-    
-   
+
     to {
         transform: rotate(360deg);
         width: 40px;
         height: 40px;
     }
 }
-
-
 
 .screen {
     width: 100%;
@@ -37,7 +34,6 @@
     display: none;
 }
 
-
 .loader_active {
     border: none;
     display: flex;
@@ -62,9 +58,6 @@
     object-fit: cover;
 }
 
-
-
-
 .controls_container {
     margin: 0 0 0 50px;
     padding: 0;
@@ -85,9 +78,8 @@
     margin: 0 0 50px 0;
     padding: 0;
     box-sizing: border-box;
-    gap: 2px
+    gap: 2px;
 }
-
 
 .tab {
     height: 40px;
@@ -99,7 +91,7 @@
     align-items: center;
     border: none;
     border-radius: 10px;
-    background-color: rgba(0,0,0,.1);
+    background-color: rgba(0, 0, 0, 0.1);
     color: white;
     margin: 0;
     padding: 0;
@@ -131,9 +123,8 @@
     font-family: inherit;
 }
 
-
 .tab:hover {
-    background-color: rgba(0, 255, 0, .4);
+    background-color: rgba(0, 255, 0, 0.4);
     cursor: pointer;
 }
 
@@ -145,7 +136,6 @@
     align-items: center;
     box-sizing: border-box;
 }
-
 
 .input_form {
     width: 100%;
@@ -232,6 +222,12 @@
     padding: 0;
 }
 
+.button_container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
 .item_button {
     width: 300px;
     height: 40px;
@@ -248,7 +244,7 @@
     padding: 0;
     margin: 20px 0 0 0;
     align-self: flex-end;
-    box-shadow: 0 0 20px rgba(0, 0, 0, .3);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
 
 .item_button::after {
@@ -257,15 +253,59 @@
 
 .item_button:hover {
     transform: translateY(-5px);
-    transition: transform .15s ease-out;
-    color: black
+    transition: transform 0.15s ease-out;
+    color: black;
 }
 .item_button:hover::after {
-    
     content: 'Добавить в корзину >>';
 }
 
+.item_button_quest {
+    width: 40px;
+    height: 40px;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 10px;
+    background-color: rgb(0, 255, 0);
+    font-family: inherit;
+    color: white;
+    font-size: 20px;
+    line-height: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0;
+    margin: 20px 0 0 0;
+    align-self: flex-end;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
 
+.item_button_quest::after {
+    content: '?';
+}
+
+.item_button_quest:hover {
+    transform: translateY(-5px);
+    transition: transform 0.15s ease-out;
+    color: black;
+}
+
+.item_button_quest:hover::after {
+    content: '?>';
+}
+
+.instruction {
+    color: rgb(0, 255, 0);
+    font-family: inherit;
+    font-size: 20px;
+    line-height: 20px;
+}
+
+.error {
+    font-size: 20px;
+    line-height: 20px;
+    text-align: center;
+    color: rgb(0, 255, 0);
+}
 
 .order_info {
     margin: 50px 0;
@@ -283,18 +323,11 @@
     padding: 0;
 }
 
-
-
-
-
-
-
 @media (max-width: 1400px) {
     .screen {
         padding: 100px 50px;
     }
 }
-
 
 @media (max-width: 1100px) {
     .screen {
@@ -307,20 +340,12 @@
         height: 500px;
     }
 
-    
     .order_info {
-       
         align-items: center;
-    }
-
-    .item_button {
-        
-        align-self: center;
     }
 
     .submit_button {
         width: 50%;
-       
     }
     .tabs_container {
         width: 100%;
@@ -329,10 +354,7 @@
     }
 }
 
-
-
 @media (max-width: 650px) {
-
     .tab {
         margin: 0;
         padding: 0;
@@ -350,15 +372,27 @@
         line-height: 12px;
         font-weight: 400;
     }
-    
-
-   
 
     .item_button {
-      
         font-size: 15px;
         line-height: 15px;
     }
+
+    .item_button_quest {
+        font-size: 15px;
+        line-height: 15px;
+    }
+
+    .instruction {
+        font-size: 15px;
+        line-height: 15px;
+    }
+
+    .error {
+        font-size: 15px;
+        line-height: 15px;
+    }
+
     .order_info {
         text-align: center;
     }
@@ -375,11 +409,16 @@
     .active_tab {
         min-width: 65px;
     }
+    .item_button {
+        width: 250px;
+    }
 }
 
 @media (max-width: 370px) {
     .file_input_button_text {
         max-width: 150px;
-       
+    }
+    .item_button {
+        width: 200px;
     }
 }
