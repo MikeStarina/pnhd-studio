@@ -67,7 +67,6 @@ export const sendLeadFormData = (name, phone) => {
                 }
             })
             .catch((err) => {
-                // console.log(err, 'line 47 utility-actions');
                 dispatch({
                     type: ORDER_ERROR,
                     text: 'Заявка не отправлена, заполните поля корректно',

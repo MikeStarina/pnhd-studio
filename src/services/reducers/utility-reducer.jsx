@@ -59,6 +59,7 @@ export const utilityReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isOtherPopupVisible: action.arr,
+                isImageLoading: false,
             };
         }
 
