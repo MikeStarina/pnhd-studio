@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './popupCallBack.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import {
+    closePopupHeader,
     GET_ORDER_FORM_DATA,
     sendLeadFormData,
     SET_POPUP_VISIBILITY,
@@ -32,7 +33,7 @@ const PopupCallBack = () => {
             timer = setTimeout(() => {
                 setIsMessageSent(false);
                 dispatch({ type: GET_ORDER_FORM_DATA });
-                dispatch({ type: SET_POPUP_VISIBILITY });
+                dispatch(closePopupHeader());
             }, 3000);
         }
         return () => clearTimeout(timer);

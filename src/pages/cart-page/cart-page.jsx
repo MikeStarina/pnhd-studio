@@ -23,7 +23,11 @@ import Mastercard from '../../components/images/Mastercard.png';
 import { checkPromoCodeValidity } from '../../services/actions/cart-actions';
 import { v4 as uuidv4 } from 'uuid';
 import PopupModel from '../../components/popupModel/popupModel';
-import { SET_POPUP_VISIBILITY } from '../../services/actions/utility-actions';
+import {
+    SET_POPUP_VISIBILITY,
+    openPopup,
+    closePopup,
+} from '../../services/actions/utility-actions';
 
 const CartPage = () => {
     const history = useHistory();
@@ -36,9 +40,7 @@ const CartPage = () => {
         validPromoCode,
     } = useSelector((store) => store.cartData);
     const { userCartData } = useSelector((store) => store.userData);
-    const { mainMenu, isPopupVisible } = useSelector(
-        (store) => store.utilityState,
-    );
+    const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
 
     const { phone } = userCartData;
 
@@ -164,17 +166,13 @@ const CartPage = () => {
         history.goBack();
     };
 
-    const openPopup = () => {
-        dispatch({
-            type: SET_POPUP_VISIBILITY,
-        });
+    const handelClosePopup = () => {
+        dispatch(closePopup());
     };
 
     const createOrderHandler = () => {
         if (!isUserFormValid) {
-            dispatch({
-                type: SET_POPUP_VISIBILITY,
-            });
+            dispatch(openPopup());
         } else {
             const metrikaProducts = [];
             order.forEach((item) => {
@@ -536,8 +534,8 @@ const CartPage = () => {
                         onClick={createOrderHandler}
                         // disabled={!isUserFormValid}
                     />
-                    {isPopupVisible && (
-                        <PopupModel openPopup={openPopup}>
+                    {isOtherPopupVisible && (
+                        <PopupModel onClose={handelClosePopup}>
                             <div className={styles.popupBlock}>
                                 {!isUserFormValid && (
                                     <p

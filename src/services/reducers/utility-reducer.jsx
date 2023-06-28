@@ -7,6 +7,10 @@ import {
     GET_ORDER_FORM_DATA,
     IS_IMAGE_LOADING,
     SET_POPUP_VISIBILITY,
+    CLOSE_POPUP_HEADER,
+    OPEN_POPUP_HEADER,
+    OPEN_POPUP,
+    CLOSE_POPUP,
 } from '../actions/utility-actions.jsx';
 
 const initialState = {
@@ -14,6 +18,7 @@ const initialState = {
         isVisible: false,
     },
     isPopupVisible: false,
+    isOtherPopupVisible: false,
     mainMenuPriceTable: {
         activeTab: 'DTG',
     },
@@ -50,10 +55,31 @@ export const utilityReducer = (state = initialState, action) => {
             };
         }
 
-        case SET_POPUP_VISIBILITY: {
+        case OPEN_POPUP: {
             return {
                 ...state,
-                isPopupVisible: !state.isPopupVisible,
+                isOtherPopupVisible: true,
+            };
+        }
+
+        case CLOSE_POPUP: {
+            return {
+                ...state,
+                isOtherPopupVisible: false,
+            };
+        }
+
+        case OPEN_POPUP_HEADER: {
+            return {
+                ...state,
+                isPopupVisible: true,
+            };
+        }
+
+        case CLOSE_POPUP_HEADER: {
+            return {
+                ...state,
+                isPopupVisible: false,
             };
         }
 
