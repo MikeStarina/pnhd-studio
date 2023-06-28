@@ -33,6 +33,8 @@ const initialState = {
     userCartData: {
         name: '',
         isNameValid: false,
+        surname: '',
+        isSurnameValid: false,
         email: '',
         isEmailValid: false,
         phone: '',
@@ -131,6 +133,8 @@ export const userDataReducer = (state = initialState, action) => {
                 userCartData: {
                     name: action.inputName === 'name' ? action.inputValue : state.userCartData.name,
                     isNameValid: action.inputName === 'name' ? action.validity : state.userCartData.isNameValid,
+                    surname: action.inputName === 'surname' ? action.inputValue : state.userCartData.surname,
+                    isSurnameValid: action.inputName === 'surname' ? action.validity : state.userCartData.isSurnameValid,
                     phone: action.inputName === 'phone' ? action.inputValue : state.userCartData.phone,
                     isPhoneValid: action.inputName === 'phone' ? action.validity : state.userCartData.isPhoneValid,
                     email: action.inputName === 'email' ? action.inputValue : state.userCartData.email,
