@@ -21,6 +21,7 @@ import visa from "../../components/images/visa.png";
 import kassa from "../../components/images/kassa.png";
 import Mastercard from "../../components/images/Mastercard.png";
 import { checkPromoCodeValidity } from "../../services/actions/cart-actions";
+import { ShippingMap } from "../../components/shipping-components/shipping-map";
 import { v4 as uuidv4 } from "uuid";
 
 const CartPage = () => {
@@ -29,6 +30,7 @@ const CartPage = () => {
     sdek: false,
   });
   const [listCities, setListCities] = useState("");
+  const [listPoints, setListPoints] = useState("");  
   const [typeList, setTypeList] = useState(false);
   const history = useHistory();
   const {
@@ -40,8 +42,23 @@ const CartPage = () => {
     validPromoCode,
   } = useSelector((store) => store.cartData);
   const { userCartData } = useSelector((store) => store.userData);
-  const { shippingCities, shippingTarif } = useSelector((store)=> store.shippingData);
+  const { shippingCities, shippingTarif, shippingPoints } = useSelector(
+    (store) => store.shippingData
+  );
 
+  const getShippingPoints = () => {
+    return shippingPoints.map((item) => {
+      return {name :item.name ,coordinates: [item.location.latitude, item.location.longitude] };
+    });
+  };
+
+  const findShippingObject = (el) => {
+    shippingPoints.forEach(item=>{
+      if(item.location.latitude === el.coordinates[0] && item.location.longitude === el.coordinates[1] ){
+        setListPoints(item);
+      }
+    })
+  }
   const { phone } = userCartData;
 
   let regex = /[^0-9]/gi;
@@ -503,7 +520,14 @@ const CartPage = () => {
                   setRadioDelivery("сдэк");
                 }}
               />
-              <label htmlFor="radioSdek" onClick={()=>{setTypeList(false)}}>Доставка СДЭК</label>
+              <label
+                htmlFor="radioSdek"
+                onClick={() => {
+                  setTypeList(false);
+                }}
+              >
+                Доставка СДЭК
+              </label>
             </div>
             {typeDelivery.sdek && (
               <>
@@ -516,7 +540,8 @@ const CartPage = () => {
                     setListCities(e.target.value);
                   }}
                 ></input>
-                {!typeList ? (
+                {/* !typeList */}
+                {false ? (
                   <div className={styles.cities_wrap}>
                     <ul className={styles.cities_list}>
                       {(getCities(listCities) || []).map((item, index) => {
@@ -539,11 +564,21 @@ const CartPage = () => {
                   <>
                     <p>Доставка до пункта выдачи: {shippingTarif.total_sum}</p>
                     <p>Выберите пункт выдачи: </p>
+                    <input
+                      type="text"
+                      className={styles.user_form_input}
+                      required={true}
+                      value={listPoints.name || listPoints}
+                      onChange={(e) => {
+                        setListCities(e.target.value);
+                      }}
+                    ></input>
                   </>
                 )}
               </>
             )}
           </form>
+          <ShippingMap points={getShippingPoints()} updatePointInput={findShippingObject}/>
         </div>
         <div className={styles.cart_controls}>
           {order.length > 0 && (
