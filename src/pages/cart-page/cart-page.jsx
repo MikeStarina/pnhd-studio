@@ -3,27 +3,33 @@ import styles from "./cart-page.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import {
-  CHANGE_ITEM_QTY,
-  CLEAR_CART,
-  SET_CART_VISIBILITY,
-  DELETE_ITEM_FROM_CART,
-  DELETE_PRINT_FROM_CART,
-  GET_USER_PROMOCODE,
-  DELETE_ACTIVE_PROMOCODE,
-} from "../../services/actions/cart-actions";
-import { SET_USER_DATA } from "../../services/actions/user-data-actions";
-import { createOrder } from "../../services/actions/cart-actions";
-import ItemPrint from "../../components/cart-page-components/item-print";
-import closeicon from "../../components/images/closeIcon.svg";
-import { apiBaseUrl } from "../../utils/constants";
-import mir from "../../components/images/mir.png";
-import visa from "../../components/images/visa.png";
-import kassa from "../../components/images/kassa.png";
-import Mastercard from "../../components/images/Mastercard.png";
-import { checkPromoCodeValidity } from "../../services/actions/cart-actions";
+    CHANGE_ITEM_QTY,
+    CLEAR_CART,
+    SET_CART_VISIBILITY,
+    DELETE_ITEM_FROM_CART,
+    DELETE_PRINT_FROM_CART,
+    GET_USER_PROMOCODE,
+    DELETE_ACTIVE_PROMOCODE,
+} from '../../services/actions/cart-actions';
+import { SET_USER_DATA } from '../../services/actions/user-data-actions';
+import { createOrder } from '../../services/actions/cart-actions';
+import ItemPrint from '../../components/cart-page-components/item-print';
+import closeicon from '../../components/images/closeIcon.svg';
+import { apiBaseUrl } from '../../utils/constants';
+import mir from '../../components/images/mir.png';
+import visa from '../../components/images/visa.png';
+import kassa from '../../components/images/kassa.png';
+import Mastercard from '../../components/images/Mastercard.png';
+import { checkPromoCodeValidity } from '../../services/actions/cart-actions';
 import { ShippingMap } from "../../components/shipping-components/shipping-map";
 import { ShippingSelect } from "../../components/shipping-components/shipping-select"
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from 'uuid';
+import PopupModel from '../../components/popupModel/popupModel';
+import {
+    SET_POPUP_VISIBILITY,
+    openPopup,
+    closePopup,
+} from '../../services/actions/utility-actions';
 
 const CartPage = () => {
   const [typeDelivery, setTypeDelivery] = useState({
@@ -46,6 +52,7 @@ const CartPage = () => {
     validPromoCode,
   } = useSelector((store) => store.cartData);
   const { userCartData } = useSelector((store) => store.userData);
+  const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
   const { shippingCities, shippingTarif, shippingPoints } = useSelector(
     (store) => store.shippingData
   );
@@ -134,74 +141,77 @@ const CartPage = () => {
     });
   }
 
-  const totalPrice = order.reduce((acc, item) => {
-    let printTotalprice = 0;
-    //console.log(item.print)
-    //console.log(item.print.back)
-    const frontPrintPrice =
-      item.print && item.print.front.file
-        ? item.print.front.cartParams.price
-        : 0;
-    const backPrintPrice =
-      item.print && item.print.back.file ? item.print.back.cartParams.price : 0;
-    const lsleevePrintPrice =
-      item.print && item.print.lsleeve.file
-        ? item.print.lsleeve.cartParams.price
-        : 0;
-    const rsleevePrintPrice =
-      item.print && item.print.rsleeve.file
-        ? item.print.rsleeve.cartParams.price
-        : 0;
-    const badgePrintPrice =
-      item.print && item.print.badge.file
-        ? item.print.badge.cartParams.price
-        : 0;
+    const totalPrice = order.reduce((acc, item) => {
+        let printTotalprice = 0;
+        //console.log(item.print)
+        //console.log(item.print.back)
+        const frontPrintPrice =
+            item.print && item.print.front.file
+                ? item.print.front.cartParams.price
+                : 0;
+        const backPrintPrice =
+            item.print && item.print.back.file
+                ? item.print.back.cartParams.price
+                : 0;
+        const lsleevePrintPrice =
+            item.print && item.print.lsleeve.file
+                ? item.print.lsleeve.cartParams.price
+                : 0;
+        const rsleevePrintPrice =
+            item.print && item.print.rsleeve.file
+                ? item.print.rsleeve.cartParams.price
+                : 0;
+        const badgePrintPrice =
+            item.print && item.print.badge.file
+                ? item.print.badge.cartParams.price
+                : 0;
 
-    printTotalprice =
-      frontPrintPrice +
-      backPrintPrice +
-      lsleevePrintPrice +
-      rsleevePrintPrice +
-      badgePrintPrice;
+        printTotalprice =
+            frontPrintPrice +
+            backPrintPrice +
+            lsleevePrintPrice +
+            rsleevePrintPrice +
+            badgePrintPrice;
 
-    acc =
-      acc +
-      item.attributes.price * item.attributes.qty +
-      printTotalprice * item.attributes.qty;
+        acc =
+            acc +
+            item.attributes.price * item.attributes.qty +
+            printTotalprice * item.attributes.qty;
 
-    return acc;
-  }, 0);
+        return acc;
+    }, 0);
 
-  const discounted_price = validPromoCode.discount_ratio
-    ? totalPrice * validPromoCode.discount_ratio
-    : totalPrice;
+    const discounted_price = validPromoCode.discount_ratio
+        ? totalPrice * validPromoCode.discount_ratio
+        : totalPrice;
 
-  useEffect(() => {
-    dispatch({
-      type: SET_CART_VISIBILITY,
-      payload: false,
-    });
+    useEffect(() => {
+        dispatch({
+            type: SET_CART_VISIBILITY,
+            payload: false,
+        });
 
-    return () => {
-      dispatch({ type: SET_CART_VISIBILITY, payload: true });
+
+        return () => {
+            dispatch({ type: SET_CART_VISIBILITY, payload: true });
+        };
+    }, []);
+
+    const qtyChangeHandler = (e, qty) => {
+        let newValue = qty;
+        if (e.target.name === 'increase') {
+            newValue++;
+        } else {
+            newValue--;
+        }
+
+        dispatch({
+            type: CHANGE_ITEM_QTY,
+            qty: newValue,
+            id: e.target.id,
+        });
     };
-  }, []);
-
-  const qtyChangeHandler = (e, qty) => {
-    let newValue = qty;
-    if (e.target.name === "increase") {
-      newValue++;
-    } else {
-      newValue--;
-    }
-
-    dispatch({
-      type: CHANGE_ITEM_QTY,
-      qty: newValue,
-      id: e.target.id,
-    });
-  };
-  const onChange = (e) => {};
+    const onChange = (e) => {};
 
   const inputChangeHandler = (e) => {
     //console.log(e.target.validity.valid);
@@ -220,76 +230,84 @@ const CartPage = () => {
     });
   };
 
-  const close = () => {
-    history.goBack();
-  };
+    const close = () => {
+        history.goBack();
+    };
 
-  const createOrderHandler = () => {
-    const metrikaProducts = [];
-    order.forEach((item) => {
-      const frontPrintPrice =
-        item.print && item.print.front.file
-          ? item.print.front.cartParams.price
-          : 0;
-      const backPrintPrice =
-        item.print && item.print.back.file
-          ? item.print.back.cartParams.price
-          : 0;
-      const lsleevePrintPrice =
-        item.print && item.print.lsleeve.file
-          ? item.print.lsleeve.cartParams.price
-          : 0;
-      const rsleevePrintPrice =
-        item.print && item.print.rsleeve.file
-          ? item.print.rsleeve.cartParams.price
-          : 0;
+    const handelClosePopup = () => {
+        dispatch(closePopup());
+    };
 
-      const printTotalprice =
-        frontPrintPrice +
-        backPrintPrice +
-        lsleevePrintPrice +
-        rsleevePrintPrice;
+    const createOrderHandler = () => {
+        if (!isUserFormValid) {
+            dispatch(openPopup([validationMessage]));
+        } else {
+            const metrikaProducts = [];
+            order.forEach((item) => {
+                const frontPrintPrice =
+                    item.print && item.print.front.file
+                        ? item.print.front.cartParams.price
+                        : 0;
+                const backPrintPrice =
+                    item.print && item.print.back.file
+                        ? item.print.back.cartParams.price
+                        : 0;
+                const lsleevePrintPrice =
+                    item.print && item.print.lsleeve.file
+                        ? item.print.lsleeve.cartParams.price
+                        : 0;
+                const rsleevePrintPrice =
+                    item.print && item.print.rsleeve.file
+                        ? item.print.rsleeve.cartParams.price
+                        : 0;
 
-      metrikaProducts.push({
-        id: item.attributes._id,
-        name:
-          printTotalprice > 0
-            ? `${item.attributes.name} с печатью`
-            : item.attributes.name,
-        price: item.attributes.price + printTotalprice,
-        category: item.attributes.category,
-        variant: item.print ? "с печатью" : "без печати",
-        quantity: item.attributes.qty,
-      });
-    });
+                const printTotalprice =
+                    frontPrintPrice +
+                    backPrintPrice +
+                    lsleevePrintPrice +
+                    rsleevePrintPrice;
 
-    window.dataLayer.push({
-      ecommerce: {
-        currencyCode: "RUB",
-        purchase: {
-          actionField: {
-            id: uuidv4(),
-            revenue: totalPrice,
-          },
-          products: metrikaProducts,
-        },
-      },
-    });
+                metrikaProducts.push({
+                    id: item.attributes._id,
+                    name:
+                        printTotalprice > 0
+                            ? `${item.attributes.name} с печатью`
+                            : item.attributes.name,
+                    price: item.attributes.price + printTotalprice,
+                    category: item.attributes.category,
+                    variant: item.print ? 'с печатью' : 'без печати',
+                    quantity: item.attributes.qty,
+                });
+            });
 
-    dispatch(
-      createOrder(
-        order,
-        totalPrice,
-        discounted_price,
-        userCartData,
-        validPromoCode
-      )
-    );
-  };
+            window.dataLayer.push({
+                ecommerce: {
+                    currencyCode: 'RUB',
+                    purchase: {
+                        actionField: {
+                            id: uuidv4(),
+                            revenue: totalPrice,
+                        },
+                        products: metrikaProducts,
+                    },
+                },
+            });
 
-  const clearCartHandler = () => {
-    dispatch({ type: CLEAR_CART });
-  };
+            dispatch(
+                createOrder(
+                    order,
+                    totalPrice,
+                    discounted_price,
+                    userCartData,
+                    validPromoCode,
+                ),
+            );
+        }
+    };
+
+    const clearCartHandler = () => {
+        dispatch({ type: CLEAR_CART });
+    };
 
   const deleteItemFromCart = (e) => {
     dispatch({
@@ -363,89 +381,117 @@ const CartPage = () => {
     }
   };
 
+    //console.log(validPromoCode)
 
-  
-  return (
-    <section className={styles.screen}>
-      <div className={styles.cart_title_box}>
-        <h1 className={styles.cart_title}>
-          КОРЗИНА / <i>CART</i>
-        </h1>
-        <button type="button" className={styles.goback_button} onClick={close}>
-          &larr; НАЗАД
-        </button>
-      </div>
-
-      <ul className={styles.cart_container}>
-        {order &&
-          order.map((item) => {
-            return (
-              <li className={styles.cart_item} key={item.cart_item_id}>
+    return (
+        <section className={styles.screen}>
+            <div className={styles.cart_title_box}>
+                <h1 className={styles.cart_title}>
+                    КОРЗИНА / <i>CART</i>
+                </h1>
                 <button
-                  type="button"
-                  className={styles.delete_item_from_cart}
-                  id={item.cart_item_id}
-                  onClick={deleteItemFromCart}
+                    type="button"
+                    className={styles.goback_button}
+                    onClick={close}
                 >
-                  x
+                    &larr; НАЗАД
                 </button>
-                <div className={styles.textile_description}>
-                  <div className={styles.desc_box}>
-                    <img
-                      src={`${apiBaseUrl}${item.attributes.image_url}`}
-                      alt="item pic"
-                      className={styles.item_img}
-                    ></img>
-                    <div className={styles.text_wrapper}>
-                      <h3 className={styles.title}>{item.attributes.name}</h3>
-                      <p className={styles.description}>
-                        Размер: {item.attributes.size}
-                      </p>
-                      <div className={styles.qty_input_wrapper}>
-                        <label
-                          htmfor={item.cart_item_id}
-                          className={styles.description}
-                        >
-                          Количество:
-                        </label>
-                        <button
-                          type="button"
-                          className={styles.input_control_button}
-                          name="decrease"
-                          onClick={(e) =>
-                            qtyChangeHandler(e, item.attributes.qty)
-                          }
-                          id={item.cart_item_id}
-                        >
-                          &larr;
-                        </button>
-                        <input
-                          type="number"
-                          className={styles.qty_input}
-                          value={item.attributes.qty}
-                          id={item.cart_item_id}
-                          onChange={onChange}
-                          readOnly={true}
-                          disabled
-                        ></input>
-                        <button
-                          type="button"
-                          className={styles.input_control_button}
-                          name="increase"
-                          id={item.cart_item_id}
-                          onClick={(e) =>
-                            qtyChangeHandler(e, item.attributes.qty)
-                          }
-                        >
-                          &rarr;
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <p className={styles.price}>
-                    = {item.attributes.price * item.attributes.qty} P.
-                  </p>
-                </div>
+            </div>
+
+            <ul className={styles.cart_container}>
+                {order &&
+                    order.map((item) => {
+                        return (
+                            <li
+                                className={styles.cart_item}
+                                key={item.cart_item_id}
+                            >
+                                <button
+                                    type="button"
+                                    className={styles.delete_item_from_cart}
+                                    id={item.cart_item_id}
+                                    onClick={deleteItemFromCart}
+                                >
+                                    x
+                                </button>
+                                <div className={styles.textile_description}>
+                                    <div className={styles.desc_box}>
+                                        <img
+                                            src={`${apiBaseUrl}${item.attributes.image_url}`}
+                                            alt="item pic"
+                                            className={styles.item_img}
+                                        />
+                                        <div className={styles.text_wrapper}>
+                                            <h3 className={styles.title}>
+                                                {item.attributes.name}
+                                            </h3>
+                                            <p className={styles.description}>
+                                                Размер: {item.attributes.size}
+                                            </p>
+                                            <div
+                                                className={
+                                                    styles.qty_input_wrapper
+                                                }
+                                            >
+                                                <label
+                                                    htmfor={item.cart_item_id}
+                                                    className={
+                                                        styles.description
+                                                    }
+                                                >
+                                                    Количество:
+                                                </label>
+                                                <button
+                                                    type="button"
+                                                    className={
+                                                        styles.input_control_button
+                                                    }
+                                                    name="decrease"
+                                                    onClick={(e) =>
+                                                        qtyChangeHandler(
+                                                            e,
+                                                            item.attributes.qty,
+                                                        )
+                                                    }
+                                                    id={item.cart_item_id}
+                                                >
+                                                    &larr;
+                                                </button>
+                                                <input
+                                                    type="number"
+                                                    className={styles.qty_input}
+                                                    value={item.attributes.qty}
+                                                    id={item.cart_item_id}
+                                                    onChange={onChange}
+                                                    readOnly={true}
+                                                    disabled
+                                                />
+                                                <button
+                                                    type="button"
+                                                    className={
+                                                        styles.input_control_button
+                                                    }
+                                                    name="increase"
+                                                    id={item.cart_item_id}
+                                                    onClick={(e) =>
+                                                        qtyChangeHandler(
+                                                            e,
+                                                            item.attributes.qty,
+                                                        )
+                                                    }
+                                                >
+                                                    &rarr;
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p className={styles.price}>
+                                        ={' '}
+                                        {item.attributes.price *
+                                            item.attributes.qty}{' '}
+                                        P.
+                                    </p>
+                                </div>
 
                 {item.print && item.print.front.file && (
                   <ItemPrint
@@ -718,19 +764,34 @@ const CartPage = () => {
           <button
             type="button"
             className={styles.control_button}
-            //onClick={createOrderHandler}
+            onClick={createOrderHandler}
             // раскоментировать при финальном пуше
-            onClick={() => {
-              console.log(userCartData);
-            }}
-            disabled={!isUserFormValid}
+            // onClick={() => {
+            //   console.log(userCartData);
+            // }}
+            // disabled={!isUserFormValid}
           ></button>
-          {!isUserFormValid && (
-            <p className={styles.validation_message}>Заполните поля:</p>
-          )}
-          {!isUserFormValid && (
-            <p className={styles.validation_message}>{validationMessage}</p>
-          )}
+          {isOtherPopupVisible && (
+                        <PopupModel onClose={handelClosePopup}>
+                            <div className={styles.popupBlock}>
+                                {!isUserFormValid && (
+                                    <p
+                                        className={`${styles.validation_message}`}
+                                    >
+                                        Заполните поля:
+                                    </p>
+                                )}
+                                {isOtherPopupVisible.map((el, index) => (
+                                    <p
+                                        className={`${styles.validation_message} ${styles.popupBlock_message}`}
+                                        key={index}
+                                    >
+                                        {el}
+                                    </p>
+                                ))}
+                            </div>
+                        </PopupModel>
+                    )}
         </div>
       </div>
 
