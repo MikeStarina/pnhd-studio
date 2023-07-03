@@ -22,6 +22,7 @@ import kassa from "../../components/images/kassa.png";
 import Mastercard from "../../components/images/Mastercard.png";
 import { checkPromoCodeValidity } from "../../services/actions/cart-actions";
 import { ShippingMap } from "../../components/shipping-components/shipping-map";
+import { ShippingSelect } from "../../components/shipping-components/shipping-select"
 import { v4 as uuidv4 } from "uuid";
 
 const CartPage = () => {
@@ -30,8 +31,11 @@ const CartPage = () => {
     sdek: false,
   });
   const [listCities, setListCities] = useState("");
-  const [listPoints, setListPoints] = useState("");  
+  const [listPoints, setListPoints] = useState(null);  
   const [typeList, setTypeList] = useState(false);
+  const [typeShipping, setTypeShipping] = useState(false);
+  const [test, settest] = useState([59.972621, 30.306432])
+  const [a, b] = useState()
   const history = useHistory();
   const {
     order,
@@ -46,19 +50,54 @@ const CartPage = () => {
     (store) => store.shippingData
   );
 
+
   const getShippingPoints = () => {
-    return shippingPoints.map((item) => {
-      return {name :item.name ,coordinates: [item.location.latitude, item.location.longitude] };
+    const c = shippingPoints.map((item) => {
+      return {name :item.name ,coordinates: [item.location.latitude, item.location.longitude], color: "#1E98FF" };
     });
+    b(c);
   };
 
-  const findShippingObject = (el) => {
+  const findShippingObject = (el, color) => {
+    if(el.name === " "){
+      setListPoints('');
+    }
     shippingPoints.forEach(item=>{
-      if(item.location.latitude === el.coordinates[0] && item.location.longitude === el.coordinates[1] ){
+      if(item.location.latitude === el.coordinates[0] && item.location.longitude === el.coordinates[1] ){        
         setListPoints(item);
       }
     })
+    if(color==='#00FF00'){
+      a.forEach(item=>{
+        item.color="#1E98FF";
+        if(item.name === el.name){ 
+          item.color='#00FF00';
+        }
+      })
+    }    
   }
+
+  const kurwa = (el, color) => {
+    if(color==='#00FF00'){
+      a.forEach(item=>{
+        item.color="#1E98FF";
+        if(item.name === el.name){ 
+          item.color='#00FF00';
+        }
+      })
+    }
+  }
+
+  const onChangeSelect = (elem) => {
+    shippingPoints.forEach(item=>{
+      if (item.name.toLowerCase().indexOf(elem.name.toLowerCase()) != -1) {
+        setListPoints(item);
+        kurwa(elem, '#00FF00');
+        settest([item.location.latitude, item.location.longitude]);
+          }
+    })
+    
+  };
   const { phone } = userCartData;
 
   let regex = /[^0-9]/gi;
@@ -282,12 +321,15 @@ const CartPage = () => {
         pickup: true,
         sdek: false,
       });
+      setTypeShipping(false);
+      settest([59.972621, 30.306432]);
     }
     if (type === "сдэк") {
       setTypeDelivery({
         pickup: false,
         sdek: true,
       });
+      getShippingPoints();
     }
   };
   //console.log(validPromoCode)
@@ -306,7 +348,23 @@ const CartPage = () => {
       return list;
     }
   };
+  const getPoints = (elem) => {
+    const list = [];
+    if (elem.length >= 3) {
+      shippingPoints.forEach((item) => {
+        if (list.length != 5) {
+          if (item.name.toLowerCase().indexOf(elem.toLowerCase()) != -1) {
+            list.push(item);
+          }
+        }
+        return;
+      });
+      return list;
+    }
+  };
 
+
+  
   return (
     <section className={styles.screen}>
       <div className={styles.cart_title_box}>
@@ -505,6 +563,7 @@ const CartPage = () => {
                 onClick={() => {
                   setRadioDelivery("самовывоз");
                   setListCities("");
+                  setListPoints('');
                 }}
                 defaultChecked
               />
@@ -564,21 +623,48 @@ const CartPage = () => {
                   <>
                     <p>Доставка до пункта выдачи: {shippingTarif.total_sum}</p>
                     <p>Выберите пункт выдачи: </p>
-                    <input
+                    <ShippingSelect options={a} onChange={onChangeSelect}
+            defaultValue={"Выберите пункт выдачи:"} editValue={listPoints}/>
+                    {/* <input
                       type="text"
                       className={styles.user_form_input}
                       required={true}
                       value={listPoints.name || listPoints}
                       onChange={(e) => {
-                        setListCities(e.target.value);
+                        setListPoints(e.target.value);                        
                       }}
-                    ></input>
+                    ></input> */}
+                    {true &&(
+                    <>
+                    {/* <div className={styles.cities_wrap}>
+                    <ul className={styles.cities_list}>
+                      {(getPoints(listPoints) || []).map((item, index) => {
+                        return (
+                          <li
+                            key={index}
+                            onClick={() => {
+                              setListPoints(item);
+                              setTypeShipping(true);
+                              settest([item.location.latitude, item.location.longitude]);
+                              
+                              kurwa(item, '#00FF00');
+                            }}
+                            className={styles.cities_listItem}
+                          >
+                            {item.name}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                    
+                  </div> */}
+                  <ShippingMap points={a} updatePointInput={findShippingObject} setCenter={test}/></> )}
                   </>
                 )}
               </>
             )}
           </form>
-          <ShippingMap points={getShippingPoints()} updatePointInput={findShippingObject}/>
+          
         </div>
         <div className={styles.cart_controls}>
           {order.length > 0 && (
