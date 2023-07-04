@@ -8,7 +8,8 @@ const {
   options,
   onChange,
   extraClass = "",
-  editValue
+  editValue,
+  errBorder
 } = props;
 const [selectedValue, setSelectedValue] = useState(null);
 const { toggle, isOpen } = useViewOnClick();
@@ -27,7 +28,8 @@ const handleItemSelectClick = (option) => {
 
 
 return (
-  <div className={styles.dropdown_container}>
+  <div className={styles.test}>
+    <div className={!errBorder? `${styles.dropdown_container} ${styles.dropdown_container_error}`:styles.dropdown_container}>
     <div onClick={toggle} className={styles.dropdown_input}>
       <div className={styles.dropdown_selected_value}>{getSelectValue()}</div>
       <div className={styles.dropdown_tools}></div>
@@ -49,6 +51,7 @@ return (
         </div>
       )}
     </div>
+  </div>
   </div>
 );
 }

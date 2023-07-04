@@ -39,7 +39,8 @@ import useDebounce from "../../hooks/useDebounce";
 
 const CartPage = () => {
   const [debounceCities, setDebounceCities] = useState([]);
-  const [checkInput, setChekInput] = useState(true);
+  const [checkInput, setChekInput] = useState(true);  
+  const [checkSelect, setChekSelect] = useState(true);
   const [typeDelivery, setTypeDelivery] = useState({
     pickup: true,
     sdek: false,
@@ -95,6 +96,7 @@ const CartPage = () => {
           payload: { item: { ...item }, isPvzValid: true },
         });
         setListPoints(item);
+        setChekSelect(true);
       }
     });
     if (color === "#00FF00") {
@@ -127,6 +129,7 @@ const CartPage = () => {
         setListPoints(item);
         kurwa(elem, "#00FF00");
         settest([item.location.latitude, item.location.longitude]);
+        setChekSelect(true);
       }
     });
   };
@@ -288,6 +291,9 @@ const CartPage = () => {
       if (!userShippingData.isCityValid) {
         setChekInput(false);
       }
+      if (!userShippingData.isPvzValid) {
+        setChekSelect(false);
+      }
       dispatch(openPopup([validationMessage]));
     } else {
       const metrikaProducts = [];
@@ -439,6 +445,11 @@ const CartPage = () => {
       setListCities(listCities);
       getCities(listCities);
     }
+    // else{
+    //   setListCities('');
+    //   getCities([]);
+    //   console.log('kurwa');
+    // }
   }, [debouncedSearchTerm]);
 
   return (
@@ -737,6 +748,7 @@ const CartPage = () => {
                       onChange={onChangeSelect}
                       defaultValue={"Выберите пункт выдачи:"}
                       editValue={listPoints}
+                      errBorder={checkSelect}
                     />
                     {true && (
                       <>
