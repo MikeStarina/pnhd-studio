@@ -136,8 +136,6 @@ const CartPage = () => {
     }
   }})
 
-
-console.log(userShippingData)
   const isUserFormValid =
     userCartData.isNameValid &&
     userCartData.isPhoneValid &&

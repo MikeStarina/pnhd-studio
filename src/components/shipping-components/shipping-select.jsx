@@ -3,20 +3,6 @@ import { useViewOnClick } from "../../hooks/useViewOnClick";
 import styles from './shipping-select.module.css'
 
 export const ShippingSelect = (props) => {
-//   const { data } = props;
-//   const [value, setValue] = useState('');
-//   // return <p>1213</p>
-//   const handleChange = (event) => {
-//     setValue(event.target.value);
-//   };
-//   console.log(value)
-//  return (
-//     <select name="" id="" value={value} onChange={handleChange}>
-//       {data.map((item, index) => {
-//         return <option key={index} value={item.name} >{item.name}</option>
-//       }) }
-//     </select>
-//   )
 const {
   defaultValue,
   options,
