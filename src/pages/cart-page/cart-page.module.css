@@ -338,9 +338,18 @@
     border: 1px solid transparent;
 }
 
+.user_form_inputError {
+    border: 1px solid red;
+}
+
 .user_form_input:focus {
     outline: 1px solid rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.user_form_inputError:focus {
+    border: 1px solid red;    
+    outline: none;
 }
 
 .input_control_button {

@@ -6,6 +6,9 @@ import {
     CREATE_NEW_USER,
     SET_FORGOT_PASSWORD_DATA,
     SET_USER_DATA,
+    SET_SHIPPING_CITIES,
+    SET_SHIPPING_PVZ,
+    SET_DEFOULT_SHIPPING,
 } from "../actions/user-data-actions";
 
 
@@ -40,6 +43,12 @@ const initialState = {
         phone: '',
         isPhoneValid: false,
         isFormValid: false,
+    },
+    userShippingData: {
+        city:'',
+        isCityValid: true,
+        pvz:null,
+        isPvzValid: true,
     }
 }
 
@@ -143,7 +152,31 @@ export const userDataReducer = (state = initialState, action) => {
                 }
             }
         }
+        case SET_SHIPPING_CITIES: {
+            return {
+                ...state,
+                userShippingData: {...state.userShippingData, city: action.payload.item, isCityValid: action.payload.isCityValid}
+            }
+        }
 
+        case SET_SHIPPING_PVZ :{
+            return {
+                ...state,
+                userShippingData: {...state.userShippingData, pvz: action.payload.item, isPvzValid: action.payload.isPvzValid }
+            }
+        }
+
+        case SET_DEFOULT_SHIPPING :{
+            return{
+                ...state,
+                userShippingData: {
+                    city:'',
+                    isCityValid: false,
+                    pvz:null,
+                    isPvzValid: false,
+                }
+            }
+        }
 
         default: return state;
     }
