@@ -3,35 +3,42 @@ import styles from "./cart-page.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import {
-    CHANGE_ITEM_QTY,
-    CLEAR_CART,
-    SET_CART_VISIBILITY,
-    DELETE_ITEM_FROM_CART,
-    DELETE_PRINT_FROM_CART,
-    GET_USER_PROMOCODE,
-    DELETE_ACTIVE_PROMOCODE,
-} from '../../services/actions/cart-actions';
-import { SET_USER_DATA, SET_SHIPPING_CITIES, SET_SHIPPING_PVZ,SET_DEFOULT_SHIPPING } from '../../services/actions/user-data-actions';
-import { createOrder } from '../../services/actions/cart-actions';
-import ItemPrint from '../../components/cart-page-components/item-print';
-import closeicon from '../../components/images/closeIcon.svg';
-import { apiBaseUrl } from '../../utils/constants';
-import mir from '../../components/images/mir.png';
-import visa from '../../components/images/visa.png';
-import kassa from '../../components/images/kassa.png';
-import Mastercard from '../../components/images/Mastercard.png';
-import { checkPromoCodeValidity } from '../../services/actions/cart-actions';
-import { ShippingMap } from "../../components/shipping-components/shipping-map";
-import { ShippingSelect } from "../../components/shipping-components/shipping-select"
-import { v4 as uuidv4 } from 'uuid';
-import PopupModel from '../../components/popupModel/popupModel';
+  CHANGE_ITEM_QTY,
+  CLEAR_CART,
+  SET_CART_VISIBILITY,
+  DELETE_ITEM_FROM_CART,
+  DELETE_PRINT_FROM_CART,
+  GET_USER_PROMOCODE,
+  DELETE_ACTIVE_PROMOCODE,
+} from "../../services/actions/cart-actions";
 import {
-    SET_POPUP_VISIBILITY,
-    openPopup,
-    closePopup,
-} from '../../services/actions/utility-actions';
+  SET_USER_DATA,
+  SET_SHIPPING_CITIES,
+  SET_SHIPPING_PVZ,
+  SET_DEFOULT_SHIPPING,
+} from "../../services/actions/user-data-actions";
+import { createOrder } from "../../services/actions/cart-actions";
+import ItemPrint from "../../components/cart-page-components/item-print";
+import closeicon from "../../components/images/closeIcon.svg";
+import { apiBaseUrl } from "../../utils/constants";
+import mir from "../../components/images/mir.png";
+import visa from "../../components/images/visa.png";
+import kassa from "../../components/images/kassa.png";
+import Mastercard from "../../components/images/Mastercard.png";
+import { checkPromoCodeValidity } from "../../services/actions/cart-actions";
+import { ShippingMap } from "../../components/shipping-components/shipping-map";
+import { ShippingSelect } from "../../components/shipping-components/shipping-select";
+import { v4 as uuidv4 } from "uuid";
+import PopupModel from "../../components/popupModel/popupModel";
+import {
+  SET_POPUP_VISIBILITY,
+  openPopup,
+  closePopup,
+} from "../../services/actions/utility-actions";
+import useDebounce from "../../hooks/useDebounce";
 
 const CartPage = () => {
+  const [debounceCities, setDebounceCities] = useState([]);
   const [checkInput, setChekInput] = useState(true);
   const [typeDelivery, setTypeDelivery] = useState({
     pickup: true,
@@ -39,11 +46,11 @@ const CartPage = () => {
   });
   const [listCities, setListCities] = useState("");
   const [shippingPrice, setShippingPrice] = useState(0);
-  const [listPoints, setListPoints] = useState(null);  
+  const [listPoints, setListPoints] = useState(null);
   const [typeList, setTypeList] = useState(false);
   const [typeShipping, setTypeShipping] = useState(false);
-  const [test, settest] = useState([59.972621, 30.306432])
-  const [a, b] = useState()
+  const [test, settest] = useState([59.972621, 30.306432]);
+  const [a, b] = useState();
   const history = useHistory();
   const {
     order,
@@ -53,58 +60,75 @@ const CartPage = () => {
     promocodeFail,
     validPromoCode,
   } = useSelector((store) => store.cartData);
-  const { userCartData, userShippingData } = useSelector((store) => store.userData);
+  const { userCartData, userShippingData } = useSelector(
+    (store) => store.userData
+  );
   const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
   const { shippingCities, shippingTarif, shippingPoints } = useSelector(
     (store) => store.shippingData
   );
+
+  console.log(userShippingData);
+
   const getShippingPoints = () => {
     const c = shippingPoints.map((item) => {
-      return {name :item.name ,coordinates: [item.location.latitude, item.location.longitude], color: "#1E98FF" };
+      return {
+        name: item.name,
+        coordinates: [item.location.latitude, item.location.longitude],
+        color: "#1E98FF",
+      };
     });
     b(c);
   };
   const dispatch = useDispatch();
   const findShippingObject = (el, color) => {
-    if(el.name === " "){
-      setListPoints('');
+    if (el.name === " ") {
+      setListPoints("");
     }
-    shippingPoints.forEach(item=>{
-      if(item.location.latitude === el.coordinates[0] && item.location.longitude === el.coordinates[1] ){        
-        dispatch({type: SET_SHIPPING_PVZ, payload:{ item:{...item}, isPvzValid:true}});
+    shippingPoints.forEach((item) => {
+      if (
+        item.location.latitude === el.coordinates[0] &&
+        item.location.longitude === el.coordinates[1]
+      ) {
+        dispatch({
+          type: SET_SHIPPING_PVZ,
+          payload: { item: { ...item }, isPvzValid: true },
+        });
         setListPoints(item);
       }
-    })
-    if(color==='#00FF00'){
-      a.forEach(item=>{
-        item.color="#1E98FF";
-        if(item.name === el.name){ 
-          item.color='#00FF00';
+    });
+    if (color === "#00FF00") {
+      a.forEach((item) => {
+        item.color = "#1E98FF";
+        if (item.name === el.name) {
+          item.color = "#00FF00";
         }
-      })
-    }    
-  }
-  const kurwa = (el, color) => {
-    if(color==='#00FF00'){
-      a.forEach(item=>{
-        item.color="#1E98FF";
-        if(item.name === el.name){ 
-          item.color='#00FF00';
-        }
-      })
+      });
     }
-  }
+  };
+  const kurwa = (el, color) => {
+    if (color === "#00FF00") {
+      a.forEach((item) => {
+        item.color = "#1E98FF";
+        if (item.name === el.name) {
+          item.color = "#00FF00";
+        }
+      });
+    }
+  };
 
   const onChangeSelect = (elem) => {
-    shippingPoints.forEach(item=>{
+    shippingPoints.forEach((item) => {
       if (item.name.toLowerCase().indexOf(elem.name.toLowerCase()) != -1) {
-        dispatch({type: SET_SHIPPING_PVZ, payload: {item: {...item}, isPvzValid: true}});
+        dispatch({
+          type: SET_SHIPPING_PVZ,
+          payload: { item: { ...item }, isPvzValid: true },
+        });
         setListPoints(item);
-        kurwa(elem, '#00FF00');
+        kurwa(elem, "#00FF00");
         settest([item.location.latitude, item.location.longitude]);
-          }
-    })
-    
+      }
+    });
   };
   const { phone } = userCartData;
 
@@ -117,24 +141,30 @@ const CartPage = () => {
     }
   }
 
-  useEffect(()=>{if(typeList){
-    
-    if(listCities.city != userShippingData.city.city){
-      dispatch({type: SET_SHIPPING_CITIES, payload: {item: '', isCityValid: false}});
-      
-    
-      if(userShippingData.isPvzValid){
-        dispatch({type: SET_SHIPPING_PVZ, payload:{ item:null, isPvzValid:false}});
+  useEffect(() => {
+    if (typeList) {
+      if (listCities.city != userShippingData.city.city) {
+        dispatch({
+          type: SET_SHIPPING_CITIES,
+          payload: { item: "", isCityValid: false },
+        });
+
+        if (userShippingData.isPvzValid) {
+          dispatch({
+            type: SET_SHIPPING_PVZ,
+            payload: { item: null, isPvzValid: false },
+          });
+          // settest([59.972621, 30.306432]);
+        }
+        setShippingPrice(0);
+        setTypeList(false);
         settest([59.972621, 30.306432]);
+        setListPoints(null);
+        setTypeShipping(false);
+        getShippingPoints();
       }
-      setShippingPrice(0);      
-      setTypeList(false);
-      settest([59.972621, 30.306432]);
-      setListPoints(null);
-      setTypeShipping(false);
-      getShippingPoints()
     }
-  }})
+  });
 
   const isUserFormValid =
     userCartData.isNameValid &&
@@ -148,7 +178,9 @@ const CartPage = () => {
     !userCartData.isPhoneValid ? "Телефон" : ""
   } ${!userCartData.isEmailValid ? "Email" : ""} ${
     !userCartData.isSurnameValid ? "Фамилия" : ""
-  } ${!userShippingData.isCityValid ? 'Город':""} ${!userShippingData.isPvzValid ? 'Пункт Выдачи':''}`;
+  } ${!userShippingData.isCityValid ? "Город" : ""} ${
+    !userShippingData.isPvzValid ? "Пункт Выдачи" : ""
+  }`;
   //console.log(isUserFormValid);
 
   if (paymentUrl) {
@@ -159,77 +191,74 @@ const CartPage = () => {
     });
   }
 
-    const totalPrice = order.reduce((acc, item) => {
-        let printTotalprice = 0;
-        //console.log(item.print)
-        //console.log(item.print.back)
-        const frontPrintPrice =
-            item.print && item.print.front.file
-                ? item.print.front.cartParams.price
-                : 0;
-        const backPrintPrice =
-            item.print && item.print.back.file
-                ? item.print.back.cartParams.price
-                : 0;
-        const lsleevePrintPrice =
-            item.print && item.print.lsleeve.file
-                ? item.print.lsleeve.cartParams.price
-                : 0;
-        const rsleevePrintPrice =
-            item.print && item.print.rsleeve.file
-                ? item.print.rsleeve.cartParams.price
-                : 0;
-        const badgePrintPrice =
-            item.print && item.print.badge.file
-                ? item.print.badge.cartParams.price
-                : 0;
+  const totalPrice = order.reduce((acc, item) => {
+    let printTotalprice = 0;
+    //console.log(item.print)
+    //console.log(item.print.back)
+    const frontPrintPrice =
+      item.print && item.print.front.file
+        ? item.print.front.cartParams.price
+        : 0;
+    const backPrintPrice =
+      item.print && item.print.back.file ? item.print.back.cartParams.price : 0;
+    const lsleevePrintPrice =
+      item.print && item.print.lsleeve.file
+        ? item.print.lsleeve.cartParams.price
+        : 0;
+    const rsleevePrintPrice =
+      item.print && item.print.rsleeve.file
+        ? item.print.rsleeve.cartParams.price
+        : 0;
+    const badgePrintPrice =
+      item.print && item.print.badge.file
+        ? item.print.badge.cartParams.price
+        : 0;
 
-        printTotalprice =
-            frontPrintPrice +
-            backPrintPrice +
-            lsleevePrintPrice +
-            rsleevePrintPrice +
-            badgePrintPrice;
+    printTotalprice =
+      frontPrintPrice +
+      backPrintPrice +
+      lsleevePrintPrice +
+      rsleevePrintPrice +
+      badgePrintPrice;
 
-        acc =
-            acc +
-            item.attributes.price * item.attributes.qty +
-            printTotalprice * item.attributes.qty;
+    acc =
+      acc +
+      item.attributes.price * item.attributes.qty +
+      printTotalprice * item.attributes.qty;
 
-        return acc;
-    }, 0);
+    return acc;
+  }, 0);
 
-    const discounted_price = validPromoCode.discount_ratio
-        ? (totalPrice * validPromoCode.discount_ratio) + shippingPrice
-        : totalPrice  + shippingPrice;
+  const discounted_price = validPromoCode.discount_ratio
+    ? totalPrice * validPromoCode.discount_ratio + shippingPrice
+    : totalPrice + shippingPrice;
 
-    useEffect(() => {
-        dispatch({
-            type: SET_CART_VISIBILITY,
-            payload: false,
-        });
+  useEffect(() => {
+    dispatch({
+      type: SET_CART_VISIBILITY,
+      payload: false,
+    });
 
-
-        return () => {
-            dispatch({ type: SET_CART_VISIBILITY, payload: true });
-        };
-    }, []);
-
-    const qtyChangeHandler = (e, qty) => {
-        let newValue = qty;
-        if (e.target.name === 'increase') {
-            newValue++;
-        } else {
-            newValue--;
-        }
-
-        dispatch({
-            type: CHANGE_ITEM_QTY,
-            qty: newValue,
-            id: e.target.id,
-        });
+    return () => {
+      dispatch({ type: SET_CART_VISIBILITY, payload: true });
     };
-    const onChange = (e) => {};
+  }, []);
+
+  const qtyChangeHandler = (e, qty) => {
+    let newValue = qty;
+    if (e.target.name === "increase") {
+      newValue++;
+    } else {
+      newValue--;
+    }
+
+    dispatch({
+      type: CHANGE_ITEM_QTY,
+      qty: newValue,
+      id: e.target.id,
+    });
+  };
+  const onChange = (e) => {};
 
   const inputChangeHandler = (e) => {
     let value;
@@ -246,85 +275,87 @@ const CartPage = () => {
     });
   };
 
-    const close = () => {
-        history.goBack();
-    };
+  const close = () => {
+    history.goBack();
+  };
 
-    const handelClosePopup = () => {
-        dispatch(closePopup());
-    };
+  const handelClosePopup = () => {
+    dispatch(closePopup());
+  };
 
-    const createOrderHandler = () => {
-        if (!isUserFormValid) {
-          if(!userShippingData.isCityValid){setChekInput(false)}
-            dispatch(openPopup([validationMessage]));
-        } else {
-            const metrikaProducts = [];
-            order.forEach((item) => {
-                const frontPrintPrice =
-                    item.print && item.print.front.file
-                        ? item.print.front.cartParams.price
-                        : 0;
-                const backPrintPrice =
-                    item.print && item.print.back.file
-                        ? item.print.back.cartParams.price
-                        : 0;
-                const lsleevePrintPrice =
-                    item.print && item.print.lsleeve.file
-                        ? item.print.lsleeve.cartParams.price
-                        : 0;
-                const rsleevePrintPrice =
-                    item.print && item.print.rsleeve.file
-                        ? item.print.rsleeve.cartParams.price
-                        : 0;
+  const createOrderHandler = () => {
+    if (!isUserFormValid) {
+      if (!userShippingData.isCityValid) {
+        setChekInput(false);
+      }
+      dispatch(openPopup([validationMessage]));
+    } else {
+      const metrikaProducts = [];
+      order.forEach((item) => {
+        const frontPrintPrice =
+          item.print && item.print.front.file
+            ? item.print.front.cartParams.price
+            : 0;
+        const backPrintPrice =
+          item.print && item.print.back.file
+            ? item.print.back.cartParams.price
+            : 0;
+        const lsleevePrintPrice =
+          item.print && item.print.lsleeve.file
+            ? item.print.lsleeve.cartParams.price
+            : 0;
+        const rsleevePrintPrice =
+          item.print && item.print.rsleeve.file
+            ? item.print.rsleeve.cartParams.price
+            : 0;
 
-                const printTotalprice =
-                    frontPrintPrice +
-                    backPrintPrice +
-                    lsleevePrintPrice +
-                    rsleevePrintPrice;
+        const printTotalprice =
+          frontPrintPrice +
+          backPrintPrice +
+          lsleevePrintPrice +
+          rsleevePrintPrice;
 
-                metrikaProducts.push({
-                    id: item.attributes._id,
-                    name:
-                        printTotalprice > 0
-                            ? `${item.attributes.name} с печатью`
-                            : item.attributes.name,
-                    price: item.attributes.price + printTotalprice,
-                    category: item.attributes.category,
-                    variant: item.print ? 'с печатью' : 'без печати',
-                    quantity: item.attributes.qty,
-                });
-            });
+        metrikaProducts.push({
+          id: item.attributes._id,
+          name:
+            printTotalprice > 0
+              ? `${item.attributes.name} с печатью`
+              : item.attributes.name,
+          price: item.attributes.price + printTotalprice,
+          category: item.attributes.category,
+          variant: item.print ? "с печатью" : "без печати",
+          quantity: item.attributes.qty,
+        });
+      });
 
-            window.dataLayer.push({
-                ecommerce: {
-                    currencyCode: 'RUB',
-                    purchase: {
-                        actionField: {
-                            id: uuidv4(),
-                            revenue: totalPrice,
-                        },
-                        products: metrikaProducts,
-                    },
-                },
-            });
+      window.dataLayer.push({
+        ecommerce: {
+          currencyCode: "RUB",
+          purchase: {
+            actionField: {
+              id: uuidv4(),
+              revenue: totalPrice,
+            },
+            products: metrikaProducts,
+          },
+        },
+      });
 
-            dispatch(
-                createOrder(
-                    order,
-                    totalPrice,
-                    discounted_price,
-                    userCartData,
-                    validPromoCode,
-                ),
-            );
-        }
-    };
+      dispatch(
+        createOrder(
+          order,
+          totalPrice,
+          discounted_price,
+          userCartData,
+          validPromoCode
+        )
+      );
+    }
+  };
 
-    const clearCartHandler = () => {
-        dispatch({ type: CLEAR_CART });
-    };
+  const clearCartHandler = () => {
+    dispatch({ type: CLEAR_CART });
+  };
 
   const deleteItemFromCart = (e) => {
     dispatch({
@@ -380,134 +411,117 @@ const CartPage = () => {
         }
         return;
       });
-      
-      return list;
-    }
-  };
-  const getPoints = (elem) => {
-    const list = [];
-    if (elem.length >= 3) {
-      shippingPoints.forEach((item) => {
-        if (list.length != 5) {
-          if (item.name.toLowerCase().indexOf(elem.toLowerCase()) != -1) {
-            list.push(item);
-          }
-        }
-        return;
-      });
-      return list;
-    }
-  };
 
-    return (
-        <section className={styles.screen}>
-            <div className={styles.cart_title_box}>
-                <h1 className={styles.cart_title}>
-                    КОРЗИНА / <i>CART</i>
-                </h1>
+      // return list;
+      setDebounceCities(list);
+    } else if (elem.length < 3) {
+      setDebounceCities([]);
+    }
+  };
+  // const getPoints = (elem) => {
+  //   const list = [];
+  //   if (elem.length >= 3) {
+  //     shippingPoints.forEach((item) => {
+  //       if (list.length != 5) {
+  //         if (item.name.toLowerCase().indexOf(elem.toLowerCase()) != -1) {
+  //           list.push(item);
+  //         }
+  //       }
+  //       return;
+  //     });
+  //     return list;
+  //   }
+  // };
+  const debouncedSearchTerm = useDebounce(listCities, 500);
+
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      setListCities(listCities);
+      getCities(listCities);
+    }
+  }, [debouncedSearchTerm]);
+
+  return (
+    <section className={styles.screen}>
+      <div className={styles.cart_title_box}>
+        <h1 className={styles.cart_title}>
+          КОРЗИНА / <i>CART</i>
+        </h1>
+        <button type="button" className={styles.goback_button} onClick={close}>
+          &larr; НАЗАД
+        </button>
+      </div>
+
+      <ul className={styles.cart_container}>
+        {order &&
+          order.map((item) => {
+            return (
+              <li className={styles.cart_item} key={item.cart_item_id}>
                 <button
-                    type="button"
-                    className={styles.goback_button}
-                    onClick={close}
+                  type="button"
+                  className={styles.delete_item_from_cart}
+                  id={item.cart_item_id}
+                  onClick={deleteItemFromCart}
                 >
-                    &larr; НАЗАД
+                  x
                 </button>
-            </div>
-
-            <ul className={styles.cart_container}>
-                {order &&
-                    order.map((item) => {
-                        return (
-                            <li
-                                className={styles.cart_item}
-                                key={item.cart_item_id}
-                            >
-                                <button
-                                    type="button"
-                                    className={styles.delete_item_from_cart}
-                                    id={item.cart_item_id}
-                                    onClick={deleteItemFromCart}
-                                >
-                                    x
-                                </button>
-                                <div className={styles.textile_description}>
-                                    <div className={styles.desc_box}>
-                                        <img
-                                            src={`${apiBaseUrl}${item.attributes.image_url}`}
-                                            alt="item pic"
-                                            className={styles.item_img}
-                                        />
-                                        <div className={styles.text_wrapper}>
-                                            <h3 className={styles.title}>
-                                                {item.attributes.name}
-                                            </h3>
-                                            <p className={styles.description}>
-                                                Размер: {item.attributes.size}
-                                            </p>
-                                            <div
-                                                className={
-                                                    styles.qty_input_wrapper
-                                                }
-                                            >
-                                                <label
-                                                    htmfor={item.cart_item_id}
-                                                    className={
-                                                        styles.description
-                                                    }
-                                                >
-                                                    Количество:
-                                                </label>
-                                                <button
-                                                    type="button"
-                                                    className={
-                                                        styles.input_control_button
-                                                    }
-                                                    name="decrease"
-                                                    onClick={(e) =>
-                                                        qtyChangeHandler(
-                                                            e,
-                                                            item.attributes.qty,
-                                                        )
-                                                    }
-                                                    id={item.cart_item_id}
-                                                >
-                                                    &larr;
-                                                </button>
-                                                <input
-                                                    type="number"
-                                                    className={styles.qty_input}
-                                                    value={item.attributes.qty}
-                                                    id={item.cart_item_id}
-                                                    onChange={onChange}
-                                                    readOnly={true}
-                                                    disabled
-                                                />
-                                                <button
-                                                    type="button"
-                                                    className={
-                                                        styles.input_control_button
-                                                    }
-                                                    name="increase"
-                                                    id={item.cart_item_id}
-                                                    onClick={(e) =>
-                                                        qtyChangeHandler(
-                                                            e,
-                                                            item.attributes.qty,
-                                                        )
-                                                    }
-                                                >
-                                                    &rarr;
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p className={styles.price}>
-                                        ={' '}
-                                        {item.attributes.price *
-                                            item.attributes.qty}{' '}
-                                        P.
-                                    </p>
-                                </div>
+                <div className={styles.textile_description}>
+                  <div className={styles.desc_box}>
+                    <img
+                      src={`${apiBaseUrl}${item.attributes.image_url}`}
+                      alt="item pic"
+                      className={styles.item_img}
+                    />
+                    <div className={styles.text_wrapper}>
+                      <h3 className={styles.title}>{item.attributes.name}</h3>
+                      <p className={styles.description}>
+                        Размер: {item.attributes.size}
+                      </p>
+                      <div className={styles.qty_input_wrapper}>
+                        <label
+                          htmfor={item.cart_item_id}
+                          className={styles.description}
+                        >
+                          Количество:
+                        </label>
+                        <button
+                          type="button"
+                          className={styles.input_control_button}
+                          name="decrease"
+                          onClick={(e) =>
+                            qtyChangeHandler(e, item.attributes.qty)
+                          }
+                          id={item.cart_item_id}
+                        >
+                          &larr;
+                        </button>
+                        <input
+                          type="number"
+                          className={styles.qty_input}
+                          value={item.attributes.qty}
+                          id={item.cart_item_id}
+                          onChange={onChange}
+                          readOnly={true}
+                          disabled
+                        />
+                        <button
+                          type="button"
+                          className={styles.input_control_button}
+                          name="increase"
+                          id={item.cart_item_id}
+                          onClick={(e) =>
+                            qtyChangeHandler(e, item.attributes.qty)
+                          }
+                        >
+                          &rarr;
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <p className={styles.price}>
+                    = {item.attributes.price * item.attributes.qty} P.
+                  </p>
+                </div>
 
                 {item.print && item.print.front.file && (
                   <ItemPrint
@@ -625,11 +639,18 @@ const CartPage = () => {
                 onClick={() => {
                   setRadioDelivery("самовывоз");
                   setListCities("");
-                  setListPoints('');
+                  setDebounceCities([]);
+                  setListPoints("");
                   setShippingPrice(0);
                   setListPoints(null);
-                  dispatch({type: SET_SHIPPING_CITIES, payload: {item: '', isCityValid: true}})
-                  dispatch({type: SET_SHIPPING_PVZ, payload:{ item:null, isPvzValid:true}});
+                  dispatch({
+                    type: SET_SHIPPING_CITIES,
+                    payload: { item: "", isCityValid: true },
+                  });
+                  dispatch({
+                    type: SET_SHIPPING_PVZ,
+                    payload: { item: null, isPvzValid: true },
+                  });
                 }}
                 defaultChecked
               />
@@ -642,46 +663,62 @@ const CartPage = () => {
                 name="radio"
                 value="2"
                 onClick={() => {
-                  setRadioDelivery("сдэк");
+                  setRadioDelivery("сдэк"); 
+                  setListCities("");
+                  setDebounceCities([]);
+                  setListPoints("");
+                  setShippingPrice(0);
+                  setListPoints(null);
+                  setTypeList(false);
+                  settest([59.972621, 30.306432]);
+                  dispatch({
+                    type: SET_SHIPPING_CITIES,
+                    payload: { item: "", isCityValid: false },
+                  });
+                  dispatch({
+                    type: SET_SHIPPING_PVZ,
+                    payload: {item:null, isPvzValid: false },
+                  });
                 }}
               />
-              <label
-                htmlFor="radioSdek"
-                onClick={() => {
-                  setTypeList(false);
-                  dispatch({type: SET_SHIPPING_CITIES, payload: {isCityValid: false}})
-                  dispatch({type: SET_SHIPPING_PVZ, payload:{ isPvzValid:false}});
-                }}
-              >
-                Доставка СДЭК
-              </label>
+              <label htmlFor="radioSdek">Доставка СДЭК</label>
             </div>
             {typeDelivery.sdek && (
               <>
                 <input
                   type="text"
-                  className={checkInput? styles.user_form_input:`${styles.user_form_input} ${styles.user_form_inputError}`}
+                  className={
+                    checkInput
+                      ? styles.user_form_input
+                      : `${styles.user_form_input} ${styles.user_form_inputError}`
+                  }
                   required={true}
                   value={listCities.city || listCities}
                   onChange={(e) => {
-                    
                     setListCities(e.target.value);
                   }}
                 ></input>
-                {/* !typeList */}
                 {!typeList ? (
                   <div className={styles.cities_wrap}>
                     <ul className={styles.cities_list}>
-                      {(getCities(listCities) || []).map((item, index) => {
+                      {/* {(getCities(listCities) || []).map((item, index) => { */}
+
+                      {debounceCities.map((item, index) => {
                         return (
                           <li
                             key={index}
                             onClick={() => {
                               setListCities(item);
-                              setTypeList(true);                          
+                              setTypeList(true);
                               setShippingPrice(shippingTarif.total_sum);
-                              dispatch({type: SET_SHIPPING_CITIES, payload: {item:{...item}, isCityValid: true}});
-                              setChekInput(true)
+                              dispatch({
+                                type: SET_SHIPPING_CITIES,
+                                payload: {
+                                  item: { ...item },
+                                  isCityValid: true,
+                                },
+                              });
+                              setChekInput(true);
                             }}
                             className={styles.cities_listItem}
                           >
@@ -695,48 +732,26 @@ const CartPage = () => {
                   <>
                     <p>Доставка до пункта выдачи: {shippingPrice}</p>
                     <p>Выберите пункт выдачи: </p>
-                    <ShippingSelect options={a} onChange={onChangeSelect}
-            defaultValue={"Выберите пункт выдачи:"} editValue={listPoints}/>
-                    {/* <input
-                      type="text"
-                      className={styles.user_form_input}
-                      required={true}
-                      value={listPoints.name || listPoints}
-                      onChange={(e) => {
-                        setListPoints(e.target.value);                        
-                      }}
-                    ></input> */}
-                    {true &&(
-                    <>
-                    {/* <div className={styles.cities_wrap}>
-                    <ul className={styles.cities_list}>
-                      {(getPoints(listPoints) || []).map((item, index) => {
-                        return (
-                          <li
-                            key={index}
-                            onClick={() => {
-                              setListPoints(item);
-                              setTypeShipping(true);
-                              settest([item.location.latitude, item.location.longitude]);
-                              
-                              kurwa(item, '#00FF00');
-                            }}
-                            className={styles.cities_listItem}
-                          >
-                            {item.name}
-                          </li>
-                        );
-                      })}
-                    </ul>
-                    
-                  </div> */}
-                  <ShippingMap points={a} updatePointInput={findShippingObject} setCenter={test}/></> )}
+                    <ShippingSelect
+                      options={a}
+                      onChange={onChangeSelect}
+                      defaultValue={"Выберите пункт выдачи:"}
+                      editValue={listPoints}
+                    />
+                    {true && (
+                      <>
+                        <ShippingMap
+                          points={a}
+                          updatePointInput={findShippingObject}
+                          setCenter={test}
+                        />
+                      </>
+                    )}
                   </>
                 )}
               </>
             )}
           </form>
-          
         </div>
         <div className={styles.cart_controls}>
           {order.length > 0 && (
@@ -798,26 +813,24 @@ const CartPage = () => {
             // disabled={!isUserFormValid}
           ></button>
           {isOtherPopupVisible && (
-                        <PopupModel onClose={handelClosePopup}>
-                            <div className={styles.popupBlock}>
-                                {!isUserFormValid && (
-                                    <p
-                                        className={`${styles.validation_message}`}
-                                    >
-                                        Заполните поля:
-                                    </p>
-                                )}
-                                {isOtherPopupVisible.map((el, index) => (
-                                    <p
-                                        className={`${styles.validation_message} ${styles.popupBlock_message}`}
-                                        key={index}
-                                    >
-                                        {el}
-                                    </p>
-                                ))}
-                            </div>
-                        </PopupModel>
-                    )}
+            <PopupModel onClose={handelClosePopup}>
+              <div className={styles.popupBlock}>
+                {!isUserFormValid && (
+                  <p className={`${styles.validation_message}`}>
+                    Заполните поля:
+                  </p>
+                )}
+                {isOtherPopupVisible.map((el, index) => (
+                  <p
+                    className={`${styles.validation_message} ${styles.popupBlock_message}`}
+                    key={index}
+                  >
+                    {el}
+                  </p>
+                ))}
+              </div>
+            </PopupModel>
+          )}
         </div>
       </div>
 
