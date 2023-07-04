@@ -9,7 +9,6 @@ export const SET_FORGOT_PASSWORD_DATA = 'SET_FORGOT_PASSWORD_DATA';
 export const SET_USER_DATA = 'SET_USER_DATA';
 export const SET_SHIPPING_CITIES = 'SET_SHIPPING_CITIES';
 export const SET_SHIPPING_PVZ = 'SET_SHIPPING_PVZ';
-export const SET_DEFOULT_SHIPPING = 'SET_DEFOULT_SHIPPING';
 
 
 export const loginFunc = (userLoginData) => {

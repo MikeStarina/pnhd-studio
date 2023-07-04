@@ -15,7 +15,6 @@ import {
   SET_USER_DATA,
   SET_SHIPPING_CITIES,
   SET_SHIPPING_PVZ,
-  SET_DEFOULT_SHIPPING,
 } from "../../services/actions/user-data-actions";
 import { createOrder } from "../../services/actions/cart-actions";
 import ItemPrint from "../../components/cart-page-components/item-print";
@@ -50,9 +49,8 @@ const CartPage = () => {
   const [listPoints, setListPoints] = useState(null);
   const [typeList, setTypeList] = useState(false);
   const [typeShipping, setTypeShipping] = useState(false);
-  const [test, settest] = useState([59.972621, 30.306432]);
-  const [a, b] = useState();
-  const history = useHistory();
+  const [centerMap, setCenterMap] = useState([59.972621, 30.306432]);
+  const [mapPoints, setMapPoints] = useState();
   const {
     order,
     paymentUrl,
@@ -68,20 +66,21 @@ const CartPage = () => {
   const { shippingCities, shippingTarif, shippingPoints } = useSelector(
     (store) => store.shippingData
   );
-
-  console.log(userShippingData);
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const debouncedSearchTerm = useDebounce(listCities, 500);
 
   const getShippingPoints = () => {
-    const c = shippingPoints.map((item) => {
+    const arr = shippingPoints.map((item) => {
       return {
         name: item.name,
         coordinates: [item.location.latitude, item.location.longitude],
         color: "#1E98FF",
       };
     });
-    b(c);
+    setMapPoints(arr);
   };
-  const dispatch = useDispatch();
+  
   const findShippingObject = (el, color) => {
     if (el.name === " ") {
       setListPoints("");
@@ -100,7 +99,7 @@ const CartPage = () => {
       }
     });
     if (color === "#00FF00") {
-      a.forEach((item) => {
+      mapPoints.forEach((item) => {
         item.color = "#1E98FF";
         if (item.name === el.name) {
           item.color = "#00FF00";
@@ -108,9 +107,10 @@ const CartPage = () => {
       });
     }
   };
-  const kurwa = (el, color) => {
+
+  const setPointColor = (el, color) => {
     if (color === "#00FF00") {
-      a.forEach((item) => {
+      mapPoints.forEach((item) => {
         item.color = "#1E98FF";
         if (item.name === el.name) {
           item.color = "#00FF00";
@@ -127,8 +127,8 @@ const CartPage = () => {
           payload: { item: { ...item }, isPvzValid: true },
         });
         setListPoints(item);
-        kurwa(elem, "#00FF00");
-        settest([item.location.latitude, item.location.longitude]);
+        setPointColor(elem, "#00FF00");
+        setCenterMap([item.location.latitude, item.location.longitude]);
         setChekSelect(true);
       }
     });
@@ -144,6 +144,7 @@ const CartPage = () => {
     }
   }
 
+
   useEffect(() => {
     if (typeList) {
       if (listCities.city != userShippingData.city.city) {
@@ -157,11 +158,10 @@ const CartPage = () => {
             type: SET_SHIPPING_PVZ,
             payload: { item: null, isPvzValid: false },
           });
-          // settest([59.972621, 30.306432]);
         }
         setShippingPrice(0);
         setTypeList(false);
-        settest([59.972621, 30.306432]);
+        setCenterMap([59.972621, 30.306432]);
         setListPoints(null);
         setTypeShipping(false);
         getShippingPoints();
@@ -394,7 +394,7 @@ const CartPage = () => {
         sdek: false,
       });
       setTypeShipping(false);
-      settest([59.972621, 30.306432]);
+      setCenterMap([59.972621, 30.306432]);
     }
     if (type === "сдэк") {
       setTypeDelivery({
@@ -417,40 +417,37 @@ const CartPage = () => {
         }
         return;
       });
-
-      // return list;
       setDebounceCities(list);
     } else if (elem.length < 3) {
       setDebounceCities([]);
     }
   };
-  // const getPoints = (elem) => {
-  //   const list = [];
-  //   if (elem.length >= 3) {
-  //     shippingPoints.forEach((item) => {
-  //       if (list.length != 5) {
-  //         if (item.name.toLowerCase().indexOf(elem.toLowerCase()) != -1) {
-  //           list.push(item);
-  //         }
-  //       }
-  //       return;
-  //     });
-  //     return list;
-  //   }
-  // };
-  const debouncedSearchTerm = useDebounce(listCities, 500);
+  
+  
 
   useEffect(() => {
     if (debouncedSearchTerm) {
       setListCities(listCities);
       getCities(listCities);
-    }
-    // else{
-    //   setListCities('');
-    //   getCities([]);
-    //   console.log('kurwa');
-    // }
+    }    
   }, [debouncedSearchTerm]);
+
+
+  const setDefoultShippingState = () =>{
+    setListCities("");
+    setDebounceCities([]);
+    setListPoints("");
+    setShippingPrice(0);
+    setListPoints(null);
+    setCenterMap([59.972621, 30.306432]);
+    dispatch({
+      type: SET_SHIPPING_CITIES,
+      payload: { item: "", isCityValid: false },
+    });
+    dispatch({
+      type: SET_SHIPPING_PVZ,
+      payload: {item:null, isPvzValid: false },
+    })}
 
   return (
     <section className={styles.screen}>
@@ -648,20 +645,8 @@ const CartPage = () => {
                 name="radio"
                 value="1"
                 onClick={() => {
-                  setRadioDelivery("самовывоз");
-                  setListCities("");
-                  setDebounceCities([]);
-                  setListPoints("");
-                  setShippingPrice(0);
-                  setListPoints(null);
-                  dispatch({
-                    type: SET_SHIPPING_CITIES,
-                    payload: { item: "", isCityValid: true },
-                  });
-                  dispatch({
-                    type: SET_SHIPPING_PVZ,
-                    payload: { item: null, isPvzValid: true },
-                  });
+                  setRadioDelivery("самовывоз");       
+                  setDefoultShippingState();
                 }}
                 defaultChecked
               />
@@ -675,21 +660,8 @@ const CartPage = () => {
                 value="2"
                 onClick={() => {
                   setRadioDelivery("сдэк"); 
-                  setListCities("");
-                  setDebounceCities([]);
-                  setListPoints("");
-                  setShippingPrice(0);
-                  setListPoints(null);
                   setTypeList(false);
-                  settest([59.972621, 30.306432]);
-                  dispatch({
-                    type: SET_SHIPPING_CITIES,
-                    payload: { item: "", isCityValid: false },
-                  });
-                  dispatch({
-                    type: SET_SHIPPING_PVZ,
-                    payload: {item:null, isPvzValid: false },
-                  });
+                  setDefoultShippingState();
                 }}
               />
               <label htmlFor="radioSdek">Доставка СДЭК</label>
@@ -712,8 +684,6 @@ const CartPage = () => {
                 {!typeList ? (
                   <div className={styles.cities_wrap}>
                     <ul className={styles.cities_list}>
-                      {/* {(getCities(listCities) || []).map((item, index) => { */}
-
                       {debounceCities.map((item, index) => {
                         return (
                           <li
@@ -744,7 +714,7 @@ const CartPage = () => {
                     <p>Доставка до пункта выдачи: {shippingPrice}</p>
                     <p>Выберите пункт выдачи: </p>
                     <ShippingSelect
-                      options={a}
+                      options={mapPoints}
                       onChange={onChangeSelect}
                       defaultValue={"Выберите пункт выдачи:"}
                       editValue={listPoints}
@@ -753,9 +723,9 @@ const CartPage = () => {
                     {true && (
                       <>
                         <ShippingMap
-                          points={a}
+                          points={mapPoints}
                           updatePointInput={findShippingObject}
-                          setCenter={test}
+                          setCenter={centerMap}
                         />
                       </>
                     )}
