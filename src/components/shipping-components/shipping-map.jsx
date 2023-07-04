@@ -36,36 +36,8 @@ export const ShippingMap = (props) => {
     map.current.setZoom(17);
   }
 
-  // центрирование карты относительно выбранного пвз кликом по карте
   const handleClick = (point, e) => {
-    // console.log(point)
-    // const placemarkCoords = e.get("coords");
-    // if (map.current) {
-    //   map.current.setCenter(placemarkCoords);
-    // }
-    // map.current.setCenter(point.coordinates);
-    // map.current.setZoom(17);
-    // const b = e.get('target').options.freeze();
-    // const a = b.get('iconColor');
-    // console.log(a === '#ff0000')
-    // if(a === '#ff0000'){b.set('iconColor','#00FF00').unfreeze()}else{b.set('iconColor','#ff0000').unfreeze()}
-
-    // const b = e.get('target').options.freeze();
-
-
-
-
-      updatePointInput(point, "#00FF00");  
-    // const a = e.get("target").options.get("iconColor");
-    // // console.log(a)
-    // if (a === "#1E98FF") {
-    //   updatePointInput(point);      
-    //   e.get("target").options.set("iconColor", "#00FF00");
-    // } else {
-    //   updatePointInput({name:' ',coordinates:[]});      
-    //   e.get("target").options.set("iconColor", "#1E98FF");
-    // }
- 
+      updatePointInput(point, "#00FF00");   
   };
   return (
     <div className={styles.screen}>
@@ -80,8 +52,7 @@ export const ShippingMap = (props) => {
             width={"100%"}
             height={"100%"}
             className={styles.map}
-          >
-            {/* <Placemark defaultGeometry={[59.972621, 30.306432]} /> */}
+          >            
             <Clusterer
               options={{
                 preset: 'islands#invertedBlueClusterIcons',
