@@ -6,6 +6,8 @@ import {
     CREATE_NEW_USER,
     SET_FORGOT_PASSWORD_DATA,
     SET_USER_DATA,
+    SET_SHIPPING_CITIES,
+    SET_SHIPPING_PVZ,
 } from "../actions/user-data-actions";
 
 
@@ -33,11 +35,19 @@ const initialState = {
     userCartData: {
         name: '',
         isNameValid: false,
+        surname: '',
+        isSurnameValid: false,
         email: '',
         isEmailValid: false,
         phone: '',
         isPhoneValid: false,
         isFormValid: false,
+    },
+    userShippingData: {
+        city:'',
+        isCityValid: true,
+        pvz:null,
+        isPvzValid: true,
     }
 }
 
@@ -131,6 +141,8 @@ export const userDataReducer = (state = initialState, action) => {
                 userCartData: {
                     name: action.inputName === 'name' ? action.inputValue : state.userCartData.name,
                     isNameValid: action.inputName === 'name' ? action.validity : state.userCartData.isNameValid,
+                    surname: action.inputName === 'surname' ? action.inputValue : state.userCartData.surname,
+                    isSurnameValid: action.inputName === 'surname' ? action.validity : state.userCartData.isSurnameValid,
                     phone: action.inputName === 'phone' ? action.inputValue : state.userCartData.phone,
                     isPhoneValid: action.inputName === 'phone' ? action.validity : state.userCartData.isPhoneValid,
                     email: action.inputName === 'email' ? action.inputValue : state.userCartData.email,
@@ -139,7 +151,19 @@ export const userDataReducer = (state = initialState, action) => {
                 }
             }
         }
+        case SET_SHIPPING_CITIES: {
+            return {
+                ...state,
+                userShippingData: {...state.userShippingData, city: action.payload.item, isCityValid: action.payload.isCityValid}
+            }
+        }
 
+        case SET_SHIPPING_PVZ :{
+            return {
+                ...state,
+                userShippingData: {...state.userShippingData, pvz: action.payload.item, isPvzValid: action.payload.isPvzValid }
+            }
+        }        
 
         default: return state;
     }
