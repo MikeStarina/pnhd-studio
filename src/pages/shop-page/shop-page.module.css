@@ -22,6 +22,8 @@
     font-size: 15px;
     line-height: 15px;
     font-weight: 200;
+    -webkit-text-fill-color: #000000;
+    color: #000000;
     background-color: transparent;
     border: none;
     cursor: pointer;
@@ -37,6 +39,8 @@
     padding: 5px 0;
     margin: 0 20px 0 20px;
     font-size: 15px;
+    -webkit-text-fill-color: #000000;
+    color: #000000;
     line-height: 15px;
     font-weight: 200;
     background-color: transparent;
