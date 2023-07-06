@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import { useEffect } from "react";
 import { useViewOnClick } from "../../hooks/useViewOnClick";
 import styles from './shipping-select.module.css'
 
@@ -26,7 +27,7 @@ const handleItemSelectClick = (option) => {
   onChange(option);
 };
 
-
+useEffect(()=>{},[options])
 return (
   <div className={styles.test}>
     <div className={!errBorder? `${styles.dropdown_container} ${styles.dropdown_container_error}`:styles.dropdown_container}>

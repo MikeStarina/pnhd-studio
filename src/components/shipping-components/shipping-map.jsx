@@ -1,4 +1,5 @@
 import React, { lazy, Suspense, useRef, useState, useMemo } from "react";
+import { useEffect } from "react";
 import styles from "./shipping-map.module.css";
 const YMaps = lazy(() =>
   import("@pbe/react-yandex-maps").then(({ YMaps }) => ({ default: YMaps }))
@@ -29,11 +30,15 @@ export const ShippingMap = (props) => {
   const { points, updatePointInput, setCenter } = props;
   const [a, b] = useState([59.972621, 30.306432]);
 
-  
+  useEffect(()=>{},[points])
+ 
   if (a[0] != setCenter[0]) {
     b(setCenter);
+    
+   if(map.current){
     map.current.setCenter(setCenter);
     map.current.setZoom(17);
+   }
   }
 
   const handleClick = (point, e) => {

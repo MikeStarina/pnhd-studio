@@ -13,9 +13,10 @@ export const getShopData = () => {
             return Promise.reject(err);
         });
     };
-
+    
     return function (dispatch) {
-        fetch(`${apiBaseUrl}/api/products`, {
+        // fetch(`${apiBaseUrl}/api/products`, {
+            fetch(`https://pnhdstudioapi.ru/api/products`, {
             headers: {
                 'Content-Type': 'application/json',
             },

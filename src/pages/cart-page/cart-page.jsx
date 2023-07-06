@@ -35,17 +35,24 @@ import {
   closePopup,
 } from "../../services/actions/utility-actions";
 import useDebounce from "../../hooks/useDebounce";
+import {
+  getSdekCities,
+  getSdekPoints,
+  getSdekShippingTarif,
+  SET_SDEK_DEFAULT_STATE,
+  SET_SDEK_RESET_POINTS,
+} from "../../services/actions/shipping-actions";
 
 const CartPage = () => {
   const [debounceCities, setDebounceCities] = useState([]);
-  const [checkInput, setChekInput] = useState(true);  
+  const [checkInput, setChekInput] = useState(true);
   const [checkSelect, setChekSelect] = useState(true);
   const [typeDelivery, setTypeDelivery] = useState({
     pickup: true,
     sdek: false,
   });
   const [listCities, setListCities] = useState("");
-  const [shippingPrice, setShippingPrice] = useState(0);
+  // const [shippingPrice, setShippingPrice] = useState(0);
   const [listPoints, setListPoints] = useState(null);
   const [typeList, setTypeList] = useState(false);
   const [typeShipping, setTypeShipping] = useState(false);
@@ -66,10 +73,13 @@ const CartPage = () => {
   const { shippingCities, shippingTarif, shippingPoints } = useSelector(
     (store) => store.shippingData
   );
+  const a = useSelector(
+    (store) => store.shippingData
+  );
+  console.log(a)
   const history = useHistory();
   const dispatch = useDispatch();
   const debouncedSearchTerm = useDebounce(listCities, 500);
-
   const getShippingPoints = () => {
     const arr = shippingPoints.map((item) => {
       return {
@@ -80,7 +90,11 @@ const CartPage = () => {
     });
     setMapPoints(arr);
   };
-  
+
+  useEffect(() => {
+    getShippingPoints();
+  }, [shippingPoints]);
+
   const findShippingObject = (el, color) => {
     if (el.name === " ") {
       setListPoints("");
@@ -126,6 +140,8 @@ const CartPage = () => {
           type: SET_SHIPPING_PVZ,
           payload: { item: { ...item }, isPvzValid: true },
         });
+        // dispatch(getSdekShippingTarif(item.location.city_code));
+        // setShippingPrice(shippingTarif.total_sum);
         setListPoints(item);
         setPointColor(elem, "#00FF00");
         setCenterMap([item.location.latitude, item.location.longitude]);
@@ -144,7 +160,6 @@ const CartPage = () => {
     }
   }
 
-
   useEffect(() => {
     if (typeList) {
       if (listCities.city != userShippingData.city.city) {
@@ -159,12 +174,12 @@ const CartPage = () => {
             payload: { item: null, isPvzValid: false },
           });
         }
-        setShippingPrice(0);
+        // setShippingPrice(0);
         setTypeList(false);
         setCenterMap([59.972621, 30.306432]);
         setListPoints(null);
         setTypeShipping(false);
-        getShippingPoints();
+        // getShippingPoints();
       }
     }
   });
@@ -233,8 +248,8 @@ const CartPage = () => {
   }, 0);
 
   const discounted_price = validPromoCode.discount_ratio
-    ? totalPrice * validPromoCode.discount_ratio + shippingPrice
-    : totalPrice + shippingPrice;
+    ? totalPrice * validPromoCode.discount_ratio + (shippingTarif.total_sum||0)
+    : totalPrice + (shippingTarif.total_sum||0);
 
   useEffect(() => {
     dispatch({
@@ -422,22 +437,20 @@ const CartPage = () => {
       setDebounceCities([]);
     }
   };
-  
-  
 
   useEffect(() => {
+    
     if (debouncedSearchTerm) {
       setListCities(listCities);
       getCities(listCities);
-    }    
+    }
   }, [debouncedSearchTerm]);
 
-
-  const setDefoultShippingState = () =>{
+  const setDefoultShippingState = () => {
     setListCities("");
     setDebounceCities([]);
     setListPoints("");
-    setShippingPrice(0);
+    // setShippingPrice(0);
     setListPoints(null);
     setCenterMap([59.972621, 30.306432]);
     dispatch({
@@ -446,8 +459,9 @@ const CartPage = () => {
     });
     dispatch({
       type: SET_SHIPPING_PVZ,
-      payload: {item:null, isPvzValid: false },
-    })}
+      payload: { item: null, isPvzValid: false },
+    });
+  };
 
   return (
     <section className={styles.screen}>
@@ -645,8 +659,12 @@ const CartPage = () => {
                 name="radio"
                 value="1"
                 onClick={() => {
-                  setRadioDelivery("самовывоз");       
+                  setRadioDelivery("самовывоз");
                   setDefoultShippingState();
+                  setTypeList(false);
+                  dispatch({
+                    type: SET_SDEK_DEFAULT_STATE,                    
+                  });
                 }}
                 defaultChecked
               />
@@ -659,9 +677,10 @@ const CartPage = () => {
                 name="radio"
                 value="2"
                 onClick={() => {
-                  setRadioDelivery("сдэк"); 
-                  setTypeList(false);
-                  setDefoultShippingState();
+                  // setDefoultShippingState();
+                  dispatch(getSdekCities());
+                  setRadioDelivery("сдэк");
+                  
                 }}
               />
               <label htmlFor="radioSdek">Доставка СДЭК</label>
@@ -678,7 +697,9 @@ const CartPage = () => {
                   required={true}
                   value={listCities.city || listCities}
                   onChange={(e) => {
-                    setListCities(e.target.value);
+                    setListCities(e.target.value);                    
+                    setTypeList(false);
+                    dispatch({type: SET_SDEK_RESET_POINTS})
                   }}
                 ></input>
                 {!typeList ? (
@@ -689,9 +710,14 @@ const CartPage = () => {
                           <li
                             key={index}
                             onClick={() => {
+                              // console.log(item.latitude)
+                              if (item.latitude) {
+                                setCenterMap([item.latitude, item.longitude]);
+                              }
+                              dispatch(getSdekPoints(item.code));
                               setListCities(item);
                               setTypeList(true);
-                              setShippingPrice(shippingTarif.total_sum);
+                              // setShippingPrice(shippingTarif.total_sum);
                               dispatch({
                                 type: SET_SHIPPING_CITIES,
                                 payload: {
@@ -699,7 +725,9 @@ const CartPage = () => {
                                   isCityValid: true,
                                 },
                               });
+                              // setCenterMap([item.latitude, item.longitude])
                               setChekInput(true);
+                              dispatch(getSdekShippingTarif(item.code));
                             }}
                             className={styles.cities_listItem}
                           >
@@ -711,7 +739,7 @@ const CartPage = () => {
                   </div>
                 ) : (
                   <>
-                    <p>Доставка до пункта выдачи: {shippingPrice}</p>
+                    <p>Доставка до пункта выдачи: {shippingTarif.total_sum}</p>
                     <p>Выберите пункт выдачи: </p>
                     <ShippingSelect
                       options={mapPoints}
