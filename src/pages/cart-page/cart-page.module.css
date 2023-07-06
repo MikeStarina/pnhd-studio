@@ -34,6 +34,8 @@
     line-height: 20px;
     font-weight: 600;
     cursor: pointer;
+    -webkit-text-fill-color: #000000;
+    color: #000000;
 }
 
 .cart_container {
@@ -348,7 +350,7 @@
 }
 
 .user_form_inputError:focus {
-    border: 1px solid red;    
+    border: 1px solid red;
     outline: none;
 }
 
@@ -435,31 +437,31 @@
     padding-bottom: 0;
 }
 
-.cities_wrap{
+.cities_wrap {
     background-color: #fff;
     width: 100%;
     border-radius: 5px;
     height: 138px;
 }
 
-.cities_list{
+.cities_list {
     list-style: none;
     padding-left: 5px;
 }
 
-.cities_listItem{
+.cities_listItem {
     cursor: pointer;
 }
 
 @supports (-webkit-appearance: none) or (-moz-appearance: none) {
     input[type='radio'] {
-        --active: #00FF00;
-        --active-inner: #00FF00;
-        --border: #BBC1E1;
-        --border-hover: #00FF00;
+        --active: #00ff00;
+        --active-inner: #00ff00;
+        --border: #bbc1e1;
+        --border-hover: #00ff00;
         --background: #fff;
-        --disabled: #F6F8FF;
-        --disabled-inner: #E1E6F9;
+        --disabled: #f6f8ff;
+        --disabled-inner: #e1e6f9;
         -webkit-appearance: none;
         -moz-appearance: none;
         height: 21px;
@@ -480,12 +482,13 @@
         left: 0;
         top: 0;
         position: absolute;
-        transition: transform var(--d-t, 0.3s) var(--d-t-e, ease), opacity var(--d-o, 0.2s);
+        transition: transform var(--d-t, 0.3s) var(--d-t-e, ease),
+            opacity var(--d-o, 0.2s);
     }
 
     input[type='radio']:checked {
         --b: #fff;
-        --bc: #fff;;
+        --bc: #fff;
         --d-o: 0.3s;
         --d-t: 0.6s;
         --d-t-e: cubic-bezier(0.2, 0.85, 0.32, 1.2);
@@ -502,7 +505,7 @@
         --bc: var(--border);
     }
 
-    input[type='radio']:disabled+label {
+    input[type='radio']:disabled + label {
         cursor: not-allowed;
     }
 
@@ -526,7 +529,7 @@
         --o: 1;
     }
 
-    input[type='radio']+label {
+    input[type='radio'] + label {
         line-height: 21px;
         display: inline-block;
         vertical-align: top;
@@ -552,8 +555,6 @@
     input[type='radio']:checked {
         --s: 0.5;
     }
-
-    
 }
 
 @media (max-width: 1250px) {
