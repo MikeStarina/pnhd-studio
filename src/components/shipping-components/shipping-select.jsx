@@ -36,7 +36,32 @@ return (
       <div className={styles.dropdown_tools}></div>
       {isOpen && (
         <div className={styles.dropdown_menu}>
-          {options.map((option) => (
+          {options.length === 0 && (
+            <div
+            className={styles.dropdown_item} 
+          >
+            <p>Пункты выдачи не найдены</p>
+          </div>
+          )}
+
+
+          {options.length > 0 && (
+            options.map((option) => (
+              <div
+                className={`${styles.dropdown_item} ${
+                  selectedValue === option.name ? "selected" : ""
+                }`}
+                onClick={() => {
+                  handleItemSelectClick(option);
+                }}
+                key={option.name}
+              >
+                {option.name}
+              </div>
+            ))
+)}
+
+          {/* {options.map((option) => (
             <div
               className={`${styles.dropdown_item} ${
                 selectedValue === option.name ? "selected" : ""
@@ -48,7 +73,7 @@ return (
             >
               {option.name}
             </div>
-          ))}
+          ))} */}
         </div>
       )}
     </div>

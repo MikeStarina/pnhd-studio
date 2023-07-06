@@ -20,10 +20,10 @@
 
 .dropdown_menu {
 	position: absolute;
-	transform: translateX(-13px) translateY(98px);
+	transform: translateX(-12px) translateY(98px);
 	width: 97.5%;
 	overflow: auto;
-	max-height: 150px;
+	height: 150px;
 	background-color: #FFFFFF;
 	z-index: 99;
 	padding: 5px;
