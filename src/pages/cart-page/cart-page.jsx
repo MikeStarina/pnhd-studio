@@ -74,10 +74,7 @@ const CartPage = () => {
   const { shippingCities, shippingTarif, shippingPoints } = useSelector(
     (store) => store.shippingData
   );
-  const a = useSelector(
-    (store) => store.shippingData
-  );
-  console.log(shippingCities[0])
+ 
   const history = useHistory();
   const dispatch = useDispatch();
   const debouncedSearchTerm = useDebounce(listCities, 500);
@@ -180,12 +177,10 @@ const CartPage = () => {
     if (typeList) {
       if (listCities.city != userShippingData.city.city) {
         setUserShippingDataReset();
-        // setShippingPrice(0);
         setTypeList(false);
         setCenterMap([59.972621, 30.306432]);
         setListPoints(null);
         setTypeShipping(false);
-        // getShippingPoints();
       }
     }
   });
@@ -205,7 +200,6 @@ const CartPage = () => {
   } ${!userShippingData.isCityValid ? "Город" : ""} ${
     !userShippingData.isPvzValid ? "Пункт Выдачи" : ""
   }`;
-  //console.log(isUserFormValid);
 
   if (paymentUrl) {
     window.location.href = paymentUrl;
@@ -425,7 +419,6 @@ const CartPage = () => {
       getShippingPoints();
     }
   };
-  //console.log(validPromoCode)
 
   const getCities = (elem) => {
     const list = [];
@@ -455,8 +448,6 @@ const CartPage = () => {
   const setDefoultShippingState = () => {
     setListCities("");
     setDebounceCities([]);
-    // setListPoints("");
-    // setShippingPrice(0);
     setListPoints(null);
     setCenterMap([59.972621, 30.306432]);
        
@@ -680,15 +671,7 @@ const CartPage = () => {
                 onClick={() => {
                   setDefoultShippingState();
                   dispatch(getSdekCities());
-                  setRadioDelivery("сдэк");
-                  // dispatch({
-                  //   type: SET_SHIPPING_CITIES,
-                  //   payload: { item: "", isCityValid: false },
-                  // });
-                  // dispatch({
-                  //   type: SET_SHIPPING_PVZ,
-                  //   payload: { item: null, isPvzValid: false },
-                  // });
+                  setRadioDelivery("сдэк");                 
                   setUserShippingDataReset();
                 }}
               />
@@ -708,9 +691,9 @@ const CartPage = () => {
                   onChange={(e) => {
                     setListCities(e.target.value);                    
                     setTypeList(false);
-                    dispatch({type: SET_SDEK_RESET_POINTS})
+                    dispatch({type: SET_SDEK_RESET_POINTS});
+                    setUserShippingDataReset();
                     setListPoints(null);
-                    // setDefoultShippingState();
                   }}
                 ></input>
                 {!typeList ? (
@@ -721,14 +704,12 @@ const CartPage = () => {
                           <li
                             key={index}
                             onClick={() => {
-                              // console.log(item.latitude)
                               if (item.latitude) {
                                 setCenterMap([item.latitude, item.longitude]);
                               }
                               dispatch(getSdekPoints(item.code));
                               setListCities(item);
                               setTypeList(true);
-                              // setShippingPrice(shippingTarif.total_sum);
                               dispatch({
                                 type: SET_SHIPPING_CITIES,
                                 payload: {
@@ -736,7 +717,6 @@ const CartPage = () => {
                                   isCityValid: true,
                                 },
                               });
-                              // setCenterMap([item.latitude, item.longitude])
                               setChekInput(true);
                               dispatch(getSdekShippingTarif(item.code));
                             }}
@@ -827,7 +807,7 @@ const CartPage = () => {
             type="button"
             className={styles.control_button}
             onClick={createOrderHandler}
-            // раскоментировать при финальном пуше
+            // убрать коммент при финальном пуше
             // onClick={() => {
             //   console.log(userCartData);
             // }}

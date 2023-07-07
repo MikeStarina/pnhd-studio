@@ -30,7 +30,6 @@ export const ShippingMap = (props) => {
   const { points, updatePointInput, setCenter } = props;
   const [a, b] = useState([59.972621, 30.306432]);
 
-  // useEffect(()=>{},[points])
   if (a[0] != setCenter[0]) {
     b(setCenter);
     
