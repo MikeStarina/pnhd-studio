@@ -28,6 +28,7 @@ import {
 } from '../../services/actions/utility-actions';
 import { instructionForPopup } from '../../data/instructionForPopup/instructionForPopup';
 import { photoProcessing } from '../../data/photo-processing/photo-processing';
+import { clearItemOrder } from '../../services/actions/item-action';
 
 const Constructor = () => {
     const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
@@ -48,6 +49,7 @@ const Constructor = () => {
     } = useSelector((store) => store.editorState);
     const { data } = useSelector((store) => store.shopData);
     const { isImageLoading } = useSelector((store) => store.utilityState);
+    const { order } = useSelector(store => store.itemReducer);
     const history = useHistory();
     const { state } = useLocation();
     const imgRef = useRef(null);
@@ -247,7 +249,7 @@ const Constructor = () => {
             cart_item_id: uuidv4(),
         };
 
-        data.attributes.size = state.size;
+        data.attributes.size = order;
         data.attributes.qty = 1;
         data.attributes.key = uuidv4();
 
@@ -271,6 +273,8 @@ const Constructor = () => {
         dispatch({
             type: CLEAR_ALL_PRINTS,
         });
+
+        dispatch(clearItemOrder());
 
         history.go(-2);
     };

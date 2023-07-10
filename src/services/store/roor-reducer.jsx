@@ -5,7 +5,7 @@ import { shopDataReducer } from "../reducers/shop-data-reducer.jsx";
 import { cartDataReducer } from "../reducers/cart-data-reducer.jsx";
 import { userDataReducer } from "../reducers/user-data-reducer.jsx";
 import { shippingReducer } from "../reducers/shipping-reducer.jsx";
-
+import { itemReducer } from '../reducers/item-reducer.js';
 
 
 export const rootReducer = combineReducers({
@@ -15,4 +15,5 @@ export const rootReducer = combineReducers({
     cartData: cartDataReducer,
     userData: userDataReducer,
     shippingData: shippingReducer,
+    itemReducer,
 });
