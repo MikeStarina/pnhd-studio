@@ -49,7 +49,7 @@ export const itemReducer = (state = initialState, action) => {
         case DELETE_ITEM_ORDER: {
             return {
                 ...state,
-                order: state.order.filter((item) => item.name !== action.name),
+                order: [],
             };
         }
         default:

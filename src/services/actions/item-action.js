@@ -19,8 +19,6 @@ export const clearItemOrder = () => ({
     type: CLEAR_ITEM_ORDER,
 });
 
-export const deleteItemOrder = (name) => {
-    return function (dispatch) {
-        dispatch({ type: DELETE_ITEM_ORDER, name });
-    };
-};
+export const deleteItemOrder = () => ({
+    type: DELETE_ITEM_ORDER,
+});

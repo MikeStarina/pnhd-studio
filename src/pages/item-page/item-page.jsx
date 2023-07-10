@@ -33,9 +33,7 @@ const ItemPage = () => {
     const onClick = () => {
         history.goBack();
 
-        order.map((el) => {
-            dispatch(deleteItemOrder(el.name));
-        });
+        dispatch(deleteItemOrder());
     };
 
     let item =
@@ -113,9 +111,7 @@ const ItemPage = () => {
             payload: { ...data },
         });
 
-        order.map((el) => {
-            dispatch(deleteItemOrder(el.name));
-        });
+        dispatch(deleteItemOrder());
 
         history.goBack();
     };
