@@ -135,3 +135,12 @@ export const setCoords = (currentImage, activeView, itemType) => {
 
     return imageCoords;
 }
+
+export const checkResponse = (res) => {
+    if (res.ok || res.created) {
+        return res.json();
+    }
+    return res.json().then((err) => {
+        return Promise.reject(err);
+    });
+};

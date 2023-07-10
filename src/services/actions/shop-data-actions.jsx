@@ -13,7 +13,7 @@ export const getShopData = () => {
             return Promise.reject(err);
         });
     };
-
+    
     return function (dispatch) {
         fetch(`${apiBaseUrl}/api/products`, {
             headers: {
