@@ -4,7 +4,7 @@
     box-sizing: border-box;
     margin: 0;
     flex-direction: row;
-    width: 240px;
+    width: 200px;
     height: 28px;
 }
 
@@ -13,7 +13,7 @@
     display: flex;
     justify-content: flex-end;
     margin: 0;
-    width: 127px;
+    width: 100px;
     padding: 7px 0 0 0;
 }
 
@@ -27,15 +27,14 @@
     margin: 0;
     width: 45px;
     padding: 7px 12px 0 0;
-
 }
 
-.button_size{
+.button_size {
     position: relative;
     width: 23px;
     height: 23px;
     border-radius: 50%;
-    background-color: rgba(0, 0, 0, .0);
+    background-color: rgba(0, 0, 0, 0);
     padding: 0;
     margin-left: 5px;
     display: block;
@@ -67,4 +66,19 @@
     width: 1px;
     height: 12px;
     background-color: #000000;
+}
+
+@media (max-width: 390px) {
+    .block {
+        width: 172px;
+    }
+
+    .span_size {
+        padding-right: 5px;
+    }
+
+    .text_size {
+        width: 25px;
+        padding: 7px 3px 0 0;
+    }
 }
