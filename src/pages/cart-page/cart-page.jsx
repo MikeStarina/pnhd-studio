@@ -279,22 +279,7 @@ const CartPage = () => {
             dispatch({ type: SET_CART_VISIBILITY, payload: true });
         };
     }, []);
-    //>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<________
-    const qtyChangeHandler = (e, qty) => {
-        let newValue = qty;
-        if (e.target.name === 'increase') {
-            newValue++;
-        } else {
-            newValue--;
-        }
 
-        dispatch({
-            type: CHANGE_ITEM_QTY,
-            qty: newValue,
-            id: e.target.id,
-        });
-    };
-    //<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>-----------------------
     const onChange = (e) => {};
 
     const inputChangeHandler = (e) => {
