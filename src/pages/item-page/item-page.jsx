@@ -117,7 +117,6 @@ const ItemPage = () => {
     };
 
     const descriptionArray = item ? item.description.split('=') : [];
-    console.log(item);
 
     return (
         data.length > 0 &&
