@@ -17,7 +17,6 @@ const initialState = {
         name: "",
         qty: null,
         discount: null,
-        message: '',
         _id: ""
     },
 }
@@ -36,6 +35,7 @@ export const cartDataReducer = (state = initialState, action) => {
             clonedOrder.push(action.payload);
 
             sessionStorage.setItem('cart', JSON.stringify(clonedOrder));
+            // sessionStorage.setItem('cart', '');
 
             state = {
                 ...state,
@@ -63,10 +63,14 @@ export const cartDataReducer = (state = initialState, action) => {
         case CHANGE_ITEM_QTY: {
             const newOrder = state.order;
 
-            
+
                 newOrder.map((item) => {
                     if (item.cart_item_id === action.id) {
-                        item.attributes.qty = action.qty > 0 ? action.qty : 1;
+                        item.attributes.size.map((el) => {
+                            if (el.name === action.name) {
+                                el.qty = action.qty
+                            }
+                        })
                         if (item.print) {
                             item.print.qty = action.qty > 0 ? action.qty : 1;
                         }
@@ -74,7 +78,7 @@ export const cartDataReducer = (state = initialState, action) => {
 
                     return item;
                 })
-           
+
 
             return {
                 ...state,
@@ -222,7 +226,6 @@ export const cartDataReducer = (state = initialState, action) => {
                     name: "",
                     qty: null,
                     discount: null,
-                    message: '',
                     _id: ""
                 },
             }

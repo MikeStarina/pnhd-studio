@@ -122,8 +122,6 @@
     box-shadow: 0 0 20px rgba(0, 0, 0, .3);
 }
 
-
-
 .item_button:hover {
     transform: translateY(-5px);
     transition: transform .15s ease-out;
@@ -175,10 +173,10 @@
 }
 
 .form_select {
-    width: 140px;
-    height: 25px;
-    border: 1px solid black;
-    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    width: 240px;
+    row-gap: 4px;
 }
 
 .size_chart_link {
@@ -274,6 +272,11 @@
 
     .item_button_wrapper {
         align-self: flex-end;
+    }
+
+    .item_description {
+        width: 100%;
+        text-align: justify;
     }
     
 

@@ -58,9 +58,8 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    margin: 0;
-    margin-bottom: 25px;
-    padding: 25px;
+    margin: 0 0 25px;
+    padding: 25px 25px;
     border-bottom: 1px solid rgb(0, 255, 0);
     position: relative;
 }
@@ -120,6 +119,7 @@
 
 .qty_input_wrapper {
     display: flex;
+    flex-direction: column;
     justify-content: flex-start;
     align-items: center;
 }
@@ -149,7 +149,7 @@
 
 .title {
     margin: 0 50px 0 0;
-    padding: 0;
+    padding: 0 0 25px;
 }
 
 .description {
