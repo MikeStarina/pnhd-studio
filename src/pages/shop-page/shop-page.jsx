@@ -61,31 +61,17 @@ const ShopPage = () => {
                     {
                         type: 'application/ld+json',
                         innerHTML: `{
-                            "@context": "https://schema.org",
-                            "@type": "Organization",
-                            "url": "https://studio.pnhd.ru",
-                            "logo": "/icon_logo.svg",
-                            "address": {
-                                "@type": "PostalAddress",
-                                "streetAddress": "ул. Чапыгина 1",
-                                "addressLocality": "Санкт-Петербург",
-                                "addressRegion": "RU",
-                                "postalCode": "197022",
-                                "addressCountry": "RU"
+                            '@context': 'https://schema.org',
+                            '@type': 'Organization',
+                            'address': {
+                                '@type': 'PostalAddress',
+                                'addressLocality': 'Санкт-Петербург',
+                                'postalCode': '197022',
+                                'streetAddress': 'ул. Чапыгина 1',
                             },
-                            "contactPoint" : [
-                            {
-                            "@type" : "ContactPoint",
-                            "telephone" : "+78129046156",
-                            "contactType" : "студия"
-                            }
-                            ],
-                            "sameAs": [
-                              'https://vk.com/pinheadspb',
-                              'https://instagram.com/pnhd.studio'
-                            ]
-                        }
-                        }
+                            'email': 'studio@pnhd.ru',
+                            'name': 'PINHEAD',
+                            'telephone': '+78129046156',
                         }`,
                     },
                 ]}

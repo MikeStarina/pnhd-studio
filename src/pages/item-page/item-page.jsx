@@ -117,13 +117,34 @@ const ItemPage = () => {
     };
 
     const descriptionArray = item ? item.description.split('=') : [];
-    //console.log(descriptionArray);
+    console.log(item);
 
     return (
         data.length > 0 &&
         item && (
             <section className={styles.screen}>
-                <Helmet title={`PINHEAD STUDIO | ${item.name}`} />
+                <Helmet
+                    title={`PINHEAD STUDIO | ${item.name}`}
+                    script={[
+                        {
+                            type: 'application/ld+json',
+                            innerHTML: `{
+                            '@context': 'https://schema.org',
+                            '@type': 'Product',
+                            "description": ${item.description},
+                            "name": ${item.name},
+                            "image": ${apiBaseUrl}${item.image_url},
+                            "offers": {
+                                        "@type": "Offer",
+                                        "availability": "http://schema.org/InStock",
+                                        "price": ${item.price},
+                                        "priceCurrency": "RUB"
+  }
+
+                        }`,
+                        },
+                    ]}
+                />
 
                 <div className={styles.close_icon_wrapper}>
                     <img
@@ -149,7 +170,7 @@ const ItemPage = () => {
                                 >
                                     <img
                                         src={`${apiBaseUrl}${image}`}
-                                        alt="item"
+                                        alt={item.name}
                                     />
                                 </SwiperSlide>
                             ))}
