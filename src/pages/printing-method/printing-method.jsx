@@ -1,5 +1,4 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import styles from './printing-method.module.css';
 import PrintingGallery from '../../components/printing-gallery/printing-gallery.jsx';
 import PrintingFaq from '../../components/printing-faq/printing-faq.jsx';
@@ -12,26 +11,6 @@ const PrintingMethod = (data) => {
     const methodFaq = info.faq;
     return (
         <>
-            <Helmet
-                script={[
-                    {
-                        type: 'application/ld+json',
-                        innerHTML: `{
-                            '@context': 'https://schema.org',
-                            '@type': 'Organization',
-                            'address': {
-                                '@type': 'PostalAddress',
-                                'addressLocality': 'Санкт-Петербург',
-                                'postalCode': '197022',
-                                'streetAddress': 'ул. Чапыгина 1',
-                            },
-                            'email': 'studio@pnhd.ru',
-                            'name': 'PINHEAD',
-                            'telephone': '+78129046156',
-                        }`,
-                    },
-                ]}
-            />
             <PrintingFirstScreen data={info} typePage={'method'} />
             <section className={styles.brief}>
                 <h2 className={styles.brief_title}>КРАТКО</h2>

@@ -124,6 +124,25 @@ const ItemPage = () => {
             <section className={styles.screen}>
                 <Helmet
                     title={`PINHEAD STUDIO | ${item.name}`}
+                    meta={[
+                        {
+                            property: 'og:image',
+                            content:
+                                'https://sun9-77.userapi.com/impg/r3SRF7rtra4wl-3EmEgVqIRaaGNbjeO6q9ufUw/-yeDgKpu2CQ.jpg?size=500x500&quality=95&sign=d7fc90ef8c432358c10c8b1e16b4945f&type=album',
+                        },
+                        {
+                            property: 'og:title',
+                            content: `PINHEAD STUDIO | ${item.name}`,
+                        },
+                        {
+                            property: 'og:url',
+                            content: 'https://studio.pnhd.ru/',
+                        },
+                        {
+                            property: 'og:type',
+                            content: 'website',
+                        },
+                    ]}
                     script={[
                         {
                             type: 'application/ld+json',
