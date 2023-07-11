@@ -32,8 +32,6 @@ const ItemPage = () => {
 
     const onClick = () => {
         history.goBack();
-
-        dispatch(deleteItemOrder());
     };
 
     let item =
@@ -50,6 +48,10 @@ const ItemPage = () => {
                 }),
             );
         });
+
+        return () => {
+            dispatch(deleteItemOrder());
+        };
     }, [item]);
 
     useEffect(() => {
@@ -110,8 +112,6 @@ const ItemPage = () => {
             type: ADD_TO_CART,
             payload: { ...data },
         });
-
-        dispatch(deleteItemOrder());
 
         history.goBack();
     };
