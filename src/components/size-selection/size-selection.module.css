@@ -1,4 +1,5 @@
 .block {
+    /*padding: 0 5px 0 0;*/
     display: flex;
     justify-content: flex-end;
     box-sizing: border-box;
@@ -70,7 +71,7 @@
 
 @media (max-width: 390px) {
     .block {
-        width: 172px;
+        width: 180px;
     }
 
     .span_size {

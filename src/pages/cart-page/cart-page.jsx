@@ -197,9 +197,9 @@ const CartPage = () => {
         userShippingData.isPvzValid;
 
     const validationMessage = `${!userCartData.isNameValid ? 'Имя' : ''} ${
-        !userCartData.isPhoneValid ? 'Телефон' : ''
-    } ${!userCartData.isEmailValid ? 'Email' : ''} ${
         !userCartData.isSurnameValid ? 'Фамилия' : ''
+    } ${!userCartData.isPhoneValid ? 'Телефон' : ''} ${
+        !userCartData.isEmailValid ? 'Email' : ''
     } ${!userShippingData.isCityValid ? 'Город' : ''} ${
         !userShippingData.isPvzValid ? 'Пункт Выдачи' : ''
     }`;

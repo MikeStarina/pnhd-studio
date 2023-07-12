@@ -49,7 +49,7 @@ const Constructor = () => {
     } = useSelector((store) => store.editorState);
     const { data } = useSelector((store) => store.shopData);
     const { isImageLoading } = useSelector((store) => store.utilityState);
-    const { order } = useSelector(store => store.itemReducer);
+    const { order } = useSelector((store) => store.itemReducer);
     const history = useHistory();
     const { state } = useLocation();
     const imgRef = useRef(null);
@@ -249,7 +249,7 @@ const Constructor = () => {
             cart_item_id: uuidv4(),
         };
 
-        data.attributes.size = order;
+        data.attributes.size = state.size;
         data.attributes.qty = 1;
         data.attributes.key = uuidv4();
 
@@ -444,7 +444,7 @@ const Constructor = () => {
                     <div className={styles.stage_controls}></div>
                     <div className={styles.order_info}>
                         <p className={styles.order_info_line}>
-                            Текстиль: {item.name}, размер: {state.size}, цвет:
+                            Текстиль: {item.name}
                         </p>
                         <p className={styles.order_info_line}>
                             Стоимость текстиля: {item.price} Р.

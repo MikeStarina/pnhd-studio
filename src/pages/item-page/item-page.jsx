@@ -92,7 +92,7 @@ const ItemPage = () => {
                             id: item._id,
                             name: item.name,
                             price: item.price,
-                            size: size,
+                            size: order,
                             category: item.category,
                             variant: 'без принта',
                         },
@@ -259,7 +259,7 @@ const ItemPage = () => {
                                     <Link
                                         to={{
                                             pathname: `/shop/${id}/constructor`,
-                                            state: { size: size },
+                                            state: { size: order },
                                         }}
                                     >
                                         <button
