@@ -147,7 +147,7 @@ useEffect(()=>{
       type: SET_SHIPPING_CITIES,
       payload: { item: "", isCityValid: false },
     });
-
+    
     if (userShippingData.isPvzValid) {
       dispatch({
         type: SET_SHIPPING_PVZ,
@@ -196,23 +196,23 @@ useEffect(()=>{
   });
 
   const isUserFormValid =
-    userCartData.isNameValid &&
-    userCartData.isPhoneValid &&
-    userCartData.isEmailValid &&
-    userCartData.isSurnameValid &&
-    userShippingData.isCityValid &&
-    userShippingData.isPvzValid;
+        userCartData.isNameValid &&
+        userCartData.isPhoneValid &&
+        userCartData.isEmailValid &&
+        userCartData.isSurnameValid &&
+        userShippingData.isCityValid &&
+        userShippingData.isPvzValid;
 
-  const validationMessage = `${!userCartData.isNameValid ? "Имя" : ""} ${
-    !userCartData.isPhoneValid ? "Телефон" : ""
-  } ${!userCartData.isEmailValid ? "Email" : ""} ${
-    !userCartData.isSurnameValid ? "Фамилия" : ""
-  } ${!userShippingData.isCityValid ? "Город" : ""} ${
-    !userShippingData.isPvzValid ? "Пункт Выдачи" : ""
-  }`;
+    const validationMessage = `${!userCartData.isNameValid ? 'Имя' : ''} ${
+        !userCartData.isSurnameValid ? 'Фамилия' : ''
+    } ${!userCartData.isPhoneValid ? 'Телефон' : ''} ${
+        !userCartData.isEmailValid ? 'Email' : ''
+    } ${!userShippingData.isCityValid ? 'Город' : ''} ${
+        !userShippingData.isPvzValid ? 'Пункт Выдачи' : ''
+    }`;
 
-  if (paymentUrl) {
-    window.location.href = paymentUrl;
+    if (paymentUrl) {
+        window.location.href = paymentUrl;
 
     dispatch({
       type: CLEAR_CART,
@@ -575,7 +575,6 @@ useEffect(()=>{
                                         P.
                                     </p>
                                 </div>
-
                 {item.print && item.print.front.file && (
                   <ItemPrint
                     print={item.print.front_preview.preview}
@@ -592,7 +591,9 @@ useEffect(()=>{
                   <ItemPrint
                     print={item.print.back_preview.preview}
                     params={item.print.back}
-                    qty={item.attributes.qty}
+                    qty={oneItemTotalValue(
+                      item.cart_item_id,
+                  )}
                     title={"Принт на спине:"}
                     print_id={"back_print"}
                     item_id={item.cart_item_id}
@@ -602,7 +603,9 @@ useEffect(()=>{
                   <ItemPrint
                     print={item.print.lsleeve_preview.preview}
                     params={item.print.lsleeve}
-                    qty={item.attributes.qty}
+                    qty={oneItemTotalValue(
+                      item.cart_item_id,
+                  )}
                     title={"Принт на левом рукаве:"}
                     print_id={"lsleeve_print"}
                     item_id={item.cart_item_id}
@@ -612,7 +615,9 @@ useEffect(()=>{
                   <ItemPrint
                     print={item.print.rsleeve_preview.preview}
                     params={item.print.rsleeve}
-                    qty={item.attributes.qty}
+                    qty={oneItemTotalValue(
+                      item.cart_item_id,
+                  )}
                     title={"Принт на правом рукаве:"}
                     print_id={"rsleeve_print"}
                     item_id={item.cart_item_id}
