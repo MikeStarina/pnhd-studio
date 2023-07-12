@@ -154,27 +154,27 @@ export const createOrder = (
     
   console.log(data);
 
-  // return function (dispatch) {
-  //     fetch (`${apiBaseUrl}/api/orders`, {
-  //         method: 'POST',
-  //         headers: {
-  //             'Content-Type': 'application/json',
-  //             'Content-length': '',
-  //         },
-  //         body: JSON.stringify(data),
+  return function (dispatch) {
+      fetch (`${apiBaseUrl}/api/orders`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'Content-length': '',
+          },
+          body: JSON.stringify(data),
 
-  //     })
-  //     .then(res => res.json())
-  //     .then((res) => {
-  //         // if (res.paymentUrl) {
-  //         //     dispatch({
-  //         //         type: SET_PAYMENT_URL,
-  //         //         payload: res.paymentUrl,
-  //         //     })
+      })
+      .then(res => res.json())
+      .then((res) => {
+          // if (res.paymentUrl) {
+          //     dispatch({
+          //         type: SET_PAYMENT_URL,
+          //         payload: res.paymentUrl,
+          //     })
 
-  //         // }
-  //     });
-  // }
+          // }
+      });
+  }
 };
 
 export const checkPromoCodeValidity = (user_promocode) => {
