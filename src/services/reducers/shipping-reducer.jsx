@@ -7,9 +7,12 @@ import {
 } from "../actions/shipping-actions";
 
 export const initialState = {
-  shippingCities: [],
-  shippingTarif: {},
-  shippingPoints: [],
+  shippingData: {
+    isShipping: false,
+    shippingCities: [],
+    shippingTarif: {},
+    shippingPoints: [],
+  },
 };
 
 export const shippingReducer = (state = initialState, action) => {
@@ -17,37 +20,53 @@ export const shippingReducer = (state = initialState, action) => {
     case GET_SDEK_CITIES: {
       return {
         ...state,
-        shippingCities: action.payload,
+        shippingData: {
+          ...state.shippingData,
+          isShipping: true,
+          shippingCities: action.payload,
+        },
       };
     }
 
     case GET_SDEK_POINTS: {
       return {
         ...state,
-        shippingPoints: action.payload,
+        shippingData: {
+          ...state.shippingData,
+          shippingPoints: action.payload,
+        },
       };
     }
 
     case GET_SDEK_SHIPPIG_TARIF: {
       return {
         ...state,
-        shippingTarif: action.payload,
+        shippingData: {
+          ...state.shippingData,
+          shippingTarif: action.payload,
+        },
       };
     }
 
     case SET_SDEK_DEFAULT_STATE: {
       return {
-        shippingCities: [],
-        shippingTarif: {},
-        shippingPoints: [],
+        shippingData: {
+          isShipping: false,
+          shippingCities: [],
+          shippingTarif: {},
+          shippingPoints: [],
+        },
       };
     }
 
     case SET_SDEK_RESET_POINTS: {
       return {
-       ...state,
-        shippingTarif: {},
-        shippingPoints: [],
+        ...state,
+        shippingData: {
+          ...state.shippingData,
+          shippingTarif: {},
+          shippingPoints: [],
+        },
       };
     }
 
