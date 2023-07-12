@@ -564,7 +564,9 @@ const CartPage = () => {
                                     <ItemPrint
                                         print={item.print.back_preview.preview}
                                         params={item.print.back}
-                                        qty={item.attributes.qty}
+                                        qty={oneItemTotalValue(
+                                            item.cart_item_id,
+                                        )}
                                         title={'Принт на спине:'}
                                         print_id={'back_print'}
                                         item_id={item.cart_item_id}
@@ -576,7 +578,9 @@ const CartPage = () => {
                                             item.print.lsleeve_preview.preview
                                         }
                                         params={item.print.lsleeve}
-                                        qty={item.attributes.qty}
+                                        qty={oneItemTotalValue(
+                                            item.cart_item_id,
+                                        )}
                                         title={'Принт на левом рукаве:'}
                                         print_id={'lsleeve_print'}
                                         item_id={item.cart_item_id}
@@ -588,7 +592,9 @@ const CartPage = () => {
                                             item.print.rsleeve_preview.preview
                                         }
                                         params={item.print.rsleeve}
-                                        qty={item.attributes.qty}
+                                        qty={oneItemTotalValue(
+                                            item.cart_item_id,
+                                        )}
                                         title={'Принт на правом рукаве:'}
                                         print_id={'rsleeve_print'}
                                         item_id={item.cart_item_id}
