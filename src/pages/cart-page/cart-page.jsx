@@ -104,6 +104,11 @@ useEffect(()=>{
     setShippingPrice(shippingTarif.total_sum);
   }, [shippingPoints]);
 
+
+  //подтсраховка от "зажевывания" стоимости доставки
+  useEffect(()=>{
+    setShippingPrice(shippingTarif.total_sum);
+  },[shippingTarif]);
   const findShippingObject = (el, color) => {
     if (el.name === " ") {
       setListPoints("");
