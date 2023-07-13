@@ -40,49 +40,12 @@ export const createOrder = (
     isShipping: shippingData.isShipping,
     shipping_city: userShippingData.city,
     shipping_point: userShippingData.pvz,
-    shipping_price: shippingData.shippingTarif.delivery_sum,
+    shipping_price: shippingData.shippingTarif.total_sum,
     packages: [],
   };
   order.forEach((order_item) => {
     console.log(order_item)
-    let printTotalprice = 0;
-
-    const frontPrintPrice =
-      order_item.print && order_item.print.front.file
-        ? order_item.print.front.cartParams.price
-        : 0;
-    const backPrintPrice =
-      order_item.print && order_item.print.back.file
-        ? order_item.print.back.cartParams.price
-        : 0;
-    const lsleevePrintPrice =
-      order_item.print && order_item.print.lsleeve.file
-        ? order_item.print.lsleeve.cartParams.price
-        : 0;
-    const rsleevePrintPrice =
-      order_item.print && order_item.print.rsleeve.file
-        ? order_item.print.rsleeve.cartParams.price
-        : 0;
-    const badgePrintPrice =
-      order_item.print && order_item.print.badge.file
-        ? order_item.print.badge.cartParams.price
-        : 0;
-
-    printTotalprice =
-      frontPrintPrice +
-      backPrintPrice +
-      lsleevePrintPrice +
-      rsleevePrintPrice +
-      badgePrintPrice;
-
-    //console.log(printTotalprice);
-
-    const itemPrice = validPromoCode.discount_ratio
-      ? order_item.attributes.price * validPromoCode.discount_ratio
-      : order_item.attributes.price;
-    const printFullPrice = validPromoCode.discount_ratio
-      ? printTotalprice * validPromoCode.discount_ratio
-      : printTotalprice;
+    
 
 
       const sizeStr = (orderSizeItem) => {
@@ -90,7 +53,7 @@ export const createOrder = (
         let countStr = false;
         orderSizeItem.forEach((item, index)=>{
           if(item.qty>0){
-            size += `размер: ${item.name} x ${item.qty} шт`;
+            size += `размер:${item.name}`;
             countStr = true;
             if(orderSizeItem.length>index&&countStr){
               size +=','
@@ -105,6 +68,7 @@ export const createOrder = (
     const item = {
       textile: `${order_item.attributes.name},`+ sizeStr(order_item.attributes.size),
       qty: order_item.attributes.size,
+      qtyAll: 0,
       sizes: order_item.attributes.sizes,
       category: order_item.attributes.category,
       color : order_item.attributes.color,
@@ -122,8 +86,9 @@ export const createOrder = (
       stock: order_item.attributes.stock,
       type: order_item.attributes.type,
       _id: order_item.attributes._id,
-      item_price: printFullPrice ? itemPrice + printFullPrice : itemPrice,
+      item_price: 0,
       print: order_item.print ? true : false,
+      printPrice: 0,
       front_print: order_item.print?.front.file
         ? `Печать на груди. Файл: ${order_item.print.front.file.url}, Превью: ${order_item.print.front_preview.preview}; Размер: ${order_item.print.front.cartParams.size}`
         : "",
@@ -138,8 +103,56 @@ export const createOrder = (
         : "",
     };
 
-    data.items.push(item);
+    order_item.attributes.size.forEach((elem)=>{
+      if(elem.qty>0){
+        item.qtyAll += elem.qty
+      }
+    })
 
+    
+    let printTotalprice = 0;
+
+    const frontPrintPrice =
+      (order_item.print && order_item.print.front.file
+        ? order_item.print.front.cartParams.price
+        : 0)*item.qtyAll;
+    const backPrintPrice =
+      (order_item.print && order_item.print.back.file
+        ? order_item.print.back.cartParams.price
+        : 0)*item.qtyAll;
+    const lsleevePrintPrice =
+      (order_item.print && order_item.print.lsleeve.file
+        ? order_item.print.lsleeve.cartParams.price
+        : 0)*item.qtyAll;
+    const rsleevePrintPrice =
+     ( order_item.print && order_item.print.rsleeve.file
+        ? order_item.print.rsleeve.cartParams.price
+        : 0)*item.qtyAll;
+    const badgePrintPrice =
+      (order_item.print && order_item.print.badge.file
+        ? order_item.print.badge.cartParams.price
+        : 0)*item.qtyAll;
+
+    printTotalprice =
+      frontPrintPrice +
+      backPrintPrice +
+      lsleevePrintPrice +
+      rsleevePrintPrice +
+      badgePrintPrice;
+    
+    
+    console.log(printTotalprice);
+
+    const itemPrice = (validPromoCode.discount_ratio
+      ? order_item.attributes.price * validPromoCode.discount_ratio
+      : order_item.attributes.price)* item.qtyAll;
+    const printFullPrice = validPromoCode.discount_ratio
+      ? printTotalprice * validPromoCode.discount_ratio
+      : printTotalprice;
+
+    item.printPrice = printFullPrice;
+    item.item_price = printFullPrice ? itemPrice + printFullPrice : itemPrice;
+    data.items.push(item);
     //временная заглушка до получения данных об размерах упаковки
     data.packages.push({
       height: "10",
