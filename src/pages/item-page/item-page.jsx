@@ -26,6 +26,7 @@ const ItemPage = () => {
     const { id } = useParams();
     const { data } = useSelector((store) => store.shopData);
     const { order } = useSelector((store) => store.itemReducer);
+    const [valueForApprove, setValueForApprove] = useState(false);
 
     const history = useHistory();
     const dispatch = useDispatch();
@@ -312,6 +313,7 @@ const ItemPage = () => {
                             {item.sizes.length > 0 && (
                                 <button
                                     type="button"
+                                    // disabled={!!valueForApprove}
                                     className={styles.item_button}
                                     onClick={addToCart}
                                 >
