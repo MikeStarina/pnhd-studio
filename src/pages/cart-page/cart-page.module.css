@@ -145,7 +145,7 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: center;
     width: calc(100% - 50px);
 }
 
@@ -301,7 +301,7 @@
 .validation_message {
     width: 100%;
     text-align: center;
-    font-size: 15px;
+    font-size: 20px;
     margin: 0;
     padding: 0;
     font-weight: 400;
@@ -310,6 +310,15 @@
 
 .popupBlock_message {
     padding-top: 30px;
+}
+
+.instruction {
+    color: rgb(0, 255, 0);
+    font-family: inherit;
+    font-size: 20px;
+    line-height: 20px;
+    margin: 20px 0;
+    text-align: center;
 }
 
 .user_form {
