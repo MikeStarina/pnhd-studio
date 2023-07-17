@@ -94,47 +94,44 @@ const CartPage = () => {
         setMapPoints(arr);
     };
 
-    useEffect(() => {
-        if (validPromoCode.mechanic) {
-            console.log('kurwa');
-        }
-    }, [validPromoCode]);
+  useEffect(() => {
+    getShippingPoints();
+    console.log(shippingTarif.total_sum);
+    setShippingPrice(shippingTarif.total_sum?Math.ceil(shippingTarif.total_sum):0);
+  }, [shippingPoints]);
 
-    useEffect(() => {
-        getShippingPoints();
-        setShippingPrice(shippingTarif.total_sum);
-    }, [shippingPoints]);
 
-    //подтсраховка от "зажевывания" стоимости доставки
-    useEffect(() => {
-        setShippingPrice(shippingTarif.total_sum);
-    }, [shippingTarif]);
-    const findShippingObject = (el, color) => {
-        if (el.name === ' ') {
-            setListPoints('');
-        }
-        shippingPoints.forEach((item) => {
-            if (
-                item.location.latitude === el.coordinates[0] &&
-                item.location.longitude === el.coordinates[1]
-            ) {
-                dispatch({
-                    type: SET_SHIPPING_PVZ,
-                    payload: { item: { ...item }, isPvzValid: true },
-                });
-                setListPoints(item);
-                setChekSelect(true);
-            }
+  //подтсраховка от "зажевывания" стоимости доставки
+  useEffect(()=>{
+    console.log(shippingTarif.total_sum);
+    setShippingPrice(shippingTarif.total_sum?Math.ceil(shippingTarif.total_sum):0);
+  },[shippingTarif]);
+  const findShippingObject = (el, color) => {
+    if (el.name === " ") {
+      setListPoints("");
+    }
+    shippingPoints.forEach((item) => {
+      if (
+        item.location.latitude === el.coordinates[0] &&
+        item.location.longitude === el.coordinates[1]
+      ) {
+        dispatch({
+          type: SET_SHIPPING_PVZ,
+          payload: { item: { ...item }, isPvzValid: true },
         });
-        if (color === '#00FF00') {
-            mapPoints.forEach((item) => {
-                item.color = '#1E98FF';
-                if (item.name === el.name) {
-                    item.color = '#00FF00';
-                }
-            });
+        setListPoints(item);
+        setChekSelect(true);
+      }
+    });
+    if (color === "#00FF00") {
+      mapPoints.forEach((item) => {
+        item.color = "#1E98FF";
+        if (item.name === el.name) {
+          item.color = "#00FF00";
         }
-    };
+      });
+    }
+  };
 
     const setPointColor = (el, color) => {
         if (color === '#00FF00') {
@@ -599,371 +596,316 @@ const CartPage = () => {
                                         P.
                                     </p>
                                 </div>
-                                {item.print && item.print.front.file && (
-                                    <ItemPrint
-                                        print={item.print.front_preview.preview}
-                                        params={item.print.front}
-                                        qty={oneItemTotalValue(
-                                            item.cart_item_id,
-                                        )}
-                                        title={'Принт на груди:'}
-                                        print_id={'front_print'}
-                                        item_id={item.cart_item_id}
-                                    />
-                                )}
-                                {item.print && item.print.back.file && (
-                                    <ItemPrint
-                                        print={item.print.back_preview.preview}
-                                        params={item.print.back}
-                                        qty={oneItemTotalValue(
-                                            item.cart_item_id,
-                                        )}
-                                        title={'Принт на спине:'}
-                                        print_id={'back_print'}
-                                        item_id={item.cart_item_id}
-                                    />
-                                )}
-                                {item.print && item.print.lsleeve.file && (
-                                    <ItemPrint
-                                        print={
-                                            item.print.lsleeve_preview.preview
-                                        }
-                                        params={item.print.lsleeve}
-                                        qty={oneItemTotalValue(
-                                            item.cart_item_id,
-                                        )}
-                                        title={'Принт на левом рукаве:'}
-                                        print_id={'lsleeve_print'}
-                                        item_id={item.cart_item_id}
-                                    />
-                                )}
-                                {item.print && item.print.rsleeve.file && (
-                                    <ItemPrint
-                                        print={
-                                            item.print.rsleeve_preview.preview
-                                        }
-                                        params={item.print.rsleeve}
-                                        qty={oneItemTotalValue(
-                                            item.cart_item_id,
-                                        )}
-                                        title={'Принт на правом рукаве:'}
-                                        print_id={'rsleeve_print'}
-                                        item_id={item.cart_item_id}
-                                    />
-                                )}
-                            </li>
-                        );
-                    })}
-            </ul>
-            <div className={styles.checkout_container}>
-                <div className={styles.form_wrapper}>
-                    <form className={styles.user_form} id="checkout_form">
-                        <label htmfor="name" className={styles.input_label}>
-                            Имя*:
-                        </label>
-                        <input
-                            type="text"
-                            minLength="2"
-                            placeholder="Ваше имя"
-                            id="name"
-                            name="name"
-                            className={styles.user_form_input}
-                            required={true}
-                            onChange={inputChangeHandler}
-                            value={userCartData.name}
-                        ></input>
-                        <label htmfor="surname" className={styles.input_label}>
-                            Фамилия*:
-                        </label>
-                        <input
-                            type="text"
-                            minLength="2"
-                            placeholder="Ваша фамилия"
-                            id="surname"
-                            name="surname"
-                            className={styles.user_form_input}
-                            required={true}
-                            onChange={inputChangeHandler}
-                            value={userCartData.surname}
-                        ></input>
-                        <label htmfor="phone" className={styles.input_label}>
-                            Телефон*:
-                        </label>
-                        <input
-                            type="tel"
-                            minLength="11"
-                            placeholder="89990009900"
-                            id="phone"
-                            name="phone"
-                            className={styles.user_form_input}
-                            required={true}
-                            onChange={inputChangeHandler}
-                            value={userCartData.phone}
-                        ></input>
-                        <label htmfor="email" className={styles.input_label}>
-                            Email*:
-                        </label>
-                        <input
-                            type="email"
-                            placeholder="name@pnhd.ru"
-                            id="email"
-                            name="email"
-                            className={styles.user_form_input}
-                            required={true}
-                            onChange={inputChangeHandler}
-                            value={userCartData.email}
-                        ></input>
-                    </form>
-                    <form
-                        className={`${styles.user_form} ${styles.user_deliveryForm}`}
-                        id="delivery_form"
-                    >
-                        <div className={styles.user_radioWrapper}>
-                            <input
-                                type="radio"
-                                id="radioPickup"
-                                name="radio"
-                                value="1"
-                                onClick={() => {
-                                    setRadioDelivery('самовывоз');
-                                    setDefoultShippingState();
-                                    setTypeList(false);
-                                    dispatch({
-                                        type: SET_DEFAULT_USERSHIPPINGDATA,
-                                    });
-                                    dispatch({
-                                        type: SET_SDEK_DEFAULT_STATE,
-                                    });
-                                    setChekInput(true);
-                                    setChekSelect(true);
-                                }}
-                                defaultChecked
-                            />
-                            <label htmlFor="radioPickup">
-                                Самовывоз из студии
-                            </label>
-                        </div>
-                        <div className={styles.user_radioWrapper}>
-                            <input
-                                type="radio"
-                                id="radioSdek"
-                                name="radio"
-                                value="2"
-                                onClick={() => {
-                                    setDefoultShippingState();
-                                    dispatch(getSdekCities());
-                                    setRadioDelivery('сдэк');
-                                    setUserShippingDataReset();
-                                }}
-                            />
-                            <label htmlFor="radioSdek">Доставка СДЭК</label>
-                        </div>
-                        {typeDelivery.sdek && (
-                            <>
-                                <input
-                                    type="text"
-                                    className={
-                                        checkInput
-                                            ? styles.user_form_input
-                                            : `${styles.user_form_input} ${styles.user_form_inputError}`
-                                    }
-                                    required={true}
-                                    value={listCities.city || listCities}
-                                    onChange={(e) => {
-                                        setListCities(e.target.value);
-                                        setTypeList(false);
-                                        dispatch({
-                                            type: SET_SDEK_RESET_POINTS,
-                                        });
-                                        setUserShippingDataReset();
-                                        setListPoints(null);
-                                    }}
-                                ></input>
-                                {!typeList ? (
-                                    <div className={styles.cities_wrap}>
-                                        <ul className={styles.cities_list}>
-                                            {debounceCities.map(
-                                                (item, index) => {
-                                                    return (
-                                                        <li
-                                                            key={index}
-                                                            onClick={() => {
-                                                                if (
-                                                                    item.latitude
-                                                                ) {
-                                                                    setCenterMap(
-                                                                        [
-                                                                            item.latitude,
-                                                                            item.longitude,
-                                                                        ],
-                                                                    );
-                                                                }
-                                                                dispatch(
-                                                                    getSdekPoints(
-                                                                        item.code,
-                                                                    ),
-                                                                );
-                                                                setListCities(
-                                                                    item,
-                                                                );
-                                                                setTypeList(
-                                                                    true,
-                                                                );
-                                                                dispatch({
-                                                                    type: SET_SHIPPING_CITIES,
-                                                                    payload: {
-                                                                        item: {
-                                                                            ...item,
-                                                                        },
-                                                                        isCityValid: true,
-                                                                    },
-                                                                });
-                                                                setChekInput(
-                                                                    true,
-                                                                );
-                                                                dispatch(
-                                                                    getSdekShippingTarif(
-                                                                        item.code,
-                                                                    ),
-                                                                );
-                                                            }}
-                                                            className={
-                                                                styles.cities_listItem
-                                                            }
-                                                        >
-                                                            {item.city},{' '}
-                                                            {item.region}
-                                                        </li>
-                                                    );
-                                                },
-                                            )}
-                                        </ul>
-                                    </div>
-                                ) : (
-                                    <>
-                                        <p>
-                                            Доставка до пункта выдачи:{' '}
-                                            {shippingPrice}
-                                        </p>
-                                        <p>Выберите пункт выдачи: </p>
-                                        <ShippingSelect
-                                            options={mapPoints}
-                                            onChange={onChangeSelect}
-                                            defaultValue={
-                                                'Выберите пункт выдачи:'
-                                            }
-                                            editValue={listPoints}
-                                            errBorder={checkSelect}
-                                        />
-                                        {true && (
-                                            <>
-                                                <ShippingMap
-                                                    points={mapPoints}
-                                                    updatePointInput={
-                                                        findShippingObject
-                                                    }
-                                                    setCenter={centerMap}
-                                                />
-                                            </>
-                                        )}
-                                    </>
-                                )}
-                            </>
-                        )}
-                    </form>
-                </div>
-                <div className={styles.cart_controls}>
-                    {order.length > 0 && (
-                        <p className={styles.total_price}>= {totalPrice} P.</p>
-                    )}
-                    {!validPromoCode.message && !promocodeFail ? (
-                        <form
-                            className={styles.promo_form}
-                            onSubmit={promoSubmitHandler}
-                        >
-                            <input
-                                type="text"
-                                placeholder="Промокод"
-                                id="promocode"
-                                name="promocode"
-                                minLength="5"
-                                className={styles.promo_input}
-                                onChange={promoOnChangeHandler}
-                                value={user_promocode}
-                            ></input>
-                            <button
-                                type="submit"
-                                className={styles.promo_submit}
-                            >
-                                &rarr;
-                            </button>
-                        </form>
-                    ) : promocodeFail ? (
-                        <div className={styles.promocode_wrapper}>
-                            <p className={styles.promocode_message}>
-                                Что-то пошло не так :(
-                            </p>
-                            <button
-                                type="button"
-                                className={styles.promocode_cancellation}
-                                onClick={cancelPromocodeFunc}
-                            >
-                                отменить
-                            </button>
-                        </div>
-                    ) : (
-                        <div className={styles.promocode_wrapper}>
-                            <p className={styles.promocode_message}>
-                                Промокод: {validPromoCode.name}
-                            </p>
-                            <p className={styles.promocode_message}>
-                                {validPromoCode.message}
-                            </p>
-                            <button
-                                type="button"
-                                className={styles.promocode_cancellation}
-                                onClick={cancelPromocodeFunc}
-                            >
-                                отменить
-                            </button>
-                        </div>
-                    )}
-                    <p className={styles.total_price}>
-                        Итого: {discounted_price} P.
-                    </p>
-                    <button
-                        type="button"
-                        className={styles.control_button}
-                        onClick={createOrderHandler}
-                        // убрать коммент при финальном пуше
-                        // onClick={() => {
-                        //   console.log(userCartData);
-                        // }}
-                        // disabled={!isUserFormValid}
-                    ></button>
-                    {isOtherPopupVisible && (
-                        <PopupModel onClose={handelClosePopup}>
-                            <div className={styles.popupBlock}>
-                                {!isUserFormValid && !valueButton && (
-                                    <p
-                                        className={`${styles.validation_message}`}
-                                    >
-                                        Заполните поля:
-                                    </p>
-                                )}
-                                {isOtherPopupVisible.map((el, index) => (
-                                    <p
-                                        className={`${styles.validation_message} ${popupStyles} `}
-                                        key={index}
-                                    >
-                                        {el}
-                                    </p>
-                                ))}
-                            </div>
-                        </PopupModel>
-                    )}
-                </div>
+                {item.print && item.print.front.file && (
+                  <ItemPrint
+                    print={item.print.front_preview.preview}
+                    params={item.print.front}
+                    qty={oneItemTotalValue(
+                      item.cart_item_id,
+                  )}
+                    title={"Принт на груди:"}
+                    print_id={"front_print"}
+                    item_id={item.cart_item_id}
+                  />
+                )}
+                {item.print && item.print.back.file && (
+                  <ItemPrint
+                    print={item.print.back_preview.preview}
+                    params={item.print.back}
+                    qty={oneItemTotalValue(
+                      item.cart_item_id,
+                  )}
+                    title={"Принт на спине:"}
+                    print_id={"back_print"}
+                    item_id={item.cart_item_id}
+                  />
+                )}
+                {item.print && item.print.lsleeve.file && (
+                  <ItemPrint
+                    print={item.print.lsleeve_preview.preview}
+                    params={item.print.lsleeve}
+                    qty={oneItemTotalValue(
+                      item.cart_item_id,
+                  )}
+                    title={"Принт на левом рукаве:"}
+                    print_id={"lsleeve_print"}
+                    item_id={item.cart_item_id}
+                  />
+                )}
+                {item.print && item.print.rsleeve.file && (
+                  <ItemPrint
+                    print={item.print.rsleeve_preview.preview}
+                    params={item.print.rsleeve}
+                    qty={oneItemTotalValue(
+                      item.cart_item_id,
+                  )}
+                    title={"Принт на правом рукаве:"}
+                    print_id={"rsleeve_print"}
+                    item_id={item.cart_item_id}
+                  />
+                )}
+              </li>
+            );
+          })}
+      </ul>
+      <div className={styles.checkout_container}>
+        <div className={styles.form_wrapper}>
+          <form className={styles.user_form} id="checkout_form">
+            <label htmfor="name" className={styles.input_label}>
+              Имя*:
+            </label>
+            <input
+              type="text"
+              minLength="2"
+              placeholder="Ваше имя"
+              id="name"
+              name="name"
+              className={styles.user_form_input}
+              required={true}
+              onChange={inputChangeHandler}
+              value={userCartData.name}
+            ></input>
+            <label htmfor="surname" className={styles.input_label}>
+              Фамилия*:
+            </label>
+            <input
+              type="text"
+              minLength="2"
+              placeholder="Ваша фамилия"
+              id="surname"
+              name="surname"
+              className={styles.user_form_input}
+              required={true}
+              onChange={inputChangeHandler}
+              value={userCartData.surname}
+            ></input>
+            <label htmfor="phone" className={styles.input_label}>
+              Телефон*:
+            </label>
+            <input
+              type="tel"
+              minLength="11"
+              placeholder="89990009900"
+              id="phone"
+              name="phone"
+              className={styles.user_form_input}
+              required={true}
+              onChange={inputChangeHandler}
+              value={userCartData.phone}
+            ></input>
+            <label htmfor="email" className={styles.input_label}>
+              Email*:
+            </label>
+            <input
+              type="email"
+              placeholder="name@pnhd.ru"
+              id="email"
+              name="email"
+              className={styles.user_form_input}
+              required={true}
+              onChange={inputChangeHandler}
+              value={userCartData.email}
+            ></input>
+          </form>
+          <form
+            className={`${styles.user_form} ${styles.user_deliveryForm}`}
+            id="delivery_form"
+          >
+            <div className={styles.user_radioWrapper}>
+              <input
+                type="radio"
+                id="radioPickup"
+                name="radio"
+                value="1"
+                onClick={() => {
+                  setRadioDelivery("самовывоз");
+                  setDefoultShippingState();
+                  setTypeList(false);
+                  dispatch({
+                    type: SET_DEFAULT_USERSHIPPINGDATA,
+                  });
+                  dispatch({
+                    type: SET_SDEK_DEFAULT_STATE,
+                  });
+                  setChekInput(true);
+                  setChekSelect(true);
+                }}
+                defaultChecked
+              />
+              <label htmlFor="radioPickup">Самовывоз из студии</label>
             </div>
+            <div className={styles.user_radioWrapper}>
+              <input
+                type="radio"
+                id="radioSdek"
+                name="radio"
+                value="2"
+                onClick={() => {
+                  setDefoultShippingState();
+                  dispatch(getSdekCities());
+                  setRadioDelivery("сдэк");
+                  setUserShippingDataReset();
+                }}
+              />
+              <label htmlFor="radioSdek">Доставка СДЭК</label>
+            </div>
+            {typeDelivery.sdek && (
+              <>
+                <input
+                  type="text"
+                  className={
+                    checkInput
+                      ? styles.user_form_input
+                      : `${styles.user_form_input} ${styles.user_form_inputError}`
+                  }
+                  required={true}
+                  value={listCities.city || listCities}
+                  onChange={(e) => {
+                    setListCities(e.target.value);
+                    setTypeList(false);
+                    dispatch({ type: SET_SDEK_RESET_POINTS });
+                    setUserShippingDataReset();
+                    setListPoints(null);
+                  }}
+                ></input>
+                {!typeList? (
+                  debounceCities.length>0 && (<div className={styles.cities_wrap}>
+                    <ul className={styles.cities_list}>
+                      {debounceCities.map((item, index) => {
+                        return (
+                          <li
+                            key={index}
+                            onClick={() => {
+                              if (item.latitude) {
+                                setCenterMap([item.latitude, item.longitude]);
+                              }
+                              dispatch(getSdekPoints(item.code));
+                              setListCities(item);
+                              setTypeList(true);
+                              dispatch({
+                                type: SET_SHIPPING_CITIES,
+                                payload: {
+                                  item: { ...item },
+                                  isCityValid: true,
+                                },
+                              });
+                              setChekInput(true);
+                              dispatch(getSdekShippingTarif(item.code));
+                            }}
+                            className={styles.cities_listItem}
+                          >
+                            {item.city}, {item.region}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>)
+                ) : (
+                  <>
+                    <p>Доставка до пункта выдачи: {shippingPrice}</p>
+                    <p>Выберите пункт выдачи: </p>
+                    <ShippingSelect
+                      options={mapPoints}
+                      onChange={onChangeSelect}
+                      defaultValue={"Выберите пункт выдачи:"}
+                      editValue={listPoints}
+                      errBorder={checkSelect}
+                    />
+                    {true && (
+                      <>
+                        <ShippingMap
+                          points={mapPoints}
+                          updatePointInput={findShippingObject}
+                          setCenter={centerMap}
+                        />
+                      </>
+                    )}
+                  </>
+                )}
+              </>
+            )}
+          </form>
+        </div>
+        <div className={styles.cart_controls}>
+          {order.length > 0 && (
+            <p className={styles.total_price}>= {totalPrice} P.</p>
+          )}
+          {!validPromoCode.message && !promocodeFail ? (
+            <form className={styles.promo_form} onSubmit={promoSubmitHandler}>
+              <input
+                type="text"
+                placeholder="Промокод"
+                id="promocode"
+                name="promocode"
+                minLength="5"
+                className={styles.promo_input}
+                onChange={promoOnChangeHandler}
+                value={user_promocode}
+              ></input>
+              <button type="submit" className={styles.promo_submit}>
+                &rarr;
+              </button>
+            </form>
+          ) : promocodeFail ? (
+            <div className={styles.promocode_wrapper}>
+              <p className={styles.promocode_message}>Что-то пошло не так :(</p>
+              <button
+                type="button"
+                className={styles.promocode_cancellation}
+                onClick={cancelPromocodeFunc}
+              >
+                отменить
+              </button>
+            </div>
+          ) : (
+            <div className={styles.promocode_wrapper}>
+              <p className={styles.promocode_message}>
+                Промокод: {validPromoCode.name}
+              </p>
+              <p className={styles.promocode_message}>
+                {validPromoCode.message}
+              </p>
+              <button
+                type="button"
+                className={styles.promocode_cancellation}
+                onClick={cancelPromocodeFunc}
+              >
+                отменить
+              </button>
+            </div>
+          )}
+          <p className={styles.total_price}>Итого: {discounted_price} P.</p>
+          <button
+            type="button"
+            className={styles.control_button}
+            onClick={createOrderHandler}
+            // убрать коммент при финальном пуше
+            // onClick={() => {
+            //   console.log(userCartData);
+            // }}
+            // disabled={!isUserFormValid}
+          ></button>
+          {isOtherPopupVisible && (
+            <PopupModel onClose={handelClosePopup}>
+              <div className={styles.popupBlock}>
+                {!isUserFormValid && (
+                  <p className={`${styles.validation_message}`}>
+                    Заполните поля:
+                  </p>
+                )}
+                {isOtherPopupVisible.map((el, index) => (
+                  <p
+                    className={`${styles.validation_message} ${styles.popupBlock_message}`}
+                    key={index}
+                  >
+                    {el}
+                  </p>
+                ))}
+              </div>
+            </PopupModel>
+          )}
+        </div>
+      </div>
 
             <div className={styles.payment_info}>
                 <div className={styles.payment_logo_wrapper}>

@@ -40,7 +40,7 @@ export const createOrder = (
     isShipping: shippingData.isShipping,
     shipping_city: userShippingData.city,
     shipping_point: userShippingData.pvz,
-    shipping_price: shippingData.shippingTarif.total_sum,
+    shipping_price: Math.ceil(shippingData.shippingTarif.total_sum),
     packages: [],
   };
   order.forEach((order_item) => {
