@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './item-page.module.css';
@@ -16,20 +16,26 @@ import SizeSelection from '../../components/size-selection/size-selection';
 import {
     addItemSize,
     deleteItemOrder,
+    getSizeFlag,
 } from '../../services/actions/item-action';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import isSizeFunction from '../../utils/isSizeFunction';
+import PopupModel from '../../components/popupModel/popupModel';
+import { closePopup, openPopup } from '../../services/actions/utility-actions';
+import { instructionForPopup } from '../../data/instructionForPopup/instructionForPopup';
 
 const ItemPage = () => {
     const { id } = useParams();
     const { data } = useSelector((store) => store.shopData);
     const { order } = useSelector((store) => store.itemReducer);
-    const [valueForApprove, setValueForApprove] = useState(false);
+    const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
 
     const history = useHistory();
     const dispatch = useDispatch();
+    // let location = useLocation();
 
     const onClick = () => {
         history.goBack();
@@ -83,38 +89,50 @@ const ItemPage = () => {
         setSize(e.target.value);
     };
 
+    const closePopupConstructor = () => {
+        dispatch(closePopup());
+    };
+
     const addToCart = () => {
-        window.dataLayer.push({
-            ecommerce: {
-                currencyCode: 'RUB',
-                add: {
-                    products: [
-                        {
-                            id: item._id,
-                            name: item.name,
-                            price: item.price,
-                            size: order,
-                            category: item.category,
-                            variant: 'без принта',
-                        },
-                    ],
+        if (isSizeFunction(order)) {
+            window.dataLayer.push({
+                ecommerce: {
+                    currencyCode: 'RUB',
+                    add: {
+                        products: [
+                            {
+                                id: item._id,
+                                name: item.name,
+                                price: item.price,
+                                size: order,
+                                category: item.category,
+                                variant: 'без принта',
+                            },
+                        ],
+                    },
                 },
-            },
-        });
+            });
 
-        const data = {
-            attributes: { ...item },
-            cart_item_id: uuidv4(),
-        };
-        data.attributes.size = order;
-        data.attributes.key = uuidv4();
+            const data = {
+                attributes: { ...item },
+                cart_item_id: uuidv4(),
+            };
+            data.attributes.size = order;
+            data.attributes.key = uuidv4();
 
-        dispatch({
-            type: ADD_TO_CART,
-            payload: { ...data },
-        });
+            dispatch({
+                type: ADD_TO_CART,
+                payload: { ...data },
+            });
 
-        history.goBack();
+            history.goBack();
+        } else {
+            dispatch(openPopup(['Нужно выбрать размер']));
+        }
+    };
+
+    const addToConstructor = () => {
+        dispatch(openPopup(['Нужно выбрать размер']));
     };
 
     const descriptionArray = item ? item.description.split('=') : [];
@@ -158,8 +176,7 @@ const ItemPage = () => {
                                         "availability": "http://schema.org/InStock",
                                         "price": ${item.price},
                                         "priceCurrency": "RUB"
-  }
-
+                            }
                         }`,
                         },
                     ]}
@@ -295,7 +312,8 @@ const ItemPage = () => {
                         <div className={styles.item_button_wrapper}>
                             {item.isForPrinting &&
                                 !item.isSale &&
-                                item.sizes.length > 0 && (
+                                item.sizes.length > 0 &&
+                                (isSizeFunction(order) ? (
                                     <Link
                                         to={{
                                             pathname: `/shop/${id}/constructor`,
@@ -309,16 +327,35 @@ const ItemPage = () => {
                                             Добавить принт
                                         </button>
                                     </Link>
-                                )}
+                                ) : (
+                                    <button
+                                        type="button"
+                                        className={styles.item_button}
+                                        onClick={addToConstructor}
+                                    >
+                                        Добавить принт
+                                    </button>
+                                ))}
                             {item.sizes.length > 0 && (
                                 <button
                                     type="button"
-                                    // disabled={!!valueForApprove}
                                     className={styles.item_button}
                                     onClick={addToCart}
                                 >
                                     Добавить в корзину
                                 </button>
+                            )}
+                            {isOtherPopupVisible && (
+                                <PopupModel onClose={closePopupConstructor}>
+                                    {isOtherPopupVisible.map((el, index) => (
+                                        <p
+                                            className={styles.instruction}
+                                            key={index}
+                                        >
+                                            {el}
+                                        </p>
+                                    ))}
+                                </PopupModel>
                             )}
                         </div>
                     </div>

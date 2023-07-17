@@ -221,6 +221,14 @@
     object-fit: cover;
 }
 
+.instruction {
+    color: rgb(0, 255, 0);
+    font-family: inherit;
+    font-size: 20px;
+    line-height: 20px;
+    text-align: center;
+}
+
 /* END SWIPER */
 
 @media (max-width: 1200px) {
