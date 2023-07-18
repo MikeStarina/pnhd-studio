@@ -282,7 +282,6 @@ const CartPage = () => {
         }
     }, [totalPrice, valueButton]);
 
-
     const shipping_price = validPromoCode.discount_ratio
         ? totalPrice * validPromoCode.discount_ratio + (shippingPrice || 0)
         : totalPrice + (shippingPrice || 0);
@@ -304,6 +303,7 @@ const CartPage = () => {
 
         return () => {
             dispatch({ type: SET_CART_VISIBILITY, payload: true });
+            dispatch({ type: SET_SDEK_DEFAULT_STATE });
         };
     }, []);
 
@@ -928,7 +928,7 @@ const CartPage = () => {
                         type="button"
                         className={styles.control_button}
                         onClick={createOrderHandler}
-                        
+
                         // disabled={!isUserFormValid}
                     ></button>
                     {isOtherPopupVisible && (
