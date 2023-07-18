@@ -6,13 +6,15 @@ import {
     OPEN_MODAL_MENU,
     CLOSE_MODAL_MENU,
     SET_POPUP_VISIBILITY,
+    closePopupHeader,
+    openPopupHeader,
 } from '../../services/actions/utility-actions';
 import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
 import { getShopData } from '../../services/actions/shop-data-actions.jsx';
 import { methodsData } from '../../data/printing-methods/methods-data';
 import { typeOfPrintData } from '../../data/type-of-print-data/data';
 
-import Popup from '../popup/popup';
+import PopupModel from '../popupModel/popupModel';
 import MainPage from '../../pages/main-page/main-page.jsx';
 import BurgerIcon from '../main-menu/burger-icon.jsx';
 import MainMenu from '../main-menu/main-menu.jsx';
@@ -29,6 +31,7 @@ import SizesPage from '../../pages/sizes-page/sizes-page';
 import FullscreenMenu from '../main-menu/fullscreen-menu';
 import PrintingMethod from '../../pages/printing-method/printing-method';
 import TypeOfPrint from '../../pages/type-of-print/type-of-print';
+import PopupCallBack from '../popupCallBack/popupCallBack';
 
 function App() {
     const dispatch = useDispatch();
@@ -85,10 +88,12 @@ function App() {
         });
     };
 
-    const openPopup = () => {
-        dispatch({
-            type: SET_POPUP_VISIBILITY,
-        });
+    const handelClosePopupHeader = () => {
+        dispatch(closePopupHeader());
+    };
+
+    const handelOpenPopupHeader = () => {
+        dispatch(openPopupHeader());
     };
 
     const closeMenu = (e) => {
@@ -99,11 +104,20 @@ function App() {
 
     return (
         <>
-            {isPopupVisible && <Popup openPopup={openPopup} />}
+            {isPopupVisible && (
+                <PopupModel onClose={handelClosePopupHeader}>
+                    <PopupCallBack />
+                </PopupModel>
+            )}
             {mainMenu.isVisible && <MainMenu closeMenu={closeMenu} />}
-            {!mainMenu.isVisible && <FullscreenMenu openPopup={openPopup} />}
             {!mainMenu.isVisible && (
-                <BurgerIcon openMenu={openMenu} openPopup={openPopup} />
+                <FullscreenMenu openPopup={handelOpenPopupHeader} />
+            )}
+            {!mainMenu.isVisible && (
+                <BurgerIcon
+                    openMenu={openMenu}
+                    openPopup={handelOpenPopupHeader}
+                />
             )}
             {order && order.length > 0 && isVisible && (
                 <CartIcon qty={order.length} />

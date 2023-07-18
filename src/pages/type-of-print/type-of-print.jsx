@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import styles from './type-of-print.module.css';
 import PrintingFirstScreen from '../../components/printingFirstScreen/printingFirstScreen';
 import FeedbackScreen from '../../components/main-page-components/feedback-screen';
@@ -26,7 +27,27 @@ const TypeOfPrint = (props) => {
 
     return (
         <>
-            <PrintingFirstScreen data={info} typePage={'types'}/>
+            <Helmet
+                script={[
+                    {
+                        type: 'application/ld+json',
+                        innerHTML: `{
+                            '@context': 'https://schema.org',
+                            '@type': 'Organization',
+                            'address': {
+                                '@type': 'PostalAddress',
+                                'addressLocality': 'Санкт-Петербург',
+                                'postalCode': '197022',
+                                'streetAddress': 'ул. Чапыгина 1',
+                            },
+                            'email': 'studio@pnhd.ru',
+                            'name': 'PINHEAD',
+                            'telephone': '+78129046156',
+                        }`,
+                    },
+                ]}
+            />
+            <PrintingFirstScreen data={info} typePage={'types'} />
             <Brief {...data} />
             <PrintingGallery gallery={galleryProps} />
             {description ? (
