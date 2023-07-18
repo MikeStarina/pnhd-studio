@@ -772,6 +772,7 @@ const CartPage = () => {
                                             : `${styles.user_form_input} ${styles.user_form_inputError}`
                                     }
                                     required={true}
+                                    placeholder="Введите город"
                                     value={listCities.city || listCities}
                                     onChange={(e) => {
                                         setListCities(e.target.value);
