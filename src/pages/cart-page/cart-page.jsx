@@ -72,14 +72,11 @@ const CartPage = () => {
     const { userCartData, userShippingData } = useSelector(
         (store) => store.userData,
     );
-    // console.log(validPromoCode)
     const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
     const { shippingCities, shippingTarif, shippingPoints } = useSelector(
         (store) => store.shippingData.shippingData,
     );
     const { shippingData } = useSelector((store) => store.shippingData);
-    // const { order } = useSelector((store) => store.itemReducer);
-    // console.log(order)
     const history = useHistory();
     const dispatch = useDispatch();
     const debouncedSearchTerm = useDebounce(listCities, 500);
@@ -96,7 +93,6 @@ const CartPage = () => {
 
     useEffect(() => {
         getShippingPoints();
-        console.log(shippingTarif.total_sum);
         setShippingPrice(
             shippingTarif.total_sum ? Math.ceil(shippingTarif.total_sum) : 0,
         );
@@ -104,7 +100,6 @@ const CartPage = () => {
 
     //подтсраховка от "зажевывания" стоимости доставки
     useEffect(() => {
-        console.log(shippingTarif.total_sum);
         setShippingPrice(
             shippingTarif.total_sum ? Math.ceil(shippingTarif.total_sum) : 0,
         );
@@ -170,8 +165,6 @@ const CartPage = () => {
                     type: SET_SHIPPING_PVZ,
                     payload: { item: { ...item }, isPvzValid: true },
                 });
-                // dispatch(getSdekShippingTarif(item.location.city_code));
-                // setShippingPrice(shippingTarif.total_sum);
                 setListPoints(item);
                 setPointColor(elem, '#00FF00');
                 setCenterMap([item.location.latitude, item.location.longitude]);
@@ -241,8 +234,6 @@ const CartPage = () => {
 
     const totalPrice = order.reduce((acc, item) => {
         let printTotalprice = 0;
-        //console.log(item.print)
-        //console.log(item.print.back)
         const frontPrintPrice =
             item.print && item.print.front.file
                 ? item.print.front.cartParams.price
@@ -291,11 +282,6 @@ const CartPage = () => {
         }
     }, [totalPrice, valueButton]);
 
-    // const validPromoCode = {discount_ratio : 1, discounted_item : "all", mechanic : "freeShipping", message: "Поздравляем! Доставка бесплатна!",name: "FREESHIPING", qty:-1, _id:"640753f7fbf430095341300b"}
-
-    // const discounted_price = validPromoCode.discount_ratio
-    //   ? totalPrice * validPromoCode.discount_ratio + (shippingPrice || 0)
-    //   : totalPrice + (shippingPrice || 0);
 
     const shipping_price = validPromoCode.discount_ratio
         ? totalPrice * validPromoCode.discount_ratio + (shippingPrice || 0)
@@ -328,7 +314,6 @@ const CartPage = () => {
         if (e.target.name === 'phone') {
             value = e.target.value.replace(regex, '');
         }
-        //userCartData.phone.replace(regex, '')
         dispatch({
             type: SET_USER_DATA,
             inputName: e.target.name,
@@ -943,10 +928,7 @@ const CartPage = () => {
                         type="button"
                         className={styles.control_button}
                         onClick={createOrderHandler}
-                        // убрать коммент при финальном пуше
-                        // onClick={() => {
-                        //   console.log(userCartData);
-                        // }}
+                        
                         // disabled={!isUserFormValid}
                     ></button>
                     {isOtherPopupVisible && (

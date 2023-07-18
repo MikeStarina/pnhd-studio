@@ -26,7 +26,6 @@ export const createOrder = (
   shippingData,
   userShippingData
 ) => {
-  console.log(order);
 
   const data = {
     order_total_price: totalPrice,
@@ -44,7 +43,6 @@ export const createOrder = (
     packages: [],
   };
   order.forEach((order_item) => {
-    console.log(order_item)
     
 
 
@@ -141,7 +139,6 @@ export const createOrder = (
       badgePrintPrice;
     
     
-    console.log(printTotalprice);
 
     const itemPrice = (validPromoCode.discount_ratio
       ? order_item.attributes.price * validPromoCode.discount_ratio
@@ -165,7 +162,6 @@ export const createOrder = (
   
     
     
-  console.log(data);
 
   return function (dispatch) {
       fetch (`${apiBaseUrl}/api/orders`, {
@@ -179,13 +175,13 @@ export const createOrder = (
       })
       .then(res => res.json())
       .then((res) => {
-          // if (res.paymentUrl) {
-          //     dispatch({
-          //         type: SET_PAYMENT_URL,
-          //         payload: res.paymentUrl,
-          //     })
+          if (res.paymentUrl) {
+              dispatch({
+                  type: SET_PAYMENT_URL,
+                  payload: res.paymentUrl,
+              })
+          }
 
-          // }
       });
   }
 };
