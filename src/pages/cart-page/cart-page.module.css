@@ -674,7 +674,7 @@
     }
 
     .text_wrapper {
-        align-items: flex-start;
+        align-items: flex-end;
     }
 
     .qty_input {
