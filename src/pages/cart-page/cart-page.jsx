@@ -338,6 +338,18 @@ const CartPage = () => {
         if (valueButton) {
             dispatch(openPopup(['Нужно выбрать размер']));
         } else if (!isUserFormValid) {
+            if (!userCartData.isNameValid) {
+                setChekInput(false);
+            }
+            if (!userCartData.isPhoneValid) {
+                setChekInput(false);
+            }
+            if (!userCartData.isEmailValid) {
+                setChekInput(false);
+            }
+            if (!userCartData.isSurnameValid) {
+                setChekInput(false);
+            }
             if (!userShippingData.isCityValid) {
                 setChekInput(false);
             }
@@ -656,7 +668,11 @@ const CartPage = () => {
                             placeholder="Ваше имя"
                             id="name"
                             name="name"
-                            className={styles.user_form_input}
+                            className={
+                                checkInput
+                                    ? styles.user_form_input
+                                    : `${styles.user_form_input} ${styles.user_form_inputError}`
+                            }
                             required={true}
                             onChange={inputChangeHandler}
                             value={userCartData.name}
@@ -670,7 +686,11 @@ const CartPage = () => {
                             placeholder="Ваша фамилия"
                             id="surname"
                             name="surname"
-                            className={styles.user_form_input}
+                            className={
+                                checkInput
+                                    ? styles.user_form_input
+                                    : `${styles.user_form_input} ${styles.user_form_inputError}`
+                            }
                             required={true}
                             onChange={inputChangeHandler}
                             value={userCartData.surname}
@@ -684,7 +704,11 @@ const CartPage = () => {
                             placeholder="89990009900"
                             id="phone"
                             name="phone"
-                            className={styles.user_form_input}
+                            className={
+                                checkInput
+                                    ? styles.user_form_input
+                                    : `${styles.user_form_input} ${styles.user_form_inputError}`
+                            }
                             required={true}
                             onChange={inputChangeHandler}
                             value={userCartData.phone}
@@ -697,7 +721,11 @@ const CartPage = () => {
                             placeholder="name@pnhd.ru"
                             id="email"
                             name="email"
-                            className={styles.user_form_input}
+                            className={
+                                checkInput
+                                    ? styles.user_form_input
+                                    : `${styles.user_form_input} ${styles.user_form_inputError}`
+                            }
                             required={true}
                             onChange={inputChangeHandler}
                             value={userCartData.email}

@@ -19,6 +19,7 @@ const CardsBlock = () => {
     }
 
     const teesArr = filteredData.filter(item => item.type === 'tshirt');
+    const longsleevesArr = filteredData.filter(item => item.type === 'longsleeve');
     const hoodiesArr = filteredData.filter(item => item.type === 'hoodie');
     const accesorizeArr = filteredData.filter(item => item.category === 'accesorize');
     const friendsArr = filteredData.filter(item => item.category === 'friends');
@@ -40,6 +41,16 @@ const CardsBlock = () => {
             )}
                 ) */}
             {teesArr && teesArr.map((item, index) => {
+
+
+                const url = `${apiBaseUrl}${item.image_url}`
+                return (
+                <Link to={{ pathname: `/shop/${item._id}`}} className={styles.link} key={index}>
+                    <CardItem title={item.name} price={item.price} img={url} sizes={item.sizes} />
+                </Link>
+            )}
+            )}
+            {longsleevesArr && longsleevesArr.map((item, index) => {
 
 
                 const url = `${apiBaseUrl}${item.image_url}`
