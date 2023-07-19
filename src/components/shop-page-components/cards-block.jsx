@@ -20,6 +20,7 @@ const CardsBlock = () => {
 
     const teesArr = filteredData.filter(item => item.type === 'tshirt');
     const longsleevesArr = filteredData.filter(item => item.type === 'longsleeve');
+    const sweatshirtsArr = filteredData.filter(item => item.type === 'sweatshirt');
     const hoodiesArr = filteredData.filter(item => item.type === 'hoodie');
     const accesorizeArr = filteredData.filter(item => item.category === 'accesorize');
     const friendsArr = filteredData.filter(item => item.category === 'friends');
@@ -55,7 +56,17 @@ const CardsBlock = () => {
 
                 const url = `${apiBaseUrl}${item.image_url}`
                 return (
-                <Link to={{ pathname: `/shop/${item._id}`}} className={styles.link} key={index}>
+                <Link to={{ pathname: `/shop/${item._id}`}} className={styles.link} key={index + 1}>
+                    <CardItem title={item.name} price={item.price} img={url} sizes={item.sizes} />
+                </Link>
+            )}
+            )}
+            {sweatshirtsArr && sweatshirtsArr.map((item, index) => {
+
+
+                const url = `${apiBaseUrl}${item.image_url}`
+                return (
+                <Link to={{ pathname: `/shop/${item._id}`}} className={styles.link} key={index + 2}>
                     <CardItem title={item.name} price={item.price} img={url} sizes={item.sizes} />
                 </Link>
             )}
@@ -65,7 +76,7 @@ const CardsBlock = () => {
 
                 const url = `${apiBaseUrl}${item.image_url}`
                 return (
-                <Link to={{ pathname: `/shop/${item._id}`}} className={styles.link} key={index + 1}>
+                <Link to={{ pathname: `/shop/${item._id}`}} className={styles.link} key={index + 3}>
                     <CardItem title={item.name} price={item.price} img={url} sizes={item.sizes} />
                 </Link>
             )}
@@ -75,7 +86,7 @@ const CardsBlock = () => {
 
                     const url = `${apiBaseUrl}${item.image_url}`
                     return (
-                    <Link to={{ pathname: `/shop/${item._id}`}} className={styles.link} key={index + 3}>
+                    <Link to={{ pathname: `/shop/${item._id}`}} className={styles.link} key={index + 4}>
                         <CardItem title={item.name} price={item.price} img={url} sizes={item.sizes} />
                     </Link>
             )}
@@ -85,7 +96,7 @@ const CardsBlock = () => {
 
                 const url = `${apiBaseUrl}${item.image_url}`
                 return (
-                <Link to={{ pathname: `/shop/${item._id}`}} className={styles.link} key={index + 2}>
+                <Link to={{ pathname: `/shop/${item._id}`}} className={styles.link} key={index + 5}>
                     <CardItem title={item.name} price={item.price} img={url} sizes={item.sizes} />
                 </Link>
             )}
