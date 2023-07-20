@@ -443,6 +443,17 @@ const CartPage = () => {
         });
     };
 
+    // Берет габариты товара для расчета стоимости [{},{}]
+    const orderWeight = order.map((el) => {
+        const sizes = el.attributes.shippingParams;
+        return {
+            weight: sizes.weight,
+            length: sizes.length,
+            width: sizes.width,
+            height: sizes.depth,
+        };
+    });
+
     const promoOnChangeHandler = (e) => {
         const value = e.target.value.toUpperCase();
         dispatch({
@@ -558,9 +569,9 @@ const CartPage = () => {
                                             <h3 className={styles.title}>
                                                 {item.attributes.name}
                                             </h3>
-                                            <p className={styles.description}>
-                                                {/*Размер: {item.attributes.size}*/}
-                                            </p>
+                                            <p
+                                                className={styles.description}
+                                            ></p>
                                             <div
                                                 className={
                                                     styles.qty_input_wrapper
@@ -852,6 +863,8 @@ const CartPage = () => {
                                                                     dispatch(
                                                                         getSdekShippingTarif(
                                                                             item.code,
+                                                                            (item.orderWeight =
+                                                                                orderWeight),
                                                                         ),
                                                                     );
                                                                 }}
