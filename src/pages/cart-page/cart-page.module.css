@@ -461,8 +461,15 @@
 }
 
 .cities_listItem {
+    width: 99%;
     cursor: pointer;
     padding-bottom: 3px;
+    transition:0.5s;
+}
+
+.cities_listItem:hover {
+    transition:0.5s;
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 @supports (-webkit-appearance: none) or (-moz-appearance: none) {
