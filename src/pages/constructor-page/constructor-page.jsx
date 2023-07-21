@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styles from './constructor-page.module.css';
 import { Stage, Layer } from 'react-konva';
@@ -35,6 +35,7 @@ const Constructor = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const {
+        isBlockButton,
         isSelected,
         front_file,
         front_file_preview,
@@ -63,6 +64,15 @@ const Constructor = () => {
         width: 220,
         height: 300,
     };
+
+    useEffect(() => {
+        return () => {
+            dispatch({
+                type: DELETE_FILE,
+                view: activeView,
+            });
+        };
+    }, []);
 
     if (activeView === 'back') {
         if (item.type === 'hoodie') {
@@ -504,6 +514,7 @@ const Constructor = () => {
                             type="button"
                             className={styles.item_button}
                             onClick={addToCart}
+                            disabled={isBlockButton}
                         />
                     </div>
                 </div>
