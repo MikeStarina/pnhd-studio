@@ -35,6 +35,7 @@ const Constructor = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const {
+        isBlockButton,
         isSelected,
         front_file,
         front_file_preview,
@@ -504,6 +505,7 @@ const Constructor = () => {
                             type="button"
                             className={styles.item_button}
                             onClick={addToCart}
+                            disabled={isBlockButton}
                         />
                     </div>
                 </div>
