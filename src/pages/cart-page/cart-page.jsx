@@ -48,6 +48,12 @@ import SizeSelection from '../../components/size-selection/size-selection';
 const CartPage = () => {
     const [debounceCities, setDebounceCities] = useState([]);
     const [checkInput, setChekInput] = useState(true);
+    const [firstLoadInput, setFirstLoadInput] = useState({
+        name: false,
+        surname: false,
+        email: false,
+        phone: false,
+    });
     const [checkSelect, setChekSelect] = useState(true);
     const [typeDelivery, setTypeDelivery] = useState({
         pickup: true,
@@ -339,17 +345,20 @@ const CartPage = () => {
             dispatch(openPopup(['Нужно выбрать размер']));
         } else if (!isUserFormValid) {
             if (!userCartData.isNameValid) {
-                setChekInput(false);
+                setFirstLoadInput((firstLoadInput.name = true));
             }
             if (!userCartData.isPhoneValid) {
-                setChekInput(false);
+                setFirstLoadInput((firstLoadInput.phone = true));
             }
             if (!userCartData.isEmailValid) {
-                setChekInput(false);
+                setFirstLoadInput((firstLoadInput.email = true));
             }
             if (!userCartData.isSurnameValid) {
-                setChekInput(false);
+                setFirstLoadInput((firstLoadInput.surname = true));
             }
+            setFirstLoadInput({
+                ...firstLoadInput,
+            });
             if (!userShippingData.isCityValid) {
                 setChekInput(false);
             }
@@ -434,6 +443,17 @@ const CartPage = () => {
         });
     };
 
+    // Берет габариты товара для расчета стоимости [{},{}]
+    const orderWeight = order.map((el) => {
+        const sizes = el.attributes.shippingParams;
+        return {
+            weight: sizes.weight,
+            length: sizes.length,
+            width: sizes.width,
+            height: sizes.depth,
+        };
+    });
+
     const promoOnChangeHandler = (e) => {
         const value = e.target.value.toUpperCase();
         dispatch({
@@ -503,10 +523,6 @@ const CartPage = () => {
         setCenterMap([59.972621, 30.306432]);
     };
 
-    const popupStyles = valueButton
-        ? `${styles.instruction}`
-        : `${styles.popupBlock_message}`;
-
     const popupStyle = valueButton
         ? `${styles.instruction}`
         : `${styles.popupBlock_message}`;
@@ -553,9 +569,9 @@ const CartPage = () => {
                                             <h3 className={styles.title}>
                                                 {item.attributes.name}
                                             </h3>
-                                            <p className={styles.description}>
-                                                {/*Размер: {item.attributes.size}*/}
-                                            </p>
+                                            <p
+                                                className={styles.description}
+                                            ></p>
                                             <div
                                                 className={
                                                     styles.qty_input_wrapper
@@ -669,9 +685,9 @@ const CartPage = () => {
                             id="name"
                             name="name"
                             className={
-                                checkInput
-                                    ? styles.user_form_input
-                                    : `${styles.user_form_input} ${styles.user_form_inputError}`
+                                firstLoadInput.name && !userCartData.isNameValid
+                                    ? `${styles.user_form_input} ${styles.user_form_inputError}`
+                                    : styles.user_form_input
                             }
                             required={true}
                             onChange={inputChangeHandler}
@@ -687,9 +703,10 @@ const CartPage = () => {
                             id="surname"
                             name="surname"
                             className={
-                                checkInput
-                                    ? styles.user_form_input
-                                    : `${styles.user_form_input} ${styles.user_form_inputError}`
+                                firstLoadInput.surname &&
+                                !userCartData.isSurnameValid
+                                    ? `${styles.user_form_input} ${styles.user_form_inputError}`
+                                    : styles.user_form_input
                             }
                             required={true}
                             onChange={inputChangeHandler}
@@ -705,9 +722,10 @@ const CartPage = () => {
                             id="phone"
                             name="phone"
                             className={
-                                checkInput
-                                    ? styles.user_form_input
-                                    : `${styles.user_form_input} ${styles.user_form_inputError}`
+                                firstLoadInput.phone &&
+                                !userCartData.isPhoneValid
+                                    ? `${styles.user_form_input} ${styles.user_form_inputError}`
+                                    : styles.user_form_input
                             }
                             required={true}
                             onChange={inputChangeHandler}
@@ -722,9 +740,10 @@ const CartPage = () => {
                             id="email"
                             name="email"
                             className={
-                                checkInput
-                                    ? styles.user_form_input
-                                    : `${styles.user_form_input} ${styles.user_form_inputError}`
+                                firstLoadInput.email &&
+                                !userCartData.isEmailValid
+                                    ? `${styles.user_form_input} ${styles.user_form_inputError}`
+                                    : styles.user_form_input
                             }
                             required={true}
                             onChange={inputChangeHandler}
@@ -844,6 +863,8 @@ const CartPage = () => {
                                                                     dispatch(
                                                                         getSdekShippingTarif(
                                                                             item.code,
+                                                                            (item.orderWeight =
+                                                                                orderWeight),
                                                                         ),
                                                                     );
                                                                 }}
