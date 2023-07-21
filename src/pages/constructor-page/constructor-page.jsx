@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styles from './constructor-page.module.css';
 import { Stage, Layer } from 'react-konva';
@@ -64,6 +64,15 @@ const Constructor = () => {
         width: 220,
         height: 300,
     };
+
+    useEffect(() => {
+        return () => {
+            dispatch({
+                type: DELETE_FILE,
+                view: activeView,
+            });
+        };
+    }, []);
 
     if (activeView === 'back') {
         if (item.type === 'hoodie') {
