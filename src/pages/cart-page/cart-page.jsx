@@ -298,7 +298,7 @@ const CartPage = () => {
         : totalPrice;
 
     const discounted_price =
-        validPromoCode.name === 'FREESHIPPING'
+        validPromoCode.mechanic === 'freeShipping'
             ? shipping_free
             : shipping_price;
 
@@ -886,7 +886,7 @@ const CartPage = () => {
                                     <>
                                         <p>
                                             Доставка до пункта выдачи:{' '}
-                                            {validPromoCode.name === 'FREESHIPPING'?'Бесплатная доставка':shippingPrice}
+                                            {validPromoCode.mechanic === 'freeShipping'?'Бесплатная доставка':shippingPrice}
                                         </p>
                                         <p>Выберите пункт выдачи: </p>
                                         <ShippingSelect

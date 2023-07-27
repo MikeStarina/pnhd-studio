@@ -29,7 +29,7 @@ export const createOrder = (
   const data = {
     order_total_price: totalPrice,
     order_discounted_price: discounted_price,
-    order_promocode: validPromoCode.name,
+    order_promocode: validPromoCode,
     owner_name: `${userCartData.surname} ${userCartData.name}`,
     owner_phone: userCartData.phone,
     owner_email: userCartData.email,
