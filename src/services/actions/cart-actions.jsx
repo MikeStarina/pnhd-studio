@@ -26,11 +26,10 @@ export const createOrder = (
   shippingData,
   userShippingData
 ) => {
-
   const data = {
     order_total_price: totalPrice,
     order_discounted_price: discounted_price,
-    order_promocode: validPromoCode.name,
+    order_promocode: validPromoCode,
     owner_name: `${userCartData.surname} ${userCartData.name}`,
     owner_phone: userCartData.phone,
     owner_email: userCartData.email,
@@ -43,33 +42,30 @@ export const createOrder = (
     packages: [],
   };
   order.forEach((order_item) => {
-    
-
-
-      const sizeStr = (orderSizeItem) => {
-        let size ='';
-        let countStr = false;
-        orderSizeItem.forEach((item, index)=>{
-          if(item.qty>0){
-            size += `размер:${item.name}`;
-            countStr = true;
-            if(orderSizeItem.length>index&&countStr){
-              size +=','
-            }
+    const sizeStr = (orderSizeItem) => {
+      let size = "";
+      let countStr = false;
+      orderSizeItem.forEach((item, index) => {
+        if (item.qty > 0) {
+          size += `размер:${item.name}`;
+          countStr = true;
+          if (orderSizeItem.length > index && countStr) {
+            size += ",";
           }
-          
-        })
-        size = size.slice(0, -1)+'.';
-        return size
-      }
+        }
+      });
+      size = size.slice(0, -1) + ".";
+      return size;
+    };
 
     const item = {
-      textile: `${order_item.attributes.name},`+ sizeStr(order_item.attributes.size),
+      textile:
+        `${order_item.attributes.name},` + sizeStr(order_item.attributes.size),
       qty: order_item.attributes.size,
       qtyAll: 0,
       sizes: order_item.attributes.sizes,
       category: order_item.attributes.category,
-      color : order_item.attributes.color,
+      color: order_item.attributes.color,
       description: order_item.attributes.description,
       editor_back_view: order_item.attributes.editor_back_view,
       editor_front_view: order_item.attributes.editor_front_view,
@@ -101,35 +97,34 @@ export const createOrder = (
         : "",
     };
 
-    order_item.attributes.size.forEach((elem)=>{
-      if(elem.qty>0){
-        item.qtyAll += elem.qty
+    order_item.attributes.size.forEach((elem) => {
+      if (elem.qty > 0) {
+        item.qtyAll += elem.qty;
       }
-    })
+    });
 
-    
     let printTotalprice = 0;
 
     const frontPrintPrice =
       (order_item.print && order_item.print.front.file
         ? order_item.print.front.cartParams.price
-        : 0)*item.qtyAll;
+        : 0) * item.qtyAll;
     const backPrintPrice =
       (order_item.print && order_item.print.back.file
         ? order_item.print.back.cartParams.price
-        : 0)*item.qtyAll;
+        : 0) * item.qtyAll;
     const lsleevePrintPrice =
       (order_item.print && order_item.print.lsleeve.file
         ? order_item.print.lsleeve.cartParams.price
-        : 0)*item.qtyAll;
+        : 0) * item.qtyAll;
     const rsleevePrintPrice =
-     ( order_item.print && order_item.print.rsleeve.file
+      (order_item.print && order_item.print.rsleeve.file
         ? order_item.print.rsleeve.cartParams.price
-        : 0)*item.qtyAll;
+        : 0) * item.qtyAll;
     const badgePrintPrice =
       (order_item.print && order_item.print.badge.file
         ? order_item.print.badge.cartParams.price
-        : 0)*item.qtyAll;
+        : 0) * item.qtyAll;
 
     printTotalprice =
       frontPrintPrice +
@@ -137,12 +132,11 @@ export const createOrder = (
       lsleevePrintPrice +
       rsleevePrintPrice +
       badgePrintPrice;
-    
-    
 
-    const itemPrice = (validPromoCode.discount_ratio
-      ? order_item.attributes.price * validPromoCode.discount_ratio
-      : order_item.attributes.price)* item.qtyAll;
+    const itemPrice =
+      (validPromoCode.discount_ratio
+        ? order_item.attributes.price * validPromoCode.discount_ratio
+        : order_item.attributes.price) * item.qtyAll;
     const printFullPrice = validPromoCode.discount_ratio
       ? printTotalprice * validPromoCode.discount_ratio
       : printTotalprice;
@@ -157,33 +151,27 @@ export const createOrder = (
       weight: "1000",
       width: "10",
     });
-    
   });
-  
-    
-    
 
   return function (dispatch) {
-      fetch (`${apiBaseUrl}/api/orders`, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-              'Content-length': '',
-          },
-          body: JSON.stringify(data),
-
-      })
-      .then(res => res.json())
+    fetch(`${apiBaseUrl}/api/orders`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Content-length": "",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
       .then((res) => {
-          if (res.paymentUrl) {
-              dispatch({
-                  type: SET_PAYMENT_URL,
-                  payload: res.paymentUrl,
-              })
-          }
-
+        if (res.paymentUrl) {
+          dispatch({
+            type: SET_PAYMENT_URL,
+            payload: res.paymentUrl,
+          });
+        }
       });
-  }
+  };
 };
 
 export const checkPromoCodeValidity = (user_promocode) => {
