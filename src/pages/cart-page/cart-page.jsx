@@ -75,6 +75,7 @@ const CartPage = () => {
         promocodeFail,
         validPromoCode,
     } = useSelector((store) => store.cartData);
+    
     const { userCartData, userShippingData } = useSelector(
         (store) => store.userData,
     );
@@ -526,7 +527,7 @@ const CartPage = () => {
     const popupStyle = valueButton
         ? `${styles.instruction}`
         : `${styles.popupBlock_message}`;
-
+        
     return (
         <section className={styles.screen}>
             <div className={styles.cart_title_box}>
@@ -885,7 +886,7 @@ const CartPage = () => {
                                     <>
                                         <p>
                                             Доставка до пункта выдачи:{' '}
-                                            {shippingPrice}
+                                            {validPromoCode.mechanic === 'freeShipping'?'Бесплатная доставка':shippingPrice}
                                         </p>
                                         <p>Выберите пункт выдачи: </p>
                                         <ShippingSelect
