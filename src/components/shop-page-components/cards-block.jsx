@@ -11,13 +11,13 @@ const CardsBlock = () => {
 
     const { data, filter } = useSelector(store => store.shopData);
     let filteredData = [];
-
     if (filter) {
         filteredData = data.filter(item => item.category === filter)
     } else {
         filteredData = data;
     }
 
+    // console.log(filteredData, filter)
     const teesArr = filteredData.filter(item => item.type === 'tshirt');
     const longsleevesArr = filteredData.filter(item => item.type === 'longsleeve');
     const sweatshirtsArr = filteredData.filter(item => item.type === 'sweatshirt');

@@ -1,7 +1,6 @@
-import { useEffect } from 'react';
-import React from 'react';
+import React,{useEffect, useState} from 'react';
 import { Helmet } from 'react-helmet';
-import { SET_FILTER } from '../../services/actions/shop-data-actions';
+import { SET_FILTER, SET_FIRSTSELECT } from '../../services/actions/shop-data-actions';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     CLOSE_MODAL_MENU,
@@ -11,15 +10,20 @@ import styles from './shop-page.module.css';
 import { useHistory, useLocation } from 'react-router-dom';
 import CardsBlock from '../../components/shop-page-components/cards-block.jsx';
 import PopupModel from '../../components/popupModel/popupModel';
+import FilterSelect from '../../components/shop-page-components/filter-select';
 
 const ShopPage = () => {
     const dispatch = useDispatch();
     const { filter } = useSelector((store) => store.shopData);
+    const { firstFilterSelect } = useSelector((store) => store.shopData);
     const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
     const { search } = useLocation();
     const history = useHistory();
     const searchValue = search.slice(3);
+    const [select, setSelect] = useState(null);
 
+    const test = useSelector((store)=>store.shopData)
+    console.log(test);
     const filterHandler = (e) => {
         if (e.target.value) {
             dispatch({
@@ -53,6 +57,10 @@ const ShopPage = () => {
         });
     }, []);
 
+const onChange = (elem) => {
+    setSelect(elem);
+    dispatch({type:SET_FIRSTSELECT, payload:elem})
+}
     return (
         <main className={styles.main_screen}>
             <Helmet
@@ -97,6 +105,7 @@ const ShopPage = () => {
                 ]}
             />
             <div className={styles.filter_wrapper}>
+                <FilterSelect defaultValue="kurwa" options={firstFilterSelect} editValue={select} onChange={onChange}/>
                 <button
                     type="button"
                     className={

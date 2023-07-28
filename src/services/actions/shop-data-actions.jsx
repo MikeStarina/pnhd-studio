@@ -3,6 +3,7 @@ import { openPopup, ORDER_ERROR } from './utility-actions';
 
 export const GET_DATA = 'GET_DATA';
 export const SET_FILTER = 'SET_FILTER';
+export const SET_FIRSTSELECT = 'SET_FIRSTSELECT';
 
 export const getShopData = () => {
     const checkResponse = (res) => {
@@ -22,7 +23,7 @@ export const getShopData = () => {
         })
             .then(checkResponse)
             .then((res) => {
-                //console.log(res);
+                console.log(res);
                 dispatch({
                     type: GET_DATA,
                     payload: res.data,
