@@ -1,8 +1,8 @@
-import React from "react";
-import styles from "./printing-faq.module.css";
-import circle50px from "../images/circle50px.png";
+import React from 'react';
+import styles from './printing-faq.module.css';
+import circle50px from '../images/circle50px.png';
 
-const PrintingFaq = (data) => {
+function PrintingFaq(data) {
   const { title, description, variants } = data;
 
   return (
@@ -15,9 +15,11 @@ const PrintingFaq = (data) => {
               src={circle50px}
               className={styles.screen_circle}
               alt="circle"
-            ></img>
+            />
             <div className={styles.text_wrapper}>
-              <h5 className={styles.screen_heading}>{item.screen_heading}</h5>
+              <h5 className={styles.screen_heading}>
+                {item.screen_heading}
+              </h5>
               {Array.isArray(item.screen_description) ? (
                 item.screen_description.map((item, index) => {
                   return (
@@ -43,7 +45,9 @@ const PrintingFaq = (data) => {
           {description.map((item, index) => {
             return (
               <div className={styles.block_wrapper} key={index}>
-                <p className={styles.bottom_description}>{item}</p>
+                <p className={styles.bottom_description}>
+                  {item}
+                </p>
               </div>
             );
           })}
@@ -56,6 +60,6 @@ const PrintingFaq = (data) => {
       )}
     </section>
   );
-};
+}
 
 export default PrintingFaq;

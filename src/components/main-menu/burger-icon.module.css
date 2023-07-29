@@ -23,20 +23,18 @@
     height: 100%;
     background-color: transparent;
     z-index: 3;
-    border: 2px solid rgb(0,255,0);
+    border: 2px solid rgb(0, 255, 0);
     border-radius: 5px;
-    color: rgb(0,255,0);
+    color: rgb(0, 255, 0);
     font-family: inherit;
     cursor: pointer;
 }
 
-
 .link {
     text-decoration: none;
-    color: rgb(0,255,0);
+    color: rgb(0, 255, 0);
     margin: 0;
     padding: 0;
-
 }
 
 @media (max-width: 960px) {

@@ -1,30 +1,27 @@
-import React, { lazy, Suspense, useRef, useState, useMemo } from "react";
-import { useEffect } from "react";
-import styles from "./shipping-map.module.css";
-const YMaps = lazy(() =>
-  import("@pbe/react-yandex-maps").then(({ YMaps }) => ({ default: YMaps }))
-);
-const Map = lazy(() =>
-  import("@pbe/react-yandex-maps").then(({ Map }) => ({ default: Map }))
-);
-const Placemark = lazy(() =>
-  import("@pbe/react-yandex-maps").then(({ Placemark }) => ({
-    default: Placemark,
-  }))
-);
-const ZoomControl = lazy(() =>
-  import("@pbe/react-yandex-maps").then(({ ZoomControl }) => ({
-    default: ZoomControl,
-  }))
-);
+import React, {
+  lazy,
+  Suspense,
+  useRef,
+  useState,
+  useMemo,
+  useEffect,
+} from 'react';
+import styles from './shipping-map.module.css';
 
-const Clusterer = lazy(() =>
-  import("@pbe/react-yandex-maps").then(({ Clusterer }) => ({
-    default: Clusterer,
-  }))
-);
+const YMaps = lazy(() => import('@pbe/react-yandex-maps').then(({ YMaps }) => ({ default: YMaps })));
+const Map = lazy(() => import('@pbe/react-yandex-maps').then(({ Map }) => ({ default: Map })));
+const Placemark = lazy(() => import('@pbe/react-yandex-maps').then(({ Placemark }) => ({
+  default: Placemark,
+})));
+const ZoomControl = lazy(() => import('@pbe/react-yandex-maps').then(({ ZoomControl }) => ({
+  default: ZoomControl,
+})));
 
-export const ShippingMap = (props) => {
+const Clusterer = lazy(() => import('@pbe/react-yandex-maps').then(({ Clusterer }) => ({
+  default: Clusterer,
+})));
+
+export function ShippingMap(props) {
   const map = useRef(null);
   const placemark = useRef(null);
   const { points, updatePointInput, setCenter } = props;
@@ -32,15 +29,15 @@ export const ShippingMap = (props) => {
 
   if (a[0] != setCenter[0]) {
     b(setCenter);
-    
-   if(map.current){
-    map.current.setCenter(setCenter);
-    map.current.setZoom(17);
-   }
+
+    if (map.current) {
+      map.current.setCenter(setCenter);
+      map.current.setZoom(17);
+    }
   }
 
   const handleClick = (point, e) => {
-      updatePointInput(point, "#00FF00");   
+    updatePointInput(point, '#00FF00');
   };
   return (
     <div className={styles.screen}>
@@ -48,14 +45,14 @@ export const ShippingMap = (props) => {
         <YMaps>
           <Map
             defaultState={{
-              center: a||[59.972621, 30.306432],
+              center: a || [59.972621, 30.306432],
               zoom: 10,
             }}
             instanceRef={map}
-            width={"100%"}
-            height={"100%"}
+            width="100%"
+            height="100%"
             className={styles.map}
-          >            
+          >
             <Clusterer
               options={{
                 preset: 'islands#invertedBlueClusterIcons',
@@ -63,7 +60,6 @@ export const ShippingMap = (props) => {
               }}
             >
               {points.map((point, index) => (
-                
                 <Placemark
                   className={styles.placemark}
                   geometry={point.coordinates}
@@ -71,20 +67,18 @@ export const ShippingMap = (props) => {
                     handleClick(point, e);
                   }}
                   key={index}
-                  options={
-                    {
-                      iconColor: `${point.color}`,
-                    }
-                  }
+                  options={{
+                    iconColor: `${point.color}`,
+                  }}
                 />
               ))}
             </Clusterer>
-            <ZoomControl options={{ float: "left" }} />
+            <ZoomControl options={{ float: 'left' }} />
           </Map>
         </YMaps>
       </Suspense>
     </div>
   );
-};
+}
 
 export default ShippingMap;

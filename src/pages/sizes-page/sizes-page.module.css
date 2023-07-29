@@ -43,16 +43,7 @@
     margin: 0 auto;
 }
 
-
-
-
-
-
-
-
-
-@media (max-width: 1000px) {  
-
+@media (max-width: 1000px) {
     .page_title {
         font-size: 70px;
         line-height: 70px;
@@ -61,13 +52,9 @@
     .img {
         width: 50%;
     }
-
 }
 
-
-
-@media (max-width: 650px) {  
-
+@media (max-width: 650px) {
     .page_title {
         font-size: 30px;
         line-height: 30px;
@@ -84,19 +71,13 @@
     }
 }
 
-
-@media (max-width: 500px) {  
-
+@media (max-width: 500px) {
     .page_title {
         font-size: 40px;
         line-height: 40px;
     }
 
-   
-
     .img {
         width: 90%;
     }
-
 }
-

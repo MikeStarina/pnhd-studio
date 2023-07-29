@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { Helmet } from 'react-helmet';
 import { CLOSE_MODAL_MENU } from '../../services/actions/utility-actions.jsx';
 import styles from './main-page.module.css';
-import { Helmet } from 'react-helmet';
 import FirstScreen from '../../components/main-page-components/first-screen.jsx';
 import FaqScreen from '../../components/main-page-components/faq-screen.jsx';
 import ThirdScreen from '../../components/main-page-components/third-screen.jsx';
@@ -15,53 +15,53 @@ import FeedbackScreen from '../../components/main-page-components/feedback-scree
 import MapScreen from '../../components/main-page-components/map-screen.jsx';
 import Accordion from '../../components/accordion/accordion.jsx';
 
-const MainPage = () => {
-    const dispatch = useDispatch();
+function MainPage() {
+  const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch({
-            type: CLOSE_MODAL_MENU,
-        });
-    }, [dispatch]);
+  useEffect(() => {
+    dispatch({
+      type: CLOSE_MODAL_MENU,
+    });
+  }, [dispatch]);
 
-    return (
-        <main className={styles.main_page}>
-            <Helmet
-                title="Печать на футболках заказать в Санкт-Петербурге цена от 1 штуки в Studio Pinhead"
-                meta={[
-                    {
-                        name: 'description',
-                        content:
+  return (
+    <main className={styles.main_page}>
+      <Helmet
+        title="Печать на футболках заказать в Санкт-Петербурге цена от 1 штуки в Studio Pinhead"
+        meta={[
+          {
+            name: 'description',
+            content:
                             'Заказать печать на футболке в Санкт-Петербурге онлайн с доставкой можно по выгодной цене в нашей студии. Печать на футболках на заказ от 1 штуки недорого от Studio Pinhead.',
-                    },
-                    {
-                        name: 'keywords',
-                        content:
+          },
+          {
+            name: 'keywords',
+            content:
                             'печать на футболках, санкт-петербург, недорого, на заказ, цена, от 1 шт, срочный, заказать, хороший, сделать, стоимость, доставка, быстрый, качественный, черный, оверсайз, белый, онлайн, спортивный, свой дизайн, конструктор, создать макет, нанесение, собственный, толстовка, худи, студия, услуги, каталог, а3, а4, одежда, свитшот',
-                    },
-                    {
-                        property: 'og:image',
-                        content:
+          },
+          {
+            property: 'og:image',
+            content:
                             'https://sun9-77.userapi.com/impg/r3SRF7rtra4wl-3EmEgVqIRaaGNbjeO6q9ufUw/-yeDgKpu2CQ.jpg?size=500x500&quality=95&sign=d7fc90ef8c432358c10c8b1e16b4945f&type=album',
-                    },
-                    {
-                        property: 'og:title',
-                        content:
+          },
+          {
+            property: 'og:title',
+            content:
                             'Печать на футболках заказать в Санкт-Петербурге цена от 1 штуки в Studio Pinhead',
-                    },
-                    {
-                        property: 'og:url',
-                        content: 'https://studio.pnhd.ru/',
-                    },
-                    {
-                        property: 'og:type',
-                        content: 'website',
-                    },
-                ]}
-                script={[
-                    {
-                        type: 'application/ld+json',
-                        innerHTML: `{
+          },
+          {
+            property: 'og:url',
+            content: 'https://studio.pnhd.ru/',
+          },
+          {
+            property: 'og:type',
+            content: 'website',
+          },
+        ]}
+        script={[
+          {
+            type: 'application/ld+json',
+            innerHTML: `{
                             '@context': 'https://schema.org',
                             '@type': 'Organization',
                             'address': {
@@ -74,23 +74,23 @@ const MainPage = () => {
                             'name': 'PINHEAD',
                             'telephone': '+78129046156',
                         }`,
-                    },
-                ]}
-            />
-            <FirstScreen />
-            <FaqScreen />
-            <ThirdScreen />
-            <CaseGallery />
-            <ConstructorScreen />
-            <MethodsGallery />
-            <ShopGallery />
-            <PriceScreen />
-            <FeedbackScreen />
-            <Accordion />
-            {/*<FormScreen />*/}
-            <MapScreen />
-        </main>
-    );
-};
+          },
+        ]}
+      />
+      <FirstScreen />
+      <FaqScreen />
+      <ThirdScreen />
+      <CaseGallery />
+      <ConstructorScreen />
+      <MethodsGallery />
+      <ShopGallery />
+      <PriceScreen />
+      <FeedbackScreen />
+      <Accordion />
+      {/* <FormScreen /> */}
+      <MapScreen />
+    </main>
+  );
+}
 
 export default MainPage;

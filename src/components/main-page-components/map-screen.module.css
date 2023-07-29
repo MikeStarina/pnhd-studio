@@ -9,9 +9,7 @@
     margin: 0;
     padding: 0;
     position: relative;
-    
 }
-
 
 .contact_box {
     position: absolute;
@@ -36,7 +34,6 @@
     font-weight: 700;
     margin: 0 0 50px 0;
     padding: 0;
-
 }
 
 .description {
@@ -73,7 +70,6 @@
 }
 
 @media (max-width: 750px) {
-
     .screen {
         height: 100vh;
     }
@@ -85,8 +81,7 @@
     }
 
     .contacts_heading {
-        width: 100%
-    
+        width: 100%;
     }
 
     .description {
@@ -97,4 +92,3 @@
         gap: 10px;
     }
 }
-

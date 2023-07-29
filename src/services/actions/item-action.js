@@ -6,29 +6,29 @@ export const FLAG_SIZE_IS = 'FLAG_SIZE_IS';
 export const FLAG_SIZE_IS_NOT = 'FLAG_SIZE_IS_NOT';
 
 export const addItemSize = (payload) => {
-    return function (dispatch) {
-        dispatch({ type: ADD_ITEM_SIZE, payload });
-    };
+  return function (dispatch) {
+    dispatch({ type: ADD_ITEM_SIZE, payload });
+  };
 };
 
 export const updateItemOrder = (arr) => {
-    return function (dispatch) {
-        dispatch({ type: UPDATE_ITEM_ORDER, arr });
-    };
+  return function (dispatch) {
+    dispatch({ type: UPDATE_ITEM_ORDER, arr });
+  };
 };
 
 export const clearItemOrder = () => ({
-    type: CLEAR_ITEM_ORDER,
+  type: CLEAR_ITEM_ORDER,
 });
 
 export const deleteItemOrder = () => ({
-    type: DELETE_ITEM_ORDER,
+  type: DELETE_ITEM_ORDER,
 });
 
 export const getSizeFlag = () => ({
-    type: FLAG_SIZE_IS,
+  type: FLAG_SIZE_IS,
 });
 
 export const dropSizeFlag = () => ({
-    type: FLAG_SIZE_IS_NOT,
+  type: FLAG_SIZE_IS_NOT,
 });

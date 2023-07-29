@@ -1,112 +1,177 @@
-import React from "react";
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import styles from './price-screen.module.css';
-import { useSelector, useDispatch } from "react-redux";
-import { SET_ACTIVE_PRICE_TABLE } from "../../services/actions/utility-actions";
-import PriceTable from "./price-screen-components/price-table.jsx";
-import { Link } from "react-router-dom";
-import { SET_POPUP_VISIBILITY } from "../../services/actions/utility-actions";
-
+import {
+  SET_ACTIVE_PRICE_TABLE,
+  SET_POPUP_VISIBILITY,
+} from '../../services/actions/utility-actions';
+import PriceTable from './price-screen-components/price-table.jsx';
 
 const price = {
-    dtg: {
-        onWhite: {
-            A6: 300,
-            A5: 400,
-            A4: 500,
-            A3: 650,
-            A33: 750,
-        },
-        onColored: {
-            A6: 400,
-            A5: 500,
-            A4: 650,
-            A3: 750,
-            A33: 900,
-        }
+  dtg: {
+    onWhite: {
+      A6: 300,
+      A5: 400,
+      A4: 500,
+      A3: 650,
+      A33: 750,
     },
-    dtf: {
-        A6: 400,
-        A5: 500,
-        A4: 650,
-        A3: 750,
-        A33: 900,
+    onColored: {
+      A6: 400,
+      A5: 500,
+      A4: 650,
+      A3: 750,
+      A33: 900,
     },
-    hTransfer: {
-        A6: 400,
-        A5: 500,
-        A4: 650,
-        A3: 750,
-        A33: 900,
-    },
-    emb: {
-        A6: 900,
-        A5: 1100,
-        A4: 1600,
-        A3: 2100,
-    }
-}
+  },
+  dtf: {
+    A6: 400,
+    A5: 500,
+    A4: 650,
+    A3: 750,
+    A33: 900,
+  },
+  hTransfer: {
+    A6: 400,
+    A5: 500,
+    A4: 650,
+    A3: 750,
+    A33: 900,
+  },
+  emb: {
+    A6: 900,
+    A5: 1100,
+    A4: 1600,
+    A3: 2100,
+  },
+};
 
+function PriceScreen() {
+  const { mainMenuPriceTable } = useSelector((store) => store.utilityState);
+  const dispatch = useDispatch();
 
+  const popupOpen = () => {
+    dispatch({
+      type: SET_POPUP_VISIBILITY,
+    });
+  };
 
-const PriceScreen = () => {
+  const setActiveTab = (e) => {
+    dispatch({
+      type: SET_ACTIVE_PRICE_TABLE,
+      payload: e.target.textContent,
+    });
+  };
 
+  return (
+    <section className={styles.screen} id="pricelist">
+      <h4 className={styles.heading}>
+        А СКОЛЬКО
+        <span className={styles.textStyle_italic}>СТОИТ</span>
+        {' '}
+        ПЕЧАТЬ?
+      </h4>
+      <p className={styles.description}>
+        Приведена стоимость для тиражей до 10 штук. Скидки для больших
+        тиражей уточняйте у наших менеджеров!
+      </p>
 
-    const { mainMenuPriceTable } = useSelector(store => store.utilityState);
-    const dispatch = useDispatch();
+      <div className={styles.button_wrapper}>
+        <button
+          type="button"
+          className={
+                        mainMenuPriceTable.activeTab === 'DTG'
+                          ? styles.button_active
+                          : styles.button
+                    }
+          onClick={setActiveTab}
+        >
+          DTG
+        </button>
+        <button
+          type="button"
+          className={
+                        mainMenuPriceTable.activeTab === 'DTF'
+                          ? styles.button_active
+                          : styles.button
+                    }
+          onClick={setActiveTab}
+        >
+          DTF
+        </button>
+        <button
+          type="button"
+          className={
+                        mainMenuPriceTable.activeTab === 'ТЕРМОПЕРЕНОС'
+                          ? styles.button_active
+                          : styles.button
+                    }
+          onClick={setActiveTab}
+        >
+          ТЕРМОПЕРЕНОС
+        </button>
+        <button
+          type="button"
+          className={
+                        mainMenuPriceTable.activeTab === 'ВЫШИВКА'
+                          ? styles.button_active
+                          : styles.button
+                    }
+          onClick={setActiveTab}
+        >
+          ВЫШИВКА
+        </button>
+      </div>
 
+      <div className={styles.price_table}>
+        {mainMenuPriceTable.activeTab === 'DTG' && (
+        <PriceTable
+          priceType={mainMenuPriceTable.activeTab}
+          price={price.dtg}
+        />
+        )}
+        {mainMenuPriceTable.activeTab === 'DTF' && (
+        <PriceTable
+          priceType={mainMenuPriceTable.activeTab}
+          price={price.dtf}
+        />
+        )}
+        {mainMenuPriceTable.activeTab === 'ТЕРМОПЕРЕНОС' && (
+        <PriceTable
+          priceType={mainMenuPriceTable.activeTab}
+          price={price.hTransfer}
+        />
+        )}
+        {mainMenuPriceTable.activeTab === 'ВЫШИВКА' && (
+        <PriceTable
+          priceType={mainMenuPriceTable.activeTab}
+          price={price.emb}
+        />
+        )}
+      </div>
 
-    const popupOpen = () => {
-        dispatch({
-            type: SET_POPUP_VISIBILITY
-        })
-    }
+      <p className={styles.description}>
+        * Стоимость не увеличивается при печати на своем текстиле 👌👌👌
+      </p>
 
+      <div className={styles.action_button_wrapper}>
+        <Link to="/shop">
+          <button type="button" className={styles.action_button}>
+            ВЫБРАТЬ ТЕКCТИЛЬ
+          </button>
+        </Link>
 
-    const setActiveTab = (e) => {
-        
-        dispatch({
-            type: SET_ACTIVE_PRICE_TABLE,
-            payload: e.target.textContent
-        })
-    }
-
-
-    return (
-        <section className={styles.screen} id='pricelist'>
-            <h4 className={styles.heading}>А СКОЛЬКО <span className={styles.textStyle_italic}>СТОИТ</span> ПЕЧАТЬ?</h4>
-            <p className={styles.description}>
-                Приведена стоимость для тиражей до 10 штук. Скидки для больших тиражей уточняйте у наших менеджеров!
-            </p>
-
-            <div className={styles.button_wrapper}>
-                <button type='button' className={mainMenuPriceTable.activeTab === 'DTG' ? styles.button_active : styles.button} onClick={setActiveTab}>DTG</button>
-                <button type='button' className={mainMenuPriceTable.activeTab === 'DTF' ? styles.button_active : styles.button} onClick={setActiveTab}>DTF</button>
-                <button type='button' className={mainMenuPriceTable.activeTab === 'ТЕРМОПЕРЕНОС' ? styles.button_active : styles.button} onClick={setActiveTab}>ТЕРМОПЕРЕНОС</button>
-                <button type='button' className={mainMenuPriceTable.activeTab === 'ВЫШИВКА' ? styles.button_active : styles.button} onClick={setActiveTab}>ВЫШИВКА</button>
-            </div>
-
-            <div className={styles.price_table}>
-               {mainMenuPriceTable.activeTab === 'DTG' && <PriceTable priceType={mainMenuPriceTable.activeTab} price={price.dtg}/>}
-               {mainMenuPriceTable.activeTab === 'DTF' && <PriceTable priceType={mainMenuPriceTable.activeTab} price={price.dtf}/>}
-               {mainMenuPriceTable.activeTab === 'ТЕРМОПЕРЕНОС' && <PriceTable priceType={mainMenuPriceTable.activeTab} price={price.hTransfer}/>}
-               {mainMenuPriceTable.activeTab === 'ВЫШИВКА' && <PriceTable priceType={mainMenuPriceTable.activeTab} price={price.emb}/>}
-            </div>
-
-            <p className={styles.description}>* Стоимость не увеличивается при печати на своем текстиле 👌👌👌</p>
-
-            <div className={styles.action_button_wrapper}>
-
-
-                <Link to='/shop'>
-                    <button type='button' className={styles.action_button}>ВЫБРАТЬ ТЕКCТИЛЬ</button>
-                </Link>
-
-                    <button type='button' className={styles.action_button} onClick={popupOpen} >ЕСТЬ СВОЙ?</button>
-
-            </div>
-            
-        </section>
-    );
+        <button
+          type="button"
+          className={styles.action_button}
+          onClick={popupOpen}
+        >
+          ЕСТЬ СВОЙ?
+        </button>
+      </div>
+    </section>
+  );
 }
 
 export default PriceScreen;

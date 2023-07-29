@@ -16,11 +16,11 @@
     background-color: transparent;
     width: 16px;
     height: 16px;
-    border: 1px solid rgb(0,255,0);
+    border: 1px solid rgb(0, 255, 0);
     border-radius: 8px;
     margin: 0;
     padding: 0;
-    color: rgb(0,255,0);
+    color: rgb(0, 255, 0);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,7 +28,7 @@
 }
 
 .delete_print_from_cart:hover {
-    background-color: rgb(0,255,0);
+    background-color: rgb(0, 255, 0);
     color: white;
 }
 
@@ -56,15 +56,14 @@
 
 .description {
     margin: 0 50px 0 0;
-    padding: 0 
+    padding: 0;
 }
 
 .description:last-of-type {
     margin: 0;
 }
 
-
- .title {
+.title {
     margin: 0 50px 0 0;
     padding: 0;
 }
@@ -73,25 +72,14 @@
     font-weight: 600;
 }
 
-
-
-
-
-
-
-
 @media (max-width: 600px) {
-
     .textile_description {
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-end;
         margin: 0;
         padding: 0;
-       
     }
-   
-
 
     .desc_box {
         width: 100%;
