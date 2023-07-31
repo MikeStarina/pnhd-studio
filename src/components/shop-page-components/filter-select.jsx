@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from 'react-redux';
 import { useViewOnClick } from "../../hooks/useViewOnClick";
-import styles from './filter-select.module.css';
+import filterCircle from '../../components/images/icons/filter-ellipse.svg'
+import styles from "./filter-select.module.css";
 
 const FilterSelect = (props) => {
   const {
@@ -13,9 +14,10 @@ const FilterSelect = (props) => {
     errBorder,
   } = props;
   const [selectedValue, setSelectedValue] = useState(null);
+  const { firstCount } = useSelector((store) => store.shopData);
   const { toggle, isOpen } = useViewOnClick();
   const getSelectValue = () => {
-    if (editValue != null) {      
+    if (editValue != null) {
       return editValue;
     }
     return defaultValue;
@@ -29,43 +31,29 @@ const FilterSelect = (props) => {
   useEffect(() => {}, [options]);
   return (
     <div className={styles.test}>
-      <div
-        className={
-          !errBorder
-            ? `${styles.dropdown_container} ${styles.dropdown_container_error}`
-            : styles.dropdown_container
-        }
-      >
+      <div className={firstCount!=0?`${styles.dropdown_container} ${styles.dropdown_container_selected}`:`${styles.dropdown_container}`}>
         <div onClick={toggle} className={styles.dropdown_input}>
-          
-        <div className={styles.dropdown_item_wrapper}>
-          <div className={styles.dropdown_selected_value}>
-            {getSelectValue()}
-          </div>
-          <div className={styles.dropdown_tools}></div>          
+          <div className={styles.dropdown_item_wrapper}>
+            <div className={styles.dropdown_selected_value}>
+              {getSelectValue()}
+            </div>
+            <div className={styles.dropdown_tools}></div>
           </div>
           {isOpen && (
             <div className={styles.dropdown_menu}>
-              {options.length === 0 && (
-                  <div className={styles.dropdown_item}>
-                    <p>Категории не найдены</p>
-                  </div>
-              )}
-
               {options.length > 0 &&
                 options.map((option) => (
+                 
                   <div
-                    className={`${styles.dropdown_item} ${
-                      selectedValue === option.name ? "selected" : ""
-                    }`}
+                    className={`${styles.dropdown_item}`}
                     onClick={() => {
                       handleItemSelectClick(option.category);
                     }}
                     key={option.category}
                   >
-                    {option.category}
+                    {option.selected?<><img src={filterCircle} alt="выбранный_элемент" /><span>{option.category}</span></>:<span className={styles.dropdown_item_space}>{option.category}</span>} 
                   </div>
-                ))}             
+                ))}
             </div>
           )}
         </div>

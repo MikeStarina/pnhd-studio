@@ -105,7 +105,8 @@ const onChange = (elem) => {
                 ]}
             />
             <div className={styles.filter_wrapper}>
-                <FilterSelect defaultValue="kurwa" options={firstFilterSelect} editValue={select} onChange={onChange}/>
+            {/*  */}
+                <FilterSelect defaultValue={"Категория"} options={firstFilterSelect} editValue={test.firstCount!=0?select:"Категория"} onChange={onChange}/>
                 <button
                     type="button"
                     className={
