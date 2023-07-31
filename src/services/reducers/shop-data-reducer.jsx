@@ -8,8 +8,8 @@ const initialState = {
   data: [],
   filter: "",
   firstFilterSelect: [
-    { category: "Мужское", selected: false },
-    { category: "Женское", selected: false },
+    { categorySelect: "Мужское", selected: false, category: 'man' },
+    { categorySelect: "Женское", selected: false, category: 'woman' }, 
   ],
   firstFilterSelectedItem: [],
   secondFilterSelect: [],
@@ -17,6 +17,8 @@ const initialState = {
   thirdFilterSelect: [],
   thirdFilterSelectedItem: [],
   firstCount: 0,
+  secondCount: 0,
+  thirdCount: 0,
 };
 
 export const shopDataReducer = (state = initialState, action) => {
@@ -36,19 +38,21 @@ export const shopDataReducer = (state = initialState, action) => {
     case SET_FIRSTSELECT: {
       const selected = state.firstFilterSelectedItem;
       const selectItems = state.firstFilterSelect;
-      const indexItem = selected.indexOf(action.payload);
+      const indexItem = selected.indexOf(action.payload.category);
       const findIndex = selectItems.findIndex(
-        (i) => i.category === action.payload
+        
+        (i) => i.category === action.payload.category
       );
       let cnt = 0;
-
       if (indexItem != -1) {
         cnt = state.firstCount - 1;
         selected.splice(indexItem, 1);
+        console.log(findIndex)
         selectItems[findIndex].selected = false;
       } else {
         cnt = state.firstCount + 1;
-        selected.push(action.payload);
+        selected.push(action.payload.category);
+        console.log(findIndex)
         selectItems[findIndex].selected = true;
       }
 

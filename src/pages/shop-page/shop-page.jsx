@@ -58,9 +58,10 @@ const ShopPage = () => {
     }, []);
 
 const onChange = (elem) => {
-    setSelect(elem);
+    setSelect(elem.categorySelect);
     dispatch({type:SET_FIRSTSELECT, payload:elem})
 }
+console.log(select)
     return (
         <main className={styles.main_screen}>
             <Helmet

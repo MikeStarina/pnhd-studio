@@ -17,6 +17,7 @@ const FilterSelect = (props) => {
   const { firstCount } = useSelector((store) => store.shopData);
   const { toggle, isOpen } = useViewOnClick();
   const getSelectValue = () => {
+    console.log(editValue)
     if (editValue != null) {
       return editValue;
     }
@@ -24,7 +25,7 @@ const FilterSelect = (props) => {
   };
 
   const handleItemSelectClick = (option) => {
-    setSelectedValue(option.category);
+    setSelectedValue(option.categorySelect);
     onChange(option);
   };
 
@@ -47,11 +48,11 @@ const FilterSelect = (props) => {
                   <div
                     className={`${styles.dropdown_item}`}
                     onClick={() => {
-                      handleItemSelectClick(option.category);
+                      handleItemSelectClick(option);
                     }}
-                    key={option.category}
+                    key={option.categorySelect}
                   >
-                    {option.selected?<><img src={filterCircle} alt="выбранный_элемент" /><span>{option.category}</span></>:<span className={styles.dropdown_item_space}>{option.category}</span>} 
+                    {option.selected?<><img src={filterCircle} alt="выбранный_элемент" /><span>{option.categorySelect}</span></>:<span className={styles.dropdown_item_space}>{option.categorySelect}</span>} 
                   </div>
                 ))}
             </div>
