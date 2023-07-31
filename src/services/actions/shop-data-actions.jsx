@@ -4,6 +4,8 @@ import { openPopup, ORDER_ERROR } from './utility-actions';
 export const GET_DATA = 'GET_DATA';
 export const SET_FILTER = 'SET_FILTER';
 export const SET_FIRSTSELECT = 'SET_FIRSTSELECT';
+export const SET_SECONDSELECT = 'SET_SECONDSELECT';
+export const SET_THIRDSELECT = 'SET_THIRDSELECT';
 
 export const getShopData = () => {
     const checkResponse = (res) => {

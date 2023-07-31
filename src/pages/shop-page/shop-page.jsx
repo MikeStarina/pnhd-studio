@@ -1,6 +1,6 @@
 import React,{useEffect, useState} from 'react';
 import { Helmet } from 'react-helmet';
-import { SET_FILTER, SET_FIRSTSELECT } from '../../services/actions/shop-data-actions';
+import { SET_FILTER, SET_FIRSTSELECT, SET_SECONDSELECT, SET_THIRDSELECT } from '../../services/actions/shop-data-actions';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     CLOSE_MODAL_MENU,
@@ -15,12 +15,11 @@ import FilterSelect from '../../components/shop-page-components/filter-select';
 const ShopPage = () => {
     const dispatch = useDispatch();
     const { filter } = useSelector((store) => store.shopData);
-    const { firstFilterSelect } = useSelector((store) => store.shopData);
+    const { firstFilterSelect,firstCount, secondFilterSelect,secondCount,thirdFilterSelect, thirdCount } = useSelector((store) => store.shopData);
     const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
     const { search } = useLocation();
     const history = useHistory();
     const searchValue = search.slice(3);
-    const [select, setSelect] = useState(null);
 
     const test = useSelector((store)=>store.shopData)
     console.log(test);
@@ -57,9 +56,14 @@ const ShopPage = () => {
         });
     }, []);
 
-const onChange = (elem) => {
-    setSelect(elem.categorySelect);
+const onChangeFirst = (elem) => {
     dispatch({type:SET_FIRSTSELECT, payload:elem})
+}
+const onChangeSecond = (elem) => {
+    dispatch({type:SET_SECONDSELECT, payload:elem})
+}
+const onChangeThird = (elem) => {
+    dispatch({type:SET_THIRDSELECT, payload:elem})
 }
     return (
         <main className={styles.main_screen}>
@@ -106,7 +110,9 @@ const onChange = (elem) => {
             />
             <div className={styles.filter_wrapper}>
             {/*  */}
-                <FilterSelect defaultValue={"Категория"} options={firstFilterSelect} editValue={"Категория"} onChange={onChange}/>
+                <FilterSelect defaultValue={"Категория"} options={firstFilterSelect} editValue={"Категория"} onChange={onChangeFirst} count={firstCount}/>
+                <FilterSelect defaultValue={"Тип"} options={secondFilterSelect} editValue={"Тип"} onChange={onChangeSecond} count={secondCount}/>
+                <FilterSelect defaultValue={"Цвет"} options={thirdFilterSelect} editValue={"Цвет"} onChange={onChangeThird} count={thirdCount}/>
                 <button
                     type="button"
                     className={

@@ -9,7 +9,7 @@ import { apiBaseUrl } from "../../utils/constants";
 
 const CardsBlock = () => {
 
-    const { data, filter,firstFilterSelectedItem } = useSelector(store => store.shopData);
+    const { data, filter,firstFilterSelectedItem, secondFilterSelectedItem, thirdFilterSelectedItem } = useSelector(store => store.shopData);
     let filteredData = [];
     if (filter) {
         filteredData = data.filter(item => item.category === filter)
@@ -25,8 +25,9 @@ const CardsBlock = () => {
             }
         })
     })
-    console.log(firstArr)
-    // console.log(filteredData, filter)
+//    data.forEach(item=>console.log(item.color))
+
+    console.log(firstFilterSelectedItem, secondFilterSelectedItem,thirdFilterSelectedItem)
     const teesArr = filteredData.filter(item => item.type === 'tshirt');
     const longsleevesArr = filteredData.filter(item => item.type === 'longsleeve');
     const sweatshirtsArr = filteredData.filter(item => item.type === 'sweatshirt');

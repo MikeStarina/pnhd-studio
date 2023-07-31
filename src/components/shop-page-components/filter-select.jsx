@@ -12,9 +12,9 @@ const FilterSelect = (props) => {
     extraClass = "",
     editValue,
     errBorder,
+    count
   } = props;
   const [selectedValue, setSelectedValue] = useState(null);
-  const { firstCount } = useSelector((store) => store.shopData);
   const { toggle, isOpen } = useViewOnClick();
   const getSelectValue = () => {
     if (editValue != null) {
@@ -30,8 +30,8 @@ const FilterSelect = (props) => {
 
   useEffect(() => {}, [options]);
   return (
-    <div className={styles.test}>
-      <div className={firstCount!=0?`${styles.dropdown_container} ${styles.dropdown_container_selected}`:`${styles.dropdown_container}`}>
+    <div className={styles.wrap}>
+      <div className={count!=0?`${styles.dropdown_container} ${styles.dropdown_container_selected}`:`${styles.dropdown_container}`}>
         <div onClick={toggle} className={styles.dropdown_input}>
           <div className={styles.dropdown_item_wrapper}>
             <div className={styles.dropdown_selected_value}>
