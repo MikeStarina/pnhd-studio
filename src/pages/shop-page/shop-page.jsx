@@ -61,7 +61,6 @@ const onChange = (elem) => {
     setSelect(elem.categorySelect);
     dispatch({type:SET_FIRSTSELECT, payload:elem})
 }
-console.log(select)
     return (
         <main className={styles.main_screen}>
             <Helmet
@@ -107,7 +106,7 @@ console.log(select)
             />
             <div className={styles.filter_wrapper}>
             {/*  */}
-                <FilterSelect defaultValue={"Категория"} options={firstFilterSelect} editValue={test.firstCount!=0?select:"Категория"} onChange={onChange}/>
+                <FilterSelect defaultValue={"Категория"} options={firstFilterSelect} editValue={"Категория"} onChange={onChange}/>
                 <button
                     type="button"
                     className={

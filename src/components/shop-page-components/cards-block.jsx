@@ -9,14 +9,23 @@ import { apiBaseUrl } from "../../utils/constants";
 
 const CardsBlock = () => {
 
-    const { data, filter } = useSelector(store => store.shopData);
+    const { data, filter,firstFilterSelectedItem } = useSelector(store => store.shopData);
     let filteredData = [];
     if (filter) {
         filteredData = data.filter(item => item.category === filter)
     } else {
         filteredData = data;
     }
-
+    
+    const firstArr = [] 
+    firstFilterSelectedItem.forEach( (item) => {
+        data.forEach(elem=>{
+            if(item === elem.category){
+                firstArr.push(elem);
+            }
+        })
+    })
+    console.log(firstArr)
     // console.log(filteredData, filter)
     const teesArr = filteredData.filter(item => item.type === 'tshirt');
     const longsleevesArr = filteredData.filter(item => item.type === 'longsleeve');

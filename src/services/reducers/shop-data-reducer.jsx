@@ -9,7 +9,10 @@ const initialState = {
   filter: "",
   firstFilterSelect: [
     { categorySelect: "Мужское", selected: false, category: 'man' },
-    { categorySelect: "Женское", selected: false, category: 'woman' }, 
+    { categorySelect: "Женское", selected: false, category: 'woman' },     
+    { categorySelect: "Детское", selected: false, category: 'kids' },    
+    { categorySelect: "Аксессуары", selected: false, category: 'accesorize' },
+    { categorySelect: "PNHD & FRIENDS", selected: false, category: 'friends' },
   ],
   firstFilterSelectedItem: [],
   secondFilterSelect: [],
@@ -47,12 +50,10 @@ export const shopDataReducer = (state = initialState, action) => {
       if (indexItem != -1) {
         cnt = state.firstCount - 1;
         selected.splice(indexItem, 1);
-        console.log(findIndex)
         selectItems[findIndex].selected = false;
       } else {
         cnt = state.firstCount + 1;
         selected.push(action.payload.category);
-        console.log(findIndex)
         selectItems[findIndex].selected = true;
       }
 

@@ -17,7 +17,6 @@ const FilterSelect = (props) => {
   const { firstCount } = useSelector((store) => store.shopData);
   const { toggle, isOpen } = useViewOnClick();
   const getSelectValue = () => {
-    console.log(editValue)
     if (editValue != null) {
       return editValue;
     }
