@@ -36,13 +36,12 @@ const ShopPage = () => {
 
     const filterHandler = (e) => {
         if (e.target.value) {
-            let str = getAdressString();
             dispatch({
                 type: SET_FILTER,
                 payload: e.target.value,
             });
             
-            history.push(str);
+            history.push('/shop?'+e.target.value);
         } else {
             dispatch({
                 type: SET_FILTER,
