@@ -12,7 +12,8 @@ const FilterSelect = (props) => {
     extraClass = "",
     editValue,
     errBorder,
-    count
+    count,
+    setAdress
   } = props;
   const [selectedValue, setSelectedValue] = useState(null);
   const { toggle, isOpen } = useViewOnClick();
@@ -26,6 +27,7 @@ const FilterSelect = (props) => {
   const handleItemSelectClick = (option) => {
     setSelectedValue(option.categorySelect);
     onChange(option);
+    setAdress();
   };
 
   useEffect(() => {}, [options]);

@@ -11,25 +11,38 @@ import { useHistory, useLocation } from 'react-router-dom';
 import CardsBlock from '../../components/shop-page-components/cards-block.jsx';
 import PopupModel from '../../components/popupModel/popupModel';
 import FilterSelect from '../../components/shop-page-components/filter-select';
+import { getString } from '../../utils/utils';
 
 const ShopPage = () => {
     const dispatch = useDispatch();
     const { filter } = useSelector((store) => store.shopData);
-    const { firstFilterSelect,firstCount, secondFilterSelect,secondCount,thirdFilterSelect, thirdCount } = useSelector((store) => store.shopData);
+    const { firstFilterSelect,firstCount, firstFilterSelectedItem, secondFilterSelect,secondCount,secondFilterSelectedItem,thirdFilterSelect, thirdCount, thirdFilterSelectedItem } = useSelector((store) => store.shopData);
     const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
     const { search } = useLocation();
     const history = useHistory();
     const searchValue = search.slice(3);
 
     const test = useSelector((store)=>store.shopData)
-    console.log(test);
+
+    const getAdressString = () => {
+        let string = '/shop?';
+        string += getString('ff=', firstFilterSelectedItem);
+        string += getString('sf=', secondFilterSelectedItem);
+        string += getString('tf=', thirdFilterSelectedItem);
+        console.log(string +`<<`);
+        history.push(string);
+    }
+
+
     const filterHandler = (e) => {
         if (e.target.value) {
+            let str = getAdressString();
             dispatch({
                 type: SET_FILTER,
                 payload: e.target.value,
             });
-            history.push(`/shop?s=${e.target.value}`);
+            
+            history.push(str);
         } else {
             dispatch({
                 type: SET_FILTER,
@@ -109,10 +122,9 @@ const onChangeThird = (elem) => {
                 ]}
             />
             <div className={styles.filter_wrapper}>
-            {/*  */}
-                <FilterSelect defaultValue={"Категория"} options={firstFilterSelect} editValue={"Категория"} onChange={onChangeFirst} count={firstCount}/>
-                <FilterSelect defaultValue={"Тип"} options={secondFilterSelect} editValue={"Тип"} onChange={onChangeSecond} count={secondCount}/>
-                <FilterSelect defaultValue={"Цвет"} options={thirdFilterSelect} editValue={"Цвет"} onChange={onChangeThird} count={thirdCount}/>
+                <FilterSelect defaultValue={"Категория"} options={firstFilterSelect} editValue={"Категория"} onChange={onChangeFirst} count={firstCount} setAdress={getAdressString}/>
+                <FilterSelect defaultValue={"Тип"} options={secondFilterSelect} editValue={"Тип"} onChange={onChangeSecond} count={secondCount} setAdress={getAdressString}/>
+                <FilterSelect defaultValue={"Цвет"} options={thirdFilterSelect} editValue={"Цвет"} onChange={onChangeThird} count={thirdCount} setAdress={getAdressString}/>
                 <button
                     type="button"
                     className={
