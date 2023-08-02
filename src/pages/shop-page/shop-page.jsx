@@ -1,6 +1,6 @@
 import React,{useEffect, useState} from 'react';
 import { Helmet } from 'react-helmet';
-import { SET_FILTER, SET_FIRSTSELECT, SET_SECONDSELECT, SET_THIRDSELECT } from '../../services/actions/shop-data-actions';
+import { SET_DEFAULTFILTER, SET_FILTER, SET_FIRSTSELECT, SET_SECONDSELECT, SET_THIRDSELECT } from '../../services/actions/shop-data-actions';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     CLOSE_MODAL_MENU,
@@ -29,10 +29,14 @@ const ShopPage = () => {
         string += getString('ff=', firstFilterSelectedItem);
         string += getString('sf=', secondFilterSelectedItem);
         string += getString('tf=', thirdFilterSelectedItem);
-        console.log(string +`<<`);
         history.push(string);
     }
 
+
+    const resetFilter = () => {
+        history.push(`/shop`);
+        dispatch({type:SET_DEFAULTFILTER})
+    }
 
     const filterHandler = (e) => {
         if (e.target.value) {
@@ -124,7 +128,14 @@ const onChangeThird = (elem) => {
                 <FilterSelect defaultValue={"Категория"} options={firstFilterSelect} editValue={"Категория"} onChange={onChangeFirst} count={firstCount} setAdress={getAdressString}/>
                 <FilterSelect defaultValue={"Тип"} options={secondFilterSelect} editValue={"Тип"} onChange={onChangeSecond} count={secondCount} setAdress={getAdressString}/>
                 <FilterSelect defaultValue={"Цвет"} options={thirdFilterSelect} editValue={"Цвет"} onChange={onChangeThird} count={thirdCount} setAdress={getAdressString}/>
-                <button
+                <button        
+                type="button"            
+                    className={styles.filter_active}
+                    onClick={resetFilter}
+                >
+                    СБРОСИТЬ
+                </button>
+                {/* <button
                     type="button"
                     className={
                         filter === 'man' ? styles.filter_active : styles.filter
@@ -187,7 +198,7 @@ const onChangeThird = (elem) => {
                     onClick={filterHandler}
                 >
                     СБРОСИТЬ
-                </button>
+                </button> */}
             </div>
             <CardsBlock />
             {isOtherPopupVisible && (

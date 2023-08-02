@@ -4,11 +4,22 @@ import {
   SET_FIRSTSELECT,
   SET_SECONDSELECT,
   SET_THIRDSELECT,
+  SET_FIRSTSELECTEDITEM,
+  SET_SECONDSELECTEDITEM,
+  SET_THIRDSELECTEDITEM,
+  SET_DEFAULTFILTER,
 } from "../actions/shop-data-actions.jsx";
 
 const initialState = {
   data: [],
   filter: "",
+  defaultFirstFilterSelect: [
+    { categorySelect: "Мужское", selected: false, category: "man" },
+    { categorySelect: "Женское", selected: false, category: "woman" },
+    { categorySelect: "Детское", selected: false, category: "kids" },
+    { categorySelect: "Аксессуары", selected: false, category: "accesorize" },
+    { categorySelect: "PNHD & FRIENDS", selected: false, category: "friends" },
+  ],
   firstFilterSelect: [
     { categorySelect: "Мужское", selected: false, category: "man" },
     { categorySelect: "Женское", selected: false, category: "woman" },
@@ -17,6 +28,14 @@ const initialState = {
     { categorySelect: "PNHD & FRIENDS", selected: false, category: "friends" },
   ],
   firstFilterSelectedItem: [],
+  defaultSecondFilterSelect: [
+    { categorySelect: "Футболка", selected: false, category: "tshirt" },
+    { categorySelect: "Худи", selected: false, category: "hoodie" },
+    { categorySelect: "Шоппер", selected: false, category: "totebag" },
+    { categorySelect: "Кепка", selected: false, category: "cap" },
+    { categorySelect: "Лонгслив", selected: false, category: "longsleeve" },
+    { categorySelect: "Свитшот", selected: false, category: "sweatshirt" },
+  ],
   secondFilterSelect: [
     { categorySelect: "Футболка", selected: false, category: "tshirt" },
     { categorySelect: "Худи", selected: false, category: "hoodie" },
@@ -26,6 +45,24 @@ const initialState = {
     { categorySelect: "Свитшот", selected: false, category: "sweatshirt" },
   ],
   secondFilterSelectedItem: [],
+  defaultThirdFilterSelect: [
+    { categorySelect: "Белый", selected: false, category: "белый" },
+    { categorySelect: "Черный", selected: false, category: "черный" },
+    { categorySelect: "Суровый", selected: false, category: "суровый" },
+    { categorySelect: "Бордовый", selected: false, category: "бордовый" },
+    { categorySelect: "Хаки", selected: false, category: "хаки" },
+    { categorySelect: "Синий", selected: false, category: "синий" },
+    { categorySelect: "Песочный", selected: false, category: "песочный" },
+    { categorySelect: "Темно-синий", selected: false, category: "темно-синий" },
+    { categorySelect: "Голубой", selected: false, category: "голубой" },
+    { categorySelect: "Фиолетовый", selected: false, category: "фиолетовый" },
+    { categorySelect: "Оранжевый", selected: false, category: "оранжевый" },
+    { categorySelect: "Красный", selected: false, category: "красный" },
+    { categorySelect: "Натуральный", selected: false, category: "натуральный" },
+    { categorySelect: "Василек", selected: false, category: "василек" },
+    { categorySelect: "Серый", selected: false, category: "серый" },
+    { categorySelect: "Зеленый", selected: false, category: "зеленый" },
+  ],
   thirdFilterSelect: [
     { categorySelect: "Белый", selected: false, category: "белый" },
     { categorySelect: "Черный", selected: false, category: "черный" },
@@ -140,6 +177,49 @@ export const shopDataReducer = (state = initialState, action) => {
         thirdFilterSelectedItem: selected,
         thirdCount: cnt,
       };
+    }
+    
+    case SET_FIRSTSELECTEDITEM:{
+      return{
+        ...state,
+        firstFilterSelect: action.payload.a,
+        firstFilterSelectedItem: action.payload.frstFilter,
+        firstCount: action.payload.b,
+      }
+    }
+
+    case SET_SECONDSELECTEDITEM:{
+      return{
+        ...state,
+        secondFilterSelect: action.payload.a2,
+        secondFilterSelectedItem: action.payload.secondFilter,
+        secondCount: action.payload.b2,
+      }
+    }
+
+    case SET_THIRDSELECTEDITEM: {
+      return{
+        ...state,
+        thirdFilterSelect: action.payload.a3,
+        thirdFilterSelectedItem: action.payload.thirdFilter,
+        thirdCount: action.payload.b3,
+      }
+    }
+
+    case SET_DEFAULTFILTER:{
+      return {
+        ...state,
+        firstFilterSelect: state.defaultFirstFilterSelect,
+        firstFilterSelectedItem: [],
+        firstCount:0,
+        secondFilterSelect: state.defaultSecondFilterSelect,
+        secondFilterSelectedItem: [],
+        secondCount: 0,
+        thirdFilterSelect: state.defaultThirdFilterSelect,
+        thirdFilterSelectedItem: [],
+        thirdCount: 0
+      }
+
     }
 
     default:
