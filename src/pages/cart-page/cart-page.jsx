@@ -94,8 +94,49 @@ function CartPage() {
         color: '#1E98FF',
       };
     });
-    setMapPoints(arr);
-  };
+    const [checkSelect, setChekSelect] = useState(true);
+    const [typeDelivery, setTypeDelivery] = useState({
+        pickup: true,
+        sdek: false,
+    });
+    const [listCities, setListCities] = useState('');
+    const [shippingPrice, setShippingPrice] = useState(0);
+    const [listPoints, setListPoints] = useState(null);
+    const [typeList, setTypeList] = useState(false);
+    const [typeShipping, setTypeShipping] = useState(false);
+    const [centerMap, setCenterMap] = useState([59.972621, 30.306432]);
+    const [mapPoints, setMapPoints] = useState();
+    const [resetPopup, setResetPopup] = useState(true);
+    const {
+        order,
+        paymentUrl,
+        user_promocode,
+        isPromocodeLoading,
+        promocodeFail,
+        validPromoCode,
+    } = useSelector((store) => store.cartData);
+    
+    const { userCartData, userShippingData } = useSelector(
+        (store) => store.userData,
+    );
+    const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
+    const { shippingCities, shippingTarif, shippingPoints } = useSelector(
+        (store) => store.shippingData.shippingData,
+    );
+    const { shippingData } = useSelector((store) => store.shippingData);
+    const history = useHistory();
+    const dispatch = useDispatch();
+    const debouncedSearchTerm = useDebounce(listCities, 500);
+    const getShippingPoints = () => {
+        const arr = shippingPoints.map((item) => {
+            return {
+                name: item.name,
+                coordinates: [item.location.latitude, item.location.longitude],
+                color: '#1E98FF',
+            };
+        });
+        setMapPoints(arr);
+    };
 
   useEffect(() => {
     getShippingPoints();
@@ -501,16 +542,24 @@ function CartPage() {
     }
   }, [debouncedSearchTerm]);
 
-  const setDefoultShippingState = () => {
-    setListCities('');
-    setDebounceCities([]);
-    setListPoints(null);
-    setCenterMap([59.972621, 30.306432]);
-  };
-
-  const popupStyle = valueButton
-    ? `${styles.instruction}`
-    : `${styles.popupBlock_message}`;
+    const popupStyle = valueButton
+        ? `${styles.instruction}`
+        : `${styles.popupBlock_message}`;
+        
+    return (
+        <section className={styles.screen}>
+            <div className={styles.cart_title_box}>
+                <h1 className={styles.cart_title}>
+                    КОРЗИНА / <i>CART</i>
+                </h1>
+                <button
+                    type="button"
+                    className={styles.goback_button}
+                    onClick={close}
+                >
+                    &larr; НАЗАД
+                </button>
+            </div>
 
   return (
     <section className={styles.screen}>
@@ -857,14 +906,135 @@ function CartPage() {
                             className={
                                                                     styles.cities_listItem
                                                                 }
-                          >
-                            {item.city}
-                            ,
-                            {' '}
-                            {item.region}
-                          </li>
-                        );
-                      },
+                                                            >
+                                                                {item.city},{' '}
+                                                                {item.region}
+                                                            </li>
+                                                        );
+                                                    },
+                                                )}
+                                            </ul>
+                                        </div>
+                                    )
+                                ) : (
+                                    <>
+                                        <p>
+                                            Доставка до пункта выдачи:{' '}
+                                            {validPromoCode.mechanic === 'freeShipping'?'Бесплатная доставка':shippingPrice}
+                                        </p>
+                                        <p>Выберите пункт выдачи: </p>
+                                        <ShippingSelect
+                                            options={mapPoints}
+                                            onChange={onChangeSelect}
+                                            defaultValue={
+                                                'Выберите пункт выдачи:'
+                                            }
+                                            editValue={listPoints}
+                                            errBorder={checkSelect}
+                                        />
+                                        {true && (
+                                            <>
+                                                <ShippingMap
+                                                    points={mapPoints}
+                                                    updatePointInput={
+                                                        findShippingObject
+                                                    }
+                                                    setCenter={centerMap}
+                                                />
+                                            </>
+                                        )}
+                                    </>
+                                )}
+                            </>
+                        )}
+                    </form>
+                </div>
+                <div className={styles.cart_controls}>
+                    {order.length > 0 && (
+                        <p className={styles.total_price}>= {totalPrice} P.</p>
+                    )}
+                    {!validPromoCode.message && !promocodeFail ? (
+                        <form
+                            className={styles.promo_form}
+                            onSubmit={promoSubmitHandler}
+                        >
+                            <input
+                                type="text"
+                                placeholder="Промокод"
+                                id="promocode"
+                                name="promocode"
+                                minLength="5"
+                                className={styles.promo_input}
+                                onChange={promoOnChangeHandler}
+                                value={user_promocode}
+                            ></input>
+                            <button
+                                type="submit"
+                                className={styles.promo_submit}
+                            >
+                                &rarr;
+                            </button>
+                        </form>
+                    ) : promocodeFail ? (
+                        <div className={styles.promocode_wrapper}>
+                            <p className={styles.promocode_message}>
+                                Что-то пошло не так :(
+                            </p>
+                            <button
+                                type="button"
+                                className={styles.promocode_cancellation}
+                                onClick={cancelPromocodeFunc}
+                            >
+                                отменить
+                            </button>
+                        </div>
+                    ) : (
+                        <div className={styles.promocode_wrapper}>
+                            <p className={styles.promocode_message}>
+                                Промокод: {validPromoCode.name}
+                            </p>
+                            <p className={styles.promocode_message}>
+                                {validPromoCode.message}
+                            </p>
+                            <button
+                                type="button"
+                                className={styles.promocode_cancellation}
+                                onClick={cancelPromocodeFunc}
+                            >
+                                отменить
+                            </button>
+                        </div>
+                    )}
+                    <p className={styles.total_price}>
+                        Итого: {discounted_price} P.
+                    </p>
+                    <button
+                        type="button"
+                        className={styles.control_button}
+                        onClick={createOrderHandler}
+
+                        // disabled={!isUserFormValid}
+                    ></button>
+                    {isOtherPopupVisible && (
+                        <PopupModel onClose={handelClosePopup}>
+                            <div className={styles.popupBlock}>
+                                {!isUserFormValid && !valueButton && (
+                                    <p
+                                        className={`${styles.validation_message}`}
+                                    >
+                                        Заполните поля:
+                                    </p>
+                                )}
+                                {isOtherPopupVisible.map((el, index) => (
+                                    <p
+                                        className={`${styles.validation_message} ${popupStyle}`}
+                                        key={index}
+                                    >
+                                        {el}
+                                    </p>
+                                ))}
+                            </div>
+                        </PopupModel>
                     )}
                   </ul>
                 </div>

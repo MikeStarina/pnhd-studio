@@ -11,7 +11,8 @@ import styles from './shop-page.module.css';
 import CardsBlock from '../../components/shop-page-components/cards-block.jsx';
 import PopupModel from '../../components/popupModel/popupModel';
 
-function ShopPage() {
+
+const ShopPage = () => {
   const dispatch = useDispatch();
   const { filter } = useSelector((store) => store.shopData);
   const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
@@ -31,7 +32,7 @@ function ShopPage() {
         type: SET_FILTER,
         payload: e.target.value,
       });
-      history.push('/shop');
+      history.push(`/shop`);
     }
   };
 
@@ -55,17 +56,23 @@ function ShopPage() {
   return (
     <main className={styles.main_screen}>
       <Helmet
-        title="PINHEAD STUDIO | Печать на футболках и толстовках | Магазин и конструктор"
+        title="Онлайн конструктор для печати футболок и толстовок в Санкт-Петербурге в PINHEAD STUDIO"
+        discription="Создай дизайн своей футболки онлайн с помощью конструктора! Конструктор для печати на футболках, толстовках и другой одежде в Санкт-Петербурге от PINHEAD STUDIO."
         meta={[
+          {
+            name: 'description',
+            content:
+              'Создай дизайн своей футболки онлайн с помощью конструктора! Конструктор для печати на футболках, толстовках и другой одежде в Санкт-Петербурге от PINHEAD STUDIO.',
+          },
           {
             property: 'og:image',
             content:
-                            'https://sun9-77.userapi.com/impg/r3SRF7rtra4wl-3EmEgVqIRaaGNbjeO6q9ufUw/-yeDgKpu2CQ.jpg?size=500x500&quality=95&sign=d7fc90ef8c432358c10c8b1e16b4945f&type=album',
+              'https://sun9-77.userapi.com/impg/r3SRF7rtra4wl-3EmEgVqIRaaGNbjeO6q9ufUw/-yeDgKpu2CQ.jpg?size=500x500&quality=95&sign=d7fc90ef8c432358c10c8b1e16b4945f&type=album',
           },
           {
             property: 'og:title',
             content:
-                            'PINHEAD STUDIO | Печать на футболках и толстовках | Магазин и конструктор',
+              'PINHEAD STUDIO | Печать на футболках и толстовках | Магазин и конструктор',
           },
           {
             property: 'og:url',
@@ -98,9 +105,7 @@ function ShopPage() {
       <div className={styles.filter_wrapper}>
         <button
           type="button"
-          className={
-                        filter === 'man' ? styles.filter_active : styles.filter
-                    }
+          className={filter === 'man' ? styles.filter_active : styles.filter}
           value="man"
           onClick={filterHandler}
         >
@@ -108,11 +113,7 @@ function ShopPage() {
         </button>
         <button
           type="button"
-          className={
-                        filter === 'woman'
-                          ? styles.filter_active
-                          : styles.filter
-                    }
+          className={filter === 'woman' ? styles.filter_active : styles.filter}
           value="woman"
           onClick={filterHandler}
         >
@@ -120,9 +121,7 @@ function ShopPage() {
         </button>
         <button
           type="button"
-          className={
-                        filter === 'kids' ? styles.filter_active : styles.filter
-                    }
+          className={filter === 'kids' ? styles.filter_active : styles.filter}
           value="kids"
           onClick={filterHandler}
         >
@@ -131,10 +130,8 @@ function ShopPage() {
         <button
           type="button"
           className={
-                        filter === 'accesorize'
-                          ? styles.filter_active
-                          : styles.filter
-                    }
+            filter === 'accesorize' ? styles.filter_active : styles.filter
+          }
           value="accesorize"
           onClick={filterHandler}
         >
@@ -143,10 +140,8 @@ function ShopPage() {
         <button
           type="button"
           className={
-                        filter === 'friends'
-                          ? styles.filter_active
-                          : styles.filter
-                    }
+            filter === 'friends' ? styles.filter_active : styles.filter
+          }
           value="friends"
           onClick={filterHandler}
         >
@@ -165,7 +160,7 @@ function ShopPage() {
       {isOtherPopupVisible && (
         <PopupModel onClose={handelClosePopup}>
           {isOtherPopupVisible.map((el, index) => (
-            <p className={styles.validation_message} key={index}>
+            <p className={`${styles.validation_message}`} key={index}>
               {el}
             </p>
           ))}
@@ -173,6 +168,6 @@ function ShopPage() {
       )}
     </main>
   );
-}
+};
 
 export default ShopPage;
