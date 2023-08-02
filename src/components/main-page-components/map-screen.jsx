@@ -61,13 +61,6 @@ const MapScreen = () => {
             / TG
           </a>
           <a
-            href="whatsapp://send?phone=79313566552"
-            className={styles.socials}
-            target="blank"
-          >
-            / WA
-          </a>
-          <a
             href="https://vk.com/pinheadspb"
             className={styles.socials}
             target="blank"
