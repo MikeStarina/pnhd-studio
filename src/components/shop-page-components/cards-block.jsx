@@ -31,26 +31,26 @@ const CardsBlock = () => {
 
   const addressString = decodeURI(search);
   const getAdressFilter = (string, filter) => {
-    let a;
+    let resultString;
     const arrFilter = string.split("?");
     arrFilter.forEach((item) => {
       if (item.indexOf(filter) != -1) {
-        a = item.slice(3).split("&");
+        resultString = item.slice(3).split("&");
       }
     });
-    return a;
+    return resultString;
   };
 
   let frstFilter;
   let secondFilter;
   let thirdFilter;
 
-  let a = [];
-  let b = [];
-  let a2 = [];
-  let b2 = [];
-  let a3 = [];
-  let b3 = [];
+  let filtr1 = [];
+  let count1 = [];
+  let filtr2 = [];
+  let count2 = [];
+  let filtr3 = [];
+  let count3 = [];
 
   if (
     addressString != "" &&
@@ -62,37 +62,37 @@ const CardsBlock = () => {
     secondFilter = getAdressFilter(addressString, "sf");
     thirdFilter = getAdressFilter(addressString, "tf");
     if (frstFilter) {
-      a = firstFilterSelect;
-      b = firstCount;
+      filtr1 = firstFilterSelect;
+      count1 = firstCount;
       frstFilter.forEach((item) => {
-        a.forEach((select, index) => {
+        filtr1.forEach((select, index) => {
           if (select.category === item) {
-            a[index].selected = true;
-            b += 1;
+            filtr1[index].selected = true;
+            count1 += 1;
           }
         });
       });
     }
     if (secondFilter) {
-      a2 = secondFilterSelect;
-      b2 = secondCount;
+      filtr2 = secondFilterSelect;
+      count2 = secondCount;
       secondFilter.forEach((item) => {
-        a2.forEach((select, index) => {
+        filtr2.forEach((select, index) => {
           if (select.category === item) {
-            a2[index].selected = true;
-            b2 += 1;
+            filtr2[index].selected = true;
+            count2 += 1;
           }
         });
       });
     }
     if (thirdFilter) {
-      a3 = thirdFilterSelect;
-      b3 = thirdCount;
+      filtr3 = thirdFilterSelect;
+      count3 = thirdCount;
       thirdFilter.forEach((item) => {
-        a3.forEach((select, index) => {
+        filtr3.forEach((select, index) => {
           if (select.category === item) {
-            a3[index].selected = true;
-            b3 += 1;
+            filtr3[index].selected = true;
+            count3 += 1;
           }
         });
       });
@@ -107,32 +107,32 @@ const CardsBlock = () => {
         thirdFilterSelectedItem.length != 0)
     ) {
       history.push(`/shop`);
-      a = [];
-      b = [];
-      a2 = [];
-      b2 = [];
-      a3 = [];
-      b3 = [];
+      filtr1 = [];
+      count1 = [];
+      filtr2 = [];
+      count2 = [];
+      filtr3 = [];
+      count3 = [];
       dispatch({ type: SET_DEFAULTFILTER });
     }
   });
   useEffect(() => {
-    if (a.length > 0) {
-      dispatch({ type: SET_FIRSTSELECTEDITEM, payload: { a, b, frstFilter } });
+    if (filtr1.length > 0) {
+      dispatch({ type: SET_FIRSTSELECTEDITEM, payload: { filtr1, count1, frstFilter } });
     }
-    if (a2.length > 0) {
+    if (filtr2.length > 0) {
       dispatch({
         type: SET_SECONDSELECTEDITEM,
-        payload: { a2, b2, secondFilter },
+        payload: { filtr2, count2, secondFilter },
       });
     }
-    if (a3.length > 0) {
+    if (filtr3.length > 0) {
       dispatch({
         type: SET_THIRDSELECTEDITEM,
-        payload: { a3, b3, thirdFilter },
+        payload: { filtr3, count3, thirdFilter },
       });
     }
-  }, [a, a2, a3]);
+  }, [filtr1, filtr2, filtr3]);
 
   let resultArr = [];
 
