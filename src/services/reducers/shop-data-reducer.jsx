@@ -52,7 +52,6 @@ const initialState = {
   firstCount: 0,
   secondCount: 0,
   thirdCount: 0,
-  resetFilterItems: false,
 };
 
 export const shopDataReducer = (state = initialState, action) => {

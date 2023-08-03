@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect }  from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import styles from "./cards-block.module.css";
 import CardItem from "./card-item.jsx";
@@ -27,7 +27,6 @@ const CardsBlock = () => {
     thirdFilterSelectedItem,
     thirdFilterSelect,
     thirdCount,
-    resetFilterItems,
   } = useSelector((store) => store.shopData);
 
   const addressString = decodeURI(search);
@@ -51,7 +50,7 @@ const CardsBlock = () => {
   let a2 = [];
   let b2 = [];
   let a3 = [];
-  let b3 = []; 
+  let b3 = [];
 
   if (
     addressString != "" &&
@@ -98,10 +97,9 @@ const CardsBlock = () => {
         });
       });
     }
-    console.log(frstFilter, secondFilter, thirdFilter);
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (
       addressString === "" &&
       (firstFilterSelectedItem.length != 0 ||
@@ -116,29 +114,25 @@ const CardsBlock = () => {
       a3 = [];
       b3 = [];
       dispatch({ type: SET_DEFAULTFILTER });
-      console.log("reload new page");
     }
   });
-  React.useEffect(() => {
+  useEffect(() => {
     if (a.length > 0) {
       dispatch({ type: SET_FIRSTSELECTEDITEM, payload: { a, b, frstFilter } });
-      console.log("kurwa");
     }
     if (a2.length > 0) {
       dispatch({
         type: SET_SECONDSELECTEDITEM,
         payload: { a2, b2, secondFilter },
       });
-      console.log("kurwa2");
     }
     if (a3.length > 0) {
       dispatch({
         type: SET_THIRDSELECTEDITEM,
         payload: { a3, b3, thirdFilter },
       });
-      console.log("kurwa3");
     }
-  }, [a, a2, a3]);  
+  }, [a, a2, a3]);
 
   let resultArr = [];
 
@@ -150,7 +144,6 @@ const CardsBlock = () => {
     resultArr = data;
   }
 
-  
   if (firstFilterSelectedItem.length != 0) {
     resultArr = [];
     firstFilterSelectedItem.forEach((item) => {
@@ -162,7 +155,6 @@ const CardsBlock = () => {
     });
   }
   if (secondFilterSelectedItem.length != 0) {
-    
     let a = [...resultArr];
     resultArr = [];
     secondFilterSelectedItem.forEach((item) => {
@@ -186,26 +178,36 @@ const CardsBlock = () => {
   }
 
   return (
-    <section className={styles.screen}>      
-      {resultArr &&
-        resultArr.map((item, index) => {
-          const url = `${apiBaseUrl}${item.image_url}`;
-          return (
-            <Link
-              to={{ pathname: `/shop/${item._id}` }}
-              className={styles.link}
-              key={index}
-            >
-              <CardItem
-                title={item.name}
-                price={item.price}
-                img={url}
-                sizes={item.sizes}
-              />
-            </Link>
-          );
-        })}     
-    </section>
+    <>
+      {resultArr.length === 0 && (
+        <div className={styles.screen_noProducts}>
+          <p>Ничего не найдено UwU</p>
+        </div>
+      )}
+
+      {resultArr.length > 0 && (
+        <section className={styles.screen}>
+          {resultArr &&
+            resultArr.map((item, index) => {
+              const url = `${apiBaseUrl}${item.image_url}`;
+              return (
+                <Link
+                  to={{ pathname: `/shop/${item._id}` }}
+                  className={styles.link}
+                  key={index}
+                >
+                  <CardItem
+                    title={item.name}
+                    price={item.price}
+                    img={url}
+                    sizes={item.sizes}
+                  />
+                </Link>
+              );
+            })}
+        </section>
+      )}
+    </>
   );
 };
 

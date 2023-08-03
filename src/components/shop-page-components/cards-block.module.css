@@ -17,6 +17,10 @@
     color: black;
 }
 
+.screen_noProducts{
+    display: flex;
+    justify-content: center
+}
 
 @media (max-width: 1100px) {
     .screen {

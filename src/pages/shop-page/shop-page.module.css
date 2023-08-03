@@ -59,6 +59,12 @@
     color: rgb(0, 255, 0);
 }
 
+@media (max-width: 960px) {
+    .filter_wrapper {
+        justify-content: center;
+        padding: 100px 0 20px 0;
+    }
+}
 @media (max-width: 750px) {
     .filter_wrapper {
         flex-direction: column;
