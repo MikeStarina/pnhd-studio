@@ -9,23 +9,27 @@ const fullscreenMenu = ({ openPopup }) => {
     <header className={styles.menu_container}>
       <ul className={styles.main_menu}>
         <li className={styles.menu_elem}>
-          <Link to="/" className={styles.menu_link}>{`Главная >`}</Link>
+          <Link to="/" className={styles.menu_link}>{'Главная >'}</Link>
         </li>
         <li className={styles.menu_elem}>
-          <Link to="/shop" className={styles.menu_link}>{`Конструктор >`}</Link>
+          <Link to="/shop" className={styles.menu_link}>{'Конструктор >'}</Link>
         </li>
         <li className={styles.menu_elem}>
           <HashLink
             to="/#contacts"
             className={styles.menu_link}
-          >{`Контакты >`}</HashLink>
+          >
+            {'Контакты >'}
+          </HashLink>
         </li>
         <li className={styles.menu_elem}>
           <a
             href="https://pnhd.ru"
             target="blank"
             className={styles.menu_link}
-          >{`Оптовый отдел >`}</a>
+          >
+            {'Оптовый отдел >'}
+          </a>
         </li>
       </ul>
 

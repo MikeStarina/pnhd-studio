@@ -1,17 +1,18 @@
-import React, { useEffect }  from "react";
-import { useLocation, useHistory } from "react-router-dom";
-import styles from "./cards-block.module.css";
-import CardItem from "./card-item.jsx";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { apiBaseUrl } from "../../utils/constants";
+import React, { useEffect } from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import styles from './cards-block.module.css';
+import CardItem from './card-item.jsx';
+import { apiBaseUrl } from '../../utils/constants';
 import {
   SET_DEFAULTFILTER,
   SET_FIRSTSELECTEDITEM,
   SET_SECONDSELECTEDITEM,
   SET_THIRDSELECTEDITEM,
-} from "../../services/actions/shop-data-actions";
-const CardsBlock = () => {
+} from '../../services/actions/shop-data-actions';
+
+function CardsBlock() {
   const dispatch = useDispatch();
 
   const history = useHistory();
@@ -32,10 +33,10 @@ const CardsBlock = () => {
   const addressString = decodeURI(search);
   const getAdressFilter = (string, filter) => {
     let resultString;
-    const arrFilter = string.split("?");
+    const arrFilter = string.split('?');
     arrFilter.forEach((item) => {
       if (item.indexOf(filter) != -1) {
-        resultString = item.slice(3).split("&");
+        resultString = item.slice(3).split('&');
       }
     });
     return resultString;
@@ -53,14 +54,14 @@ const CardsBlock = () => {
   let count3 = [];
 
   if (
-    addressString != "" &&
-    firstFilterSelectedItem.length === 0 &&
-    secondFilterSelectedItem.length === 0 &&
-    thirdFilterSelectedItem.length === 0
+    addressString != ''
+    && firstFilterSelectedItem.length === 0
+    && secondFilterSelectedItem.length === 0
+    && thirdFilterSelectedItem.length === 0
   ) {
-    frstFilter = getAdressFilter(addressString, "ff");
-    secondFilter = getAdressFilter(addressString, "sf");
-    thirdFilter = getAdressFilter(addressString, "tf");
+    frstFilter = getAdressFilter(addressString, 'ff');
+    secondFilter = getAdressFilter(addressString, 'sf');
+    thirdFilter = getAdressFilter(addressString, 'tf');
     if (frstFilter) {
       filtr1 = firstFilterSelect;
       count1 = firstCount;
@@ -101,12 +102,12 @@ const CardsBlock = () => {
 
   useEffect(() => {
     if (
-      addressString === "" &&
-      (firstFilterSelectedItem.length != 0 ||
-        secondFilterSelectedItem.length != 0 ||
-        thirdFilterSelectedItem.length != 0)
+      addressString === ''
+      && (firstFilterSelectedItem.length != 0
+        || secondFilterSelectedItem.length != 0
+        || thirdFilterSelectedItem.length != 0)
     ) {
-      history.push(`/shop`);
+      history.push('/shop');
       filtr1 = [];
       count1 = [];
       filtr2 = [];
@@ -137,9 +138,9 @@ const CardsBlock = () => {
   let resultArr = [];
 
   if (
-    firstFilterSelectedItem.length === 0 ||
-    secondFilterSelectedItem.length === 0 ||
-    thirdFilterSelectedItem.length === 0
+    firstFilterSelectedItem.length === 0
+    || secondFilterSelectedItem.length === 0
+    || thirdFilterSelectedItem.length === 0
   ) {
     resultArr = data;
   }
@@ -155,7 +156,7 @@ const CardsBlock = () => {
     });
   }
   if (secondFilterSelectedItem.length != 0) {
-    let a = [...resultArr];
+    const a = [...resultArr];
     resultArr = [];
     secondFilterSelectedItem.forEach((item) => {
       a.forEach((elem) => {
@@ -166,7 +167,7 @@ const CardsBlock = () => {
     });
   }
   if (thirdFilterSelectedItem != 0) {
-    let a = [...resultArr];
+    const a = [...resultArr];
     resultArr = [];
     thirdFilterSelectedItem.forEach((item) => {
       a.forEach((elem) => {
@@ -187,8 +188,8 @@ const CardsBlock = () => {
 
       {resultArr.length > 0 && (
         <section className={styles.screen}>
-          {resultArr &&
-            resultArr.map((item, index) => {
+          {resultArr
+            && resultArr.map((item, index) => {
               const url = `${apiBaseUrl}${item.image_url}`;
               return (
                 <Link
@@ -209,6 +210,6 @@ const CardsBlock = () => {
       )}
     </>
   );
-};
+}
 
 export default CardsBlock;

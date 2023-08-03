@@ -34,27 +34,28 @@ export const getShopData = () => {
           type: GET_DATA,
           payload: res.data,
         });
-    };
-    
+      });
+
     return function (dispatch) {
-        fetch(`${apiBaseUrl}/api/products`, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
+      fetch(`${apiBaseUrl}/api/products`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(checkResponse)
+        .then((res) => {
+          dispatch({
+            type: GET_DATA,
+            payload: res.data,
+          });
         })
-            .then(checkResponse)
-            .then((res) => {
-                dispatch({
-                    type: GET_DATA,
-                    payload: res.data,
-                });
-            })
-            .catch((err) => {
-                dispatch(
-                    openPopup([
-                        'Не удалось загрузить товары. Попробуйте обновить страницу.',
-                    ]),
-                );
-            });
+        .catch((err) => {
+          dispatch(
+            openPopup([
+              'Не удалось загрузить товары. Попробуйте обновить страницу.',
+            ]),
+          );
+        });
     };
+  };
 };

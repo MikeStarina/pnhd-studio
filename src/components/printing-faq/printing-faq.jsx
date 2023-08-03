@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './printing-faq.module.css';
 import circle50px from '../images/circle50px.png';
 
-const PrintingFaq = (data) => {
+function PrintingFaq(data) {
   const { title, description, variants } = data;
 
   return (
@@ -15,7 +15,7 @@ const PrintingFaq = (data) => {
               src={circle50px}
               className={styles.screen_circle}
               alt="circle"
-            ></img>
+            />
             <div className={styles.text_wrapper}>
               <h4 className={styles.screen_heading}>{item.screen_heading}</h4>
               {Array.isArray(item.screen_description) ? (
@@ -56,6 +56,6 @@ const PrintingFaq = (data) => {
       )}
     </section>
   );
-};
+}
 
 export default PrintingFaq;

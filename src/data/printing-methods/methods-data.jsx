@@ -1,4 +1,4 @@
-/*termo*/
+/* termo */
 import termoMain from '../../components/images/printingMethods/termo/main.webp';
 import termo1 from '../../components/images/printingMethods/termo/1.webp';
 import termo2 from '../../components/images/printingMethods/termo/2.webp';
@@ -6,7 +6,7 @@ import termo3 from '../../components/images/printingMethods/termo/3.webp';
 import termo4 from '../../components/images/printingMethods/termo/4.webp';
 import termo5 from '../../components/images/printingMethods/termo/5.webp';
 import termo6 from '../../components/images/printingMethods/termo/6.webp';
-/*vishivka*/
+/* vishivka */
 import vishivkaMain from '../../components/images/printingMethods/vishivka/main.webp';
 import vishivka1 from '../../components/images/printingMethods/vishivka/1.webp';
 import vishivka2 from '../../components/images/printingMethods/vishivka/2.webp';
@@ -14,7 +14,7 @@ import vishivka3 from '../../components/images/printingMethods/vishivka/3.webp';
 import vishivka4 from '../../components/images/printingMethods/vishivka/4.webp';
 import vishivka5 from '../../components/images/printingMethods/vishivka/5.webp';
 import vishivka6 from '../../components/images/printingMethods/vishivka/6.webp';
-/*silk*/
+/* silk */
 import silkMain from '../../components/images/printingMethods/silk/main.webp';
 import silk1 from '../../components/images/printingMethods/silk/1.webp';
 import silk2 from '../../components/images/printingMethods/silk/2.webp';
@@ -22,7 +22,7 @@ import silk3 from '../../components/images/printingMethods/silk/3.webp';
 import silk4 from '../../components/images/printingMethods/silk/4.webp';
 import silk5 from '../../components/images/printingMethods/silk/5.webp';
 import silk6 from '../../components/images/printingMethods/silk/6.webp';
-/*dtf*/
+/* dtf */
 import dtfMain from '../../components/images/printingMethods/DTF/main.webp';
 import dtf1 from '../../components/images/printingMethods/DTF/1.webp';
 import dtf2 from '../../components/images/printingMethods/DTF/2.webp';
@@ -30,7 +30,7 @@ import dtf3 from '../../components/images/printingMethods/DTF/3.webp';
 import dtf4 from '../../components/images/printingMethods/DTF/4.webp';
 import dtf5 from '../../components/images/printingMethods/DTF/5.webp';
 import dtf6 from '../../components/images/printingMethods/DTF/6.webp';
-/*dtg*/
+/* dtg */
 import dtgMain from '../../components/images/printingMethods/DTG/main.webp';
 import dtg1 from '../../components/images/printingMethods/DTG/1.webp';
 import dtg2 from '../../components/images/printingMethods/DTG/2.webp';
@@ -38,14 +38,14 @@ import dtg3 from '../../components/images/printingMethods/DTG/3.webp';
 import dtg4 from '../../components/images/printingMethods/DTG/4.webp';
 import dtg5 from '../../components/images/printingMethods/DTG/5.webp';
 import dtg6 from '../../components/images/printingMethods/DTG/6.webp';
-//точка, имитация пункта списка
-let point = '\u{22C5}';
-//неразрывный пробел
-let nbsp = '\u{00A0}';
-//мягкий перенос, через тире
-let softHyphen = '\u{00AD}';
-//возврат каретки, перенос без тире
-let carriageReturn = '\u{000D}';
+// точка, имитация пункта списка
+const point = '\u{22C5}';
+// неразрывный пробел
+const nbsp = '\u{00A0}';
+// мягкий перенос, через тире
+const softHyphen = '\u{00AD}';
+// возврат каретки, перенос без тире
+const carriageReturn = '\u{000D}';
 
 export const methodsData = {
   termo: {

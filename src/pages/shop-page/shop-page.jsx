@@ -1,26 +1,25 @@
-import React, { useEffect } from "react";
-import { Helmet } from "react-helmet";
+import React, { useEffect } from 'react';
+import { Helmet } from 'react-helmet';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
 import {
   SET_DEFAULTFILTER,
   SET_FILTER,
   SET_FIRSTSELECT,
   SET_SECONDSELECT,
   SET_THIRDSELECT,
-} from "../../services/actions/shop-data-actions";
-import { useDispatch, useSelector } from "react-redux";
+} from '../../services/actions/shop-data-actions';
 import {
   CLOSE_MODAL_MENU,
   closePopup,
-} from "../../services/actions/utility-actions.jsx";
-import styles from "./shop-page.module.css";
-import { useHistory, useLocation } from "react-router-dom";
-import CardsBlock from "../../components/shop-page-components/cards-block.jsx";
-import PopupModel from "../../components/popupModel/popupModel";
-import FilterSelect from "../../components/shop-page-components/filter-select";
-import { getString } from "../../utils/utils";
+} from '../../services/actions/utility-actions.jsx';
+import styles from './shop-page.module.css';
+import CardsBlock from '../../components/shop-page-components/cards-block.jsx';
+import PopupModel from '../../components/popupModel/popupModel';
+import FilterSelect from '../../components/shop-page-components/filter-select';
+import { getString } from '../../utils/utils';
 
-
-const ShopPage = () => {
+function ShopPage() {
   const dispatch = useDispatch();
   const {
     firstFilterSelect,
@@ -36,21 +35,21 @@ const ShopPage = () => {
   const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
   const { search } = useLocation();
   const history = useHistory();
-  const searchValue = search.slice(3); 
+  const searchValue = search.slice(3);
 
   const getAdressString = () => {
-    let string = "/shop?";
-    string += getString("ff=", firstFilterSelectedItem);
-    string += getString("sf=", secondFilterSelectedItem);
-    string += getString("tf=", thirdFilterSelectedItem);
+    let string = '/shop?';
+    string += getString('ff=', firstFilterSelectedItem);
+    string += getString('sf=', secondFilterSelectedItem);
+    string += getString('tf=', thirdFilterSelectedItem);
     history.push(string);
   };
 
   const resetFilter = () => {
-    history.push(`/shop`);
-    dispatch({ type: SET_DEFAULTFILTER});
+    history.push('/shop');
+    dispatch({ type: SET_DEFAULTFILTER });
   };
-   
+
   const handelClosePopup = () => {
     dispatch(closePopup());
   };
@@ -83,27 +82,27 @@ const ShopPage = () => {
         title="PINHEAD STUDIO | Печать на футболках и толстовках | Магазин и конструктор"
         meta={[
           {
-            property: "og:image",
+            property: 'og:image',
             content:
-              "https://sun9-77.userapi.com/impg/r3SRF7rtra4wl-3EmEgVqIRaaGNbjeO6q9ufUw/-yeDgKpu2CQ.jpg?size=500x500&quality=95&sign=d7fc90ef8c432358c10c8b1e16b4945f&type=album",
+              'https://sun9-77.userapi.com/impg/r3SRF7rtra4wl-3EmEgVqIRaaGNbjeO6q9ufUw/-yeDgKpu2CQ.jpg?size=500x500&quality=95&sign=d7fc90ef8c432358c10c8b1e16b4945f&type=album',
           },
           {
-            property: "og:title",
+            property: 'og:title',
             content:
-              "PINHEAD STUDIO | Печать на футболках и толстовках | Магазин и конструктор",
+              'PINHEAD STUDIO | Печать на футболках и толстовках | Магазин и конструктор',
           },
           {
-            property: "og:url",
-            content: "https://studio.pnhd.ru/",
+            property: 'og:url',
+            content: 'https://studio.pnhd.ru/',
           },
           {
-            property: "og:type",
-            content: "website",
+            property: 'og:type',
+            content: 'website',
           },
         ]}
         script={[
           {
-            type: "application/ld+json",
+            type: 'application/ld+json',
             innerHTML: `{
                             '@context': 'https://schema.org',
                             '@type': 'Organization',
@@ -122,25 +121,25 @@ const ShopPage = () => {
       />
       <div className={styles.filter_wrapper}>
         <FilterSelect
-          defaultValue={"Категория"}
+          defaultValue="Категория"
           options={firstFilterSelect}
-          editValue={"Категория"}
+          editValue="Категория"
           onChange={onChangeFirst}
           count={firstCount}
           setAdress={getAdressString}
         />
         <FilterSelect
-          defaultValue={"Тип"}
+          defaultValue="Тип"
           options={secondFilterSelect}
-          editValue={"Тип"}
+          editValue="Тип"
           onChange={onChangeSecond}
           count={secondCount}
           setAdress={getAdressString}
         />
         <FilterSelect
-          defaultValue={"Цвет"}
+          defaultValue="Цвет"
           options={thirdFilterSelect}
-          editValue={"Цвет"}
+          editValue="Цвет"
           onChange={onChangeThird}
           count={thirdCount}
           setAdress={getAdressString}
@@ -151,13 +150,13 @@ const ShopPage = () => {
           onClick={resetFilter}
         >
           Сбросить&nbsp;Х
-        </button>       
+        </button>
       </div>
       <CardsBlock />
       {isOtherPopupVisible && (
         <PopupModel onClose={handelClosePopup}>
           {isOtherPopupVisible.map((el, index) => (
-            <p className={`${styles.validation_message}`} key={index}>
+            <p className={styles.validation_message} key={index}>
               {el}
             </p>
           ))}
@@ -165,6 +164,6 @@ const ShopPage = () => {
       )}
     </main>
   );
-};
+}
 
 export default ShopPage;

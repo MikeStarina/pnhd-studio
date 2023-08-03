@@ -1,24 +1,24 @@
-import React from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import styles from "./printing-method-price.module.css";
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import styles from './printing-method-price.module.css';
 import {
   openPopupHeader,
-} from "../../services/actions/utility-actions";
+} from '../../services/actions/utility-actions';
 
-import PriceTable from "../main-page-components/price-screen-components/price-table";
+import PriceTable from '../main-page-components/price-screen-components/price-table';
 
-const PrintingMethodPrice = (prices) => {
+function PrintingMethodPrice(prices) {
   const { price, priceType, priceVar } = prices;
   const dispatch = useDispatch();
 
   const popupOpen = () => {
     dispatch(openPopupHeader());
   };
-  
+
   return (
     <section className={styles.screen} id="pricelistmethod">
-      {priceType === "ШЕЛКОГРАФИЯ" ? (
+      {priceType === 'ШЕЛКОГРАФИЯ' ? (
         <>
           <h4 className={styles.heading}>{priceVar}</h4>
           <p className={styles.description}>{price}</p>
@@ -26,7 +26,10 @@ const PrintingMethodPrice = (prices) => {
       ) : (
         <>
           <h4 className={styles.heading}>
-            А СКОЛЬКО <span className={styles.textStyle_italic}>СТОИТ</span>{" "}
+            А СКОЛЬКО
+            {' '}
+            <span className={styles.textStyle_italic}>СТОИТ</span>
+            {' '}
             ПЕЧАТЬ?
           </h4>
           <p className={styles.description}>
@@ -60,6 +63,6 @@ const PrintingMethodPrice = (prices) => {
       </div>
     </section>
   );
-};
+}
 
 export default PrintingMethodPrice;
