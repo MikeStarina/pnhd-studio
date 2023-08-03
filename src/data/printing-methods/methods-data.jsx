@@ -38,7 +38,6 @@ import dtg3 from '../../components/images/printingMethods/DTG/3.webp';
 import dtg4 from '../../components/images/printingMethods/DTG/4.webp';
 import dtg5 from '../../components/images/printingMethods/DTG/5.webp';
 import dtg6 from '../../components/images/printingMethods/DTG/6.webp';
-
 //точка, имитация пункта списка
 let point = '\u{22C5}';
 //неразрывный пробел

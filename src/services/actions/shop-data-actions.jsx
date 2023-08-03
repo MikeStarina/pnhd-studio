@@ -12,12 +12,27 @@ export const SET_THIRDSELECTEDITEM = 'SET_THIRDSELECTEDITEM';
 export const SET_DEFAULTFILTER = 'SET_DEFAULTFILTER';
 
 export const getShopData = () => {
-    const checkResponse = (res) => {
-        if (res.ok || res.created) {
-            return res.json();
-        }
-        return res.json().then((err) => {
-            return Promise.reject(err);
+  const checkResponse = (res) => {
+    if (res.ok || res.created) {
+      return res.json();
+    }
+    return res.json().then((err) => {
+      return Promise.reject(err);
+    });
+  };
+
+  return function (dispatch) {
+    fetch(`${apiBaseUrl}/api/products`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(checkResponse)
+      .then((res) => {
+        // console.log(res);
+        dispatch({
+          type: GET_DATA,
+          payload: res.data,
         });
     };
     

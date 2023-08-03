@@ -1,4 +1,6 @@
-import React from "react";
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import styles from './price-screen.module.css';
 import { useSelector, useDispatch } from "react-redux";
 import { openPopupHeader, SET_ACTIVE_PRICE_TABLE } from "../../services/actions/utility-actions";
@@ -7,35 +9,20 @@ import { Link } from "react-router-dom";
 
 
 const price = {
-    dtg: {
-        onWhite: {
-            A6: 300,
-            A5: 400,
-            A4: 500,
-            A3: 650,
-            A33: 750,
-        },
-        onColored: {
-            A6: 400,
-            A5: 500,
-            A4: 650,
-            A3: 750,
-            A33: 900,
-        }
+  dtg: {
+    onWhite: {
+      A6: 300,
+      A5: 400,
+      A4: 500,
+      A3: 650,
+      A33: 750,
     },
-    dtf: {
-        A6: 400,
-        A5: 500,
-        A4: 650,
-        A3: 750,
-        A33: 900,
-    },
-    hTransfer: {
-        A6: 400,
-        A5: 500,
-        A4: 650,
-        A3: 750,
-        A33: 900,
+    onColored: {
+      A6: 400,
+      A5: 500,
+      A4: 650,
+      A3: 750,
+      A33: 900,
     },
     emb: {
         A6: 900,

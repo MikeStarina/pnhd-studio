@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { Helmet } from 'react-helmet';
 import { CLOSE_MODAL_MENU } from '../../services/actions/utility-actions.jsx';
 import styles from './main-page.module.css';
-import { Helmet } from 'react-helmet';
 import FirstScreen from '../../components/main-page-components/first-screen.jsx';
 import FaqScreen from '../../components/main-page-components/faq-screen.jsx';
 import ThirdScreen from '../../components/main-page-components/third-screen.jsx';

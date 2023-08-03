@@ -38,14 +38,14 @@ import photo4 from '../../components/images/typeOfPrint/photos/4.webp';
 import photo5 from '../../components/images/typeOfPrint/photos/5.webp';
 import photo6 from '../../components/images/typeOfPrint/photos/6.webp';
 
-//точка, имитация пункта списка
-let point = '\u{22C5}';
-//неразрывный пробел
-let nbsp = '\u{00A0}';
-//мягкий перенос, через тире
-let softHyphen = '\u{00AD}';
-//возврат каретки, перенос без тире
-let carriageReturn = '\u{000D}';
+// точка, имитация пункта списка
+const point = '\u{22C5}';
+// неразрывный пробел
+const nbsp = '\u{00A0}';
+// мягкий перенос, через тире
+const softHyphen = '\u{00AD}';
+// возврат каретки, перенос без тире
+const carriageReturn = '\u{000D}';
 
 export const typeOfPrintData = {
   numberAndSurname: {

@@ -4,7 +4,7 @@ import {
   GET_SDEK_SHIPPIG_TARIF,
   SET_SDEK_DEFAULT_STATE,
   SET_SDEK_RESET_POINTS,
-} from "../actions/shipping-actions";
+} from '../actions/shipping-actions';
 
 export const initialState = {
   shippingData: {

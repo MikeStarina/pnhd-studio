@@ -1,209 +1,204 @@
 .screen {
-  width: 100%;
-  margin: 0;
-  padding: 60px 50px 200px 50px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  overflow: hidden;
+    width: 100%;
+    margin: 0;
+    padding: 60px 50px 200px 50px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    overflow: hidden;
 }
 
 .heading {
-  padding: 0;
-  margin: 0 0 30px 0;
-  font-size: 60px;
-  line-height: 60px;
-  font-weight: 700;
-  text-align: center;
+    padding: 0;
+    margin: 0 0 30px 0;
+    font-size: 60px;
+    line-height: 60px;
+    font-weight: 700;
+    text-align: center;
 }
 
 .description {
-  padding: 0;
-  margin: 0 0 60px 0;
-  font-size: 20px;
-  line-height: 20px;
-  font-weight: 500;
-  max-width: 600px;
-  text-align: center;
+    padding: 0;
+    margin: 0 0 60px 0;
+    font-size: 20px;
+    line-height: 20px;
+    font-weight: 500;
+    max-width: 600px;
+    text-align: center;
 }
 
 .textStyle_italic {
-  font-style: italic;
+    font-style: italic;
 }
 
 .button_wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 800px;
-  width: 80%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 800px;
+    width: 80%;
 }
 
 .button {
-  border: none;
-  height: 60px;
-  background-color: transparent;
-  color: black;
-  font-family: inherit;
-  font-size: 30px;
-  line-height: 30px;
-  font-weight: 600;
-  margin: 0;
-  padding: 0;
-
+    border: none;
+    height: 60px;
+    background-color: transparent;
+    color: black;
+    font-family: inherit;
+    font-size: 30px;
+    line-height: 30px;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
 }
 
 .button:hover {
-  border: none;
-  border-top: 3px solid transparent;
-  border-bottom: 3px solid black;
-  cursor: pointer;
+    border: none;
+    border-top: 3px solid transparent;
+    border-bottom: 3px solid black;
+    cursor: pointer;
 }
 
 .button_active {
-  height: 60px;
-  background-color: transparent;
-  color: black;
-  font-family: inherit;
-  font-size: 30px;
-  line-height: 30px;
-  font-weight: 600;
-  margin: 0;
-  padding: 0;
-  border: none;
-  border-top: 3px solid transparent;
-  border-bottom: 3px solid black;
-
+    height: 60px;
+    background-color: transparent;
+    color: black;
+    font-family: inherit;
+    font-size: 30px;
+    line-height: 30px;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-top: 3px solid transparent;
+    border-bottom: 3px solid black;
 }
 
 .price_table {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  margin: 100px 0 50px;
-  padding: 0;
-  width: 80%;
-}
-
-.action_button_wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 30px;
-}
-
-.action_button {
-  width: 250px;
-  height: 60px;
-  border: none;
-  border-radius: 15px;
-  background-color: rgb(0, 255, 0);
-  color: white;
-  font-family: inherit;
-  font-size: 20px;
-  line-height: 20px;
-  font-weight: bold;
-  padding: 0;
-  margin: 50px 0 0 0;
-}
-
-.action_button:hover {
-  color: black;
-  cursor: pointer;
-}
-
-@media (max-width: 1100px) {
-  .price_table {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     margin: 100px 0 50px;
     padding: 0;
-    width: 100%;
-  }
+    width: 80%;
+}
 
-  .button_wrapper {
-    width: 100%;
-  }
+.action_button_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.action_button {
+    width: 250px;
+    height: 60px;
+    border: none;
+    border-radius: 15px;
+    background-color: rgb(0, 255, 0);
+    color: white;
+    font-family: inherit;
+    font-size: 20px;
+    line-height: 20px;
+    font-weight: bold;
+    padding: 0;
+    margin: 50px 0 0 0;
+}
+
+.action_button:hover {
+    color: black;
+    cursor: pointer;
+}
+
+@media (max-width: 1100px) {
+    .price_table {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        margin: 100px 0 50px;
+        padding: 0;
+        width: 100%;
+    }
+
+    .button_wrapper {
+        width: 100%;
+    }
 }
 
 @media (max-width: 750px) {
-  .heading {
-    padding: 0;
-    margin: 0 0 30px 0;
-    font-size: 50px;
-    line-height: 50px;
-    font-weight: 700;
-    text-align: center;
-  }
+    .heading {
+        padding: 0;
+        margin: 0 0 30px 0;
+        font-size: 50px;
+        line-height: 50px;
+        font-weight: 700;
+        text-align: center;
+    }
 
-  .price_table {
-    margin: 20px 0;
-  }
+    .price_table {
+        margin: 20px 0;
+    }
 
-  .button_wrapper {
-    width: 100%;
-  }
+    .button_wrapper {
+        width: 100%;
+    }
 
+    .button {
+        font-size: 15px;
+        line-height: 15px;
+        font-weight: 600;
+        height: 30px;
+    }
 
-  .button {
-    font-size: 15px;
-    line-height: 15px;
-    font-weight: 600;
-    height: 30px;
-  }
-
-  .button_active {
-    font-size: 15px;
-    line-height: 15px;
-    font-weight: 600;
-    height: 30px;
-  }
-
+    .button_active {
+        font-size: 15px;
+        line-height: 15px;
+        font-weight: 600;
+        height: 30px;
+    }
 }
 
-
 @media (max-width: 650px) {
-  .heading {
-    font-size: 30px;
-    line-height: 30px;
-  }
+    .heading {
+        font-size: 30px;
+        line-height: 30px;
+    }
 
-  .description {
-    font-size: 15px;
-    line-height: 15px;
-  }
+    .description {
+        font-size: 15px;
+        line-height: 15px;
+    }
 
-  .action_button {
-    font-size: 20px;
-    line-height: 20px;
-    height: 40px;
-    border-radius: 8px;
-    font-size: 15px;
-    line-height: 15px;
-    margin: 0;
-  }
+    .action_button {
+        font-size: 20px;
+        line-height: 20px;
+        height: 40px;
+        border-radius: 8px;
+        font-size: 15px;
+        line-height: 15px;
+        margin: 0;
+    }
 
-  .action_button_wrapper {
-    flex-direction: column;
-    padding-top: 50px;
-  }
+    .action_button_wrapper {
+        flex-direction: column;
+        padding-top: 50px;
+    }
 }
 
 @media (max-width: 450px) {
-  .button {
-    font-size: 10px;
-    line-height: 10px;
-    font-weight: 600;
-  }
+    .button {
+        font-size: 10px;
+        line-height: 10px;
+        font-weight: 600;
+    }
 
-  .button_active {
-    font-size: 10px;
-    line-height: 10px;
-    font-weight: 600;
-  }
+    .button_active {
+        font-size: 10px;
+        line-height: 10px;
+        font-weight: 600;
+    }
 }

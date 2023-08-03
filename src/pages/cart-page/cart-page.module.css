@@ -464,11 +464,11 @@
     width: 99%;
     cursor: pointer;
     padding-bottom: 3px;
-    transition:0.5s;
+    transition: 0.5s;
 }
 
 .cities_listItem:hover {
-    transition:0.5s;
+    transition: 0.5s;
     background-color: rgba(0, 0, 0, 0.1);
 }
 
@@ -492,7 +492,10 @@
         cursor: pointer;
         /* border: 1px solid var(--bc, var(--border)); */
         background: var(--b, var(--background));
-        transition: background 0.3s, border-color 0.3s, box-shadow 0.2s;
+        transition:
+            background 0.3s,
+            border-color 0.3s,
+            box-shadow 0.2s;
     }
 
     input[type='radio']:after {
@@ -501,7 +504,8 @@
         left: 0;
         top: 0;
         position: absolute;
-        transition: transform var(--d-t, 0.3s) var(--d-t-e, ease),
+        transition:
+            transform var(--d-t, 0.3s) var(--d-t-e, ease),
             opacity var(--d-o, 0.2s);
     }
 

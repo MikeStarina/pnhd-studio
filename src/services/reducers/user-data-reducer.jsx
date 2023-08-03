@@ -8,42 +8,42 @@ import {
   SET_USER_DATA,
   SET_SHIPPING_CITIES,
   SET_SHIPPING_PVZ,
-  SET_DEFAULT_USERSHIPPINGDATA
-} from "../actions/user-data-actions";
+  SET_DEFAULT_USERSHIPPINGDATA,
+} from '../actions/user-data-actions';
 
 const initialState = {
   userLoginData: {
-    login: "",
-    password: "",
+    login: '',
+    password: '',
   },
   userAuth: {
     isAuthenticated: false,
-    token: "",
+    token: '',
   },
   userData: {
     id: 0,
-    username: "",
-    email: "",
+    username: '',
+    email: '',
   },
   registerFormData: {
-    name: "",
-    email: "",
-    password: "",
+    name: '',
+    email: '',
+    password: '',
   },
-  forgotPasswordData: "",
+  forgotPasswordData: '',
   userCartData: {
-    name: "",
+    name: '',
     isNameValid: false,
-    surname: "",
+    surname: '',
     isSurnameValid: false,
-    email: "",
+    email: '',
     isEmailValid: false,
-    phone: "",
+    phone: '',
     isPhoneValid: false,
     isFormValid: false,
   },
   userShippingData: {
-    city: "",
+    city: '',
     isCityValid: true,
     pvz: null,
     isPvzValid: true,
@@ -74,8 +74,8 @@ export const userDataReducer = (state = initialState, action) => {
           email: action.email,
         },
         userLoginData: {
-          login: "",
-          password: "",
+          login: '',
+          password: '',
         },
       };
     }
@@ -116,9 +116,9 @@ export const userDataReducer = (state = initialState, action) => {
           email: action.email,
         },
         registerFormData: {
-          name: "",
-          email: "",
-          password: "",
+          name: '',
+          email: '',
+          password: '',
         },
       };
     }
@@ -133,37 +133,37 @@ export const userDataReducer = (state = initialState, action) => {
         ...state,
         userCartData: {
           name:
-            action.inputName === "name"
-              ? action.inputValue
-              : state.userCartData.name,
+                        action.inputName === 'name'
+                          ? action.inputValue
+                          : state.userCartData.name,
           isNameValid:
-            action.inputName === "name"
-              ? action.validity
-              : state.userCartData.isNameValid,
+                        action.inputName === 'name'
+                          ? action.validity
+                          : state.userCartData.isNameValid,
           surname:
-            action.inputName === "surname"
-              ? action.inputValue
-              : state.userCartData.surname,
+                        action.inputName === 'surname'
+                          ? action.inputValue
+                          : state.userCartData.surname,
           isSurnameValid:
-            action.inputName === "surname"
-              ? action.validity
-              : state.userCartData.isSurnameValid,
+                        action.inputName === 'surname'
+                          ? action.validity
+                          : state.userCartData.isSurnameValid,
           phone:
-            action.inputName === "phone"
-              ? action.inputValue
-              : state.userCartData.phone,
+                        action.inputName === 'phone'
+                          ? action.inputValue
+                          : state.userCartData.phone,
           isPhoneValid:
-            action.inputName === "phone"
-              ? action.validity
-              : state.userCartData.isPhoneValid,
+                        action.inputName === 'phone'
+                          ? action.validity
+                          : state.userCartData.isPhoneValid,
           email:
-            action.inputName === "email"
-              ? action.inputValue
-              : state.userCartData.email,
+                        action.inputName === 'email'
+                          ? action.inputValue
+                          : state.userCartData.email,
           isEmailValid:
-            action.inputName === "email"
-              ? action.validity
-              : state.userCartData.isEmailValid,
+                        action.inputName === 'email'
+                          ? action.validity
+                          : state.userCartData.isEmailValid,
         },
       };
     }
@@ -193,7 +193,7 @@ export const userDataReducer = (state = initialState, action) => {
       return {
         ...state,
         userShippingData: {
-          city: "",
+          city: '',
           isCityValid: true,
           pvz: null,
           isPvzValid: true,
