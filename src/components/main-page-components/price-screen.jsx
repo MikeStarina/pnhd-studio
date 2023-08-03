@@ -1,10 +1,9 @@
 import React from "react";
 import styles from './price-screen.module.css';
 import { useSelector, useDispatch } from "react-redux";
-import { SET_ACTIVE_PRICE_TABLE } from "../../services/actions/utility-actions";
+import { openPopupHeader, SET_ACTIVE_PRICE_TABLE } from "../../services/actions/utility-actions";
 import PriceTable from "./price-screen-components/price-table.jsx";
 import { Link } from "react-router-dom";
-import { SET_POPUP_VISIBILITY } from "../../services/actions/utility-actions";
 
 
 const price = {
@@ -56,11 +55,8 @@ const PriceScreen = () => {
 
 
     const popupOpen = () => {
-        dispatch({
-            type: SET_POPUP_VISIBILITY
-        })
-    }
-
+        dispatch(openPopupHeader());
+      };
 
     const setActiveTab = (e) => {
         

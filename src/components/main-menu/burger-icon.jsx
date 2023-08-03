@@ -37,3 +37,4 @@ const BurgerIcon = ({ openMenu, openPopup }) => {
 };
 
 export default BurgerIcon;
+

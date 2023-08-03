@@ -1,13 +1,13 @@
-import React from "react";
-import styles from "./printing-faq.module.css";
-import circle50px from "../images/circle50px.png";
+import React from 'react';
+import styles from './printing-faq.module.css';
+import circle50px from '../images/circle50px.png';
 
 const PrintingFaq = (data) => {
   const { title, description, variants } = data;
 
   return (
     <section className={styles.screen}>
-      <h4 className={styles.heading}>{title}</h4>
+      <h3 className={styles.heading}>{title}</h3>
       {variants.map((item, index) => {
         return (
           <div className={styles.block_wrapper} key={index}>
@@ -17,7 +17,7 @@ const PrintingFaq = (data) => {
               alt="circle"
             ></img>
             <div className={styles.text_wrapper}>
-              <h5 className={styles.screen_heading}>{item.screen_heading}</h5>
+              <h4 className={styles.screen_heading}>{item.screen_heading}</h4>
               {Array.isArray(item.screen_description) ? (
                 item.screen_description.map((item, index) => {
                   return (
