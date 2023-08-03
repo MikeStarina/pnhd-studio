@@ -149,27 +149,27 @@ export const shopDataReducer = (state = initialState, action) => {
     case SET_FIRSTSELECTEDITEM: {
       return {
         ...state,
-        firstFilterSelect: action.payload.a,
+        firstFilterSelect: action.payload.filtr1,
         firstFilterSelectedItem: action.payload.frstFilter,
-        firstCount: action.payload.b,
+        firstCount: action.payload.count1,
       };
     }
 
     case SET_SECONDSELECTEDITEM: {
       return {
         ...state,
-        secondFilterSelect: action.payload.a2,
+        secondFilterSelect: action.payload.filtr2,
         secondFilterSelectedItem: action.payload.secondFilter,
-        secondCount: action.payload.b2,
+        secondCount: action.payload.count2,
       };
     }
 
     case SET_THIRDSELECTEDITEM: {
       return {
         ...state,
-        thirdFilterSelect: action.payload.a3,
+        thirdFilterSelect: action.payload.filtr3,
         thirdFilterSelectedItem: action.payload.thirdFilter,
-        thirdCount: action.payload.b3,
+        thirdCount: action.payload.count3,
       };
     }
 
