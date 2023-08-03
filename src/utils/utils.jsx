@@ -119,10 +119,33 @@ export const setCoords = (currentImage, activeView, itemType) => {
 };
 
 export const checkResponse = (res) => {
-  if (res.ok || res.created) {
-    return res.json();
-  }
-  return res.json().then((err) => {
-    return Promise.reject(err);
-  });
+    if (res.ok || res.created) {
+        return res.json();
+    }
+    return res.json().then((err) => {
+        return Promise.reject(err);
+    });
 };
+
+export const getString = (separator, arr ) => {
+    let string = '';
+    if(arr.length != 0){
+        string += separator
+        arr.forEach((elem, index)=> {
+            if(arr.length-1 === 0){
+                string += elem+`?`
+                return
+            }
+            if(index === 0 && arr.length-1 != 0){
+                string += elem
+            }
+            if(index>0 && index!=arr.length-1){
+                string += `&`+elem
+            }
+            if(index === arr.length-1){
+                string += `&`+elem+`?`
+            }
+        });
+    }
+    return string;
+}

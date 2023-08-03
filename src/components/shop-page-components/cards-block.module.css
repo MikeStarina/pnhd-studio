@@ -17,6 +17,12 @@
     color: black;
 }
 
+.screen_noProducts{
+    padding: 200px 0;
+    display: flex;
+    justify-content: center
+}
+
 @media (max-width: 1100px) {
     .screen {
         grid-template-columns: repeat(3, minmax(300px, 1fr));
@@ -30,6 +36,9 @@
         grid-template-columns: repeat(2, minmax(50%, 1fr));
         grid-template-rows: auto;
         gap: 5px;
+    }
+    .screen_noProducts{
+        padding: 150px 0;
     }
 }
 @media (max-width: 480px) {
