@@ -114,10 +114,7 @@ function App() {
         <FullscreenMenu openPopup={handelOpenPopupHeader} />
       )}
       {!mainMenu.isVisible && (
-        <BurgerIcon
-          openMenu={openMenu}
-          openPopup={handelOpenPopupHeader}
-        />
+        <BurgerIcon openMenu={openMenu} openPopup={handelOpenPopupHeader} />
       )}
       {order && order.length > 0 && isVisible && (
         <CartIcon qty={order.length} />
@@ -184,11 +181,7 @@ function App() {
         </Route>
 
         <Route exact path="/shop/:id/constructor">
-          {useLocation().state ? (
-            <Constructor />
-          ) : (
-            <Redirect to="/shop" />
-          )}
+          {useLocation().state ? <Constructor /> : <Redirect to="/shop" />}
         </Route>
 
         <Route exact path="/checkout">

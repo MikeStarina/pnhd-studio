@@ -43,7 +43,7 @@ export const createOrder = (
   };
   order.forEach((order_item) => {
     const sizeStr = (orderSizeItem) => {
-      let size = "";
+      let size = '';
 
       let countStr = false;
       orderSizeItem.forEach((item, index) => {
@@ -51,17 +51,17 @@ export const createOrder = (
           size += `размер:${item.name}`;
           countStr = true;
           if (orderSizeItem.length > index && countStr) {
-            size += ",";
+            size += ',';
           }
         }
       });
-      size = size.slice(0, -1) + ".";
+      size = `${size.slice(0, -1)}.`;
       return size;
     };
 
     const item = {
       textile:
-        `${order_item.attributes.name},` + sizeStr(order_item.attributes.size),
+        `${order_item.attributes.name},${sizeStr(order_item.attributes.size)}`,
       qty: order_item.attributes.size,
       qtyAll: 0,
       sizes: order_item.attributes.sizes,
@@ -106,38 +106,31 @@ export const createOrder = (
 
     let printTotalprice = 0;
 
-    const frontPrintPrice =
-      (order_item.print && order_item.print.front.file
-        ? order_item.print.front.cartParams.price
-        : 0) * item.qtyAll;
-    const backPrintPrice =
-      (order_item.print && order_item.print.back.file
-        ? order_item.print.back.cartParams.price
-        : 0) * item.qtyAll;
-    const lsleevePrintPrice =
-      (order_item.print && order_item.print.lsleeve.file
-        ? order_item.print.lsleeve.cartParams.price
-        : 0) * item.qtyAll;
-    const rsleevePrintPrice =
-      (order_item.print && order_item.print.rsleeve.file
-        ? order_item.print.rsleeve.cartParams.price
-        : 0) * item.qtyAll;
-    const badgePrintPrice =
-      (order_item.print && order_item.print.badge.file
-        ? order_item.print.badge.cartParams.price
-        : 0) * item.qtyAll;
+    const frontPrintPrice = (order_item.print && order_item.print.front.file
+      ? order_item.print.front.cartParams.price
+      : 0) * item.qtyAll;
+    const backPrintPrice = (order_item.print && order_item.print.back.file
+      ? order_item.print.back.cartParams.price
+      : 0) * item.qtyAll;
+    const lsleevePrintPrice = (order_item.print && order_item.print.lsleeve.file
+      ? order_item.print.lsleeve.cartParams.price
+      : 0) * item.qtyAll;
+    const rsleevePrintPrice = (order_item.print && order_item.print.rsleeve.file
+      ? order_item.print.rsleeve.cartParams.price
+      : 0) * item.qtyAll;
+    const badgePrintPrice = (order_item.print && order_item.print.badge.file
+      ? order_item.print.badge.cartParams.price
+      : 0) * item.qtyAll;
 
-    printTotalprice =
-      frontPrintPrice +
-      backPrintPrice +
-      lsleevePrintPrice +
-      rsleevePrintPrice +
-      badgePrintPrice;
+    printTotalprice = frontPrintPrice
+      + backPrintPrice
+      + lsleevePrintPrice
+      + rsleevePrintPrice
+      + badgePrintPrice;
 
-    const itemPrice =
-      (validPromoCode.discount_ratio
-        ? order_item.attributes.price * validPromoCode.discount_ratio
-        : order_item.attributes.price) * item.qtyAll;
+    const itemPrice = (validPromoCode.discount_ratio
+      ? order_item.attributes.price * validPromoCode.discount_ratio
+      : order_item.attributes.price) * item.qtyAll;
     const printFullPrice = validPromoCode.discount_ratio
       ? printTotalprice * validPromoCode.discount_ratio
       : printTotalprice;
@@ -158,10 +151,10 @@ export const createOrder = (
 
   return function (dispatch) {
     fetch(`${apiBaseUrl}/api/orders`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "Content-length": "",
+        'Content-Type': 'application/json',
+        'Content-length': '',
       },
       body: JSON.stringify(data),
     })

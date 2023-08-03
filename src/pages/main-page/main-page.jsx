@@ -15,7 +15,7 @@ import FeedbackScreen from '../../components/main-page-components/feedback-scree
 import MapScreen from '../../components/main-page-components/map-screen.jsx';
 import Accordion from '../../components/accordion/accordion.jsx';
 
-const MainPage = () => {
+function MainPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -95,10 +95,10 @@ const MainPage = () => {
       <PriceScreen />
       <FeedbackScreen />
       <Accordion />
-      {/*<FormScreen />*/}
+      {/* <FormScreen /> */}
       <MapScreen />
     </main>
   );
-};
+}
 
 export default MainPage;

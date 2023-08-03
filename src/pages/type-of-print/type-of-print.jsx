@@ -8,9 +8,9 @@ import Brief from '../../components/brief/brief';
 import PrintingGallery from '../../components/printing-gallery/printing-gallery';
 import PrintingFaq from '../../components/printing-faq/printing-faq';
 
-const TypeOfPrint = (props) => {
+function TypeOfPrint(props) {
   const info = props.method;
-  const description = info.faq.description;
+  const { description } = info.faq;
   const faqProps = info.faq;
   // Для компонента Gallery, масив фотографий
   const galleryProps = info.images.gallery;
@@ -19,7 +19,7 @@ const TypeOfPrint = (props) => {
     title: props.method.main_heading,
     subtitle: props.method.brief_subtitle,
   };
-  //Для второго компанента Brief, с масивом subtitle
+  // Для второго компанента Brief, с масивом subtitle
   const dataArray = {
     title: props.method.faq.title,
     subtitle: props.method.faq.subtitle,
@@ -47,18 +47,18 @@ const TypeOfPrint = (props) => {
           },
         ]}
       />
-      <PrintingFirstScreen data={info} typePage={'types'} />
-      <Brief type={'h2'} {...data} />
+      <PrintingFirstScreen data={info} typePage="types" />
+      <Brief type="h2" {...data} />
       <PrintingGallery gallery={galleryProps} />
       {description ? (
         <PrintingFaq {...faqProps} />
       ) : (
-        <Brief type={'h3'} {...dataArray} />
+        <Brief type="h3" {...dataArray} />
       )}
       <FeedbackScreen />
       <MapScreen />
     </>
   );
-};
+}
 
 export default TypeOfPrint;

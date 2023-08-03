@@ -8,45 +8,45 @@ import {
   SET_SECONDSELECTEDITEM,
   SET_THIRDSELECTEDITEM,
   SET_DEFAULTFILTER,
-} from "../actions/shop-data-actions.jsx";
+} from '../actions/shop-data-actions.jsx';
 
 const initialState = {
   data: [],
-  filter: "",
+  filter: '',
   firstFilterSelect: [
-    { categorySelect: "Мужское", selected: false, category: "man" },
-    { categorySelect: "Женское", selected: false, category: "woman" },
-    { categorySelect: "Детское", selected: false, category: "kids" },
-    { categorySelect: "Аксессуары", selected: false, category: "accesorize" },
-    { categorySelect: "PNHD & FRIENDS", selected: false, category: "friends" },
+    { categorySelect: 'Мужское', selected: false, category: 'man' },
+    { categorySelect: 'Женское', selected: false, category: 'woman' },
+    { categorySelect: 'Детское', selected: false, category: 'kids' },
+    { categorySelect: 'Аксессуары', selected: false, category: 'accesorize' },
+    { categorySelect: 'PNHD & FRIENDS', selected: false, category: 'friends' },
   ],
   firstFilterSelectedItem: [],
   secondFilterSelect: [
-    { categorySelect: "Футболка", selected: false, category: "tshirt" },
-    { categorySelect: "Худи", selected: false, category: "hoodie" },
-    { categorySelect: "Шоппер", selected: false, category: "totebag" },
-    { categorySelect: "Кепка", selected: false, category: "cap" },
-    { categorySelect: "Лонгслив", selected: false, category: "longsleeve" },
-    { categorySelect: "Свитшот", selected: false, category: "sweatshirt" },
+    { categorySelect: 'Футболка', selected: false, category: 'tshirt' },
+    { categorySelect: 'Худи', selected: false, category: 'hoodie' },
+    { categorySelect: 'Шоппер', selected: false, category: 'totebag' },
+    { categorySelect: 'Кепка', selected: false, category: 'cap' },
+    { categorySelect: 'Лонгслив', selected: false, category: 'longsleeve' },
+    { categorySelect: 'Свитшот', selected: false, category: 'sweatshirt' },
   ],
   secondFilterSelectedItem: [],
   thirdFilterSelect: [
-    { categorySelect: "Белый", selected: false, category: "белый" },
-    { categorySelect: "Черный", selected: false, category: "черный" },
-    { categorySelect: "Суровый", selected: false, category: "суровый" },
-    { categorySelect: "Бордовый", selected: false, category: "бордовый" },
-    { categorySelect: "Хаки", selected: false, category: "хаки" },
-    { categorySelect: "Синий", selected: false, category: "синий" },
-    { categorySelect: "Песочный", selected: false, category: "песочный" },
-    { categorySelect: "Темно-синий", selected: false, category: "темно-синий" },
-    { categorySelect: "Голубой", selected: false, category: "голубой" },
-    { categorySelect: "Фиолетовый", selected: false, category: "фиолетовый" },
-    { categorySelect: "Оранжевый", selected: false, category: "оранжевый" },
-    { categorySelect: "Красный", selected: false, category: "красный" },
-    { categorySelect: "Натуральный", selected: false, category: "натуральный" },
-    { categorySelect: "Василек", selected: false, category: "василек" },
-    { categorySelect: "Серый", selected: false, category: "серый" },
-    { categorySelect: "Зеленый", selected: false, category: "зеленый" },
+    { categorySelect: 'Белый', selected: false, category: 'белый' },
+    { categorySelect: 'Черный', selected: false, category: 'черный' },
+    { categorySelect: 'Суровый', selected: false, category: 'суровый' },
+    { categorySelect: 'Бордовый', selected: false, category: 'бордовый' },
+    { categorySelect: 'Хаки', selected: false, category: 'хаки' },
+    { categorySelect: 'Синий', selected: false, category: 'синий' },
+    { categorySelect: 'Песочный', selected: false, category: 'песочный' },
+    { categorySelect: 'Темно-синий', selected: false, category: 'темно-синий' },
+    { categorySelect: 'Голубой', selected: false, category: 'голубой' },
+    { categorySelect: 'Фиолетовый', selected: false, category: 'фиолетовый' },
+    { categorySelect: 'Оранжевый', selected: false, category: 'оранжевый' },
+    { categorySelect: 'Красный', selected: false, category: 'красный' },
+    { categorySelect: 'Натуральный', selected: false, category: 'натуральный' },
+    { categorySelect: 'Василек', selected: false, category: 'василек' },
+    { categorySelect: 'Серый', selected: false, category: 'серый' },
+    { categorySelect: 'Зеленый', selected: false, category: 'зеленый' },
   ],
   thirdFilterSelectedItem: [],
   firstCount: 0,
@@ -73,7 +73,7 @@ export const shopDataReducer = (state = initialState, action) => {
       const selectItems = state.firstFilterSelect;
       const indexItem = selected.indexOf(action.payload.category);
       const findIndex = selectItems.findIndex(
-        (i) => i.category === action.payload.category
+        (i) => i.category === action.payload.category,
       );
       let cnt = 0;
       if (indexItem != -1) {
@@ -99,7 +99,7 @@ export const shopDataReducer = (state = initialState, action) => {
       const selectItems = state.secondFilterSelect;
       const indexItem = selected.indexOf(action.payload.category);
       const findIndex = selectItems.findIndex(
-        (i) => i.category === action.payload.category
+        (i) => i.category === action.payload.category,
       );
       let cnt = 0;
       if (indexItem != -1) {
@@ -125,7 +125,7 @@ export const shopDataReducer = (state = initialState, action) => {
       const selectItems = state.thirdFilterSelect;
       const indexItem = selected.indexOf(action.payload.category);
       const findIndex = selectItems.findIndex(
-        (i) => i.category === action.payload.category
+        (i) => i.category === action.payload.category,
       );
       let cnt = 0;
       if (indexItem != -1) {
@@ -177,73 +177,73 @@ export const shopDataReducer = (state = initialState, action) => {
       return {
         ...state,
         firstFilterSelect: [
-          { categorySelect: "Мужское", selected: false, category: "man" },
-          { categorySelect: "Женское", selected: false, category: "woman" },
-          { categorySelect: "Детское", selected: false, category: "kids" },
+          { categorySelect: 'Мужское', selected: false, category: 'man' },
+          { categorySelect: 'Женское', selected: false, category: 'woman' },
+          { categorySelect: 'Детское', selected: false, category: 'kids' },
           {
-            categorySelect: "Аксессуары",
+            categorySelect: 'Аксессуары',
             selected: false,
-            category: "accesorize",
+            category: 'accesorize',
           },
           {
-            categorySelect: "PNHD & FRIENDS",
+            categorySelect: 'PNHD & FRIENDS',
             selected: false,
-            category: "friends",
+            category: 'friends',
           },
         ],
         firstFilterSelectedItem: [],
         firstCount: 0,
         secondFilterSelect: [
-          { categorySelect: "Футболка", selected: false, category: "tshirt" },
-          { categorySelect: "Худи", selected: false, category: "hoodie" },
-          { categorySelect: "Шоппер", selected: false, category: "totebag" },
-          { categorySelect: "Кепка", selected: false, category: "cap" },
+          { categorySelect: 'Футболка', selected: false, category: 'tshirt' },
+          { categorySelect: 'Худи', selected: false, category: 'hoodie' },
+          { categorySelect: 'Шоппер', selected: false, category: 'totebag' },
+          { categorySelect: 'Кепка', selected: false, category: 'cap' },
           {
-            categorySelect: "Лонгслив",
+            categorySelect: 'Лонгслив',
             selected: false,
-            category: "longsleeve",
+            category: 'longsleeve',
           },
           {
-            categorySelect: "Свитшот",
+            categorySelect: 'Свитшот',
             selected: false,
-            category: "sweatshirt",
+            category: 'sweatshirt',
           },
         ],
         secondFilterSelectedItem: [],
         secondCount: 0,
         thirdFilterSelect: [
-          { categorySelect: "Белый", selected: false, category: "белый" },
-          { categorySelect: "Черный", selected: false, category: "черный" },
-          { categorySelect: "Суровый", selected: false, category: "суровый" },
-          { categorySelect: "Бордовый", selected: false, category: "бордовый" },
-          { categorySelect: "Хаки", selected: false, category: "хаки" },
-          { categorySelect: "Синий", selected: false, category: "синий" },
-          { categorySelect: "Песочный", selected: false, category: "песочный" },
+          { categorySelect: 'Белый', selected: false, category: 'белый' },
+          { categorySelect: 'Черный', selected: false, category: 'черный' },
+          { categorySelect: 'Суровый', selected: false, category: 'суровый' },
+          { categorySelect: 'Бордовый', selected: false, category: 'бордовый' },
+          { categorySelect: 'Хаки', selected: false, category: 'хаки' },
+          { categorySelect: 'Синий', selected: false, category: 'синий' },
+          { categorySelect: 'Песочный', selected: false, category: 'песочный' },
           {
-            categorySelect: "Темно-синий",
+            categorySelect: 'Темно-синий',
             selected: false,
-            category: "темно-синий",
+            category: 'темно-синий',
           },
-          { categorySelect: "Голубой", selected: false, category: "голубой" },
+          { categorySelect: 'Голубой', selected: false, category: 'голубой' },
           {
-            categorySelect: "Фиолетовый",
+            categorySelect: 'Фиолетовый',
             selected: false,
-            category: "фиолетовый",
+            category: 'фиолетовый',
           },
           {
-            categorySelect: "Оранжевый",
+            categorySelect: 'Оранжевый',
             selected: false,
-            category: "оранжевый",
+            category: 'оранжевый',
           },
-          { categorySelect: "Красный", selected: false, category: "красный" },
+          { categorySelect: 'Красный', selected: false, category: 'красный' },
           {
-            categorySelect: "Натуральный",
+            categorySelect: 'Натуральный',
             selected: false,
-            category: "натуральный",
+            category: 'натуральный',
           },
-          { categorySelect: "Василек", selected: false, category: "василек" },
-          { categorySelect: "Серый", selected: false, category: "серый" },
-          { categorySelect: "Зеленый", selected: false, category: "зеленый" },
+          { categorySelect: 'Василек', selected: false, category: 'василек' },
+          { categorySelect: 'Серый', selected: false, category: 'серый' },
+          { categorySelect: 'Зеленый', selected: false, category: 'зеленый' },
         ],
         thirdFilterSelectedItem: [],
         thirdCount: 0,
