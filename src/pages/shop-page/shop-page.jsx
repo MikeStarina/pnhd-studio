@@ -1,41 +1,55 @@
-import { useEffect } from 'react';
-import React from 'react';
-import { Helmet } from 'react-helmet';
-import { SET_FILTER } from '../../services/actions/shop-data-actions';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from "react";
+import { Helmet } from "react-helmet";
+import {
+  SET_DEFAULTFILTER,
+  SET_FILTER,
+  SET_FIRSTSELECT,
+  SET_SECONDSELECT,
+  SET_THIRDSELECT,
+} from "../../services/actions/shop-data-actions";
+import { useDispatch, useSelector } from "react-redux";
 import {
   CLOSE_MODAL_MENU,
   closePopup,
-} from '../../services/actions/utility-actions.jsx';
-import styles from './shop-page.module.css';
-import { useHistory, useLocation } from 'react-router-dom';
-import CardsBlock from '../../components/shop-page-components/cards-block.jsx';
-import PopupModel from '../../components/popupModel/popupModel';
+} from "../../services/actions/utility-actions.jsx";
+import styles from "./shop-page.module.css";
+import { useHistory, useLocation } from "react-router-dom";
+import CardsBlock from "../../components/shop-page-components/cards-block.jsx";
+import PopupModel from "../../components/popupModel/popupModel";
+import FilterSelect from "../../components/shop-page-components/filter-select";
+import { getString } from "../../utils/utils";
 
 const ShopPage = () => {
   const dispatch = useDispatch();
-  const { filter } = useSelector((store) => store.shopData);
+  const {
+    firstFilterSelect,
+    firstCount,
+    firstFilterSelectedItem,
+    secondFilterSelect,
+    secondCount,
+    secondFilterSelectedItem,
+    thirdFilterSelect,
+    thirdCount,
+    thirdFilterSelectedItem,
+  } = useSelector((store) => store.shopData);
   const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
   const { search } = useLocation();
   const history = useHistory();
-  const searchValue = search.slice(3);
+  const searchValue = search.slice(3); 
 
-  const filterHandler = (e) => {
-    if (e.target.value) {
-      dispatch({
-        type: SET_FILTER,
-        payload: e.target.value,
-      });
-      history.push(`/shop?s=${e.target.value}`);
-    } else {
-      dispatch({
-        type: SET_FILTER,
-        payload: e.target.value,
-      });
-      history.push(`/shop`);
-    }
+  const getAdressString = () => {
+    let string = "/shop?";
+    string += getString("ff=", firstFilterSelectedItem);
+    string += getString("sf=", secondFilterSelectedItem);
+    string += getString("tf=", thirdFilterSelectedItem);
+    history.push(string);
   };
 
+  const resetFilter = () => {
+    history.push(`/shop`);
+    dispatch({ type: SET_DEFAULTFILTER});
+  };
+   
   const handelClosePopup = () => {
     dispatch(closePopup());
   };
@@ -53,39 +67,42 @@ const ShopPage = () => {
     });
   }, []);
 
+  const onChangeFirst = (elem) => {
+    dispatch({ type: SET_FIRSTSELECT, payload: elem });
+  };
+  const onChangeSecond = (elem) => {
+    dispatch({ type: SET_SECONDSELECT, payload: elem });
+  };
+  const onChangeThird = (elem) => {
+    dispatch({ type: SET_THIRDSELECT, payload: elem });
+  };
   return (
     <main className={styles.main_screen}>
       <Helmet
-        title="Онлайн конструктор для печати футболок и толстовок в Санкт-Петербурге в PINHEAD STUDIO"
-        discription="Создай дизайн своей футболки онлайн с помощью конструктора! Конструктор для печати на футболках, толстовках и другой одежде в Санкт-Петербурге от PINHEAD STUDIO."
+        title="PINHEAD STUDIO | Печать на футболках и толстовках | Магазин и конструктор"
         meta={[
           {
-            name: 'description',
+            property: "og:image",
             content:
-              'Создай дизайн своей футболки онлайн с помощью конструктора! Конструктор для печати на футболках, толстовках и другой одежде в Санкт-Петербурге от PINHEAD STUDIO.',
+              "https://sun9-77.userapi.com/impg/r3SRF7rtra4wl-3EmEgVqIRaaGNbjeO6q9ufUw/-yeDgKpu2CQ.jpg?size=500x500&quality=95&sign=d7fc90ef8c432358c10c8b1e16b4945f&type=album",
           },
           {
-            property: 'og:image',
+            property: "og:title",
             content:
-              'https://sun9-77.userapi.com/impg/r3SRF7rtra4wl-3EmEgVqIRaaGNbjeO6q9ufUw/-yeDgKpu2CQ.jpg?size=500x500&quality=95&sign=d7fc90ef8c432358c10c8b1e16b4945f&type=album',
+              "PINHEAD STUDIO | Печать на футболках и толстовках | Магазин и конструктор",
           },
           {
-            property: 'og:title',
-            content:
-              'PINHEAD STUDIO | Печать на футболках и толстовках | Магазин и конструктор',
+            property: "og:url",
+            content: "https://studio.pnhd.ru/",
           },
           {
-            property: 'og:url',
-            content: 'https://studio.pnhd.ru/',
-          },
-          {
-            property: 'og:type',
-            content: 'website',
+            property: "og:type",
+            content: "website",
           },
         ]}
         script={[
           {
-            type: 'application/ld+json',
+            type: "application/ld+json",
             innerHTML: `{
                             '@context': 'https://schema.org',
                             '@type': 'Organization',
@@ -103,58 +120,37 @@ const ShopPage = () => {
         ]}
       />
       <div className={styles.filter_wrapper}>
+        <FilterSelect
+          defaultValue={"Категория"}
+          options={firstFilterSelect}
+          editValue={"Категория"}
+          onChange={onChangeFirst}
+          count={firstCount}
+          setAdress={getAdressString}
+        />
+        <FilterSelect
+          defaultValue={"Тип"}
+          options={secondFilterSelect}
+          editValue={"Тип"}
+          onChange={onChangeSecond}
+          count={secondCount}
+          setAdress={getAdressString}
+        />
+        <FilterSelect
+          defaultValue={"Цвет"}
+          options={thirdFilterSelect}
+          editValue={"Цвет"}
+          onChange={onChangeThird}
+          count={thirdCount}
+          setAdress={getAdressString}
+        />
         <button
           type="button"
-          className={filter === 'man' ? styles.filter_active : styles.filter}
-          value="man"
-          onClick={filterHandler}
+          className={styles.filter_active}
+          onClick={resetFilter}
         >
-          МУЖСКОЕ
-        </button>
-        <button
-          type="button"
-          className={filter === 'woman' ? styles.filter_active : styles.filter}
-          value="woman"
-          onClick={filterHandler}
-        >
-          ЖЕНСКОЕ
-        </button>
-        <button
-          type="button"
-          className={filter === 'kids' ? styles.filter_active : styles.filter}
-          value="kids"
-          onClick={filterHandler}
-        >
-          ДЕТСКОЕ
-        </button>
-        <button
-          type="button"
-          className={
-            filter === 'accesorize' ? styles.filter_active : styles.filter
-          }
-          value="accesorize"
-          onClick={filterHandler}
-        >
-          АКСЕССУАРЫ
-        </button>
-        <button
-          type="button"
-          className={
-            filter === 'friends' ? styles.filter_active : styles.filter
-          }
-          value="friends"
-          onClick={filterHandler}
-        >
-          PNHD&nbsp;&&nbsp;FRIENDS
-        </button>
-        <button
-          type="button"
-          className={styles.filter}
-          value=""
-          onClick={filterHandler}
-        >
-          СБРОСИТЬ
-        </button>
+          Сбросить&nbsp;Х
+        </button>       
       </div>
       <CardsBlock />
       {isOtherPopupVisible && (

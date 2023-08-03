@@ -8,10 +8,10 @@
 .filter_wrapper {
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    align-items: flex-end;
+    justify-content: flex-start;
+    align-items: center;
     margin: 0 auto;
-    padding: 100px 100px 20px 100px;
+    padding: 100px 100px 20px 30px;
     width: 100%;
     box-sizing: border-box;
 }
@@ -59,12 +59,18 @@
     color: rgb(0, 255, 0);
 }
 
+@media (max-width: 960px) {
+    .filter_wrapper {
+        justify-content: center;
+        padding: 100px 0 20px 0;
+    }
+}
 @media (max-width: 750px) {
     .filter_wrapper {
         flex-direction: column;
         justify-content: flex-start;
-        align-items: flex-start;
-        padding: 100px 0 20px 30px;
+        align-items: center;
+        padding: 100px 0 20px 0;
     }
 
     .filter {
