@@ -30,13 +30,14 @@ function CardsBlock() {
     thirdCount,
   } = useSelector((store) => store.shopData);
   useEffect(() => { dispatch({ type: SET_DEFAULTFILTER }); }, []);
+
   const addressString = decodeURI(search);
-  const getAdressFilter = (string, filter) => {
+  const getAdressFilter = (string, filter, num) => {
     let resultString;
-    const arrFilter = string.split('?');
+    const arrFilter = string.split('&');
     arrFilter.forEach((item) => {
       if (item.indexOf(filter) != -1) {
-        resultString = item.slice(3).split('&');
+        resultString = item.slice(num).split(',');
       }
     });
     return resultString;
@@ -59,9 +60,9 @@ function CardsBlock() {
     && secondFilterSelectedItem.length === 0
     && thirdFilterSelectedItem.length === 0
   ) {
-    frstFilter = getAdressFilter(addressString, 'ff');
-    secondFilter = getAdressFilter(addressString, 'sf');
-    thirdFilter = getAdressFilter(addressString, 'tf');
+    frstFilter = getAdressFilter(addressString, 'category', 10);
+    secondFilter = getAdressFilter(addressString, 'type', 5);
+    thirdFilter = getAdressFilter(addressString, 'color', 6);
     if (frstFilter) {
       filtr1 = firstFilterSelect;
       count1 = firstCount;
