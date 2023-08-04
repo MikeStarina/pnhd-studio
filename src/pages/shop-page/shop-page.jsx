@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -36,6 +36,11 @@ function ShopPage() {
   const { search } = useLocation();
   const history = useHistory();
   const searchValue = search.slice(3);
+  const [filterDropdown, setFilterDropdown] = useState({
+    firstFilter: false,
+    secondFilter: false,
+    thirdFilter: false,
+  });
 
   const getAdressString = () => {
     let string = '/shop?';
@@ -43,11 +48,6 @@ function ShopPage() {
     string += getString('sf=', secondFilterSelectedItem);
     string += getString('tf=', thirdFilterSelectedItem);
     history.push(string);
-  };
-
-  const resetFilter = () => {
-    history.push('/shop');
-    dispatch({ type: SET_DEFAULTFILTER });
   };
 
   const handelClosePopup = () => {
@@ -76,6 +76,44 @@ function ShopPage() {
   const onChangeThird = (elem) => {
     dispatch({ type: SET_THIRDSELECT, payload: elem });
   };
+
+  const setFilterVisible = (elem) => {
+    if (elem === 'Категория') {
+      setFilterDropdown({
+        firstFilter: true,
+        secondFilter: false,
+        thirdFilter: false,
+      });
+    }
+    if (elem === 'Тип') {
+      setFilterDropdown({
+        firstFilter: false,
+        secondFilter: true,
+        thirdFilter: false,
+      });
+    }
+    if (elem === 'Цвет') {
+      setFilterDropdown({
+        firstFilter: false,
+        secondFilter: false,
+        thirdFilter: true,
+      });
+    }
+    if (elem === 'close') {
+      setFilterDropdown({
+        firstFilter: false,
+        secondFilter: false,
+        thirdFilter: false,
+      });
+    }
+  };
+
+  const resetFilter = () => {
+    history.push('/shop');
+    dispatch({ type: SET_DEFAULTFILTER });
+    setFilterVisible('close');
+  };
+
   return (
     <main className={styles.main_screen}>
       <Helmet
@@ -121,28 +159,31 @@ function ShopPage() {
       />
       <div className={styles.filter_wrapper}>
         <FilterSelect
+          setFilterVisible={setFilterVisible}
           defaultValue="Категория"
           options={firstFilterSelect}
-          editValue="Категория"
           onChange={onChangeFirst}
           count={firstCount}
           setAdress={getAdressString}
+          dropdownVisible={filterDropdown.firstFilter}
         />
         <FilterSelect
+          setFilterVisible={setFilterVisible}
           defaultValue="Тип"
           options={secondFilterSelect}
-          editValue="Тип"
           onChange={onChangeSecond}
           count={secondCount}
           setAdress={getAdressString}
+          dropdownVisible={filterDropdown.secondFilter}
         />
         <FilterSelect
+          setFilterVisible={setFilterVisible}
           defaultValue="Цвет"
           options={thirdFilterSelect}
-          editValue="Цвет"
           onChange={onChangeThird}
           count={thirdCount}
           setAdress={getAdressString}
+          dropdownVisible={filterDropdown.thirdFilter}
         />
         <button
           type="button"

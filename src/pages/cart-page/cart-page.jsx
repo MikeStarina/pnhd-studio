@@ -802,7 +802,7 @@ function CartPage() {
                       {' '}
                       {validPromoCode.mechanic === 'freeShipping'
                         ? 'Бесплатная доставка'
-                        : shippingPrice}
+                        : `${shippingPrice} Р`}
                     </p>
                     <p>Выберите пункт выдачи: </p>
                     <ShippingSelect

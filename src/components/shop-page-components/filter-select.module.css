@@ -1,12 +1,14 @@
 .dropdown_container {
 	text-align: left;
 	position: relative;
-	padding: 12px;
+	padding: 3.45px 12px;
+	max-height: 30px;
 	background-color: #FFFFFF;
 	border: 1px solid #000000;
 	border-radius: 5px;
 	box-sizing: border-box;
 	width:140px;
+	cursor: pointer;
 }
 
 .dropdown_container_selected {	
@@ -22,7 +24,7 @@
 
 .dropdown_menu {
 	position: absolute;
-	transform: translateX(-13px) translateY(19px);
+	transform: translateX(-13px) translateY(10px);
 	box-sizing: border-box;
 	width: 140px;
 	overflow: auto;
@@ -53,11 +55,6 @@
 .dropdown_item.selected {
 	color: #FFFFFF;
 }
-
-/* .dropdown_selected_value {
-	display: flex;
-	flex-direction: row;
-} */
 
 .dropdown_tools {
 	margin-top: 7px;
@@ -95,6 +92,13 @@
 
 .dropdown_item_space{
 	padding-left: 10px;
+}
+
+@media(max-width: 960px) {
+	.dropdown_container {		
+		padding: 0 12px;
+		height: 26px;
+	}
 }
 
  @media(max-width: 750px) {
