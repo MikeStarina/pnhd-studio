@@ -44,9 +44,10 @@ function ShopPage() {
 
   const getAdressString = () => {
     let string = '/shop?';
-    string += getString('ff=', firstFilterSelectedItem);
-    string += getString('sf=', secondFilterSelectedItem);
-    string += getString('tf=', thirdFilterSelectedItem);
+    string += getString('category=', firstFilterSelectedItem);
+    string += getString('type=', secondFilterSelectedItem);
+    string += getString('color=', thirdFilterSelectedItem);
+    string = string.slice(0, -1);
     history.push(string);
   };
 
