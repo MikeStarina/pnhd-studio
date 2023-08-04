@@ -77,7 +77,7 @@ function ShopGallery() {
                 WOMAN
               </span>
             </h5>
-            <Link to="/shop?ff=woman" className={styles.card_button}>
+            <Link to="/shop?ff=woman?" className={styles.card_button}>
               СМОТРЕТЬ
             </Link>
           </div>
@@ -98,7 +98,7 @@ function ShopGallery() {
               <span className={styles.textStyle_italic}>??</span>
             </h5>
             <Link
-              to="/shop?ff=accesorize"
+              to="/shop?ff=accesorize?"
               className={styles.card_button}
             >
               СМОТРЕТЬ
