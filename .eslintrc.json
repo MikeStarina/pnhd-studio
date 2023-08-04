@@ -4,12 +4,15 @@
     "es2021": true
   },
   "extends": [
+    "react-app",
     "eslint:recommended",
     "plugin:react/recommended",
+    "plugin:prettier/recommended",
     "plugin:react/jsx-runtime",
     "plugin:react-hooks/recommended",
     "plugin:jsx-a11y/recommended",
     "plugin:import/recommended",
+    "prettier/react",
     "prettier",
     "airbnb"
   ],
@@ -21,7 +24,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react"],
+  "plugins": ["react", "prettier"],
   "rules": {
     "react/jsx-filename-extension": [0], // this first rele we need fix before enebled rules line 28
     "import/extensions": "off", // this second rule we need fix before enebled rules line down (28)
@@ -29,6 +32,17 @@
     "max-len": "off", // we need fix all disebled rules from here and below... for line STOP
     "import/prefer-default-export": "off",
     "camelcase": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "operator-linebreak": [
+      "error",
+      "after",
+      {
+        "overrides": {
+          ":": "before"
+        }
+      }
+    ],
+    "object-curly-newline": "off",
     "default-param-last": 0,
     "no-unused-vars": "off",
     "no-return-assign": "off",

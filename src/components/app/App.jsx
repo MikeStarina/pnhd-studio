@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  Route, Switch, Redirect, useLocation,
-} from 'react-router-dom';
+import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
 import {
   OPEN_MODAL_MENU,
   CLOSE_MODAL_MENU,
@@ -32,12 +30,11 @@ import FullscreenMenu from '../main-menu/fullscreen-menu';
 import PrintingMethod from '../../pages/printing-method/printing-method';
 import TypeOfPrint from '../../pages/type-of-print/type-of-print';
 import PopupCallBack from '../popupCallBack/popupCallBack';
+import ProductCard from '../../pages/ProductCard/ProductCard';
 
 function App() {
   const dispatch = useDispatch();
-  const { mainMenu, isPopupVisible } = useSelector(
-    (store) => store.utilityState,
-  );
+  const { mainMenu, isPopupVisible } = useSelector((store) => store.utilityState);
   const { order, isVisible } = useSelector((store) => store.cartData);
 
   const location = useLocation();
@@ -109,16 +106,14 @@ function App() {
           <PopupCallBack />
         </PopupModel>
       )}
-      {mainMenu.isVisible && <MainMenu closeMenu={closeMenu} />}
-      {!mainMenu.isVisible && (
-        <FullscreenMenu openPopup={handelOpenPopupHeader} />
-      )}
-      {!mainMenu.isVisible && (
-        <BurgerIcon openMenu={openMenu} openPopup={handelOpenPopupHeader} />
-      )}
-      {order && order.length > 0 && isVisible && (
-        <CartIcon qty={order.length} />
-      )}
+      {/* {mainMenu.isVisible && <MainMenu closeMenu={closeMenu} />} */}
+      {/* {!mainMenu.isVisible && ( */}
+      {/*  <FullscreenMenu openPopup={handelOpenPopupHeader} /> */}
+      {/* )} */}
+      {/* {!mainMenu.isVisible && ( */}
+      {/*  <BurgerIcon openMenu={openMenu} openPopup={handelOpenPopupHeader} /> */}
+      {/* )} */}
+      {order && order.length > 0 && isVisible && <CartIcon qty={order.length} />}
       <Switch>
         <Route exact path="/">
           <MainPage />
@@ -133,7 +128,8 @@ function App() {
         </Route>
 
         <Route exact path="/shop/:id">
-          <ItemPage />
+          {/* <ItemPage /> */}
+          <ProductCard />
         </Route>
 
         <Route exact path="/size_chart">
@@ -192,7 +188,6 @@ function App() {
           <Page404 />
         </Route>
       </Switch>
-
       <Footer />
     </>
   );
