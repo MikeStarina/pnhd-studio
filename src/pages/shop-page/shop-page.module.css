@@ -8,10 +8,10 @@
 .filter_wrapper {
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    align-items: flex-end;
+    justify-content: flex-start;
+    align-items: center;
     margin: 0 auto;
-    padding: 100px 100px 20px 100px;
+    padding: 100px 100px 20px 30px;
     width: 100%;
     box-sizing: border-box;
 }
@@ -38,7 +38,8 @@
 .filter_active {
     padding: 5px 0;
     margin: 0 20px 0 20px;
-    font-size: 15px;
+    font-size: 16px;
+    font-family: inherit;
     -webkit-text-fill-color: #000000;
     color: #000000;
     line-height: 15px;
@@ -47,6 +48,7 @@
     border: none;
     border-top: 2px solid transparent;
     border-bottom: 2px solid black;
+	cursor: pointer;
 }
 
 .validation_message {
@@ -59,12 +61,18 @@
     color: rgb(0, 255, 0);
 }
 
+@media (max-width: 960px) {
+    .filter_wrapper {
+        justify-content: center;
+        padding: 100px 0 20px 0;
+    }
+}
 @media (max-width: 750px) {
     .filter_wrapper {
         flex-direction: column;
         justify-content: flex-start;
-        align-items: flex-start;
-        padding: 100px 0 20px 30px;
+        align-items: center;
+        padding: 100px 0 20px 0;
     }
 
     .filter {

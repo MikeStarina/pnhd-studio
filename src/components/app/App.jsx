@@ -1,15 +1,15 @@
-import React from 'react';
-//import styles from './app.module.css';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-    OPEN_MODAL_MENU,
-    CLOSE_MODAL_MENU,
-    SET_POPUP_VISIBILITY,
-    closePopupHeader,
-    openPopupHeader,
+  Route, Switch, Redirect, useLocation,
+} from 'react-router-dom';
+import {
+  OPEN_MODAL_MENU,
+  CLOSE_MODAL_MENU,
+  SET_POPUP_VISIBILITY,
+  closePopupHeader,
+  openPopupHeader,
 } from '../../services/actions/utility-actions';
-import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
 import { getShopData } from '../../services/actions/shop-data-actions.jsx';
 import { methodsData } from '../../data/printing-methods/methods-data';
 import { typeOfPrintData } from '../../data/type-of-print-data/data';
@@ -34,175 +34,168 @@ import TypeOfPrint from '../../pages/type-of-print/type-of-print';
 import PopupCallBack from '../popupCallBack/popupCallBack';
 
 function App() {
-    const dispatch = useDispatch();
-    const { mainMenu, isPopupVisible } = useSelector(
-        (store) => store.utilityState,
-    );
-    const { order, isVisible } = useSelector((store) => store.cartData);
+  const dispatch = useDispatch();
+  const { mainMenu, isPopupVisible } = useSelector(
+    (store) => store.utilityState,
+  );
+  const { order, isVisible } = useSelector((store) => store.cartData);
 
-    const location = useLocation();
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, [location]);
+  const location = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
 
-    useEffect(() => {
-        const oldScript = document.querySelector('#calltr');
-        document.body.removeChild(oldScript);
-        const script = document.createElement('script');
-        script.src = 'https://cdn.callibri.ru/callibri.js';
-        script.type = 'text/javascript';
-        script.charset = 'utf-8';
-        script.defer = true;
-        script.id = 'calltr';
-        document.body.prepend(script);
-        return () => {
-            document.body.removeChild(script);
-        };
-    }, []);
-
-    useEffect(() => {
-        const autoSavedCart = sessionStorage.getItem('cart');
-        //console.log(autoSavedCart);
-
-        if (autoSavedCart) {
-            dispatch({
-                type: RESTORE_CART_FROM_SSTORAGE,
-                payload: JSON.parse(autoSavedCart),
-            });
-        }
-    }, []);
-
-    useEffect(() => {
-        dispatch(getShopData());
-    }, []);
-
-    useEffect(() => {
-        dispatch({
-            type: CLOSE_MODAL_MENU,
-        });
-    }, [dispatch]);
-
-    const openMenu = () => {
-        dispatch({
-            type: OPEN_MODAL_MENU,
-        });
+  useEffect(() => {
+    const oldScript = document.querySelector('#calltr');
+    document.body.removeChild(oldScript);
+    const script = document.createElement('script');
+    script.src = 'https://cdn.callibri.ru/callibri.js';
+    script.type = 'text/javascript';
+    script.charset = 'utf-8';
+    script.defer = true;
+    script.id = 'calltr';
+    document.body.prepend(script);
+    return () => {
+      document.body.removeChild(script);
     };
+  }, []);
 
-    const handelClosePopupHeader = () => {
-        dispatch(closePopupHeader());
-    };
+  useEffect(() => {
+    const autoSavedCart = sessionStorage.getItem('cart');
+    // console.log(autoSavedCart);
 
-    const handelOpenPopupHeader = () => {
-        dispatch(openPopupHeader());
-    };
+    if (autoSavedCart) {
+      dispatch({
+        type: RESTORE_CART_FROM_SSTORAGE,
+        payload: JSON.parse(autoSavedCart),
+      });
+    }
+  }, []);
 
-    const closeMenu = (e) => {
-        dispatch({
-            type: CLOSE_MODAL_MENU,
-        });
-    };
+  useEffect(() => {
+    dispatch(getShopData());
+  }, []);
 
-    return (
-        <>
-            {isPopupVisible && (
-                <PopupModel onClose={handelClosePopupHeader}>
-                    <PopupCallBack />
-                </PopupModel>
-            )}
-            {mainMenu.isVisible && <MainMenu closeMenu={closeMenu} />}
-            {!mainMenu.isVisible && (
-                <FullscreenMenu openPopup={handelOpenPopupHeader} />
-            )}
-            {!mainMenu.isVisible && (
-                <BurgerIcon
-                    openMenu={openMenu}
-                    openPopup={handelOpenPopupHeader}
-                />
-            )}
-            {order && order.length > 0 && isVisible && (
-                <CartIcon qty={order.length} />
-            )}
-            <Switch>
-                <Route exact path="/">
-                    <MainPage />
-                </Route>
+  useEffect(() => {
+    dispatch({
+      type: CLOSE_MODAL_MENU,
+    });
+  }, [dispatch]);
 
-                <Route exact path="/oferta">
-                    <Oferta />
-                </Route>
+  const openMenu = () => {
+    dispatch({
+      type: OPEN_MODAL_MENU,
+    });
+  };
 
-                <Route exact path="/shop">
-                    <ShopPage />
-                </Route>
+  const handelClosePopupHeader = () => {
+    dispatch(closePopupHeader());
+  };
 
-                <Route exact path="/shop/:id">
-                    <ItemPage />
-                </Route>
+  const handelOpenPopupHeader = () => {
+    dispatch(openPopupHeader());
+  };
 
-                <Route exact path="/size_chart">
-                    <SizesPage />
-                </Route>
+  const closeMenu = (e) => {
+    dispatch({
+      type: CLOSE_MODAL_MENU,
+    });
+  };
 
-                <Route exact path="/termotransfernaya-pechat">
-                    <PrintingMethod method={methodsData.termo} />
-                </Route>
+  return (
+    <>
+      {isPopupVisible && (
+        <PopupModel onClose={handelClosePopupHeader}>
+          <PopupCallBack />
+        </PopupModel>
+      )}
+      {mainMenu.isVisible && <MainMenu closeMenu={closeMenu} />}
+      {!mainMenu.isVisible && (
+        <FullscreenMenu openPopup={handelOpenPopupHeader} />
+      )}
+      {!mainMenu.isVisible && (
+        <BurgerIcon openMenu={openMenu} openPopup={handelOpenPopupHeader} />
+      )}
+      {order && order.length > 0 && isVisible && (
+        <CartIcon qty={order.length} />
+      )}
+      <Switch>
+        <Route exact path="/">
+          <MainPage />
+        </Route>
 
-                <Route exact path="/vishivka">
-                    <PrintingMethod method={methodsData.vishivka} />
-                </Route>
+        <Route exact path="/oferta">
+          <Oferta />
+        </Route>
 
-                <Route exact path="/shelkografiya">
-                    <PrintingMethod method={methodsData.silk} />
-                </Route>
+        <Route exact path="/shop">
+          <ShopPage />
+        </Route>
 
-                <Route exact path="/pryamaya-dtg-pechat">
-                    <PrintingMethod method={methodsData.dtg} />
-                </Route>
+        <Route exact path="/shop/:id">
+          <ItemPage />
+        </Route>
 
-                <Route exact path="/dtf-pechat">
-                    <PrintingMethod method={methodsData.dtf} />
-                </Route>
+        <Route exact path="/size_chart">
+          <SizesPage />
+        </Route>
 
-                <Route exact path="/pechat-logotipa">
-                    <TypeOfPrint method={typeOfPrintData.logo} />
-                </Route>
+        <Route exact path="/termotransfernaya-pechat">
+          <PrintingMethod method={methodsData.termo} />
+        </Route>
 
-                <Route exact path="/pechat-familii">
-                    <TypeOfPrint method={typeOfPrintData.numberAndSurname} />
-                </Route>
+        <Route exact path="/vishivka">
+          <PrintingMethod method={methodsData.vishivka} />
+        </Route>
 
-                <Route exact path="/pechat-photo">
-                    <TypeOfPrint method={typeOfPrintData.photo} />
-                </Route>
+        <Route exact path="/shelkografiya">
+          <PrintingMethod method={methodsData.silk} />
+        </Route>
 
-                <Route exact path="/pechat-printov">
-                    <TypeOfPrint method={typeOfPrintData.image} />
-                </Route>
+        <Route exact path="/pryamaya-dtg-pechat">
+          <PrintingMethod method={methodsData.dtg} />
+        </Route>
 
-                <Route exact path="/pechat-nadpisej">
-                    <TypeOfPrint method={typeOfPrintData.inscriptions} />
-                </Route>
+        <Route exact path="/dtf-pechat">
+          <PrintingMethod method={methodsData.dtf} />
+        </Route>
 
-                <Route exact path="/shop/:id/constructor">
-                    {useLocation().state ? (
-                        <Constructor />
-                    ) : (
-                        <Redirect to="/shop" />
-                    )}
-                </Route>
+        <Route exact path="/pechat-logotipa">
+          <TypeOfPrint method={typeOfPrintData.logo} />
+        </Route>
 
-                <Route exact path="/checkout">
-                    {order.length > 0 ? <CartPage /> : <Redirect to="/shop" />}
-                </Route>
+        <Route exact path="/pechat-familii">
+          <TypeOfPrint method={typeOfPrintData.numberAndSurname} />
+        </Route>
 
-                <Route path="/">
-                    <Page404 />
-                </Route>
-            </Switch>
+        <Route exact path="/pechat-photo">
+          <TypeOfPrint method={typeOfPrintData.photo} />
+        </Route>
 
-            <Footer />
-        </>
-    );
+        <Route exact path="/pechat-printov">
+          <TypeOfPrint method={typeOfPrintData.image} />
+        </Route>
+
+        <Route exact path="/pechat-nadpisej">
+          <TypeOfPrint method={typeOfPrintData.inscriptions} />
+        </Route>
+
+        <Route exact path="/shop/:id/constructor">
+          {useLocation().state ? <Constructor /> : <Redirect to="/shop" />}
+        </Route>
+
+        <Route exact path="/checkout">
+          {order.length > 0 ? <CartPage /> : <Redirect to="/shop" />}
+        </Route>
+
+        <Route path="/">
+          <Page404 />
+        </Route>
+      </Switch>
+
+      <Footer />
+    </>
+  );
 }
 
 export default App;

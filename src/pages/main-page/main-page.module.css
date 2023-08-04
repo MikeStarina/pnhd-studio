@@ -3,7 +3,6 @@
     box-sizing: border-box;
     margin: 0 auto;
     padding: 0;
-
 }
 
 @media (max-width: 1000px) {
@@ -11,16 +10,3 @@
         height: 100vh;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

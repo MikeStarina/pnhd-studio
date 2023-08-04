@@ -1,6 +1,6 @@
 import styles from './brief.module.css';
 
-const Brief = ({ title, subtitle, type }) => {
+function Brief({ title, subtitle, type }) {
   // Если приходит масив, добавляет стили
   const classBrief = Array.isArray(subtitle) ? styles.brief_subtitle_array : '';
   console.log(type);
@@ -19,10 +19,10 @@ const Brief = ({ title, subtitle, type }) => {
           </p>
         ))
       ) : (
-        <p className={`${styles.brief_subtitle}`}>{subtitle}</p>
+        <p className={styles.brief_subtitle}>{subtitle}</p>
       )}
     </section>
   );
-};
+}
 
 export default Brief;

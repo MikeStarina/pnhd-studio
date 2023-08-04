@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { useViewOnClick } from "../../hooks/useViewOnClick";
-import styles from "./shipping-select.module.css";
+import React, { useState, useEffect } from 'react';
 
-export const ShippingSelect = (props) => {
+import { useViewOnClick } from '../../hooks/useViewOnClick';
+import styles from './shipping-select.module.css';
+
+export function ShippingSelect(props) {
   const {
     defaultValue,
     options,
     onChange,
-    extraClass = "",
+    extraClass = '',
     editValue,
     errBorder,
   } = props;
@@ -31,47 +31,48 @@ export const ShippingSelect = (props) => {
     <div className={styles.test}>
       <div
         className={
-          !errBorder
-            ? `${styles.dropdown_container} ${styles.dropdown_container_error}`
-            : styles.dropdown_container
-        }
+                    !errBorder
+                      ? `${styles.dropdown_container} ${styles.dropdown_container_error}`
+                      : styles.dropdown_container
+                }
       >
         <div onClick={toggle} className={styles.dropdown_input}>
-          
-        <div className={styles.dropdown_item_wrapper}>
-          <div className={styles.dropdown_selected_value}>
-            {getSelectValue()}
-          </div>
-          <div className={styles.dropdown_tools}></div>          
+          <div className={styles.dropdown_item_wrapper}>
+            <div className={styles.dropdown_selected_value}>
+              {getSelectValue()}
+            </div>
+            <div className={styles.dropdown_tools} />
           </div>
           {isOpen && (
             <div className={styles.dropdown_menu}>
               {options.length === 0 && (
-                  <div className={styles.dropdown_item}>
-                    <p>Пункты выдачи не найдены</p>
-                  </div>
+              <div className={styles.dropdown_item}>
+                <p>Пункты выдачи не найдены</p>
+              </div>
               )}
 
-              {options.length > 0 &&
-                options.map((option) => (
-                  <div
-                    className={`${styles.dropdown_item} ${
-                      selectedValue === option.name ? "selected" : ""
-                    }`}
-                    onClick={() => {
-                      handleItemSelectClick(option);
-                    }}
-                    key={option.name}
-                  >
-                    {option.name}
-                  </div>
-                ))}             
+              {options.length > 0
+                                && options.map((option) => (
+                                  <div
+                                    className={`${styles.dropdown_item} ${
+                                      selectedValue === option.name
+                                        ? 'selected'
+                                        : ''
+                                    }`}
+                                    onClick={() => {
+                                      handleItemSelectClick(option);
+                                    }}
+                                    key={option.name}
+                                  >
+                                    {option.name}
+                                  </div>
+                                ))}
             </div>
           )}
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default ShippingSelect;

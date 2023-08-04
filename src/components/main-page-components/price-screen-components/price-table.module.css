@@ -11,7 +11,7 @@
 }
 
 .table_row:nth-of-type(2n) {
-    background-color: rgba(0, 0, 0, .1);
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .row_heading {
@@ -22,22 +22,16 @@
     padding: 0;
 }
 
-
-
 @media (max-width: 750px) {
     .row_heading {
         font-size: 15px;
         line-height: 15px;
-       
     }
 
     .table_row {
-       
         height: 40px;
-        
     }
 }
-
 
 @media (max-width: 650px) {
     .row_heading {
@@ -46,8 +40,6 @@
     }
 
     .table_row {
-       
         height: 40px;
-        
     }
 }

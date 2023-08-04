@@ -16,7 +16,6 @@
     line-height: 60px;
 }
 
-
 .form {
     display: flex;
     flex-direction: column;
@@ -51,7 +50,7 @@
     font-family: inherit;
     font-size: 20px;
     font-weight: 500;
-    color: black
+    color: black;
 }
 
 .form_input_textarea {
@@ -71,10 +70,8 @@
     font-family: inherit;
     font-size: 20px;
     font-weight: 500;
-    color: black
+    color: black;
 }
-
-
 
 .form_submit_button {
     width: 200px;
@@ -90,15 +87,12 @@
     cursor: pointer;
 }
 
-
-
 @media (max-width: 750px) {
     .heading {
         font-size: 50px;
         line-height: 50px;
     }
 }
-
 
 @media (max-width: 650px) {
     .heading {
@@ -109,20 +103,15 @@
     }
 
     .form_input {
-        
         height: 40px;
         border-radius: 8px;
     }
 
-    
-
     .form_submit_button {
-    
-        height: 40px;       
-        border-radius: 15px;       
+        height: 40px;
+        border-radius: 15px;
         font-size: 15px;
         line-height: 15px;
-        
     }
 
     .form_input_label {
