@@ -29,7 +29,7 @@ function CardsBlock() {
     thirdFilterSelect,
     thirdCount,
   } = useSelector((store) => store.shopData);
-
+  useEffect(() => { dispatch({ type: SET_DEFAULTFILTER }); }, []);
   const addressString = decodeURI(search);
   const getAdressFilter = (string, filter) => {
     let resultString;
