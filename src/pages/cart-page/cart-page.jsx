@@ -117,8 +117,8 @@ function CartPage() {
     }
     shippingPoints.forEach((item) => {
       if (
-        item.location.latitude === el.coordinates[0]
-        && item.location.longitude === el.coordinates[1]
+        item.location.latitude === el.coordinates[0] &&
+        item.location.longitude === el.coordinates[1]
       ) {
         dispatch({
           type: SET_SHIPPING_PVZ,
@@ -200,12 +200,12 @@ function CartPage() {
     }
   });
 
-  const isUserFormValid = userCartData.isNameValid
-    && userCartData.isPhoneValid
-    && userCartData.isEmailValid
-    && userCartData.isSurnameValid
-    && userShippingData.isCityValid
-    && userShippingData.isPvzValid;
+  const isUserFormValid = userCartData.isNameValid &&
+    userCartData.isPhoneValid &&
+    userCartData.isEmailValid &&
+    userCartData.isSurnameValid &&
+    userShippingData.isCityValid &&
+    userShippingData.isPvzValid;
 
   const validationMessage = `${!userCartData.isNameValid ? 'Имя' : ''} ${
     !userCartData.isSurnameValid ? 'Фамилия' : ''
@@ -238,29 +238,29 @@ function CartPage() {
 
   const totalPrice = order.reduce((acc, item) => {
     let printTotalprice = 0;
-    const frontPrintPrice = item.print && item.print.front.file
-      ? item.print.front.cartParams.price
+    const frontPrintPrice = item.print && item.print.front.file ?
+      item.print.front.cartParams.price
       : 0;
     const backPrintPrice = item.print && item.print.back.file ? item.print.back.cartParams.price : 0;
-    const lsleevePrintPrice = item.print && item.print.lsleeve.file
-      ? item.print.lsleeve.cartParams.price
+    const lsleevePrintPrice = item.print && item.print.lsleeve.file ?
+      item.print.lsleeve.cartParams.price
       : 0;
-    const rsleevePrintPrice = item.print && item.print.rsleeve.file
-      ? item.print.rsleeve.cartParams.price
+    const rsleevePrintPrice = item.print && item.print.rsleeve.file ?
+      item.print.rsleeve.cartParams.price
       : 0;
-    const badgePrintPrice = item.print && item.print.badge.file
-      ? item.print.badge.cartParams.price
+    const badgePrintPrice = item.print && item.print.badge.file ?
+      item.print.badge.cartParams.price
       : 0;
 
-    printTotalprice = frontPrintPrice
-      + backPrintPrice
-      + lsleevePrintPrice
-      + rsleevePrintPrice
-      + badgePrintPrice;
+    printTotalprice = frontPrintPrice +
+      backPrintPrice +
+      lsleevePrintPrice +
+      rsleevePrintPrice +
+      badgePrintPrice;
 
-    acc = acc
-      + item.attributes.price * oneItemTotalValue(item.cart_item_id)
-      + printTotalprice * oneItemTotalValue(item.cart_item_id);
+    acc = acc +
+      item.attributes.price * oneItemTotalValue(item.cart_item_id) +
+      printTotalprice * oneItemTotalValue(item.cart_item_id);
     return acc;
   }, 0);
 
@@ -277,12 +277,12 @@ function CartPage() {
     }
   }, [totalPrice, valueButton]);
 
-  const shipping_price = validPromoCode.discount_ratio
-    ? totalPrice * validPromoCode.discount_ratio + (shippingPrice || 0)
+  const shipping_price = validPromoCode.discount_ratio ?
+    totalPrice * validPromoCode.discount_ratio + (shippingPrice || 0)
     : totalPrice + (shippingPrice || 0);
 
-  const shipping_free = validPromoCode.discount_ratio
-    ? totalPrice * validPromoCode.discount_ratio
+  const shipping_free = validPromoCode.discount_ratio ?
+    totalPrice * validPromoCode.discount_ratio
     : totalPrice;
 
   const discounted_price = validPromoCode.mechanic === 'freeShipping' ? shipping_free : shipping_price;
@@ -355,29 +355,29 @@ function CartPage() {
     } else {
       const metrikaProducts = [];
       order.forEach((item) => {
-        const frontPrintPrice = item.print && item.print.front.file
-          ? item.print.front.cartParams.price
+        const frontPrintPrice = item.print && item.print.front.file ?
+          item.print.front.cartParams.price
           : 0;
-        const backPrintPrice = item.print && item.print.back.file
-          ? item.print.back.cartParams.price
+        const backPrintPrice = item.print && item.print.back.file ?
+          item.print.back.cartParams.price
           : 0;
-        const lsleevePrintPrice = item.print && item.print.lsleeve.file
-          ? item.print.lsleeve.cartParams.price
+        const lsleevePrintPrice = item.print && item.print.lsleeve.file ?
+          item.print.lsleeve.cartParams.price
           : 0;
-        const rsleevePrintPrice = item.print && item.print.rsleeve.file
-          ? item.print.rsleeve.cartParams.price
+        const rsleevePrintPrice = item.print && item.print.rsleeve.file ?
+          item.print.rsleeve.cartParams.price
           : 0;
 
-        const printTotalprice = frontPrintPrice
-          + backPrintPrice
-          + lsleevePrintPrice
-          + rsleevePrintPrice;
+        const printTotalprice = frontPrintPrice +
+          backPrintPrice +
+          lsleevePrintPrice +
+          rsleevePrintPrice;
 
         metrikaProducts.push({
           id: item.attributes._id,
           name:
-            printTotalprice > 0
-              ? `${item.attributes.name} с печатью`
+            printTotalprice > 0 ?
+              `${item.attributes.name} с печатью`
               : item.attributes.name,
           price: item.attributes.price + printTotalprice,
           category: item.attributes.category,
@@ -500,8 +500,8 @@ function CartPage() {
     setCenterMap([59.972621, 30.306432]);
   };
 
-  const popupStyle = valueButton
-    ? `${styles.instruction}`
+  const popupStyle = valueButton ?
+    `${styles.instruction}`
     : `${styles.popupBlock_message}`;
 
   return (
@@ -518,8 +518,8 @@ function CartPage() {
       </div>
 
       <ul className={styles.cart_container}>
-        {order
-          && order.map((item) => {
+        {order &&
+          order.map((item) => {
             return (
               <li className={styles.cart_item} key={item.cart_item_id}>
                 <button
@@ -563,8 +563,8 @@ function CartPage() {
                   <p className={styles.price}>
                     =
                     {' '}
-                    {item.attributes.price
-                      * oneItemTotalValue(item.cart_item_id)}
+                    {item.attributes.price *
+                      oneItemTotalValue(item.cart_item_id)}
                     {' '}
                     P.
                   </p>
@@ -626,8 +626,8 @@ function CartPage() {
               id="name"
               name="name"
               className={
-                firstLoadInput.name && !userCartData.isNameValid
-                  ? `${styles.user_form_input} ${styles.user_form_inputError}`
+                firstLoadInput.name && !userCartData.isNameValid ?
+                  `${styles.user_form_input} ${styles.user_form_inputError}`
                   : styles.user_form_input
               }
               required
@@ -644,8 +644,8 @@ function CartPage() {
               id="surname"
               name="surname"
               className={
-                firstLoadInput.surname && !userCartData.isSurnameValid
-                  ? `${styles.user_form_input} ${styles.user_form_inputError}`
+                firstLoadInput.surname && !userCartData.isSurnameValid ?
+                  `${styles.user_form_input} ${styles.user_form_inputError}`
                   : styles.user_form_input
               }
               required
@@ -662,8 +662,8 @@ function CartPage() {
               id="phone"
               name="phone"
               className={
-                firstLoadInput.phone && !userCartData.isPhoneValid
-                  ? `${styles.user_form_input} ${styles.user_form_inputError}`
+                firstLoadInput.phone && !userCartData.isPhoneValid ?
+                  `${styles.user_form_input} ${styles.user_form_inputError}`
                   : styles.user_form_input
               }
               required
@@ -679,8 +679,8 @@ function CartPage() {
               id="email"
               name="email"
               className={
-                firstLoadInput.email && !userCartData.isEmailValid
-                  ? `${styles.user_form_input} ${styles.user_form_inputError}`
+                firstLoadInput.email && !userCartData.isEmailValid ?
+                  `${styles.user_form_input} ${styles.user_form_inputError}`
                   : styles.user_form_input
               }
               required
@@ -735,8 +735,8 @@ function CartPage() {
                 <input
                   type="text"
                   className={
-                    checkInput
-                      ? styles.user_form_input
+                    checkInput ?
+                      styles.user_form_input
                       : `${styles.user_form_input} ${styles.user_form_inputError}`
                   }
                   required
@@ -800,8 +800,8 @@ function CartPage() {
                     <p>
                       Доставка до пункта выдачи:
                       {' '}
-                      {validPromoCode.mechanic === 'freeShipping'
-                        ? 'Бесплатная доставка'
+                      {validPromoCode.mechanic === 'freeShipping' ?
+                        'Бесплатная доставка'
                         : shippingPrice}
                     </p>
                     <p>Выберите пункт выдачи: </p>

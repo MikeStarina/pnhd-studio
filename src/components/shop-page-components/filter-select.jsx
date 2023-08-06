@@ -43,8 +43,8 @@ function FilterSelect(props) {
           </div>
           {isOpen && (
             <div className={styles.dropdown_menu}>
-              {options.length > 0
-                && options.map((option) => (
+              {options.length > 0 &&
+                options.map((option) => (
 
                   <div
                     className={styles.dropdown_item}

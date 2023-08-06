@@ -1,9 +1,9 @@
+import React from 'react';
+import styles from './PhotosMobile.module.css';
 import { apiBaseUrl } from '../../utils/constants';
-import styles from './Photos.module.css';
 
-function Photos(item) {
-  // console.log(item);
-
+function PhotosMobile(item) {
+  console.log(item);
   return (
     <div className={styles.photo_box}>
       {item.galleryPhotos &&
@@ -14,4 +14,4 @@ function Photos(item) {
   );
 }
 
-export default Photos;
+export default PhotosMobile;

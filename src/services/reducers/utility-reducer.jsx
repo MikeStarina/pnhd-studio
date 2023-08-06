@@ -106,12 +106,12 @@ export const utilityReducer = (state = initialState, action) => {
         ...state,
         orderFormData: {
           name:
-                        action.field === 'name'
-                          ? action.data
+                        action.field === 'name' ?
+                          action.data
                           : state.orderFormData.name,
           phone:
-                        action.field === 'phone'
-                          ? action.data
+                        action.field === 'phone' ?
+                          action.data
                           : state.orderFormData.phone,
         },
         isFormDataSet: true,
