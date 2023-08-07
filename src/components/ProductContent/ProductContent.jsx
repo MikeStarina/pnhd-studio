@@ -155,7 +155,10 @@ function ProductContent(item) {
               Добавить принт &gt;
             </Button>
           ))}
-        <Button onClickTo={addToCart} className={styles.button_down}>
+        <Button
+          onClickTo={addToCart}
+          className={item.isForPrinting ? `${styles.button_down}` : `${styles.button_up}`}
+        >
           В корзину &gt;
         </Button>
       </div>
