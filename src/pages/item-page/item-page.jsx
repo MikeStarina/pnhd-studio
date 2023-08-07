@@ -179,28 +179,28 @@ function ItemPage() {
         </div>
 
         <div className={styles.shop_item_wrapper}>
-          {item.galleryPhotos ? (
-            <Swiper
-              className={styles.gallery_wrapper}
-              navigation
-              pagination
-              modules={[Navigation, Pagination]}
-            >
-              {item.galleryPhotos.map((image, index) => (
-                <SwiperSlide className={styles.swiper_slide} key={index}>
-                  <img src={`${apiBaseUrl}${image}`} alt={item.name} />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          ) : (
-            <div className={styles.gallery_wrapper}>
-              <img
-                src={`${apiBaseUrl}${item.image_url}`}
-                alt="item"
-                className={styles.gallery_image}
-              />
-            </div>
-          )}
+          {/* {item.galleryPhotos ? ( */}
+          {/*  <Swiper */}
+          {/*    className={styles.gallery_wrapper} */}
+          {/*    navigation */}
+          {/*    pagination */}
+          {/*    modules={[Navigation, Pagination]} */}
+          {/*  > */}
+          {/*    {item.galleryPhotos.map((image, index) => ( */}
+          {/*      <SwiperSlide className={styles.swiper_slide} key={index}> */}
+          {/*        <img src={`${apiBaseUrl}${image}`} alt={item.name} /> */}
+          {/*      </SwiperSlide> */}
+          {/*    ))} */}
+          {/*  </Swiper> */}
+          {/*) : ( */}
+          {/*  <div className={styles.gallery_wrapper}> */}
+          {/*    <img*/}
+          {/*      src={`${apiBaseUrl}${item.image_url}`} */}
+          {/*      alt="item" */}
+          {/*      className={styles.gallery_image} */}
+          {/*    /> */}
+          {/*  </div> */}
+          {/* )} */}
           <div className={styles.item_info_wrapper}>
             <div className={styles.item_info_block}>
               <h1 className={styles.item_title}>{item.name}</h1>

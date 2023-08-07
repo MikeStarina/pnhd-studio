@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
 import {
@@ -34,7 +34,7 @@ import ProductCard from '../../pages/ProductCard/ProductCard';
 
 function App() {
   const dispatch = useDispatch();
-  const { mainMenu, isPopupVisible } = useSelector((store) => store.utilityState);
+  const { mainMenu, isPopupVisible, isOpenHeader } = useSelector((store) => store.utilityState);
   const { order, isVisible } = useSelector((store) => store.cartData);
 
   const location = useLocation();
@@ -106,13 +106,11 @@ function App() {
           <PopupCallBack />
         </PopupModel>
       )}
-      {/* {mainMenu.isVisible && <MainMenu closeMenu={closeMenu} />} */}
-      {/* {!mainMenu.isVisible && ( */}
-      {/*  <FullscreenMenu openPopup={handelOpenPopupHeader} /> */}
-      {/* )} */}
-      {/* {!mainMenu.isVisible && ( */}
-      {/*  <BurgerIcon openMenu={openMenu} openPopup={handelOpenPopupHeader} /> */}
-      {/* )} */}
+      {isOpenHeader && mainMenu.isVisible && <MainMenu closeMenu={closeMenu} />}
+      {isOpenHeader && !mainMenu.isVisible && <FullscreenMenu openPopup={handelOpenPopupHeader} />}
+      {isOpenHeader && !mainMenu.isVisible && (
+        <BurgerIcon openMenu={openMenu} openPopup={handelOpenPopupHeader} />
+      )}
       {order && order.length > 0 && isVisible && <CartIcon qty={order.length} />}
       <Switch>
         <Route exact path="/">

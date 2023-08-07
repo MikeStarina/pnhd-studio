@@ -32,20 +32,14 @@
     "import/prefer-default-export": "off",
     "camelcase": "off",
     "react/jsx-one-expression-per-line": "off",
-    "operator-linebreak": [
-      "error",
-      "after",
-      {
-        "overrides": {
-          ":": "before"
-        }
-      }
-    ],
+    "operator-linebreak": ["error", "off"],
+    "react/jsx-boolean-value": "off",
     "object-curly-newline": "off",
     "default-param-last": 0,
     "no-unused-vars": "off",
     "no-return-assign": "off",
     "react/prop-types": "off", // I think it will be fixxed when add TypeScript in project
+    "react/jsx-no-useless-fragment": "off",
     "array-callback-return": "off",
     "no-underscore-dangle": "off",
     "no-console": "off",

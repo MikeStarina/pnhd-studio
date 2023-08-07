@@ -14,6 +14,12 @@ export const CLOSE_POPUP_HEADER = 'CLOSE_POPUP_HEADER';
 export const OPEN_POPUP_HEADER = 'OPEN_POPUP_HEADER';
 export const CLOSE_POPUP = 'CLOSE_POPUP';
 export const OPEN_POPUP = 'OPEN_POPUP';
+export const OPEN_HEADER = 'OPEN_HEADER';
+export const CLOSE_HEADER = 'CLOSE_HEADER';
+
+export const openHeader = () => ({ type: OPEN_HEADER });
+
+export const closeHeader = () => ({ type: CLOSE_HEADER });
 
 export const closePopup = () => ({
   type: CLOSE_POPUP,

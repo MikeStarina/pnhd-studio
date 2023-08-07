@@ -1,6 +1,6 @@
-.box {
+.button {
   width: 185px;
-  height: 36px;
+  height: 40px;
   background: rgba(0, 0, 0, 0);
   border-radius: 5px;
   border: 1px solid #000000;
@@ -11,13 +11,12 @@
   font-weight: 400;
 }
 
-.box:hover {
+.button:hover {
   background-color: #00ff00;
 }
 
 @media screen and (max-width: 600px) {
-  .box {
+  .button {
     width: 99%;
-    height: 40px;
   }
 }
