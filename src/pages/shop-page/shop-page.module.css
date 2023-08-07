@@ -38,7 +38,8 @@
 .filter_active {
     padding: 5px 0;
     margin: 0 20px 0 20px;
-    font-size: 15px;
+    font-size: 16px;
+    font-family: inherit;
     -webkit-text-fill-color: #000000;
     color: #000000;
     line-height: 15px;
@@ -47,6 +48,7 @@
     border: none;
     border-top: 2px solid transparent;
     border-bottom: 2px solid black;
+	cursor: pointer;
 }
 
 .validation_message {

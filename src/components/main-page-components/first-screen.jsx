@@ -36,7 +36,7 @@ function FirstScreen() {
         <span className={styles.textStyle_italic}>
                     &nbsp;/трендовых/&nbsp;
         </span>
-        футболках и худи за 15 минут! Клик, чтобы начать!
+        футболках и худи от 15 минут*! Клик, чтобы начать!
       </p>
       <HashLink className={styles.link} to="/#pricelist">
         <button type="button" className={styles.button}>
