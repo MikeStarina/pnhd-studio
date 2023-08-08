@@ -11,11 +11,13 @@ import isSizeFunction from '../../utils/isSizeFunction';
 import { ADD_TO_CART } from '../../services/actions/cart-actions';
 
 function ProductContent(item) {
-  const { id } = useParams();
+  const { slug } = useParams();
   const dispatch = useDispatch();
   const { order } = useSelector((store) => store.itemReducer);
   const history = useHistory();
   const [size, setSize] = useState('');
+
+  const linkSlug = item.slug;
 
   useEffect(() => {
     item.sizes?.map((el, i) => {
@@ -142,7 +144,7 @@ function ProductContent(item) {
           (isSizeFunction(order) ? (
             <Link
               to={{
-                pathname: `/shop/${id}/constructor`,
+                pathname: `/shop/${linkSlug}/constructor`,
                 state: { size: order },
               }}
             >
