@@ -17,7 +17,7 @@ function ProductCard() {
   const dispatch = useDispatch();
   const ref = useRef();
   const item = data && data.length > 0 && data.find((elem) => elem.slug === slug);
-  console.log(item);
+
   function getCurrentDimension() {
     return {
       width: window.innerWidth,
