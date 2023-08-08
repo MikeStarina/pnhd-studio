@@ -44,6 +44,7 @@
     "no-underscore-dangle": "off",
     "no-console": "off",
     "import/no-duplicates": "off",
+    "react/jsx-indent-props": "off",
     "react-hooks/exhaustive-deps": "off",
     "jsx-a11y/label-has-associated-control": "off",
     "jsx-a11y/control-has-associated-label": "off",

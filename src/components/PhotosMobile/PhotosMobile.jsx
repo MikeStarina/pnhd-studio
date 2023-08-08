@@ -24,12 +24,11 @@ function PhotosMobile(item) {
         modules={[Pagination, Navigation]}
         className={styles.swiper}
       >
-        {item.galleryPhotos &&
-          item.galleryPhotos.map((el, index) => (
-            <SwiperSlide key={index} className={styles.swiper_slide}>
-              <img src={`${apiBaseUrl}${el}`} alt={item.name} />
-            </SwiperSlide>
-          ))}
+        {item.galleryPhotos && item.galleryPhotos.map((el, index) => (
+          <SwiperSlide key={index} className={styles.swiper_slide}>
+            <img src={`${apiBaseUrl}${el}`} alt={item.name} />
+          </SwiperSlide>
+        ))}
       </Swiper>
     </>
   );

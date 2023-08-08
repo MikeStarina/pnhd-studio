@@ -138,25 +138,22 @@ function ProductContent(item) {
         ) : (
           <option>Нет в наличии</option>
         )}
-        {item.isForPrinting &&
-          !item.isSale &&
-          item.sizes.length > 0 &&
-          (isSizeFunction(order) ? (
-            <Link
-              to={{
-                pathname: `/shop/${linkSlug}/constructor`,
-                state: { size: order },
-              }}
-            >
-              <Button type="button" className={styles.button_up}>
-                Добавить принт &gt;
-              </Button>
-            </Link>
-          ) : (
-            <Button onClickTo={addToConstructor} className={styles.button_up}>
+        {item.isForPrinting && !item.isSale && item.sizes.length > 0 && (isSizeFunction(order) ? (
+          <Link
+            to={{
+              pathname: `/shop/${linkSlug}/constructor`,
+              state: { size: order },
+            }}
+          >
+            <Button type="button" className={styles.button_up}>
               Добавить принт &gt;
             </Button>
-          ))}
+          </Link>
+        ) : (
+          <Button onClickTo={addToConstructor} className={styles.button_up}>
+            Добавить принт &gt;
+          </Button>
+        ))}
         <Button
           onClickTo={addToCart}
           className={item.isForPrinting ? `${styles.button_down}` : `${styles.button_up}`}

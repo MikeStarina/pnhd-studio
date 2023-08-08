@@ -57,10 +57,7 @@ function CardsBlock() {
   let count3 = [];
 
   if (
-    addressString != '' &&
-    firstFilterSelectedItem.length === 0 &&
-    secondFilterSelectedItem.length === 0 &&
-    thirdFilterSelectedItem.length === 0
+    addressString != '' && firstFilterSelectedItem.length === 0 && secondFilterSelectedItem.length === 0 && thirdFilterSelectedItem.length === 0
   ) {
     frstFilter = getAdressFilter(addressString, 'category', 10);
     secondFilter = getAdressFilter(addressString, 'type', 5);
@@ -105,10 +102,7 @@ function CardsBlock() {
 
   useEffect(() => {
     if (
-      addressString === '' &&
-      (firstFilterSelectedItem.length != 0 ||
-        secondFilterSelectedItem.length != 0 ||
-        thirdFilterSelectedItem.length != 0)
+      addressString === '' && (firstFilterSelectedItem.length != 0 || secondFilterSelectedItem.length != 0 || thirdFilterSelectedItem.length != 0)
     ) {
       history.push('/shop');
       filtr1 = [];
@@ -141,9 +135,7 @@ function CardsBlock() {
   let resultArr = [];
 
   if (
-    firstFilterSelectedItem.length === 0 ||
-    secondFilterSelectedItem.length === 0 ||
-    thirdFilterSelectedItem.length === 0
+    firstFilterSelectedItem.length === 0 || secondFilterSelectedItem.length === 0 || thirdFilterSelectedItem.length === 0
   ) {
     resultArr = data;
   }
@@ -191,15 +183,14 @@ function CardsBlock() {
 
       {resultArr.length > 0 && (
         <section className={styles.screen}>
-          {resultArr &&
-            resultArr.map((item, index) => {
-              const url = `${apiBaseUrl}${item.image_url}`;
-              return (
-                <Link to={{ pathname: `/shop/${item.slug}` }} className={styles.link} key={index}>
-                  <CardItem title={item.name} price={item.price} img={url} sizes={item.sizes} />
-                </Link>
-              );
-            })}
+          {resultArr && resultArr.map((item, index) => {
+            const url = `${apiBaseUrl}${item.image_url}`;
+            return (
+              <Link to={{ pathname: `/shop/${item.slug}` }} className={styles.link} key={index}>
+                <CardItem title={item.name} price={item.price} img={url} sizes={item.sizes} />
+              </Link>
+            );
+          })}
         </section>
       )}
     </>
