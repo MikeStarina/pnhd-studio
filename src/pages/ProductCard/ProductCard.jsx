@@ -6,7 +6,7 @@ import styles from './ProductCard.module.css';
 import Photos from '../../components/Photos/Photos';
 import ProductContent from '../../components/ProductContent/ProductContent';
 import PopupModel from '../../components/popupModel/popupModel';
-import { closeHeader, closePopup, openHeader } from '../../services/actions/utility-actions';
+import { closePopup } from '../../services/actions/utility-actions';
 import PhotosMobile from '../../components/PhotosMobile/PhotosMobile';
 import { apiBaseUrl } from '../../utils/constants';
 
@@ -26,13 +26,11 @@ function ProductCard() {
 
   const [screenWidth, setScreenWidth] = useState(getCurrentDimension());
   useEffect(() => {
-    dispatch(closeHeader());
     const updateDimension = () => {
       setScreenWidth(getCurrentDimension());
     };
     window.addEventListener('resize', updateDimension);
     return () => {
-      dispatch(openHeader());
       window.removeEventListener('resize', updateDimension);
     };
   }, [screenWidth]);
