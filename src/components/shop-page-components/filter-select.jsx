@@ -34,9 +34,7 @@ function FilterSelect(props) {
     <div className={styles.wrap}>
       <div
         className={
-          count != 0
-            ? `${styles.dropdown_container} ${styles.dropdown_container_selected}`
-            : `${styles.dropdown_container}`
+          count != 0 ? `${styles.dropdown_container} ${styles.dropdown_container_selected}` : `${styles.dropdown_container}`
         }
       >
         <div onClick={toggle} className={styles.dropdown_input}>
@@ -46,27 +44,26 @@ function FilterSelect(props) {
           </div>
           {dropdownVisible && (
             <div className={styles.dropdown_menu}>
-              {options.length > 0
-                && options.map((option) => (
-                  <div
-                    className={styles.dropdown_item}
-                    onClick={() => {
-                      handleItemSelectClick(option);
-                    }}
-                    key={option.categorySelect}
-                  >
-                    {option.selected ? (
-                      <>
-                        <img src={filterCircle} alt="выбранный_элемент" />
-                        <span>{option.categorySelect}</span>
-                      </>
-                    ) : (
-                      <span className={styles.dropdown_item_space}>
-                        {option.categorySelect}
-                      </span>
-                    )}
-                  </div>
-                ))}
+              {options.length > 0 && options.map((option) => (
+                <div
+                  className={styles.dropdown_item}
+                  onClick={() => {
+                    handleItemSelectClick(option);
+                  }}
+                  key={option.categorySelect}
+                >
+                  {option.selected ? (
+                    <>
+                      <img src={filterCircle} alt="выбранный_элемент" />
+                      <span>{option.categorySelect}</span>
+                    </>
+                  ) : (
+                    <span className={styles.dropdown_item_space}>
+                      {option.categorySelect}
+                    </span>
+                  )}
+                </div>
+              ))}
             </div>
           )}
         </div>

@@ -45,9 +45,7 @@ function Accordion() {
             </div>
             <div
               className={
-                isActive === index
-                  ? `${styles.accordion_content} ${styles.accordion_content_show}`
-                  : `${styles.accordion_content}`
+                isActive === index ? `${styles.accordion_content} ${styles.accordion_content_show}` : `${styles.accordion_content}`
               }
             >
               {Array.isArray(item.content) ? (
