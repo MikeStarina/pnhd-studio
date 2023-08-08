@@ -11,13 +11,13 @@ import PhotosMobile from '../../components/PhotosMobile/PhotosMobile';
 import { apiBaseUrl } from '../../utils/constants';
 
 function ProductCard() {
-  const { id } = useParams();
+  const { slug } = useParams();
   const { data } = useSelector((store) => store.shopData);
   const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
   const dispatch = useDispatch();
   const ref = useRef();
-  const item = data && data.length > 0 && data.find((elem) => elem._id === id);
-
+  const item = data && data.length > 0 && data.find((elem) => elem.slug === slug);
+  console.log(item);
   function getCurrentDimension() {
     return {
       width: window.innerWidth,

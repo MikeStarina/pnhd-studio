@@ -125,7 +125,7 @@ function App() {
           <ShopPage />
         </Route>
 
-        <Route exact path="/shop/:id">
+        <Route exact path="/shop/:slug">
           {/* <ItemPage /> */}
           <ProductCard />
         </Route>

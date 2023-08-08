@@ -29,7 +29,9 @@ function CardsBlock() {
     thirdFilterSelect,
     thirdCount,
   } = useSelector((store) => store.shopData);
-  useEffect(() => { dispatch({ type: SET_DEFAULTFILTER }); }, []);
+  useEffect(() => {
+    dispatch({ type: SET_DEFAULTFILTER });
+  }, []);
 
   const addressString = decodeURI(search);
   const getAdressFilter = (string, filter, num) => {
@@ -193,17 +195,8 @@ function CardsBlock() {
             resultArr.map((item, index) => {
               const url = `${apiBaseUrl}${item.image_url}`;
               return (
-                <Link
-                  to={{ pathname: `/shop/${item._id}` }}
-                  className={styles.link}
-                  key={index}
-                >
-                  <CardItem
-                    title={item.name}
-                    price={item.price}
-                    img={url}
-                    sizes={item.sizes}
-                  />
+                <Link to={{ pathname: `/shop/${item.slug}` }} className={styles.link} key={index}>
+                  <CardItem title={item.name} price={item.price} img={url} sizes={item.sizes} />
                 </Link>
               );
             })}
