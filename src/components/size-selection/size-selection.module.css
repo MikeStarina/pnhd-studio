@@ -39,6 +39,7 @@
 }
 
 .button_size {
+<<<<<<< HEAD
     position: relative;
     width: 23px;
     height: 23px;
@@ -53,6 +54,31 @@
     font-size: 30px;
     font-weight: 100;
     cursor: pointer;
+=======
+  position: relative;
+  width: 23px;
+  height: 23px;
+  background-color: rgba(0, 0, 0, 0);
+  padding: 0;
+  display: flex;
+  /*text-align: center;*/
+  justify-content: center;
+  align-items: end;
+  box-sizing: border-box;
+  border: none;
+  font-weight: 100;
+  cursor: pointer;
+  font-size: 1.1em;
+  color: #000000;
+}
+
+.button_size:hover {
+  color: #00ff00;
+}
+
+.button_size:hover:disabled {
+  color: #000000;
+>>>>>>> aff60a5d4a3a93882eecc0f36659666a0d9ec9ed
 }
 
 .minus {

@@ -35,9 +35,13 @@ import PopupCallBack from '../popupCallBack/popupCallBack';
 
 function App() {
   const dispatch = useDispatch();
+<<<<<<< HEAD
   const { mainMenu, isPopupVisible } = useSelector(
     (store) => store.utilityState,
   );
+=======
+  const { mainMenu, isPopupVisible } = useSelector((store) => store.utilityState);
+>>>>>>> aff60a5d4a3a93882eecc0f36659666a0d9ec9ed
   const { order, isVisible } = useSelector((store) => store.cartData);
 
   const location = useLocation();
@@ -110,6 +114,7 @@ function App() {
         </PopupModel>
       )}
       {mainMenu.isVisible && <MainMenu closeMenu={closeMenu} />}
+<<<<<<< HEAD
       {!mainMenu.isVisible && (
         <FullscreenMenu openPopup={handelOpenPopupHeader} />
       )}
@@ -119,6 +124,11 @@ function App() {
       {order && order.length > 0 && isVisible && (
         <CartIcon qty={order.length} />
       )}
+=======
+      {!mainMenu.isVisible && <FullscreenMenu openPopup={handelOpenPopupHeader} />}
+      {!mainMenu.isVisible && <BurgerIcon openMenu={openMenu} openPopup={handelOpenPopupHeader} />}
+      {order && order.length > 0 && isVisible && <CartIcon qty={order.length} />}
+>>>>>>> aff60a5d4a3a93882eecc0f36659666a0d9ec9ed
       <Switch>
         <Route exact path="/">
           <MainPage />
