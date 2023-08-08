@@ -1,17 +1,12 @@
 import React, {
-  useEffect, useState, useRef, useSyncExternalStore,
+  useEffect, useState,
 } from 'react';
 import styles from './shipping-screen.module.css';
-import poweredByCDEK from '../images/shippingBlockCDEK.png';
-import useDebounce from '../../hooks/useDebounce';
+import { debounce } from '../../utils/utils';
 
 function ShippingScreen() {
   const [width, setWidth] = useState(0);
-  useEffect(() => {
-    if (window.innerWidth > 1560) {
-      setWidth((window.innerWidth - 1560) / 2);
-    }
-  });
+
   const updateDimensions = () => {
     if (window.innerWidth > 1560) {
       setWidth((window.innerWidth - 1560) / 2);
@@ -20,13 +15,22 @@ function ShippingScreen() {
       setWidth(Math.ceil(window.innerWidth / 6));
     }
   };
+
+  const debounceSetWidth = debounce(updateDimensions, 300);
   useEffect(() => {
-    window.addEventListener('resize', updateDimensions);
-    return () => window.removeEventListener('resize', updateDimensions);
+    if (window.innerWidth > 1560) {
+      debounceSetWidth((window.innerWidth - 1560) / 2);
+    }
+  });
+
+  useEffect(() => {
+    window.addEventListener('resize', debounceSetWidth);
+    return () => window.addEventListener('resize', debounceSetWidth);
   }, []);
+
   return (
     <div className={styles.wrap}>
-      <div style={{ left: `-${width}px` }} className={styles.test} />
+      <div style={{ left: `-${width}px` }} className={styles.wrap_background} />
       <div className={styles.body}>
         <h2 className={styles.body_text}>А КАК ПОЛУЧИТЬ?</h2>
         <div className={styles.body_wrap}>

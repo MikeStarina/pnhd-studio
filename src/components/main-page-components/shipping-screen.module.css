@@ -2,7 +2,7 @@
   position: relative;
 }
 
-.test {
+.wrap_background {
   background-image: url(../images/shippingScreenBgi.png);
   background-repeat: no-repeat;
   background-size: contain;
@@ -15,7 +15,6 @@
 
 .body {
   position: relative;
-  z-index: 5;
   height: 700px;
   display: flex;
   width: 100%;
@@ -103,8 +102,7 @@
     width: 164px;
     height: 16px;
   }
-  .test {
-   
+  .wrap_background {   
     height: 300px;
   }
 }
