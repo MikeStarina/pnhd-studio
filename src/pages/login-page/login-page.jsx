@@ -15,8 +15,8 @@ function LoginPage() {
     e.preventDefault();
 
     const login = e.target.name === 'email' ? e.target.value : userLoginData.login;
-    const password = e.target.name === 'password' ?
-      e.target.value
+    const password = e.target.name === 'password'
+      ? e.target.value
       : userLoginData.password;
 
     dispatch({
