@@ -7,14 +7,14 @@ import { apiBaseUrl } from '../../utils/constants';
 function Mockup({ item }) {
   const { activeView } = useSelector((store) => store.editorState);
 
-  const mockup = activeView === 'front'
-    ? `${apiBaseUrl}${item.editor_front_view}`
-    : activeView === 'back'
-      ? `${apiBaseUrl}${item.editor_back_view}`
-      : activeView === 'lsleeve'
-        ? `${apiBaseUrl}${item.editor_lsleeve_view}`
-        : activeView === 'rsleeve'
-          ? `${apiBaseUrl}${item.editor_rsleeve_view}`
+  const mockup = activeView === 'front' ?
+    `${apiBaseUrl}${item.editor_front_view}`
+    : activeView === 'back' ?
+      `${apiBaseUrl}${item.editor_back_view}`
+      : activeView === 'lsleeve' ?
+        `${apiBaseUrl}${item.editor_lsleeve_view}`
+        : activeView === 'rsleeve' ?
+          `${apiBaseUrl}${item.editor_rsleeve_view}`
           : null;
 
   const [mockupImg] = useImage(mockup, 'Anonymous');
