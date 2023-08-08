@@ -10,6 +10,8 @@ import {
   OPEN_POPUP_HEADER,
   OPEN_POPUP,
   CLOSE_POPUP,
+  OPEN_HEADER,
+  CLOSE_HEADER,
 } from '../actions/utility-actions';
 
 const initialState = {
@@ -29,6 +31,7 @@ const initialState = {
 
   isFormDataSet: false,
   isImageLoading: false,
+  isOpenHeader: true,
   message: '',
 };
 
@@ -59,6 +62,20 @@ export const utilityReducer = (state = initialState, action) => {
         ...state,
         isOtherPopupVisible: action.arr,
         isImageLoading: false,
+      };
+    }
+
+    case OPEN_HEADER: {
+      return {
+        ...state,
+        isOpenHeader: true,
+      };
+    }
+
+    case CLOSE_HEADER: {
+      return {
+        ...state,
+        isOpenHeader: false,
       };
     }
 
@@ -105,14 +122,8 @@ export const utilityReducer = (state = initialState, action) => {
       return {
         ...state,
         orderFormData: {
-          name:
-                        action.field === 'name'
-                          ? action.data
-                          : state.orderFormData.name,
-          phone:
-                        action.field === 'phone'
-                          ? action.data
-                          : state.orderFormData.phone,
+          name: action.field === 'name' ? action.data : state.orderFormData.name,
+          phone: action.field === 'phone' ? action.data : state.orderFormData.phone,
         },
         isFormDataSet: true,
         message: '',

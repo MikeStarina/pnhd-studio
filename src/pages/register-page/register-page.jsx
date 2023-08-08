@@ -16,8 +16,8 @@ function RegisterPage() {
 
     const userName = e.target.name === 'name' ? e.target.value : registerFormData.name;
     const email = e.target.name === 'email' ? e.target.value : registerFormData.email;
-    const password = e.target.name === 'password'
-      ? e.target.value
+    const password = e.target.name === 'password' ?
+      e.target.value
       : registerFormData.password;
 
     dispatch({

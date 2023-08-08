@@ -4,9 +4,7 @@ import styles from './size-selection.module.css';
 import { updateItemOrder } from '../../services/actions/item-action';
 import { CHANGE_ITEM_QTY } from '../../services/actions/cart-actions';
 
-function SizeSelection({
-  name, qty, id, type,
-}) {
+function SizeSelection({ name, qty, id, type }) {
   const { order } = useSelector((store) => store.itemReducer);
   const dispatch = useDispatch();
   const [state, setState] = useState(qty);
@@ -53,8 +51,8 @@ function SizeSelection({
     <div className={styles.block}>
       <p className={styles.text}>
         <span className={styles.span_size}>{name}</span>
-        <span className={styles.span_x}>x</span>
       </p>
+      <span className={styles.span_x}>x</span>
       <p className={styles.text_size}>{type === 'shop' ? state : qty}</p>
 
       <button
@@ -63,15 +61,10 @@ function SizeSelection({
         type="button"
         disabled={state === 0}
       >
-        <div className={styles.minus} />
+        &lt;
       </button>
-      <button
-        className={styles.button_size}
-        onClick={() => onChangePlus(name)}
-        type="button"
-      >
-        <div className={styles.minus} />
-        <div className={styles.plus} />
+      <button className={styles.button_size} onClick={() => onChangePlus(name)} type="button">
+        &gt;
       </button>
     </div>
   );

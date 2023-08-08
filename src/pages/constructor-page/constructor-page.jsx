@@ -113,9 +113,9 @@ function Constructor() {
     };
   } else if (activeView === 'lsleeve') {
     if (
-      item.type === 'hoodie'
-            || item.type === 'longsleeve'
-            || item.type === 'sweatshirt'
+      item.type === 'hoodie' ||
+            item.type === 'longsleeve' ||
+            item.type === 'sweatshirt'
     ) {
       initialParams = {
         x: 230,
@@ -133,9 +133,9 @@ function Constructor() {
     }
   } else if (activeView === 'rsleeve') {
     if (
-      item.type === 'hoodie'
-            || item.type === 'longsleeve'
-            || item.type === 'sweatshirt'
+      item.type === 'hoodie' ||
+            item.type === 'longsleeve' ||
+            item.type === 'sweatshirt'
     ) {
       initialParams = {
         x: 215,
@@ -219,20 +219,20 @@ function Constructor() {
   }
 
   let totalPrintPrice = 0;
-  totalPrintPrice = front_file.cartParams
-    ? totalPrintPrice + front_file.cartParams.price
+  totalPrintPrice = front_file.cartParams ?
+    totalPrintPrice + front_file.cartParams.price
     : totalPrintPrice;
-  totalPrintPrice = back_file.cartParams
-    ? totalPrintPrice + back_file.cartParams.price
+  totalPrintPrice = back_file.cartParams ?
+    totalPrintPrice + back_file.cartParams.price
     : totalPrintPrice;
-  totalPrintPrice = lsleeve_file.cartParams
-    ? totalPrintPrice + lsleeve_file.cartParams.price
+  totalPrintPrice = lsleeve_file.cartParams ?
+    totalPrintPrice + lsleeve_file.cartParams.price
     : totalPrintPrice;
-  totalPrintPrice = rsleeve_file.cartParams
-    ? totalPrintPrice + rsleeve_file.cartParams.price
+  totalPrintPrice = rsleeve_file.cartParams ?
+    totalPrintPrice + rsleeve_file.cartParams.price
     : totalPrintPrice;
-  totalPrintPrice = badge_file.cartParams
-    ? totalPrintPrice + badge_file.cartParams.price
+  totalPrintPrice = badge_file.cartParams ?
+    totalPrintPrice + badge_file.cartParams.price
     : totalPrintPrice;
 
   const addToCart = () => {
@@ -349,8 +349,8 @@ function Constructor() {
           <button
             type="button"
             className={
-                                activeView === 'front'
-                                  ? styles.active_tab
+                                activeView === 'front' ?
+                                  styles.active_tab
                                   : styles.tab
                             }
             id="front"
@@ -361,8 +361,8 @@ function Constructor() {
           <button
             type="button"
             className={
-                                activeView === 'back'
-                                  ? styles.active_tab
+                                activeView === 'back' ?
+                                  styles.active_tab
                                   : styles.tab
                             }
             id="back"
@@ -373,8 +373,8 @@ function Constructor() {
           {item.type !== 'totebag' && (
           <button
             className={
-                                    activeView === 'lsleeve'
-                                      ? styles.active_tab
+                                    activeView === 'lsleeve' ?
+                                      styles.active_tab
                                       : styles.tab
                                 }
             id="lsleeve"
@@ -387,8 +387,8 @@ function Constructor() {
           {item.type !== 'totebag' && (
           <button
             className={
-                                    activeView === 'rsleeve'
-                                      ? styles.active_tab
+                                    activeView === 'rsleeve' ?
+                                      styles.active_tab
                                       : styles.tab
                                 }
             id="rsleeve"
@@ -409,8 +409,8 @@ function Constructor() {
             {isImageLoading && (
             <div
               className={
-                                        isImageLoading
-                                          ? styles.loader_active
+                                        isImageLoading ?
+                                          styles.loader_active
                                           : styles.loader
                                     }
             >
@@ -443,8 +443,8 @@ function Constructor() {
                                         }
                   name="input_button_text"
                 >
-                  {file && file.name
-                    ? file.name
+                  {file && file.name ?
+                    file.name
                     : 'Выберите файл'}
                 </span>
               </label>
@@ -468,29 +468,29 @@ function Constructor() {
           <p className={styles.order_info_line}>
             Печать на груди:
             {' '}
-            {front_file && front_file.cartParams
-              ? `${front_file.cartParams.format}, ${front_file.cartParams.size}, ${front_file.cartParams.price} Р.`
+            {front_file && front_file.cartParams ?
+              `${front_file.cartParams.format}, ${front_file.cartParams.size}, ${front_file.cartParams.price} Р.`
               : '-'}
           </p>
           <p className={styles.order_info_line}>
             Печать на спине:
             {' '}
-            {back_file && back_file.cartParams
-              ? `${back_file.cartParams.format}, ${back_file.cartParams.size}, ${back_file.cartParams.price} Р.`
+            {back_file && back_file.cartParams ?
+              `${back_file.cartParams.format}, ${back_file.cartParams.size}, ${back_file.cartParams.price} Р.`
               : '-'}
           </p>
           <p className={styles.order_info_line}>
             Печать на левом рукаве:
             {' '}
-            {lsleeve_file && lsleeve_file.cartParams
-              ? `${lsleeve_file.cartParams.format}, ${lsleeve_file.cartParams.size}, ${lsleeve_file.cartParams.price} Р.`
+            {lsleeve_file && lsleeve_file.cartParams ?
+              `${lsleeve_file.cartParams.format}, ${lsleeve_file.cartParams.size}, ${lsleeve_file.cartParams.price} Р.`
               : '-'}
           </p>
           <p className={styles.order_info_line}>
             Печать на правом рукаве:
             {' '}
-            {rsleeve_file && rsleeve_file.cartParams
-              ? `${rsleeve_file.cartParams.format}, ${rsleeve_file.cartParams.size}, ${rsleeve_file.cartParams.price} Р.`
+            {rsleeve_file && rsleeve_file.cartParams ?
+              `${rsleeve_file.cartParams.format}, ${rsleeve_file.cartParams.size}, ${rsleeve_file.cartParams.price} Р.`
               : '-'}
           </p>
 
@@ -512,8 +512,8 @@ function Constructor() {
             {isOtherPopupVisible.map((el, index) => (
               <p
                 className={
-                                            isOtherPopupVisible.length > 1
-                                              ? styles.instruction
+                                            isOtherPopupVisible.length > 1 ?
+                                              styles.instruction
                                               : styles.error
                                         }
                 key={index}
