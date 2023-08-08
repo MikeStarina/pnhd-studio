@@ -1,60 +1,52 @@
 .block {
-    display: flex;
-    justify-content: flex-end;
-    box-sizing: border-box;
-    margin: 0;
-    flex-direction: row;
-    width: 200px;
-    height: 28px;
+  display: flex;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  margin: 0;
+  flex-direction: row;
+  width: 200px;
+  height: 23px;
 }
 
 .text {
-    box-sizing: border-box;
-    display: flex;
-    justify-content: flex-end;
-    margin: 0;
-    width: 100px;
-    padding: 7px 0 0 0;
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 13px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-start;
+  margin: 0;
+  width: 80px;
+  padding: 7px 0 0 0;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 13px;
 }
 
 .span_size {
-    padding-right: 10px;
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 13px;
+  /*padding-right: 10px;*/
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 13px;
 }
 
 .text_size {
-    box-sizing: border-box;
-    text-align: center;
-    margin: 0;
-    width: 45px;
-    padding: 7px 12px 0 0;
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 13px;
+  box-sizing: border-box;
+  text-align: center;
+  justify-content: flex-start;
+  margin: 0;
+  width: 27px;
+  padding: 7px 0 0;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 13px;
+  display: inline-flex;
+}
+
+.span_x {
+  padding: 8px 10px 0 7px;
+  display: inline-block;
+  font-size: 0.8em;
 }
 
 .button_size {
-<<<<<<< HEAD
-    position: relative;
-    width: 23px;
-    height: 23px;
-    border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0);
-    padding: 0;
-    margin-left: 5px;
-    display: block;
-    text-align: center;
-    box-sizing: border-box;
-    border: solid 1px #000000;
-    font-size: 30px;
-    font-weight: 100;
-    cursor: pointer;
-=======
   position: relative;
   width: 23px;
   height: 23px;
@@ -78,42 +70,42 @@
 
 .button_size:hover:disabled {
   color: #000000;
->>>>>>> aff60a5d4a3a93882eecc0f36659666a0d9ec9ed
 }
 
 .minus {
-    position: absolute;
-    left: 24%;
-    margin: 0;
-    padding: 0;
-    width: 12px;
-    height: 1px;
-    background-color: black;
+  position: absolute;
+  left: 24%;
+  margin: 0;
+  padding: 0;
+  width: 12px;
+  height: 1px;
+  background-color: black;
 }
 
 .plus {
-    box-sizing: border-box;
-    position: absolute;
-    top: 25%;
-    left: 49%;
-    margin: 0;
-    padding: 0;
-    width: 1px;
-    height: 12px;
-    background-color: #000000;
+  box-sizing: border-box;
+  position: absolute;
+  top: 25%;
+  left: 49%;
+  margin: 0;
+  padding: 0;
+  width: 1px;
+  height: 12px;
+  background-color: #000000;
 }
 
 @media (max-width: 390px) {
-    .block {
-        width: 180px;
-    }
+  .block {
+    width: 180px;
+    height: 25.3px;
+  }
 
-    .span_size {
-        padding-right: 5px;
-    }
+  .span_size {
+    padding-right: 5px;
+  }
 
-    .text_size {
-        width: 25px;
-        padding: 7px 3px 0 0;
-    }
+  .text_size {
+    width: 25px;
+    padding: 7px 3px 0 0;
+  }
 }

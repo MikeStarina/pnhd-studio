@@ -1,47 +1,42 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  Route, Switch, Redirect, useLocation,
-} from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Route, Switch, Redirect, useLocation } from "react-router-dom";
 import {
   OPEN_MODAL_MENU,
   CLOSE_MODAL_MENU,
   SET_POPUP_VISIBILITY,
   closePopupHeader,
   openPopupHeader,
-} from '../../services/actions/utility-actions';
-import { getShopData } from '../../services/actions/shop-data-actions.jsx';
-import { methodsData } from '../../data/printing-methods/methods-data';
-import { typeOfPrintData } from '../../data/type-of-print-data/data';
+} from "../../services/actions/utility-actions";
+import { getShopData } from "../../services/actions/shop-data-actions.jsx";
+import { methodsData } from "../../data/printing-methods/methods-data";
+import { typeOfPrintData } from "../../data/type-of-print-data/data";
 
-import PopupModel from '../popupModel/popupModel';
-import MainPage from '../../pages/main-page/main-page.jsx';
-import BurgerIcon from '../main-menu/burger-icon.jsx';
-import MainMenu from '../main-menu/main-menu.jsx';
-import Footer from '../footer/footer.jsx';
-import ShopPage from '../../pages/shop-page/shop-page.jsx';
-import Constructor from '../../pages/constructor-page/constructor-page.jsx';
-import CartIcon from '../cart/cart-icon.jsx';
-import ItemPage from '../../pages/item-page/item-page.jsx';
-import CartPage from '../../pages/cart-page/cart-page.jsx';
-import { RESTORE_CART_FROM_SSTORAGE } from '../../services/actions/cart-actions';
-import Oferta from '../../pages/oferta-page/oferta-page';
-import Page404 from '../../pages/page-404/page-404';
-import SizesPage from '../../pages/sizes-page/sizes-page';
-import FullscreenMenu from '../main-menu/fullscreen-menu';
-import PrintingMethod from '../../pages/printing-method/printing-method';
-import TypeOfPrint from '../../pages/type-of-print/type-of-print';
-import PopupCallBack from '../popupCallBack/popupCallBack';
+import PopupModel from "../popupModel/popupModel";
+import MainPage from "../../pages/main-page/main-page.jsx";
+import BurgerIcon from "../main-menu/burger-icon.jsx";
+import MainMenu from "../main-menu/main-menu.jsx";
+import Footer from "../footer/footer.jsx";
+import ShopPage from "../../pages/shop-page/shop-page.jsx";
+import Constructor from "../../pages/constructor-page/constructor-page.jsx";
+import CartIcon from "../cart/cart-icon.jsx";
+import ItemPage from "../../pages/item-page/item-page.jsx";
+import CartPage from "../../pages/cart-page/cart-page.jsx";
+import { RESTORE_CART_FROM_SSTORAGE } from "../../services/actions/cart-actions";
+import Oferta from "../../pages/oferta-page/oferta-page";
+import Page404 from "../../pages/page-404/page-404";
+import SizesPage from "../../pages/sizes-page/sizes-page";
+import FullscreenMenu from "../main-menu/fullscreen-menu";
+import PrintingMethod from "../../pages/printing-method/printing-method";
+import TypeOfPrint from "../../pages/type-of-print/type-of-print";
+import PopupCallBack from "../popupCallBack/popupCallBack";
+import ProductCard from "../../pages/ProductCard/ProductCard";
 
 function App() {
   const dispatch = useDispatch();
-<<<<<<< HEAD
   const { mainMenu, isPopupVisible } = useSelector(
-    (store) => store.utilityState,
+    (store) => store.utilityState
   );
-=======
-  const { mainMenu, isPopupVisible } = useSelector((store) => store.utilityState);
->>>>>>> aff60a5d4a3a93882eecc0f36659666a0d9ec9ed
   const { order, isVisible } = useSelector((store) => store.cartData);
 
   const location = useLocation();
@@ -50,14 +45,14 @@ function App() {
   }, [location]);
 
   useEffect(() => {
-    const oldScript = document.querySelector('#calltr');
+    const oldScript = document.querySelector("#calltr");
     document.body.removeChild(oldScript);
-    const script = document.createElement('script');
-    script.src = 'https://cdn.callibri.ru/callibri.js';
-    script.type = 'text/javascript';
-    script.charset = 'utf-8';
+    const script = document.createElement("script");
+    script.src = "https://cdn.callibri.ru/callibri.js";
+    script.type = "text/javascript";
+    script.charset = "utf-8";
     script.defer = true;
-    script.id = 'calltr';
+    script.id = "calltr";
     document.body.prepend(script);
     return () => {
       document.body.removeChild(script);
@@ -65,7 +60,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const autoSavedCart = sessionStorage.getItem('cart');
+    const autoSavedCart = sessionStorage.getItem("cart");
     // console.log(autoSavedCart);
 
     if (autoSavedCart) {
@@ -114,7 +109,6 @@ function App() {
         </PopupModel>
       )}
       {mainMenu.isVisible && <MainMenu closeMenu={closeMenu} />}
-<<<<<<< HEAD
       {!mainMenu.isVisible && (
         <FullscreenMenu openPopup={handelOpenPopupHeader} />
       )}
@@ -124,11 +118,6 @@ function App() {
       {order && order.length > 0 && isVisible && (
         <CartIcon qty={order.length} />
       )}
-=======
-      {!mainMenu.isVisible && <FullscreenMenu openPopup={handelOpenPopupHeader} />}
-      {!mainMenu.isVisible && <BurgerIcon openMenu={openMenu} openPopup={handelOpenPopupHeader} />}
-      {order && order.length > 0 && isVisible && <CartIcon qty={order.length} />}
->>>>>>> aff60a5d4a3a93882eecc0f36659666a0d9ec9ed
       <Switch>
         <Route exact path="/">
           <MainPage />
@@ -142,8 +131,9 @@ function App() {
           <ShopPage />
         </Route>
 
-        <Route exact path="/shop/:id">
-          <ItemPage />
+        <Route exact path="/shop/:slug">
+          {/* <ItemPage /> */}
+          <ProductCard />
         </Route>
 
         <Route exact path="/size_chart">
@@ -202,7 +192,6 @@ function App() {
           <Page404 />
         </Route>
       </Switch>
-
       <Footer />
     </>
   );

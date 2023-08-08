@@ -20,13 +20,8 @@ function Accordion() {
         <p className={styles.accordion_mainText}>{mainText}</p>
         {data.map((item, index) => (
           <div className={styles.accordion_item} key={index}>
-            <div
-              className={styles.accordion_title}
-              onClick={() => toggle(index)}
-            >
-              <span className={styles.accordion_gt}>
-                {isActive === index ? '-' : gt}
-              </span>
+            <div className={styles.accordion_title} onClick={() => toggle(index)}>
+              <span className={styles.accordion_gt}>{isActive === index ? '-' : gt}</span>
               <h2 className={styles.accordion_text}>
                 {item.title_italicFirst ? (
                   <i>
@@ -46,9 +41,7 @@ function Accordion() {
                   <span className={styles.accordion_gtRight}>&#62;</span>
                 </span>
               )}
-              {isActive === index && (
-                <span className={styles.accordion_gt}> </span>
-              )}
+              {isActive === index && <span className={styles.accordion_gt}> </span>}
             </div>
             <div
               className={
