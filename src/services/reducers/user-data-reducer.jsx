@@ -133,36 +133,36 @@ export const userDataReducer = (state = initialState, action) => {
         ...state,
         userCartData: {
           name:
-                        action.inputName === 'name' ?
-                          action.inputValue
+                        action.inputName === 'name'
+                          ? action.inputValue
                           : state.userCartData.name,
           isNameValid:
-                        action.inputName === 'name' ?
-                          action.validity
+                        action.inputName === 'name'
+                          ? action.validity
                           : state.userCartData.isNameValid,
           surname:
-                        action.inputName === 'surname' ?
-                          action.inputValue
+                        action.inputName === 'surname'
+                          ? action.inputValue
                           : state.userCartData.surname,
           isSurnameValid:
-                        action.inputName === 'surname' ?
-                          action.validity
+                        action.inputName === 'surname'
+                          ? action.validity
                           : state.userCartData.isSurnameValid,
           phone:
-                        action.inputName === 'phone' ?
-                          action.inputValue
+                        action.inputName === 'phone'
+                          ? action.inputValue
                           : state.userCartData.phone,
           isPhoneValid:
-                        action.inputName === 'phone' ?
-                          action.validity
+                        action.inputName === 'phone'
+                          ? action.validity
                           : state.userCartData.isPhoneValid,
           email:
-                        action.inputName === 'email' ?
-                          action.inputValue
+                        action.inputName === 'email'
+                          ? action.inputValue
                           : state.userCartData.email,
           isEmailValid:
-                        action.inputName === 'email' ?
-                          action.validity
+                        action.inputName === 'email'
+                          ? action.validity
                           : state.userCartData.isEmailValid,
         },
       };

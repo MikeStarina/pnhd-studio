@@ -84,17 +84,17 @@ export const createOrder = (
       item_price: 0,
       print: !!order_item.print,
       printPrice: 0,
-      front_print: order_item.print?.front.file ?
-        `Печать на груди. Файл: ${order_item.print.front.file.url}, Превью: ${order_item.print.front_preview.preview}; Размер: ${order_item.print.front.cartParams.size}`
+      front_print: order_item.print?.front.file
+        ? `Печать на груди. Файл: ${order_item.print.front.file.url}, Превью: ${order_item.print.front_preview.preview}; Размер: ${order_item.print.front.cartParams.size}`
         : '',
-      back_print: order_item.print?.back.file ?
-        `Печать на спине. Файл: ${order_item.print.back.file.url}, Превью: ${order_item.print.back_preview.preview}; Размер: ${order_item.print.back.cartParams.size}`
+      back_print: order_item.print?.back.file
+        ? `Печать на спине. Файл: ${order_item.print.back.file.url}, Превью: ${order_item.print.back_preview.preview}; Размер: ${order_item.print.back.cartParams.size}`
         : '',
-      lsleeve_print: order_item.print?.lsleeve.file ?
-        `Печать на спине. Файл: ${order_item.print.lsleeve.file.url}, Превью: ${order_item.print.lsleeve_preview.preview}; Размер: ${order_item.print.lsleeve.cartParams.size}`
+      lsleeve_print: order_item.print?.lsleeve.file
+        ? `Печать на спине. Файл: ${order_item.print.lsleeve.file.url}, Превью: ${order_item.print.lsleeve_preview.preview}; Размер: ${order_item.print.lsleeve.cartParams.size}`
         : '',
-      rsleeve_print: order_item.print?.rsleeve.file ?
-        `Печать на спине. Файл: ${order_item.print.rsleeve.file.url}, Превью: ${order_item.print.rsleeve_preview.preview}; Размер: ${order_item.print.rsleeve.cartParams.size}`
+      rsleeve_print: order_item.print?.rsleeve.file
+        ? `Печать на спине. Файл: ${order_item.print.rsleeve.file.url}, Превью: ${order_item.print.rsleeve_preview.preview}; Размер: ${order_item.print.rsleeve.cartParams.size}`
         : '',
     };
 
@@ -106,38 +106,38 @@ export const createOrder = (
 
     let printTotalprice = 0;
 
-    const frontPrintPrice = (order_item.print && order_item.print.front.file ?
-      order_item.print.front.cartParams.price
+    const frontPrintPrice = (order_item.print && order_item.print.front.file
+      ? order_item.print.front.cartParams.price
       : 0) * item.qtyAll;
-    const backPrintPrice = (order_item.print && order_item.print.back.file ?
-      order_item.print.back.cartParams.price
+    const backPrintPrice = (order_item.print && order_item.print.back.file
+      ? order_item.print.back.cartParams.price
       : 0) * item.qtyAll;
-    const lsleevePrintPrice = (order_item.print && order_item.print.lsleeve.file ?
-      order_item.print.lsleeve.cartParams.price
+    const lsleevePrintPrice = (order_item.print && order_item.print.lsleeve.file
+      ? order_item.print.lsleeve.cartParams.price
       : 0) * item.qtyAll;
-    const rsleevePrintPrice = (order_item.print && order_item.print.rsleeve.file ?
-      order_item.print.rsleeve.cartParams.price
+    const rsleevePrintPrice = (order_item.print && order_item.print.rsleeve.file
+      ? order_item.print.rsleeve.cartParams.price
       : 0) * item.qtyAll;
-    const badgePrintPrice = (order_item.print && order_item.print.badge.file ?
-      order_item.print.badge.cartParams.price
+    const badgePrintPrice = (order_item.print && order_item.print.badge.file
+      ? order_item.print.badge.cartParams.price
       : 0) * item.qtyAll;
 
-    printTotalprice = frontPrintPrice +
-      backPrintPrice +
-      lsleevePrintPrice +
-      rsleevePrintPrice +
-      badgePrintPrice;
+    printTotalprice = frontPrintPrice
+      + backPrintPrice
+      + lsleevePrintPrice
+      + rsleevePrintPrice
+      + badgePrintPrice;
 
-    const itemPrice = (validPromoCode.discount_ratio ?
-      order_item.attributes.price * validPromoCode.discount_ratio
+    const itemPrice = (validPromoCode.discount_ratio
+      ? order_item.attributes.price * validPromoCode.discount_ratio
       : order_item.attributes.price) * item.qtyAll;
-    const printFullPrice = validPromoCode.discount_ratio ?
-      printTotalprice * validPromoCode.discount_ratio
+    const printFullPrice = validPromoCode.discount_ratio
+      ? printTotalprice * validPromoCode.discount_ratio
       : printTotalprice;
 
     item.printPrice = printFullPrice;
-    item.item_price = printFullPrice ?
-      itemPrice + printFullPrice
+    item.item_price = printFullPrice
+      ? itemPrice + printFullPrice
       : itemPrice;
     data.items.push(item);
     // временная заглушка до получения данных об размерах упаковки

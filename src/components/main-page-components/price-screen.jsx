@@ -80,8 +80,8 @@ function PriceScreen() {
         <button
           type="button"
           className={
-            mainMenuPriceTable.activeTab === 'DTG' ?
-              styles.button_active
+            mainMenuPriceTable.activeTab === 'DTG'
+              ? styles.button_active
               : styles.button
           }
           onClick={setActiveTab}
@@ -91,8 +91,8 @@ function PriceScreen() {
         <button
           type="button"
           className={
-            mainMenuPriceTable.activeTab === 'DTF' ?
-              styles.button_active
+            mainMenuPriceTable.activeTab === 'DTF'
+              ? styles.button_active
               : styles.button
           }
           onClick={setActiveTab}
@@ -102,8 +102,8 @@ function PriceScreen() {
         <button
           type="button"
           className={
-            mainMenuPriceTable.activeTab === 'ТЕРМОПЕРЕНОС' ?
-              styles.button_active
+            mainMenuPriceTable.activeTab === 'ТЕРМОПЕРЕНОС'
+              ? styles.button_active
               : styles.button
           }
           onClick={setActiveTab}
@@ -113,8 +113,8 @@ function PriceScreen() {
         <button
           type="button"
           className={
-            mainMenuPriceTable.activeTab === 'ВЫШИВКА' ?
-              styles.button_active
+            mainMenuPriceTable.activeTab === 'ВЫШИВКА'
+              ? styles.button_active
               : styles.button
           }
           onClick={setActiveTab}

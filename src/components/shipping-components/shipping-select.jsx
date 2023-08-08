@@ -31,8 +31,8 @@ export function ShippingSelect(props) {
     <div className={styles.test}>
       <div
         className={
-                    !errBorder ?
-                      `${styles.dropdown_container} ${styles.dropdown_container_error}`
+                    !errBorder
+                      ? `${styles.dropdown_container} ${styles.dropdown_container_error}`
                       : styles.dropdown_container
                 }
       >
@@ -51,12 +51,12 @@ export function ShippingSelect(props) {
               </div>
               )}
 
-              {options.length > 0 &&
-                                options.map((option) => (
+              {options.length > 0
+                                && options.map((option) => (
                                   <div
                                     className={`${styles.dropdown_item} ${
-                                      selectedValue === option.name ?
-                                        'selected'
+                                      selectedValue === option.name
+                                        ? 'selected'
                                         : ''
                                     }`}
                                     onClick={() => {

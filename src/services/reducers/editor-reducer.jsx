@@ -47,36 +47,36 @@ export const editorReducer = (state = initialState, action) => {
         front_file: {
           ...state.front_file,
           file:
-                        action.view === 'front' ?
-                          action.payload
+                        action.view === 'front'
+                          ? action.payload
                           : state.front_file.file,
         },
         back_file: {
           ...state.back_file,
           file:
-                        action.view === 'back' ?
-                          action.payload
+                        action.view === 'back'
+                          ? action.payload
                           : state.back_file.file,
         },
         lsleeve_file: {
           ...state.lsleeve_file,
           file:
-                        action.view === 'lsleeve' ?
-                          action.payload
+                        action.view === 'lsleeve'
+                          ? action.payload
                           : state.lsleeve_file.file,
         },
         rsleeve_file: {
           ...state.rsleeve_file,
           file:
-                        action.view === 'rsleeve' ?
-                          action.payload
+                        action.view === 'rsleeve'
+                          ? action.payload
                           : state.rsleeve_file.file,
         },
         badge_file: {
           ...state.badge_file,
           file:
-                        action.view === 'badge' ?
-                          action.payload
+                        action.view === 'badge'
+                          ? action.payload
                           : state.badge_file.file,
         },
         isBlockButton: true,
@@ -89,36 +89,36 @@ export const editorReducer = (state = initialState, action) => {
         front_file: {
           ...state.front_file,
           stageParams:
-                        action.view === 'front' ?
-                          action.payload
+                        action.view === 'front'
+                          ? action.payload
                           : state.front_file.stageParams,
         },
         back_file: {
           ...state.back_file,
           stageParams:
-                        action.view === 'back' ?
-                          action.payload
+                        action.view === 'back'
+                          ? action.payload
                           : state.back_file.stageParams,
         },
         lsleeve_file: {
           ...state.lsleeve_file,
           stageParams:
-                        action.view === 'lsleeve' ?
-                          action.payload
+                        action.view === 'lsleeve'
+                          ? action.payload
                           : state.lsleeve_file.stageParams,
         },
         rsleeve_file: {
           ...state.rsleeve_file,
           stageParams:
-                        action.view === 'rsleeve' ?
-                          action.payload
+                        action.view === 'rsleeve'
+                          ? action.payload
                           : state.rsleeve_file.stageParams,
         },
         badge_file: {
           ...state.badge_file,
           stageParams:
-                        action.view === 'badge' ?
-                          action.payload
+                        action.view === 'badge'
+                          ? action.payload
                           : state.badge_file.stageParams,
         },
       };
@@ -130,36 +130,36 @@ export const editorReducer = (state = initialState, action) => {
         front_file: {
           ...state.front_file,
           cartParams:
-                        action.view === 'front' ?
-                          action.payload
+                        action.view === 'front'
+                          ? action.payload
                           : state.front_file.cartParams,
         },
         back_file: {
           ...state.back_file,
           cartParams:
-                        action.view === 'back' ?
-                          action.payload
+                        action.view === 'back'
+                          ? action.payload
                           : state.back_file.cartParams,
         },
         lsleeve_file: {
           ...state.lsleeve_file,
           cartParams:
-                        action.view === 'lsleeve' ?
-                          action.payload
+                        action.view === 'lsleeve'
+                          ? action.payload
                           : state.lsleeve_file.cartParams,
         },
         rsleeve_file: {
           ...state.rsleeve_file,
           cartParams:
-                        action.view === 'rsleeve' ?
-                          action.payload
+                        action.view === 'rsleeve'
+                          ? action.payload
                           : state.rsleeve_file.cartParams,
         },
         badge_file: {
           ...state.badge_file,
           cartParams:
-                        action.view === 'badge' ?
-                          action.payload
+                        action.view === 'badge'
+                          ? action.payload
                           : state.badge_file.cartParams,
         },
       };
@@ -198,20 +198,20 @@ export const editorReducer = (state = initialState, action) => {
       return {
         ...state,
         front_file_preview:
-                    action.view === 'front' ?
-                      { data: action.data, preview: action.preview }
+                    action.view === 'front'
+                      ? { data: action.data, preview: action.preview }
                       : state.front_file_preview,
         back_file_preview:
-                    action.view === 'back' ?
-                      { data: action.data, preview: action.preview }
+                    action.view === 'back'
+                      ? { data: action.data, preview: action.preview }
                       : state.back_file_preview,
         lsleeve_file_preview:
-                    action.view === 'lsleeve' ?
-                      { data: action.data, preview: action.preview }
+                    action.view === 'lsleeve'
+                      ? { data: action.data, preview: action.preview }
                       : state.lsleeve_file_preview,
         rsleeve_file_preview:
-                    action.view === 'rsleeve' ?
-                      { data: action.data, preview: action.preview }
+                    action.view === 'rsleeve'
+                      ? { data: action.data, preview: action.preview }
                       : state.rsleeve_file_preview,
         isBlockButton: false,
       };
