@@ -50,14 +50,12 @@
   position: relative;
   width: 23px;
   height: 23px;
-  /*border-radius: 50%;*/
   background-color: rgba(0, 0, 0, 0);
   padding: 0;
-  /*margin-left: 5px;*/
   display: flex;
   /*text-align: center;*/
   justify-content: center;
-  align-items: center;
+  align-items: end;
   box-sizing: border-box;
   border: none;
   font-weight: 100;
