@@ -130,8 +130,7 @@ function ItemPage() {
   const descriptionArray = item ? item.description.split('=') : [];
 
   return (
-    data.length > 0 &&
-    item && (
+    data.length > 0 && item && (
       <section className={styles.screen}>
         <Helmet
           title={`PINHEAD STUDIO | ${item.name}`}
@@ -192,9 +191,9 @@ function ItemPage() {
           {/*      </SwiperSlide> */}
           {/*    ))} */}
           {/*  </Swiper> */}
-          {/*) : ( */}
+          {/* ) : ( */}
           {/*  <div className={styles.gallery_wrapper}> */}
-          {/*    <img*/}
+          {/*    <img */}
           {/*      src={`${apiBaseUrl}${item.image_url}`} */}
           {/*      alt="item" */}
           {/*      className={styles.gallery_image} */}
@@ -205,13 +204,11 @@ function ItemPage() {
             <div className={styles.item_info_block}>
               <h1 className={styles.item_title}>{item.name}</h1>
               {!item.isSale && <p className={styles.item_description}>{item.description}</p>}
-              {item.isSale &&
-                descriptionArray &&
-                descriptionArray.map((item, index) => (
-                  <p className={styles.item_description} key={index}>
-                    {item}
-                  </p>
-                ))}
+              {item.isSale && descriptionArray && descriptionArray.map((item, index) => (
+                <p className={styles.item_description} key={index}>
+                  {item}
+                </p>
+              ))}
               <br />
               {item.isSale && (
                 <a href="https://instagram.com/easyvisa_inc" target="blank">
@@ -266,25 +263,22 @@ function ItemPage() {
             </div>
 
             <div className={styles.item_button_wrapper}>
-              {item.isForPrinting &&
-                !item.isSale &&
-                item.sizes.length > 0 &&
-                (isSizeFunction(order) ? (
-                  <Link
-                    to={{
-                      pathname: `/shop/${id}/constructor`,
-                      state: { size: order },
-                    }}
-                  >
-                    <button type="button" className={styles.item_button}>
-                      Добавить принт
-                    </button>
-                  </Link>
-                ) : (
-                  <button type="button" className={styles.item_button} onClick={addToConstructor}>
+              {item.isForPrinting && !item.isSale && item.sizes.length > 0 && (isSizeFunction(order) ? (
+                <Link
+                  to={{
+                    pathname: `/shop/${id}/constructor`,
+                    state: { size: order },
+                  }}
+                >
+                  <button type="button" className={styles.item_button}>
                     Добавить принт
                   </button>
-                ))}
+                </Link>
+              ) : (
+                <button type="button" className={styles.item_button} onClick={addToConstructor}>
+                  Добавить принт
+                </button>
+              ))}
               {item.sizes.length > 0 && (
                 <button type="button" className={styles.item_button} onClick={addToCart}>
                   Добавить в корзину

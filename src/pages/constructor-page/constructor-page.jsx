@@ -208,21 +208,11 @@ function Constructor() {
   }
 
   let totalPrintPrice = 0;
-  totalPrintPrice = front_file.cartParams
-    ? totalPrintPrice + front_file.cartParams.price
-    : totalPrintPrice;
-  totalPrintPrice = back_file.cartParams
-    ? totalPrintPrice + back_file.cartParams.price
-    : totalPrintPrice;
-  totalPrintPrice = lsleeve_file.cartParams
-    ? totalPrintPrice + lsleeve_file.cartParams.price
-    : totalPrintPrice;
-  totalPrintPrice = rsleeve_file.cartParams
-    ? totalPrintPrice + rsleeve_file.cartParams.price
-    : totalPrintPrice;
-  totalPrintPrice = badge_file.cartParams
-    ? totalPrintPrice + badge_file.cartParams.price
-    : totalPrintPrice;
+  totalPrintPrice = front_file.cartParams ? totalPrintPrice + front_file.cartParams.price : totalPrintPrice;
+  totalPrintPrice = back_file.cartParams ? totalPrintPrice + back_file.cartParams.price : totalPrintPrice;
+  totalPrintPrice = lsleeve_file.cartParams ? totalPrintPrice + lsleeve_file.cartParams.price : totalPrintPrice;
+  totalPrintPrice = rsleeve_file.cartParams ? totalPrintPrice + rsleeve_file.cartParams.price : totalPrintPrice;
+  totalPrintPrice = badge_file.cartParams ? totalPrintPrice + badge_file.cartParams.price : totalPrintPrice;
 
   const addToCart = () => {
     window.dataLayer.push({
@@ -398,27 +388,19 @@ function Constructor() {
             <p className={styles.order_info_line}>Стоимость текстиля: {item.price} Р.</p>
             <p className={styles.order_info_line}>
               Печать на груди:{' '}
-              {front_file && front_file.cartParams
-                ? `${front_file.cartParams.format}, ${front_file.cartParams.size}, ${front_file.cartParams.price} Р.`
-                : '-'}
+              {front_file && front_file.cartParams ? `${front_file.cartParams.format}, ${front_file.cartParams.size}, ${front_file.cartParams.price} Р.` : '-'}
             </p>
             <p className={styles.order_info_line}>
               Печать на спине:{' '}
-              {back_file && back_file.cartParams
-                ? `${back_file.cartParams.format}, ${back_file.cartParams.size}, ${back_file.cartParams.price} Р.`
-                : '-'}
+              {back_file && back_file.cartParams ? `${back_file.cartParams.format}, ${back_file.cartParams.size}, ${back_file.cartParams.price} Р.` : '-'}
             </p>
             <p className={styles.order_info_line}>
               Печать на левом рукаве:{' '}
-              {lsleeve_file && lsleeve_file.cartParams
-                ? `${lsleeve_file.cartParams.format}, ${lsleeve_file.cartParams.size}, ${lsleeve_file.cartParams.price} Р.`
-                : '-'}
+              {lsleeve_file && lsleeve_file.cartParams ? `${lsleeve_file.cartParams.format}, ${lsleeve_file.cartParams.size}, ${lsleeve_file.cartParams.price} Р.` : '-'}
             </p>
             <p className={styles.order_info_line}>
               Печать на правом рукаве:{' '}
-              {rsleeve_file && rsleeve_file.cartParams
-                ? `${rsleeve_file.cartParams.format}, ${rsleeve_file.cartParams.size}, ${rsleeve_file.cartParams.price} Р.`
-                : '-'}
+              {rsleeve_file && rsleeve_file.cartParams ? `${rsleeve_file.cartParams.format}, ${rsleeve_file.cartParams.size}, ${rsleeve_file.cartParams.price} Р.` : '-'}
             </p>
 
             <p className={styles.order_info_line}>

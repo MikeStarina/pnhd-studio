@@ -58,17 +58,7 @@ function PrintingFirstScreen({ data, typePage }) {
       {typePage === 'method' && (
         <div
           className={
-                        info.price_type === 'Термотрансфер' ?
-                          `${styles.main_wrap} ${styles.main_wrap_termo}`
-                          : info.price_type === 'ВЫШИВКА' ?
-                            `${styles.main_wrap} ${styles.main_wrap_vishivka}`
-                            : info.price_type === 'ШЕЛКОГРАФИЯ' ?
-                              `${styles.main_wrap} ${styles.main_wrap_silk}`
-                              : info.price_type === 'DTG' ?
-                                `${styles.main_wrap} ${styles.main_wrap_dtg}`
-                                : info.price_type === 'DTF' ?
-                                  `${styles.main_wrap} ${styles.main_wrap_dtf}`
-                                  : styles.main_wrap
+                        info.price_type === 'Термотрансфер' ? `${styles.main_wrap} ${styles.main_wrap_termo}` : info.price_type === 'ВЫШИВКА' ? `${styles.main_wrap} ${styles.main_wrap_vishivka}` : info.price_type === 'ШЕЛКОГРАФИЯ' ? `${styles.main_wrap} ${styles.main_wrap_silk}` : info.price_type === 'DTG' ? `${styles.main_wrap} ${styles.main_wrap_dtg}` : info.price_type === 'DTF' ? `${styles.main_wrap} ${styles.main_wrap_dtf}` : styles.main_wrap
                     }
         />
       )}
