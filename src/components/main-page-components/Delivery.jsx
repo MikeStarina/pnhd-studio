@@ -5,7 +5,7 @@ import LogoCdek from '../../ui/logo/logo';
 function Delivery() {
   return (
     <section className={styles.section}>
-      <Moto className={styles.img} />
+      <Moto className={styles.img_moto} />
       <div className={styles.block}>
         <h4 className={styles.title}>А <span className={styles.textStyle_italic}>КАК</span> ПОЛУЧИТЬ?</h4>
         <div className={styles.block_text}>

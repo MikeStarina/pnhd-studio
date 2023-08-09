@@ -2,3 +2,15 @@
     width: 580px;
 }
 
+@media (max-width: 1100px) {
+    .moto {
+        right: 100px;
+    }
+}
+
+@media (max-width: 650px) {
+    .moto {
+        width: 255px;
+    }
+}
+
