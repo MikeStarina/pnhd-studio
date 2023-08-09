@@ -4,7 +4,6 @@ import { Stage, Layer } from 'react-konva';
 import { v4 as uuidv4 } from 'uuid';
 import { useParams, useLocation, useHistory } from 'react-router-dom';
 import styles from './constructor-page.module.css';
-// import front from '../../components/images/front.png';
 import {
   IMAGE_SELECT,
   IMAGE_DESELECT,
@@ -33,6 +32,8 @@ import { clearItemOrder } from '../../services/actions/item-action';
 function Constructor() {
   const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
   const { id } = useParams();
+  const slug = id;
+
   const dispatch = useDispatch();
   const {
     isBlockButton,
@@ -56,7 +57,7 @@ function Constructor() {
   const imgRef = useRef(null);
   const stageRef = useRef();
 
-  const item = data.length > 0 && data.filter((elem) => elem._id === id)[0];
+  const item = data && data.length > 0 && data.find((elem) => elem.slug === slug);
 
   let initialParams = {
     x: 140,
@@ -112,11 +113,7 @@ function Constructor() {
       height: 220,
     };
   } else if (activeView === 'lsleeve') {
-    if (
-      item.type === 'hoodie'
-            || item.type === 'longsleeve'
-            || item.type === 'sweatshirt'
-    ) {
+    if (item.type === 'hoodie' || item.type === 'longsleeve' || item.type === 'sweatshirt') {
       initialParams = {
         x: 230,
         y: 125,
@@ -132,11 +129,7 @@ function Constructor() {
       };
     }
   } else if (activeView === 'rsleeve') {
-    if (
-      item.type === 'hoodie'
-            || item.type === 'longsleeve'
-            || item.type === 'sweatshirt'
-    ) {
+    if (item.type === 'hoodie' || item.type === 'longsleeve' || item.type === 'sweatshirt') {
       initialParams = {
         x: 215,
         y: 125,
@@ -208,32 +201,18 @@ function Constructor() {
       const scene = await stageRef.current.toBlob();
 
       const data = new FormData();
-      data.append(
-        'files',
-        scene,
-        `${activeView}_preview_${uuidv4()}.jpg`,
-      );
+      data.append('files', scene, `${activeView}_preview_${uuidv4()}.jpg`);
 
       dispatch(uploadPreview(data, activeView));
     };
   }
 
   let totalPrintPrice = 0;
-  totalPrintPrice = front_file.cartParams
-    ? totalPrintPrice + front_file.cartParams.price
-    : totalPrintPrice;
-  totalPrintPrice = back_file.cartParams
-    ? totalPrintPrice + back_file.cartParams.price
-    : totalPrintPrice;
-  totalPrintPrice = lsleeve_file.cartParams
-    ? totalPrintPrice + lsleeve_file.cartParams.price
-    : totalPrintPrice;
-  totalPrintPrice = rsleeve_file.cartParams
-    ? totalPrintPrice + rsleeve_file.cartParams.price
-    : totalPrintPrice;
-  totalPrintPrice = badge_file.cartParams
-    ? totalPrintPrice + badge_file.cartParams.price
-    : totalPrintPrice;
+  totalPrintPrice = front_file.cartParams ? totalPrintPrice + front_file.cartParams.price : totalPrintPrice;
+  totalPrintPrice = back_file.cartParams ? totalPrintPrice + back_file.cartParams.price : totalPrintPrice;
+  totalPrintPrice = lsleeve_file.cartParams ? totalPrintPrice + lsleeve_file.cartParams.price : totalPrintPrice;
+  totalPrintPrice = rsleeve_file.cartParams ? totalPrintPrice + rsleeve_file.cartParams.price : totalPrintPrice;
+  totalPrintPrice = badge_file.cartParams ? totalPrintPrice + badge_file.cartParams.price : totalPrintPrice;
 
   const addToCart = () => {
     window.dataLayer.push({
@@ -299,239 +278,158 @@ function Constructor() {
 
   return (
     item && (
-    <section className={styles.screen}>
-      <div className={styles.mockup_container}>
-        <div className={styles.stage_container}>
-          <Stage
-            width={500}
-            height={496}
-            onMouseUp={checkDeselect}
-            onTouchEnd={checkDeselect}
-            className={styles.stage}
-            ref={stageRef}
-          >
-            <Layer className={styles.layer}>
-              <Mockup item={item} />
-            </Layer>
-            <Layer className={styles.layer}>
-              <Print
-                initialParams={initialParams}
-                isSelected={isSelected}
-                onSelect={onSelect}
-                file={file && file.file.file.url}
-                initialImageCoords={
-                                        file && file.file.stageParams
-                                    }
-                imgRef={imgRef}
-                scene={getScene}
-                onChange={(newAttrs) => {
-                  dispatch({
-                    type: SET_FILE_STAGE_PARAMS,
-                    payload: newAttrs,
-                    view: activeView,
-                  });
-                  dispatch(getScene(activeView));
-                  dispatch(
-                    getSize(
-                      newAttrs,
-                      activeView,
-                      item.color,
-                    ),
-                  );
-                }}
-              />
-            </Layer>
-          </Stage>
-        </div>
-      </div>
-      <div className={styles.controls_container}>
-        <div className={styles.tabs_container}>
-          <button
-            type="button"
-            className={
-                                activeView === 'front'
-                                  ? styles.active_tab
-                                  : styles.tab
-                            }
-            id="front"
-            onClick={setActiveTab}
-          >
-            Грудь
-          </button>
-          <button
-            type="button"
-            className={
-                                activeView === 'back'
-                                  ? styles.active_tab
-                                  : styles.tab
-                            }
-            id="back"
-            onClick={setActiveTab}
-          >
-            Спина
-          </button>
-          {item.type !== 'totebag' && (
-          <button
-            className={
-                                    activeView === 'lsleeve'
-                                      ? styles.active_tab
-                                      : styles.tab
-                                }
-            id="lsleeve"
-            onClick={setActiveTab}
-            type="button"
-          >
-            Л.&nbsp;рукав
-          </button>
-          )}
-          {item.type !== 'totebag' && (
-          <button
-            className={
-                                    activeView === 'rsleeve'
-                                      ? styles.active_tab
-                                      : styles.tab
-                                }
-            id="rsleeve"
-            onClick={setActiveTab}
-            type="button"
-          >
-            П.&nbsp;рукав
-          </button>
-          )}
-        </div>
-
-        <div className={styles.input_container}>
-          <form
-            className={styles.input_form}
-            onChange={onChange}
-            encType="multipart/form-data"
-          >
-            {isImageLoading && (
-            <div
-              className={
-                                        isImageLoading
-                                          ? styles.loader_active
-                                          : styles.loader
-                                    }
+      <section className={styles.screen}>
+        <div className={styles.mockup_container}>
+          <div className={styles.stage_container}>
+            <Stage
+              width={500}
+              height={496}
+              onMouseUp={checkDeselect}
+              onTouchEnd={checkDeselect}
+              className={styles.stage}
+              ref={stageRef}
             >
-              <div className={styles.loader_icon} />
-            </div>
-            )}
-            {!isImageLoading && file && file.name && (
+              <Layer className={styles.layer}>
+                <Mockup item={item} />
+              </Layer>
+              <Layer className={styles.layer}>
+                <Print
+                  initialParams={initialParams}
+                  isSelected={isSelected}
+                  onSelect={onSelect}
+                  file={file && file.file.file.url}
+                  initialImageCoords={file && file.file.stageParams}
+                  imgRef={imgRef}
+                  scene={getScene}
+                  onChange={(newAttrs) => {
+                    dispatch({
+                      type: SET_FILE_STAGE_PARAMS,
+                      payload: newAttrs,
+                      view: activeView,
+                    });
+                    dispatch(getScene(activeView));
+                    dispatch(getSize(newAttrs, activeView, item.color));
+                  }}
+                />
+              </Layer>
+            </Stage>
+          </div>
+        </div>
+        <div className={styles.controls_container}>
+          <div className={styles.tabs_container}>
             <button
               type="button"
-              className={styles.print_delete_button}
-              onClick={deletePrint}
+              className={activeView === 'front' ? styles.active_tab : styles.tab}
+              id="front"
+              onClick={setActiveTab}
             >
-              X
+              Грудь
             </button>
+            <button
+              type="button"
+              className={activeView === 'back' ? styles.active_tab : styles.tab}
+              id="back"
+              onClick={setActiveTab}
+            >
+              Спина
+            </button>
+            {item.type !== 'totebag' && (
+              <button
+                className={activeView === 'lsleeve' ? styles.active_tab : styles.tab}
+                id="lsleeve"
+                onClick={setActiveTab}
+                type="button"
+              >
+                Л.&nbsp;рукав
+              </button>
             )}
-            <div className={styles.input_wrapper}>
-              <input
-                type="file"
-                accept=".jpg, .png"
-                className={styles.file_input}
-                name="file_input"
-              />
-              <label
-                htmlFor="file_input"
-                className={styles.file_input_button}
+            {item.type !== 'totebag' && (
+              <button
+                className={activeView === 'rsleeve' ? styles.active_tab : styles.tab}
+                id="rsleeve"
+                onClick={setActiveTab}
+                type="button"
               >
-                <span
-                  className={
-                                            styles.file_input_button_text
-                                        }
-                  name="input_button_text"
-                >
-                  {file && file.name
-                    ? file.name
-                    : 'Выберите файл'}
-                </span>
-              </label>
-            </div>
-          </form>
-        </div>
-        <div className={styles.stage_controls} />
-        <div className={styles.order_info}>
-          <p className={styles.order_info_line}>
-            Текстиль:
-            {' '}
-            {item.name}
-          </p>
-          <p className={styles.order_info_line}>
-            Стоимость текстиля:
-            {' '}
-            {item.price}
-            {' '}
-            Р.
-          </p>
-          <p className={styles.order_info_line}>
-            Печать на груди:
-            {' '}
-            {front_file && front_file.cartParams
-              ? `${front_file.cartParams.format}, ${front_file.cartParams.size}, ${front_file.cartParams.price} Р.`
-              : '-'}
-          </p>
-          <p className={styles.order_info_line}>
-            Печать на спине:
-            {' '}
-            {back_file && back_file.cartParams
-              ? `${back_file.cartParams.format}, ${back_file.cartParams.size}, ${back_file.cartParams.price} Р.`
-              : '-'}
-          </p>
-          <p className={styles.order_info_line}>
-            Печать на левом рукаве:
-            {' '}
-            {lsleeve_file && lsleeve_file.cartParams
-              ? `${lsleeve_file.cartParams.format}, ${lsleeve_file.cartParams.size}, ${lsleeve_file.cartParams.price} Р.`
-              : '-'}
-          </p>
-          <p className={styles.order_info_line}>
-            Печать на правом рукаве:
-            {' '}
-            {rsleeve_file && rsleeve_file.cartParams
-              ? `${rsleeve_file.cartParams.format}, ${rsleeve_file.cartParams.size}, ${rsleeve_file.cartParams.price} Р.`
-              : '-'}
-          </p>
+                П.&nbsp;рукав
+              </button>
+            )}
+          </div>
 
-          <p className={styles.order_info_line}>
-            Итого текстиль и печать:
-            {' '}
-            {item.price + totalPrintPrice}
-            {' '}
-            Р.
-          </p>
+          <div className={styles.input_container}>
+            <form className={styles.input_form} onChange={onChange} encType="multipart/form-data">
+              {isImageLoading && (
+                <div className={isImageLoading ? styles.loader_active : styles.loader}>
+                  <div className={styles.loader_icon} />
+                </div>
+              )}
+              {!isImageLoading && file && file.name && (
+                <button type="button" className={styles.print_delete_button} onClick={deletePrint}>
+                  X
+                </button>
+              )}
+              <div className={styles.input_wrapper}>
+                <input
+                  type="file"
+                  accept=".jpg, .png"
+                  className={styles.file_input}
+                  name="file_input"
+                />
+                <label htmlFor="file_input" className={styles.file_input_button}>
+                  <span className={styles.file_input_button_text} name="input_button_text">
+                    {file && file.name ? file.name : 'Выберите файл'}
+                  </span>
+                </label>
+              </div>
+            </form>
+          </div>
+          <div className={styles.stage_controls} />
+          <div className={styles.order_info}>
+            <p className={styles.order_info_line}>Текстиль: {item.name}</p>
+            <p className={styles.order_info_line}>Стоимость текстиля: {item.price} Р.</p>
+            <p className={styles.order_info_line}>
+              Печать на груди:{' '}
+              {front_file && front_file.cartParams ? `${front_file.cartParams.format}, ${front_file.cartParams.size}, ${front_file.cartParams.price} Р.` : '-'}
+            </p>
+            <p className={styles.order_info_line}>
+              Печать на спине:{' '}
+              {back_file && back_file.cartParams ? `${back_file.cartParams.format}, ${back_file.cartParams.size}, ${back_file.cartParams.price} Р.` : '-'}
+            </p>
+            <p className={styles.order_info_line}>
+              Печать на левом рукаве:{' '}
+              {lsleeve_file && lsleeve_file.cartParams ? `${lsleeve_file.cartParams.format}, ${lsleeve_file.cartParams.size}, ${lsleeve_file.cartParams.price} Р.` : '-'}
+            </p>
+            <p className={styles.order_info_line}>
+              Печать на правом рукаве:{' '}
+              {rsleeve_file && rsleeve_file.cartParams ? `${rsleeve_file.cartParams.format}, ${rsleeve_file.cartParams.size}, ${rsleeve_file.cartParams.price} Р.` : '-'}
+            </p>
+
+            <p className={styles.order_info_line}>
+              Итого текстиль и печать: {item.price + totalPrintPrice} Р.
+            </p>
+          </div>
+          <div className={styles.button_container}>
+            <button onClick={openPopupConstructor} className={styles.item_button_quest} />
+            {isOtherPopupVisible && (
+              <PopupModel onClose={closePopupConstructor}>
+                {isOtherPopupVisible.map((el, index) => (
+                  <p
+                    className={isOtherPopupVisible.length > 1 ? styles.instruction : styles.error}
+                    key={index}
+                  >
+                    {el}
+                  </p>
+                ))}
+              </PopupModel>
+            )}
+            <button
+              type="button"
+              className={styles.item_button}
+              onClick={addToCart}
+              disabled={isBlockButton}
+            />
+          </div>
         </div>
-        <div className={styles.button_container}>
-          <button
-            onClick={openPopupConstructor}
-            className={styles.item_button_quest}
-          />
-          {isOtherPopupVisible && (
-          <PopupModel onClose={closePopupConstructor}>
-            {isOtherPopupVisible.map((el, index) => (
-              <p
-                className={
-                                            isOtherPopupVisible.length > 1
-                                              ? styles.instruction
-                                              : styles.error
-                                        }
-                key={index}
-              >
-                {el}
-              </p>
-            ))}
-          </PopupModel>
-          )}
-          <button
-            type="button"
-            className={styles.item_button}
-            onClick={addToCart}
-            disabled={isBlockButton}
-          />
-        </div>
-      </div>
-    </section>
+      </section>
     )
   );
 }

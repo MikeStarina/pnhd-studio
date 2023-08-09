@@ -1,0 +1,22 @@
+.button {
+  width: 185px;
+  height: 40px;
+  background: rgba(0, 0, 0, 0);
+  border-radius: 5px;
+  border: 1px solid #000000;
+  color: #000000;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 16.4px;
+  font-weight: 400;
+}
+
+.button:hover {
+  background-color: #00ff00;
+}
+
+@media screen and (max-width: 600px) {
+  .button {
+    width: 99%;
+  }
+}
