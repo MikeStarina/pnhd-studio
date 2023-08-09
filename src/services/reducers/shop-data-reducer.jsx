@@ -8,46 +8,17 @@ import {
   SET_SECONDSELECTEDITEM,
   SET_THIRDSELECTEDITEM,
   SET_DEFAULTFILTER,
+  SET_FILTERS,
 } from '../actions/shop-data-actions.jsx';
 
 const initialState = {
   data: [],
   filter: '',
-  firstFilterSelect: [
-    { categorySelect: 'Мужское', selected: false, category: 'man' },
-    { categorySelect: 'Женское', selected: false, category: 'woman' },
-    { categorySelect: 'Детское', selected: false, category: 'kids' },
-    { categorySelect: 'Аксессуары', selected: false, category: 'accesorize' },
-    { categorySelect: 'PNHD & FRIENDS', selected: false, category: 'friends' },
-  ],
+  firstFilterSelect: [],
   firstFilterSelectedItem: [],
-  secondFilterSelect: [
-    { categorySelect: 'Футболка', selected: false, category: 'tshirt' },
-    { categorySelect: 'Худи', selected: false, category: 'hoodie' },
-    { categorySelect: 'Шоппер', selected: false, category: 'totebag' },
-    { categorySelect: 'Кепка', selected: false, category: 'cap' },
-    { categorySelect: 'Лонгслив', selected: false, category: 'longsleeve' },
-    { categorySelect: 'Свитшот', selected: false, category: 'sweatshirt' },
-  ],
+  secondFilterSelect: [],
   secondFilterSelectedItem: [],
-  thirdFilterSelect: [
-    { categorySelect: 'Белый', selected: false, category: 'белый' },
-    { categorySelect: 'Черный', selected: false, category: 'черный' },
-    { categorySelect: 'Суровый', selected: false, category: 'суровый' },
-    { categorySelect: 'Бордовый', selected: false, category: 'бордовый' },
-    { categorySelect: 'Хаки', selected: false, category: 'хаки' },
-    { categorySelect: 'Синий', selected: false, category: 'синий' },
-    { categorySelect: 'Песочный', selected: false, category: 'песочный' },
-    { categorySelect: 'Темно-синий', selected: false, category: 'темно-синий' },
-    { categorySelect: 'Голубой', selected: false, category: 'голубой' },
-    { categorySelect: 'Фиолетовый', selected: false, category: 'фиолетовый' },
-    { categorySelect: 'Оранжевый', selected: false, category: 'оранжевый' },
-    { categorySelect: 'Красный', selected: false, category: 'красный' },
-    { categorySelect: 'Натуральный', selected: false, category: 'натуральный' },
-    { categorySelect: 'Василек', selected: false, category: 'василек' },
-    { categorySelect: 'Серый', selected: false, category: 'серый' },
-    { categorySelect: 'Зеленый', selected: false, category: 'зеленый' },
-  ],
+  thirdFilterSelect: [],
   thirdFilterSelectedItem: [],
   firstCount: 0,
   secondCount: 0,
@@ -174,82 +145,92 @@ export const shopDataReducer = (state = initialState, action) => {
     }
 
     case SET_DEFAULTFILTER: {
+      const arr1 = [];
+      const arr2 = [];
+      const arr3 = [];
+      const resultArr1 = [];
+      const resultArr2 = [];
+      const resultArr3 = [];
+      state.data.forEach((item) => {
+        // оставить на всякий случай
+        if (!arr1.includes(item.category)) {
+          // сначала добавим в массив найденныйх категорий
+          arr1.push(item.category);
+          // затем добавим в массив для дефолтных значений и реиспользуем данные в начальных значениях фильтров
+          resultArr1.push({ categorySelect: `${item.category}`, selected: false, category: `${item.category}` });
+        }
+        if (!arr2.includes(item.type)) {
+          arr2.push(item.type);
+          resultArr2.push({ categorySelect: `${item.type}`, selected: false, category: `${item.type}` });
+        }
+        if (!arr3.includes(item.color)) {
+          arr3.push(item.color);
+          resultArr3.push({ categorySelect: `${item.color}`, selected: false, category: `${item.color}` });
+        }
+      });
       return {
         ...state,
-        firstFilterSelect: [
-          { categorySelect: 'Мужское', selected: false, category: 'man' },
-          { categorySelect: 'Женское', selected: false, category: 'woman' },
-          { categorySelect: 'Детское', selected: false, category: 'kids' },
-          {
-            categorySelect: 'Аксессуары',
-            selected: false,
-            category: 'accesorize',
-          },
-          {
-            categorySelect: 'PNHD & FRIENDS',
-            selected: false,
-            category: 'friends',
-          },
-        ],
+        firstFilterSelect: resultArr1,
         firstFilterSelectedItem: [],
         firstCount: 0,
-        secondFilterSelect: [
-          { categorySelect: 'Футболка', selected: false, category: 'tshirt' },
-          { categorySelect: 'Худи', selected: false, category: 'hoodie' },
-          { categorySelect: 'Шоппер', selected: false, category: 'totebag' },
-          { categorySelect: 'Кепка', selected: false, category: 'cap' },
-          {
-            categorySelect: 'Лонгслив',
-            selected: false,
-            category: 'longsleeve',
-          },
-          {
-            categorySelect: 'Свитшот',
-            selected: false,
-            category: 'sweatshirt',
-          },
-        ],
+        secondFilterSelect: resultArr2,
         secondFilterSelectedItem: [],
         secondCount: 0,
-        thirdFilterSelect: [
-          { categorySelect: 'Белый', selected: false, category: 'белый' },
-          { categorySelect: 'Черный', selected: false, category: 'черный' },
-          { categorySelect: 'Суровый', selected: false, category: 'суровый' },
-          { categorySelect: 'Бордовый', selected: false, category: 'бордовый' },
-          { categorySelect: 'Хаки', selected: false, category: 'хаки' },
-          { categorySelect: 'Синий', selected: false, category: 'синий' },
-          { categorySelect: 'Песочный', selected: false, category: 'песочный' },
-          {
-            categorySelect: 'Темно-синий',
-            selected: false,
-            category: 'темно-синий',
-          },
-          { categorySelect: 'Голубой', selected: false, category: 'голубой' },
-          {
-            categorySelect: 'Фиолетовый',
-            selected: false,
-            category: 'фиолетовый',
-          },
-          {
-            categorySelect: 'Оранжевый',
-            selected: false,
-            category: 'оранжевый',
-          },
-          { categorySelect: 'Красный', selected: false, category: 'красный' },
-          {
-            categorySelect: 'Натуральный',
-            selected: false,
-            category: 'натуральный',
-          },
-          { categorySelect: 'Василек', selected: false, category: 'василек' },
-          { categorySelect: 'Серый', selected: false, category: 'серый' },
-          { categorySelect: 'Зеленый', selected: false, category: 'зеленый' },
-        ],
+        thirdFilterSelect: resultArr3,
         thirdFilterSelectedItem: [],
         thirdCount: 0,
       };
+      // return {
+      //   ...state,
+      //   firstFilterSelect: [...state.defaultFirstFilterSelect],
+      //   firstFilterSelectedItem: [],
+      //   firstCount: 0,
+      //   secondFilterSelect: [...state.defaultSecondFilterSelect],
+      //   secondFilterSelectedItem: [],
+      //   secondCount: 0,
+      //   thirdFilterSelect: [...state.defaulthirdFilterSelect],
+      //   thirdFilterSelectedItem: [],
+      //   thirdCount: 0,
+      // };
     }
 
+    case SET_FILTERS: {
+      const arr1 = [];
+      const arr2 = [];
+      const arr3 = [];
+      const resultArr1 = [];
+      const resultArr2 = [];
+      const resultArr3 = [];
+      action.payload.forEach((item) => {
+        // if (arr1.length === 0) {
+        //   arr1.push(item.category);
+        // }
+        // оставить на всякий случай
+        if (!arr1.includes(item.category)) {
+          // сначала добавим в массив найденныйх категорий
+          arr1.push(item.category);
+          // затем добавим в массив для дефолтных значений и реиспользуем данные в начальных значениях фильтров
+          resultArr1.push({ categorySelect: `${item.category}`, selected: false, category: `${item.category}` });
+        }
+        if (!arr2.includes(item.type)) {
+          arr2.push(item.type);
+          resultArr2.push({ categorySelect: `${item.type}`, selected: false, category: `${item.type}` });
+        }
+        if (!arr3.includes(item.color)) {
+          arr3.push(item.color);
+          resultArr3.push({ categorySelect: `${item.color}`, selected: false, category: `${item.color}` });
+        }
+      });
+      return {
+        ...state,
+        firstFilterSelect: resultArr1,
+        secondFilterSelect: resultArr2,
+        thirdFilterSelect: resultArr3,
+        defaultFirstFilterSelect: resultArr1,
+        defaultSecondFilterSelect: resultArr2,
+        defaulthirdFilterSelect: resultArr3,
+      };
+    }
     default:
       return state;
   }

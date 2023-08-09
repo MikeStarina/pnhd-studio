@@ -2,6 +2,7 @@ import { apiBaseUrl } from '../../utils/constants';
 import { openPopup, ORDER_ERROR } from './utility-actions';
 
 export const GET_DATA = 'GET_DATA';
+export const SET_FILTERS = 'SET_FILTERS';
 export const SET_FILTER = 'SET_FILTER';
 export const SET_FIRSTSELECT = 'SET_FIRSTSELECT';
 export const SET_SECONDSELECT = 'SET_SECONDSELECT';
@@ -21,7 +22,36 @@ export const getShopData = () => {
     });
   };
 
+  // return function (dispatch) {
+  //   fetch(`${apiBaseUrl}/api/products`, {
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   })
+  //     .then(checkResponse)
+  //     .then((res) => {
+  //       // console.log(res);
+  //       dispatch({
+  //         type: GET_DATA,
+  //         payload: res.data,
+  //       });
+  //       dispatch({
+  //         type: SET_FILTERS,
+  //         payload: res.data,
+  //       });
+  //     });
+
   return function (dispatch) {
+    function test(elem) {
+      dispatch({
+        type: GET_DATA,
+        payload: elem,
+      });
+      dispatch({
+        type: SET_FILTERS,
+        payload: elem,
+      });
+    }
     fetch(`${apiBaseUrl}/api/products`, {
       headers: {
         'Content-Type': 'application/json',
@@ -29,33 +59,19 @@ export const getShopData = () => {
     })
       .then(checkResponse)
       .then((res) => {
-        // console.log(res);
-        dispatch({
-          type: GET_DATA,
-          payload: res.data,
-        });
-      });
-
-    return function (dispatch) {
-      fetch(`${apiBaseUrl}/api/products`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        // dispatch({
+        //   type: GET_DATA,
+        //   payload: res.data,
+        // });
+        test(res.data);
       })
-        .then(checkResponse)
-        .then((res) => {
-          dispatch({
-            type: GET_DATA,
-            payload: res.data,
-          });
-        })
-        .catch((err) => {
-          dispatch(
-            openPopup([
-              'Не удалось загрузить товары. Попробуйте обновить страницу.',
-            ]),
-          );
-        });
-    };
+      .catch((err) => {
+        dispatch(
+          openPopup([
+            'Не удалось загрузить товары. Попробуйте обновить страницу.',
+          ]),
+        );
+      });
   };
 };
+// };

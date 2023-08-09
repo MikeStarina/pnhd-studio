@@ -31,16 +31,19 @@ function ShopPage() {
     thirdFilterSelect,
     thirdCount,
     thirdFilterSelectedItem,
+    data,
   } = useSelector((store) => store.shopData);
   const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
-  const { search } = useLocation();
+  // const { search } = useLocation();
   const history = useHistory();
-  const searchValue = search.slice(3);
+  // const searchValue = search.slice(3);
   const [filterDropdown, setFilterDropdown] = useState({
     firstFilter: false,
     secondFilter: false,
     thirdFilter: false,
   });
+
+  // useEffect(() => { console.log(firstFilterSelect); }, [firstFilterSelect]);
 
   const getAdressString = () => {
     let string = '/shop?';
@@ -55,12 +58,12 @@ function ShopPage() {
     dispatch(closePopup());
   };
 
-  useEffect(() => {
-    dispatch({
-      type: SET_FILTER,
-      payload: searchValue,
-    });
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch({
+  //     type: SET_FILTER,
+  //     payload: searchValue,
+  //   });
+  // }, [dispatch]);
 
   useEffect(() => {
     dispatch({

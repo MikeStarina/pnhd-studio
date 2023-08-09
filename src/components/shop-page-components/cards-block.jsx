@@ -179,18 +179,26 @@ function CardsBlock() {
     });
   }
 
+  const visibleArr = [];
+  secondFilterSelect.forEach((type) => {
+    resultArr.forEach((result) => {
+      if (type.category === result.type) {
+        visibleArr.push(result);
+      }
+    });
+  });
   return (
     <>
-      {resultArr.length === 0 && (
+      {visibleArr.length === 0 && (
         <div className={styles.screen_noProducts}>
           <p>Ничего не найдено UwU</p>
         </div>
       )}
 
-      {resultArr.length > 0 && (
+      {visibleArr.length > 0 && (
         <section className={styles.screen}>
-          {resultArr
-            && resultArr.map((item, index) => {
+          {visibleArr
+            && visibleArr.map((item, index) => {
               const url = `${apiBaseUrl}${item.image_url}`;
               return (
                 <Link
