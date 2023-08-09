@@ -108,7 +108,7 @@ function App() {
           <PopupCallBack />
         </PopupModel>
       )}
-      {mainMenu.isVisible && <MainMenu closeMenu={closeMenu} />}
+      {mainMenu.isVisible && <MainMenu closeMenu={closeMenu} openPopup={handelOpenPopupHeader} />}
       {!mainMenu.isVisible && (
         <FullscreenMenu openPopup={handelOpenPopupHeader} />
       )}
