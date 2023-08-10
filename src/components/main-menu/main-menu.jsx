@@ -5,8 +5,9 @@ import { HashLink } from 'react-router-hash-link';
 import styles from './main-menu.module.css';
 import closeIcon from '../images/closeIcon.svg';
 import { contactPhone } from '../../utils/constants';
+import Button from '../../ui/Button/Button';
 
-function MainMenu({ closeMenu }) {
+function MainMenu({ closeMenu, openPopup }) {
   const clickOnEmptyHandler = (e) => {
     if (e.target.id === 'background') {
       closeMenu();
@@ -79,6 +80,9 @@ function MainMenu({ closeMenu }) {
             КОНТАКТЫ
           </HashLink>
         </div>
+        <Button onClickTo={openPopup} type="callback" className={styles.button_call}>
+          ПЕРЕЗВОНИТЬ?
+        </Button>
       </div>
       <script src="//cdn.callibri.ru/callibri.js" async id="calltr" />
     </div>
