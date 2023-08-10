@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import { contactPhone } from '../../utils/constants';
 import styles from './fullscreen-menu.module.css';
+import Button from '../../ui/Button/Button';
 
 const fullscreenMenu = ({ openPopup }) => {
   return (
@@ -62,9 +63,9 @@ const fullscreenMenu = ({ openPopup }) => {
         >
           / INST
         </a>
-        <button className={styles.button} onClick={openPopup}>
+        <Button onClickTo={openPopup} type="callback">
           ПЕРЕЗВОНИТЬ?
-        </button>
+        </Button>
       </div>
     </header>
   );

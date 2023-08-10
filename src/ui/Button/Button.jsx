@@ -1,11 +1,20 @@
 import styles from './Button.module.css';
 
-function Button({ children, className = '', onClickTo }) {
+function Button({ children, className = '', onClickTo, type = 'empty' }) {
   const extClassName = className || '';
   return (
-    <button className={`${styles.button} ${extClassName}`} onClick={onClickTo}>
-      {children}
-    </button>
+    <>
+      {type === 'empty' && (
+      <button className={`${styles.button} ${extClassName}`} onClick={onClickTo}>
+        {children}
+      </button>
+      )}
+      {type === 'callback' && (
+      <button className={`${styles.button_callback} ${extClassName}`} onClick={onClickTo}>
+        {children}
+      </button>
+      )}
+    </>
   );
 }
 
