@@ -145,7 +145,7 @@ function ProductContent(item) {
               state: { size: order },
             }}
           >
-            <Button type="button" className={styles.button_up}>
+            <Button className={styles.button_up}>
               Добавить принт &gt;
             </Button>
           </Link>
