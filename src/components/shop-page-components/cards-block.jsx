@@ -67,7 +67,7 @@ function CardsBlock() {
       count1 = firstCount;
       frstFilter.forEach((item) => {
         filtr1.forEach((select, index) => {
-          if (select.filter_category === item) {
+          if (select.category === item) {
             filtr1[index].selected = true;
             count1 += 1;
           }
@@ -79,7 +79,7 @@ function CardsBlock() {
       count2 = secondCount;
       secondFilter.forEach((item) => {
         filtr2.forEach((select, index) => {
-          if (select.filter_type === item) {
+          if (select.category === item) {
             filtr2[index].selected = true;
             count2 += 1;
           }
@@ -91,7 +91,7 @@ function CardsBlock() {
       count3 = thirdCount;
       thirdFilter.forEach((item) => {
         filtr3.forEach((select, index) => {
-          if (select.filter_color === item) {
+          if (select.category === item) {
             filtr3[index].selected = true;
             count3 += 1;
           }
