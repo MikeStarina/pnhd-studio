@@ -176,7 +176,7 @@ function CardsBlock() {
   }
 
   const visibleArr = [];
-  const renderQueue = ['tshirt', 'longsleeve', 'sweatshirt', 'hoodie', 'totebag', 'cap'];
+  const renderQueue = ['Футболка', 'Лонгслив', 'Свитшот', 'Худи', 'Шоппер', 'Кепка'];
   if (renderQueue.length != secondFilterSelect.length) {
     secondFilterSelect.forEach((item) => {
       if (!renderQueue.includes(item.category)) {
@@ -186,7 +186,7 @@ function CardsBlock() {
   }
   renderQueue.forEach((type) => {
     resultArr.forEach((result) => {
-      if (type === result.type) {
+      if (type === result.filter_type) {
         visibleArr.push(result);
       }
     });
@@ -205,7 +205,7 @@ function CardsBlock() {
             const url = `${apiBaseUrl}${item.image_url}`;
             return (
               <Link
-                  to={{ pathname: `/shop/${item._id}` }}
+                  to={{ pathname: `/shop/${item.slug}` }}
                   className={styles.link}
                   key={index}
               >

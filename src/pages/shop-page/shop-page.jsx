@@ -14,7 +14,7 @@ import {
   closePopup,
 } from '../../services/actions/utility-actions.jsx';
 import styles from './shop-page.module.css';
-import CardsBlock from '../../components/shop-page-components/cards-block.jsx';
+import CardsBlock from '../../components/shop-page-components/cards-block';
 import PopupModel from '../../components/popupModel/popupModel';
 import FilterSelect from '../../components/shop-page-components/filter-select';
 import { getString } from '../../utils/utils';
@@ -34,7 +34,6 @@ function ShopPage() {
     data,
   } = useSelector((store) => store.shopData);
   const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
-  console.log(data);
   // const { search } = useLocation();
   const history = useHistory();
   // const searchValue = search.slice(3);
