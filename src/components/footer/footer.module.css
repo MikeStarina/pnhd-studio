@@ -1,64 +1,219 @@
 .footer {
     display: grid;
-    padding: 50px 200px;
-    justify-items: center;
-    grid-template-columns: 34% 28% 30% 8%;
     grid-template-rows: repeat(2, auto);
-    grid-auto-flow: row dense;
-    row-gap: 50px;
+    grid-auto-columns: 1fr;
+    grid-template-areas: "customer customer customer customer customer print print print print printing printing printing printing printing printing textile textile textile textile textile textile label label label label label label label label label label label label label" "sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign ";
+    margin: 0;
+    padding: 186px 100px 60px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #141414;
+}
+
+.block_footer {
+    margin: 40px 0 0;
+    padding: 0;
+    width: 50px;
     box-sizing: border-box;
 }
 
-.footer_link {
-    justify-self: start;
-    font-size: 20px;
-    line-height: 20px;
-    font-weight: bold;
-    text-decoration: none;
-    color: black;
-}
-
-.footer_link:hover {
-    cursor: pointer;
-    color: lightgray;
-}
-
-.list {
-    justify-self: start;
+.item_block {
     margin: 0;
     padding: 0;
+}
+
+.block_customer {
+    grid-area: customer;
+}
+
+.block_print {
+    grid-area: print;
+}
+
+.block_printing {
+    grid-area: printing;
+}
+
+.block_textile {
+    grid-area: textile;
+}
+
+.block_label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    grid-area: label;
+    grid-column-start: 23;
+    margin: 0;
+    padding: 0;
+}
+
+.block_menu {
+    padding: 0;
+    margin: 0;
+    font-weight: 800;
+    font-size: 20px;
+    line-height: 20.5px;
+    color: #00FF00;
+}
+
+.block_info {
     list-style: none;
+    padding: 0;
+    margin: 48px 0 0;
 }
 
-.item {
-    font-style: normal;
-    font-size: 14px;
-    line-height: 17px;
+.info_link {
+    padding: 0;
+    margin: 0 0 5px;
     text-decoration: none;
-    color: black;
+    display: inline-block;
+    text-align: -webkit-match-parent;
+    color: #5B5B5B;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 16.3px;
 }
 
-.item:hover {
-    cursor: pointer;
-    color: lightgray;
+.label_info {
+    margin: 0;
+    padding: 0;
+    color: #5B5B5B;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 16px;
 }
 
-@media (max-width: 1100px) {
+.label_info:first-of-type {
+    margin-top: 50px;
+}
+
+.label_info:last-of-type {
+    margin-bottom: 38px;
+}
+
+.social_link:last-of-type {
+    text-decoration: none;
+    margin-left: 15px;
+    padding: 0;
+}
+
+.block_sign {
+    margin: 145px 0 90px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+    grid-area: sign;
+}
+
+.sign_text {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 21.3px;
+    color: #00FF00;
+}
+
+.sign_text:last-of-type {
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 14px;
+    color: #5B5B5B;
+}
+
+@media (max-width: 1300px) {
     .footer {
-        grid-template-columns: 1fr;
-        gap: 10px;
-        padding: 50px 50px 200px 50px;
+        grid-template-areas: "customer customer customer customer customer print print print print printing printing printing printing printing printing printing textile textile textile textile textile textile label label label label label label label label label label label label" "sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign sign ";
+    }
+}
+
+@media (max-width: 1170px)  {
+    .footer {
+        padding: 150px 20px 10px;
+        grid-template-rows: repeat(3, auto);
+        row-gap: 50px;
+        grid-template-areas: "customer customer customer customer  print print print print  printing printing printing printing  textile textile textile textile " "label label label label label label label label label label label label label label label label" "sign sign  sign sign sign sign sign sign sign sign  sign sign sign sign sign sign";
     }
 
-    .footer_link {
-        font-size: 20px;
-        line-height: 20px;
-        font-weight: bold;
-        text-decoration: none;
-        color: black;
-        margin: 0 0 15px 0;
+    .item_block {}
+
+    .block_label {
+        grid-column-start: 1;
+        align-items: center;
     }
-    .list {
-        padding-top: 80px;
+}
+
+@media (max-width: 800px) {
+    .block_menu {
+        font-size: 14px;
+        line-height: 14px;
+    }
+
+    .info_link {
+        margin-bottom: 5px;
+        font-size: 12px;
+        line-height: 12.3px;
+    }
+
+    .label_info {
+        margin: 0;
+        padding: 0;
+        font-size: 12px;
+    }
+
+    .label_info:first-of-type {
+        margin-top: 30px;
+    }
+
+    .label_info:last-of-type {
+        margin-bottom: 25px;
+    }
+
+    .social:first-of-type {
+        width: 18px;
+    }
+
+    .social_link:last-of-type {
+        margin-left: 10px;
+        width: 11px;
+    }
+
+    .block_sign {
+        margin: 45px 0 145px;
+    }
+
+    .sign_text {
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 12px;
+    }
+
+    .sign_text:last-of-type {
+        font-weight: 300;
+        font-size: 10px;
+        line-height: 16px;
+    }
+}
+
+@media (max-width: 730px) {
+    .footer {
+        grid-template-areas: "customer customer customer customer  print print print  printing printing printing printing printing  textile textile textile textile " "label label label label label label label label label label label label label label label label" "sign sign  sign sign sign sign sign sign sign sign  sign sign sign sign sign sign";
+    }
+}
+
+@media (max-width: 560px) {
+    .footer {
+        grid-template-rows: repeat(4, auto);
+        row-gap: 50px;
+        grid-template-areas: "customer customer customer customer  print print print " "printing printing printing printing textile textile textile " "label label label label label label label" "sign sign  sign sign sign sign sign";
+    }
+
+    .block_info {
+        margin-top: 26px;
     }
 }
