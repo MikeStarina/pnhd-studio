@@ -144,7 +144,8 @@ function CardsBlock() {
     resultArr = [];
     firstFilterSelectedItem.forEach((item) => {
       data.forEach((elem) => {
-        if (item === elem.category) {
+        if (item === elem.filter_category
+        ) {
           resultArr.push(elem);
         }
       });
@@ -155,7 +156,7 @@ function CardsBlock() {
     resultArr = [];
     secondFilterSelectedItem.forEach((item) => {
       a.forEach((elem) => {
-        if (item === elem.type) {
+        if (item === elem.filter_type) {
           resultArr.push(elem);
         }
       });
@@ -166,28 +167,54 @@ function CardsBlock() {
     resultArr = [];
     thirdFilterSelectedItem.forEach((item) => {
       a.forEach((elem) => {
-        if (item === elem.color) {
+        if (item === elem.filter_color
+        ) {
           resultArr.push(elem);
         }
       });
     });
   }
 
+  const visibleArr = [];
+  const renderQueue = ['Футболка', 'Лонгслив', 'Свитшот', 'Худи', 'Шоппер', 'Кепка'];
+  if (renderQueue.length != secondFilterSelect.length) {
+    secondFilterSelect.forEach((item) => {
+      if (!renderQueue.includes(item.category)) {
+        renderQueue.push(item.category);
+      }
+    });
+  }
+  renderQueue.forEach((type) => {
+    resultArr.forEach((result) => {
+      if (type === result.filter_type) {
+        visibleArr.push(result);
+      }
+    });
+  });
   return (
     <>
-      {resultArr.length === 0 && (
+      {visibleArr.length === 0 && (
         <div className={styles.screen_noProducts}>
           <p>Ничего не найдено UwU</p>
         </div>
       )}
 
-      {resultArr.length > 0 && (
+      {visibleArr.length > 0 && (
         <section className={styles.screen}>
-          {resultArr && resultArr.map((item, index) => {
+          {visibleArr && visibleArr.map((item, index) => {
             const url = `${apiBaseUrl}${item.image_url}`;
             return (
-              <Link to={{ pathname: `/shop/${item.slug}` }} className={styles.link} key={index}>
-                <CardItem title={item.name} price={item.price} img={url} sizes={item.sizes} />
+              <Link
+                  to={{ pathname: `/shop/${item.slug}` }}
+                  className={styles.link}
+                  key={index}
+              >
+                <CardItem
+                    title={item.name}
+                    price={item.price}
+                    img={url}
+                    sizes={item.sizes}
+                />
               </Link>
             );
           })}

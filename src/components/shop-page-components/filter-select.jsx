@@ -50,16 +50,16 @@ function FilterSelect(props) {
                   onClick={() => {
                     handleItemSelectClick(option);
                   }}
-                  key={option.categorySelect}
+                  key={option.category}
                 >
                   {option.selected ? (
                     <>
                       <img src={filterCircle} alt="выбранный_элемент" />
-                      <span>{option.categorySelect}</span>
+                      <span>{option.category}</span>
                     </>
                   ) : (
                     <span className={styles.dropdown_item_space}>
-                      {option.categorySelect}
+                      {option.category}
                     </span>
                   )}
                 </div>
