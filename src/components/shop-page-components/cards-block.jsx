@@ -68,7 +68,8 @@ function CardsBlock() {
       count1 = firstCount;
       frstFilter.forEach((item) => {
         filtr1.forEach((select, index) => {
-          if (select.category === item) {
+          if (select.filter_category
+            === item) {
             filtr1[index].selected = true;
             count1 += 1;
           }
@@ -80,7 +81,7 @@ function CardsBlock() {
       count2 = secondCount;
       secondFilter.forEach((item) => {
         filtr2.forEach((select, index) => {
-          if (select.category === item) {
+          if (select.filter_type === item) {
             filtr2[index].selected = true;
             count2 += 1;
           }
@@ -92,7 +93,8 @@ function CardsBlock() {
       count3 = thirdCount;
       thirdFilter.forEach((item) => {
         filtr3.forEach((select, index) => {
-          if (select.category === item) {
+          if (select.filter_color
+            === item) {
             filtr3[index].selected = true;
             count3 += 1;
           }
@@ -150,7 +152,8 @@ function CardsBlock() {
     resultArr = [];
     firstFilterSelectedItem.forEach((item) => {
       data.forEach((elem) => {
-        if (item === elem.category) {
+        if (item === elem.filter_category
+        ) {
           resultArr.push(elem);
         }
       });
@@ -161,7 +164,7 @@ function CardsBlock() {
     resultArr = [];
     secondFilterSelectedItem.forEach((item) => {
       a.forEach((elem) => {
-        if (item === elem.type) {
+        if (item === elem.filter_type) {
           resultArr.push(elem);
         }
       });
@@ -172,7 +175,8 @@ function CardsBlock() {
     resultArr = [];
     thirdFilterSelectedItem.forEach((item) => {
       a.forEach((elem) => {
-        if (item === elem.color) {
+        if (item === elem.filter_color
+        ) {
           resultArr.push(elem);
         }
       });
@@ -180,9 +184,17 @@ function CardsBlock() {
   }
 
   const visibleArr = [];
-  secondFilterSelect.forEach((type) => {
+  const renderQueue = ['tshirt', 'longsleeve', 'sweatshirt', 'hoodie', 'totebag', 'cap'];
+  if (renderQueue.length != secondFilterSelect.length) {
+    secondFilterSelect.forEach((item) => {
+      if (!renderQueue.includes(item.category)) {
+        renderQueue.push(item.category);
+      }
+    });
+  }
+  renderQueue.forEach((type) => {
     resultArr.forEach((result) => {
-      if (type.category === result.type) {
+      if (type === result.type) {
         visibleArr.push(result);
       }
     });

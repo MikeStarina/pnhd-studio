@@ -23,6 +23,7 @@ function FilterSelect(props) {
   };
 
   const handleItemSelectClick = (option) => {
+    console.log(option);
     onChange(option);
     setAdress();
     setFilterVisible('close');

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import {
   SET_DEFAULTFILTER,
-  SET_FILTER,
+  // SET_FILTER,
   SET_FIRSTSELECT,
   SET_SECONDSELECT,
   SET_THIRDSELECT,
@@ -34,6 +34,7 @@ function ShopPage() {
     data,
   } = useSelector((store) => store.shopData);
   const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
+  console.log(data);
   // const { search } = useLocation();
   const history = useHistory();
   // const searchValue = search.slice(3);

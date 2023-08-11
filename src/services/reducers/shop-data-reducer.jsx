@@ -1,6 +1,6 @@
 import {
   GET_DATA,
-  SET_FILTER,
+  // SET_FILTER,
   SET_FIRSTSELECT,
   SET_SECONDSELECT,
   SET_THIRDSELECT,
@@ -13,7 +13,7 @@ import {
 
 const initialState = {
   data: [],
-  filter: '',
+  // filter: '',
   firstFilterSelect: [],
   firstFilterSelectedItem: [],
   secondFilterSelect: [],
@@ -33,13 +33,14 @@ export const shopDataReducer = (state = initialState, action) => {
         data: action.payload,
       };
     }
-    case SET_FILTER: {
-      return {
-        ...state,
-        filter: action.payload,
-      };
-    }
+    // case SET_FILTER: {
+    //   return {
+    //     ...state,
+    //     filter: action.payload,
+    //   };
+    // }
     case SET_FIRSTSELECT: {
+      console.log(action.payload);
       const selected = state.firstFilterSelectedItem;
       const selectItems = state.firstFilterSelect;
       const indexItem = selected.indexOf(action.payload.category);
@@ -153,19 +154,19 @@ export const shopDataReducer = (state = initialState, action) => {
       const resultArr3 = [];
       state.data.forEach((item) => {
         // оставить на всякий случай
-        if (!arr1.includes(item.category)) {
+        if (!arr1.includes(item.filter_category)) {
           // сначала добавим в массив найденныйх категорий
-          arr1.push(item.category);
+          arr1.push(item.filter_category);
           // затем добавим в массив для дефолтных значений и реиспользуем данные в начальных значениях фильтров
-          resultArr1.push({ categorySelect: `${item.category}`, selected: false, category: `${item.category}` });
+          resultArr1.push({ categorySelect: `${item.filter_category}`, selected: false, category: `${item.filter_category}` });
         }
-        if (!arr2.includes(item.type)) {
-          arr2.push(item.type);
-          resultArr2.push({ categorySelect: `${item.type}`, selected: false, category: `${item.type}` });
+        if (!arr2.includes(item.filter_type)) {
+          arr2.push(item.filter_type);
+          resultArr2.push({ categorySelect: `${item.filter_type}`, selected: false, category: `${item.filter_type}` });
         }
-        if (!arr3.includes(item.color)) {
-          arr3.push(item.color);
-          resultArr3.push({ categorySelect: `${item.color}`, selected: false, category: `${item.color}` });
+        if (!arr3.includes(item.filter_color)) {
+          arr3.push(item.filter_color);
+          resultArr3.push({ categorySelect: `${item.filter_color}`, selected: false, category: `${item.filter_color}` });
         }
       });
       return {
@@ -206,19 +207,19 @@ export const shopDataReducer = (state = initialState, action) => {
         //   arr1.push(item.category);
         // }
         // оставить на всякий случай
-        if (!arr1.includes(item.category)) {
+        if (!arr1.includes(item.filter_category)) {
           // сначала добавим в массив найденныйх категорий
-          arr1.push(item.category);
+          arr1.push(item.filter_category);
           // затем добавим в массив для дефолтных значений и реиспользуем данные в начальных значениях фильтров
-          resultArr1.push({ categorySelect: `${item.category}`, selected: false, category: `${item.category}` });
+          resultArr1.push({ categorySelect: `${item.filter_category}`, selected: false, category: `${item.filter_category}` });
         }
-        if (!arr2.includes(item.type)) {
-          arr2.push(item.type);
-          resultArr2.push({ categorySelect: `${item.type}`, selected: false, category: `${item.type}` });
+        if (!arr2.includes(item.filter_type)) {
+          arr2.push(item.filter_type);
+          resultArr2.push({ categorySelect: `${item.filter_type}`, selected: false, category: `${item.filter_type}` });
         }
-        if (!arr3.includes(item.color)) {
-          arr3.push(item.color);
-          resultArr3.push({ categorySelect: `${item.color}`, selected: false, category: `${item.color}` });
+        if (!arr3.includes(item.filter_color)) {
+          arr3.push(item.filter_color);
+          resultArr3.push({ categorySelect: `${item.filter_color}`, selected: false, category: `${item.filter_color}` });
         }
       });
       return {
