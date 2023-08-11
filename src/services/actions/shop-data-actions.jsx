@@ -22,27 +22,8 @@ export const getShopData = () => {
     });
   };
 
-  // return function (dispatch) {
-  //   fetch(`${apiBaseUrl}/api/products`, {
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //   })
-  //     .then(checkResponse)
-  //     .then((res) => {
-  //       // console.log(res);
-  //       dispatch({
-  //         type: GET_DATA,
-  //         payload: res.data,
-  //       });
-  //       dispatch({
-  //         type: SET_FILTERS,
-  //         payload: res.data,
-  //       });
-  //     });
-
   return function (dispatch) {
-    function test(elem) {
+    function getData(elem) {
       dispatch({
         type: GET_DATA,
         payload: elem,
@@ -59,11 +40,11 @@ export const getShopData = () => {
     })
       .then(checkResponse)
       .then((res) => {
-        // dispatch({
-        //   type: GET_DATA,
-        //   payload: res.data,
-        // });
-        test(res.data);
+        dispatch({
+          type: GET_DATA,
+          payload: res.data,
+        });
+        getData(res.data);
       })
       .catch((err) => {
         dispatch(
@@ -74,4 +55,3 @@ export const getShopData = () => {
       });
   };
 };
-// };

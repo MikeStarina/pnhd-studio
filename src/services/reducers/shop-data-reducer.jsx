@@ -1,6 +1,5 @@
 import {
   GET_DATA,
-  // SET_FILTER,
   SET_FIRSTSELECT,
   SET_SECONDSELECT,
   SET_THIRDSELECT,
@@ -13,7 +12,6 @@ import {
 
 const initialState = {
   data: [],
-  // filter: '',
   firstFilterSelect: [],
   firstFilterSelectedItem: [],
   secondFilterSelect: [],
@@ -33,14 +31,8 @@ export const shopDataReducer = (state = initialState, action) => {
         data: action.payload,
       };
     }
-    // case SET_FILTER: {
-    //   return {
-    //     ...state,
-    //     filter: action.payload,
-    //   };
-    // }
+
     case SET_FIRSTSELECT: {
-      console.log(action.payload);
       const selected = state.firstFilterSelectedItem;
       const selectItems = state.firstFilterSelect;
       const indexItem = selected.indexOf(action.payload.category);
@@ -153,20 +145,17 @@ export const shopDataReducer = (state = initialState, action) => {
       const resultArr2 = [];
       const resultArr3 = [];
       state.data.forEach((item) => {
-        // оставить на всякий случай
         if (!arr1.includes(item.filter_category)) {
-          // сначала добавим в массив найденныйх категорий
           arr1.push(item.filter_category);
-          // затем добавим в массив для дефолтных значений и реиспользуем данные в начальных значениях фильтров
-          resultArr1.push({ categorySelect: `${item.filter_category}`, selected: false, category: `${item.filter_category}` });
+          resultArr1.push({ selected: false, category: `${item.filter_category}` });
         }
         if (!arr2.includes(item.filter_type)) {
           arr2.push(item.filter_type);
-          resultArr2.push({ categorySelect: `${item.filter_type}`, selected: false, category: `${item.filter_type}` });
+          resultArr2.push({ selected: false, category: `${item.filter_type}` });
         }
         if (!arr3.includes(item.filter_color)) {
           arr3.push(item.filter_color);
-          resultArr3.push({ categorySelect: `${item.filter_color}`, selected: false, category: `${item.filter_color}` });
+          resultArr3.push({ selected: false, category: `${item.filter_color}` });
         }
       });
       return {
@@ -181,18 +170,6 @@ export const shopDataReducer = (state = initialState, action) => {
         thirdFilterSelectedItem: [],
         thirdCount: 0,
       };
-      // return {
-      //   ...state,
-      //   firstFilterSelect: [...state.defaultFirstFilterSelect],
-      //   firstFilterSelectedItem: [],
-      //   firstCount: 0,
-      //   secondFilterSelect: [...state.defaultSecondFilterSelect],
-      //   secondFilterSelectedItem: [],
-      //   secondCount: 0,
-      //   thirdFilterSelect: [...state.defaulthirdFilterSelect],
-      //   thirdFilterSelectedItem: [],
-      //   thirdCount: 0,
-      // };
     }
 
     case SET_FILTERS: {
@@ -203,23 +180,17 @@ export const shopDataReducer = (state = initialState, action) => {
       const resultArr2 = [];
       const resultArr3 = [];
       action.payload.forEach((item) => {
-        // if (arr1.length === 0) {
-        //   arr1.push(item.category);
-        // }
-        // оставить на всякий случай
         if (!arr1.includes(item.filter_category)) {
-          // сначала добавим в массив найденныйх категорий
           arr1.push(item.filter_category);
-          // затем добавим в массив для дефолтных значений и реиспользуем данные в начальных значениях фильтров
-          resultArr1.push({ categorySelect: `${item.filter_category}`, selected: false, category: `${item.filter_category}` });
+          resultArr1.push({ selected: false, category: `${item.filter_category}` });
         }
         if (!arr2.includes(item.filter_type)) {
           arr2.push(item.filter_type);
-          resultArr2.push({ categorySelect: `${item.filter_type}`, selected: false, category: `${item.filter_type}` });
+          resultArr2.push({ selected: false, category: `${item.filter_type}` });
         }
         if (!arr3.includes(item.filter_color)) {
           arr3.push(item.filter_color);
-          resultArr3.push({ categorySelect: `${item.filter_color}`, selected: false, category: `${item.filter_color}` });
+          resultArr3.push({ selected: false, category: `${item.filter_color}` });
         }
       });
       return {
