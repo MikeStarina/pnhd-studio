@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {
   SET_DEFAULTFILTER,
-  SET_FILTER,
   SET_FIRSTSELECT,
   SET_SECONDSELECT,
   SET_THIRDSELECT,
@@ -14,7 +13,7 @@ import {
   closePopup,
 } from '../../services/actions/utility-actions.jsx';
 import styles from './shop-page.module.css';
-import CardsBlock from '../../components/shop-page-components/cards-block.jsx';
+import CardsBlock from '../../components/shop-page-components/cards-block';
 import PopupModel from '../../components/popupModel/popupModel';
 import FilterSelect from '../../components/shop-page-components/filter-select';
 import { getString } from '../../utils/utils';
@@ -31,11 +30,10 @@ function ShopPage() {
     thirdFilterSelect,
     thirdCount,
     thirdFilterSelectedItem,
+    data,
   } = useSelector((store) => store.shopData);
   const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
-  const { search } = useLocation();
   const history = useHistory();
-  const searchValue = search.slice(3);
   const [filterDropdown, setFilterDropdown] = useState({
     firstFilter: false,
     secondFilter: false,
@@ -54,13 +52,6 @@ function ShopPage() {
   const handelClosePopup = () => {
     dispatch(closePopup());
   };
-
-  useEffect(() => {
-    dispatch({
-      type: SET_FILTER,
-      payload: searchValue,
-    });
-  }, [dispatch]);
 
   useEffect(() => {
     dispatch({
