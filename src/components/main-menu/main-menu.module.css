@@ -72,12 +72,29 @@
   padding: 0;
 }
 
-@media (max-width: 630px) {
+.button_call {
+  display: none;
+}
+
+@media (max-width: 960px) {
   .menu_box {
-    width: 100%;
     justify-content: flex-start;
   }
 }
+
+@media (max-width: 630px) {
+  .menu_box {
+    width: 100%;
+  }
+}
+
+@media (max-width: 550px) {
+  .button_call {
+    margin-top: 30%;
+    display: initial;
+  }
+}
+
 @media (max-width: 450px) {
   .menu_link {
     font-size: 25px;

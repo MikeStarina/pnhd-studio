@@ -1,8 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  Route, Switch, Redirect, useLocation,
-} from 'react-router-dom';
+import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
 import {
   OPEN_MODAL_MENU,
   CLOSE_MODAL_MENU,
@@ -32,6 +30,7 @@ import FullscreenMenu from '../main-menu/fullscreen-menu';
 import PrintingMethod from '../../pages/printing-method/printing-method';
 import TypeOfPrint from '../../pages/type-of-print/type-of-print';
 import PopupCallBack from '../popupCallBack/popupCallBack';
+import ProductCard from '../../pages/ProductCard/ProductCard';
 
 function App() {
   const dispatch = useDispatch();
@@ -109,7 +108,7 @@ function App() {
           <PopupCallBack />
         </PopupModel>
       )}
-      {mainMenu.isVisible && <MainMenu closeMenu={closeMenu} />}
+      {mainMenu.isVisible && <MainMenu closeMenu={closeMenu} openPopup={handelOpenPopupHeader} />}
       {!mainMenu.isVisible && (
         <FullscreenMenu openPopup={handelOpenPopupHeader} />
       )}
@@ -132,8 +131,9 @@ function App() {
           <ShopPage />
         </Route>
 
-        <Route exact path="/shop/:id">
-          <ItemPage />
+        <Route exact path="/shop/:slug">
+          {/* <ItemPage /> */}
+          <ProductCard />
         </Route>
 
         <Route exact path="/size_chart">
@@ -192,7 +192,6 @@ function App() {
           <Page404 />
         </Route>
       </Switch>
-
       <Footer />
     </>
   );

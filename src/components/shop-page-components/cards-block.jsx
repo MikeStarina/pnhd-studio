@@ -29,7 +29,9 @@ function CardsBlock() {
     thirdFilterSelect,
     thirdCount,
   } = useSelector((store) => store.shopData);
-  useEffect(() => { dispatch({ type: SET_DEFAULTFILTER }); }, []);
+  useEffect(() => {
+    dispatch({ type: SET_DEFAULTFILTER });
+  }, []);
 
   const addressString = decodeURI(search);
   const getAdressFilter = (string, filter, num) => {
@@ -55,10 +57,7 @@ function CardsBlock() {
   let count3 = [];
 
   if (
-    addressString != ''
-    && firstFilterSelectedItem.length === 0
-    && secondFilterSelectedItem.length === 0
-    && thirdFilterSelectedItem.length === 0
+    addressString != '' && firstFilterSelectedItem.length === 0 && secondFilterSelectedItem.length === 0 && thirdFilterSelectedItem.length === 0
   ) {
     frstFilter = getAdressFilter(addressString, 'category', 10);
     secondFilter = getAdressFilter(addressString, 'type', 5);
@@ -68,8 +67,7 @@ function CardsBlock() {
       count1 = firstCount;
       frstFilter.forEach((item) => {
         filtr1.forEach((select, index) => {
-          if (select.filter_category
-            === item) {
+          if (select.filter_category === item) {
             filtr1[index].selected = true;
             count1 += 1;
           }
@@ -93,8 +91,7 @@ function CardsBlock() {
       count3 = thirdCount;
       thirdFilter.forEach((item) => {
         filtr3.forEach((select, index) => {
-          if (select.filter_color
-            === item) {
+          if (select.filter_color === item) {
             filtr3[index].selected = true;
             count3 += 1;
           }
@@ -105,10 +102,7 @@ function CardsBlock() {
 
   useEffect(() => {
     if (
-      addressString === ''
-      && (firstFilterSelectedItem.length != 0
-        || secondFilterSelectedItem.length != 0
-        || thirdFilterSelectedItem.length != 0)
+      addressString === '' && (firstFilterSelectedItem.length != 0 || secondFilterSelectedItem.length != 0 || thirdFilterSelectedItem.length != 0)
     ) {
       history.push('/shop');
       filtr1 = [];
@@ -141,9 +135,7 @@ function CardsBlock() {
   let resultArr = [];
 
   if (
-    firstFilterSelectedItem.length === 0
-    || secondFilterSelectedItem.length === 0
-    || thirdFilterSelectedItem.length === 0
+    firstFilterSelectedItem.length === 0 || secondFilterSelectedItem.length === 0 || thirdFilterSelectedItem.length === 0
   ) {
     resultArr = data;
   }
@@ -209,24 +201,23 @@ function CardsBlock() {
 
       {visibleArr.length > 0 && (
         <section className={styles.screen}>
-          {visibleArr
-            && visibleArr.map((item, index) => {
-              const url = `${apiBaseUrl}${item.image_url}`;
-              return (
-                <Link
+          {visibleArr && visibleArr.map((item, index) => {
+            const url = `${apiBaseUrl}${item.image_url}`;
+            return (
+              <Link
                   to={{ pathname: `/shop/${item._id}` }}
                   className={styles.link}
                   key={index}
-                >
-                  <CardItem
+              >
+                <CardItem
                     title={item.name}
                     price={item.price}
                     img={url}
                     sizes={item.sizes}
-                  />
-                </Link>
-              );
-            })}
+                />
+              </Link>
+            );
+          })}
         </section>
       )}
     </>
