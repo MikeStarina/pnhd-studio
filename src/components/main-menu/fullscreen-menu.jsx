@@ -13,7 +13,7 @@ const fullscreenMenu = ({ openPopup }) => {
           <Link to="/" className={styles.menu_link}>{'Главная >'}</Link>
         </li>
         <li className={styles.menu_elem}>
-          <Link to="/shop" className={styles.menu_link}>{'Конструктор >'}</Link>
+          <Link to="/shop" className={styles.menu_link}>{'Каталог >'}</Link>
         </li>
         <li className={styles.menu_elem}>
           <HashLink
