@@ -46,7 +46,7 @@ function MainMenu({ closeMenu, openPopup }) {
             to="/shop"
             onClick={closeMenu}
           >
-            КОНСТРУКТОР
+            КАТАЛОГ
           </Link>
           <a
             className={styles.menu_link}
