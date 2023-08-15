@@ -98,6 +98,7 @@ export const printUploadFunc = (data, activeView, itemType, itemColor) => {
         });
 
         const currentImage = res;
+        // setCoords - Задает координаты появления привью изображения,
         const imageCoords = setCoords(
           currentImage,
           activeView,

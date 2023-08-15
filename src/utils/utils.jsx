@@ -23,7 +23,9 @@ export const fileSelect = (
   }
 };
 
+// Задает координаты появления привью изображения, вызывается в файле editor-action (redux)
 export const setCoords = (currentImage, activeView, itemType) => {
+  console.log(itemType);
   let imageCoords = {
     x: 125,
     y: 100,
@@ -40,7 +42,7 @@ export const setCoords = (currentImage, activeView, itemType) => {
 
       imageCoords = {
         x: 150,
-        y: itemType === 'hoodie' ? 140 : 100,
+        y: itemType === 'hoodie' ? 130 : itemType === 'totebag' ? 190 : itemType === 'longsleeve' ? 130 : 100,
         width: displayWidth,
         height: displayHeight,
         rotation: 0,
@@ -53,7 +55,7 @@ export const setCoords = (currentImage, activeView, itemType) => {
 
       imageCoords = {
         x: 140 + xCoord,
-        y: itemType === 'hoodie' ? 140 : 100,
+        y: itemType === 'hoodie' ? 130 : itemType === 'totebag' ? 190 : itemType === 'longsleeve' ? 130 : 100,
         width: displayWidth,
         height: displayHeight,
         rotation: 0,
