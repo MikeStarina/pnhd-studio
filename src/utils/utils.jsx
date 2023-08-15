@@ -25,7 +25,6 @@ export const fileSelect = (
 
 // Задает координаты появления привью изображения, вызывается в файле editor-action (redux)
 export const setCoords = (currentImage, activeView, itemType) => {
-  console.log(itemType);
   let imageCoords = {
     x: 125,
     y: 100,
