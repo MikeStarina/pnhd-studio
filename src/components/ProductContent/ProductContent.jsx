@@ -11,13 +11,27 @@ import isSizeFunction from '../../utils/isSizeFunction';
 import { ADD_TO_CART } from '../../services/actions/cart-actions';
 
 function ProductContent(item) {
-  const { slug } = useParams();
   const dispatch = useDispatch();
+  // order - список всех размеров тут
   const { order } = useSelector((store) => store.itemReducer);
   const history = useHistory();
   const [size, setSize] = useState('');
-
   const linkSlug = item.slug;
+
+  const {
+    isBlockButton,
+    isSelected,
+    front_file,
+    front_file_preview,
+    back_file,
+    back_file_preview,
+    lsleeve_file,
+    lsleeve_file_preview,
+    rsleeve_file,
+    rsleeve_file_preview,
+    badge_file,
+    activeView,
+  } = useSelector((store) => store.editorState);
 
   useEffect(() => {
     item.sizes?.map((el, i) => {
@@ -57,6 +71,33 @@ function ProductContent(item) {
 
   const addToConstructor = () => {
     dispatch(openPopup(['Нужно выбрать размер']));
+  };
+
+  const uuId = uuidv4();
+  const addToPrint = () => {
+    const data = {
+      attributes: { ...item },
+      cart_item_id: uuId,
+    };
+    data.attributes.size = order;
+    data.attributes.key = uuidv4();
+
+    data.print = {
+      front: front_file,
+      front_preview: front_file_preview,
+      back: back_file,
+      back_preview: back_file_preview,
+      lsleeve: lsleeve_file,
+      lsleeve_preview: lsleeve_file_preview,
+      rsleeve: rsleeve_file,
+      rsleeve_preview: rsleeve_file_preview,
+      badge: badge_file,
+    };
+
+    dispatch({
+      type: ADD_TO_CART,
+      payload: { ...data },
+    });
   };
 
   const addToCart = () => {
@@ -142,8 +183,9 @@ function ProductContent(item) {
           <Link
             to={{
               pathname: `/shop/${linkSlug}/constructor`,
-              state: { size: order },
+              state: uuId,
             }}
+            onClick={addToPrint}
           >
             <Button className={styles.button_up}>
               Добавить принт &gt;

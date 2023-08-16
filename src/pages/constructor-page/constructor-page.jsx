@@ -12,6 +12,7 @@ import {
   SET_ACTIVE_VIEW,
   SET_FILE_STAGE_PARAMS,
   printUploadFunc,
+  loadPrintFromState,
   getSize,
   uploadPreview,
 } from '../../services/actions/editor-actions.jsx';
@@ -54,16 +55,31 @@ function Constructor() {
   } = useSelector((store) => store.editorState);
   const { data } = useSelector((store) => store.shopData);
   const { isImageLoading } = useSelector((store) => store.utilityState);
-  const { order } = useSelector((store) => store.itemReducer);
+  // const { order } = useSelector((store) => store.itemReducer);
   const history = useHistory();
   const { state } = useLocation();
   const imgRef = useRef(null);
   const stageRef = useRef();
 
-  const item = data && data.length > 0 && data.find((elem) => elem.slug === slug);
+  // изначально было
+  // const item = data && data.length > 0 && data.find((elem) => elem.slug === slug);
+  // промежуточное решение
+  // const item = state.size !== undefined ? data && data.length > 0 && data.find((elem) => elem.slug === slug) : order && order.find((elem) => elem.attributes.slug === slug);
+
+  const { order } = useSelector((store) => store.cartData);
+  const element = data && data.length > 0 && order && order.find((elem) => elem.cart_item_id === state);
+  const item = element.attributes;
+  const print = state.state !== undefined ? state.state.print : null;
+  // console.log(print, '<<constructor', slug, '<slug');
+  // console.log(element, '<element', item, '<<<item');
 
   useEffect(() => {
+    if (element.print) {
+      console.log(print, '<constructor sent');
+      dispatch(loadPrintFromState(element.print));
+    }
     return () => {
+      console.log('return');
       dispatch({
         type: DELETE_FILE,
         view: activeView,
@@ -164,12 +180,11 @@ function Constructor() {
 
     const data = {
       attributes: { ...item },
-      cart_item_id: uuidv4(),
+      cart_item_id: element.cart_item_id,
     };
 
-    data.attributes.size = state.size;
-    data.attributes.qty = 1;
-    data.attributes.key = uuidv4();
+    data.attributes.size = item.size;
+    data.attributes.key = item.key;
 
     data.print = {
       front: front_file,
