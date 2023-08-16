@@ -96,7 +96,7 @@ function ProductContent(item) {
       dispatch(openPopup(['Нужно выбрать размер']));
     }
   };
-
+  console.log(order);
   return (
     <div className={styles.product_box}>
       <div className={styles.description}>
