@@ -491,7 +491,6 @@ function CartPage() {
               >
                 x
               </button>
-              <Link to={{ pathname: `/shop/${item.attributes.slug}/constructor`, state: item.cart_item_id }}>GO TO BACK IN constructor</Link>
               <div className={styles.textile_description}>
                 <div className={styles.desc_box}>
                   <img

@@ -9,6 +9,7 @@ import { addItemSize, deleteItemOrder } from '../../services/actions/item-action
 import { openPopup } from '../../services/actions/utility-actions';
 import isSizeFunction from '../../utils/isSizeFunction';
 import { ADD_TO_CART } from '../../services/actions/cart-actions';
+import addToMemory from '../../utils/addToMemory';
 
 function ProductContent(item) {
   const dispatch = useDispatch();
@@ -75,24 +76,9 @@ function ProductContent(item) {
 
   const uuId = uuidv4();
   const addToPrint = () => {
-    const data = {
-      attributes: { ...item },
-      cart_item_id: uuId,
-    };
-    data.attributes.size = order;
-    data.attributes.key = uuidv4();
-
-    data.print = {
-      front: front_file,
-      front_preview: front_file_preview,
-      back: back_file,
-      back_preview: back_file_preview,
-      lsleeve: lsleeve_file,
-      lsleeve_preview: lsleeve_file_preview,
-      rsleeve: rsleeve_file,
-      rsleeve_preview: rsleeve_file_preview,
-      badge: badge_file,
-    };
+    const variant = 'с принтом';
+    // Создает обьект заказа, для сохранения в сесионой памяти
+    const data = addToMemory(variant, order, item, uuId, front_file, front_file_preview, back_file, back_file_preview, lsleeve_file, lsleeve_file_preview, rsleeve_file, rsleeve_file_preview, badge_file);
 
     dispatch({
       type: ADD_TO_CART,
@@ -102,30 +88,9 @@ function ProductContent(item) {
 
   const addToCart = () => {
     if (isSizeFunction(order)) {
-      window.dataLayer.push({
-        ecommerce: {
-          currencyCode: 'RUB',
-          add: {
-            products: [
-              {
-                id: item._id,
-                name: item.name,
-                price: item.price,
-                size: order,
-                category: item.category,
-                variant: 'без принта',
-              },
-            ],
-          },
-        },
-      });
-
-      const data = {
-        attributes: { ...item },
-        cart_item_id: uuidv4(),
-      };
-      data.attributes.size = order;
-      data.attributes.key = uuidv4();
+      const variant = 'без принта';
+      // Создает обьект заказа, для сохранения в сесионой памяти
+      const data = addToMemory(variant, order, item, uuId, front_file, front_file_preview, back_file, back_file_preview, lsleeve_file, lsleeve_file_preview, rsleeve_file, rsleeve_file_preview, badge_file);
 
       dispatch({
         type: ADD_TO_CART,

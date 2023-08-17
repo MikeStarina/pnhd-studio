@@ -140,16 +140,9 @@ export const uploadPreview = (data, activeView) => {
 
 export const loadPrintFromState = (payload) => {
   return function (dispatch) {
-    console.log(payload, '<action reducer');
     dispatch({
       type: LOAD_PRINT_FROM_STATE,
       payload,
-      // type: ADD_FILE,
-      // payload: {
-      //   url: `${activeView}.file.url`,
-      //   name: `${activeView}.file.name`,
-      // },
-      // view: activeView,
     });
   };
 };

@@ -32,6 +32,7 @@ import { clearItemOrder } from '../../services/actions/item-action';
 // sideItemForPrint - задает окно видимости (его размеры) где отобразится привью картинки
 import sideItemForPrint from '../../utils/sideItemForPrint';
 import totalPrintPrice from '../../utils/totalPrintPrice';
+import addToMemory from '../../utils/addToMemory';
 
 function Constructor() {
   const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
@@ -61,25 +62,13 @@ function Constructor() {
   const imgRef = useRef(null);
   const stageRef = useRef();
 
-  // изначально было
-  // const item = data && data.length > 0 && data.find((elem) => elem.slug === slug);
-  // промежуточное решение
-  // const item = state.size !== undefined ? data && data.length > 0 && data.find((elem) => elem.slug === slug) : order && order.find((elem) => elem.attributes.slug === slug);
-
   const { order } = useSelector((store) => store.cartData);
   const element = data && data.length > 0 && order && order.find((elem) => elem.cart_item_id === state);
   const item = element.attributes;
-  const print = state.state !== undefined ? state.state.print : null;
-  // console.log(print, '<<constructor', slug, '<slug');
-  // console.log(element, '<element', item, '<<<item');
 
   useEffect(() => {
-    if (element.print) {
-      console.log(print, '<constructor sent');
-      dispatch(loadPrintFromState(element.print));
-    }
+    dispatch(loadPrintFromState(element.print));
     return () => {
-      console.log('return');
       dispatch({
         type: DELETE_FILE,
         view: activeView,
@@ -160,43 +149,9 @@ function Constructor() {
   );
 
   const addToCart = () => {
-    window.dataLayer.push({
-      ecommerce: {
-        currencyCode: 'RUB',
-        add: {
-          products: [
-            {
-              id: item._id,
-              name: `${item.name} c печатью`,
-              price: item.price + totalPricePrint,
-              size: state.size,
-              category: item.category,
-              variant: 'с принтом',
-            },
-          ],
-        },
-      },
-    });
-
-    const data = {
-      attributes: { ...item },
-      cart_item_id: element.cart_item_id,
-    };
-
-    data.attributes.size = item.size;
-    data.attributes.key = item.key;
-
-    data.print = {
-      front: front_file,
-      front_preview: front_file_preview,
-      back: back_file,
-      back_preview: back_file_preview,
-      lsleeve: lsleeve_file,
-      lsleeve_preview: lsleeve_file_preview,
-      rsleeve: rsleeve_file,
-      rsleeve_preview: rsleeve_file_preview,
-      badge: badge_file,
-    };
+    const variant = 'с принтом';
+    // Создает обьект заказа, для сохранения в сесионой памяти
+    const data = addToMemory(variant, item.size, item, element.cart_item_id, front_file, front_file_preview, back_file, back_file_preview, lsleeve_file, lsleeve_file_preview, rsleeve_file, rsleeve_file_preview, badge_file);
 
     dispatch({
       type: ADD_TO_CART_WITH_PRINT,

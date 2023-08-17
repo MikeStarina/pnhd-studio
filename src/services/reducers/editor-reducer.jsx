@@ -177,7 +177,6 @@ export const editorReducer = (state = initialState, action) => {
       };
     }
     case LOAD_PRINT_FROM_STATE: {
-      console.log(action.payload, '<reducer');
       return {
         ...state,
         front_file: {

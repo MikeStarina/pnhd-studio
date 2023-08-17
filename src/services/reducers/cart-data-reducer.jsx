@@ -54,7 +54,6 @@ export const cartDataReducer = (state = initialState, action) => {
     }
     case ADD_TO_CART_WITH_PRINT: {
       const clonedOrderFirst = state.order;
-      // clonedOrder.push({ ...action.payload });
       const clonedOrder = clonedOrderFirst.map((element) => (element.cart_item_id === action.payload.cart_item_id ? action.payload : element));
 
       sessionStorage.setItem('cart', JSON.stringify(clonedOrder));
