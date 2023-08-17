@@ -148,7 +148,7 @@ function ProductContent(item) {
           <Link
             to={{
               pathname: `/shop/${linkSlug}/constructor`,
-              state: uuId,
+              state: { state: uuId, from: 'product' },
             }}
             onClick={addToPrint}
           >

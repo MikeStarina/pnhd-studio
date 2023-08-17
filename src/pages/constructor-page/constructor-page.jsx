@@ -56,14 +56,13 @@ function Constructor() {
   } = useSelector((store) => store.editorState);
   const { data } = useSelector((store) => store.shopData);
   const { isImageLoading } = useSelector((store) => store.utilityState);
-  // const { order } = useSelector((store) => store.itemReducer);
   const history = useHistory();
-  const { state } = useLocation();
+  const location = useLocation();
   const imgRef = useRef(null);
   const stageRef = useRef();
 
   const { order } = useSelector((store) => store.cartData);
-  const element = data && data.length > 0 && order && order.find((elem) => elem.cart_item_id === state);
+  const element = data && data.length > 0 && order && order.find((elem) => elem.cart_item_id === location.state.state);
   const item = element.attributes;
 
   useEffect(() => {
@@ -164,7 +163,11 @@ function Constructor() {
 
     dispatch(clearItemOrder());
 
-    history.go(-2);
+    if (location.state.from.includes('cart')) {
+      history.goBack();
+    } else {
+      history.go(-2);
+    }
   };
 
   const openPopupConstructor = () => {
