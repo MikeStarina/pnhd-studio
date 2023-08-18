@@ -53,19 +53,19 @@ const testPrewievObject = [
     d: '— 750 Р.',
   },
   {
-    a: 'Принт на груди. 32х28см',
+    a: 'Принт на спине. 32х28см',
     b: '- формат А3',
     c: '750 Р. х 1 шт',
     d: '— 750 Р.',
   },
   {
-    a: 'Принт на груди. 32х28см',
+    a: 'Принт на л. рукаве. 32х28см',
     b: '- формат А3',
     c: '750 Р. х 1 шт',
     d: '— 750 Р.',
   },
   {
-    a: 'Принт на груди. 32х28см',
+    a: 'Принт на п. рукаве. 32х28см',
     b: '- формат А3',
     c: '750 Р. х 1 шт',
     d: '— 750 Р.',
@@ -80,7 +80,7 @@ const testPrewievObject3 = [
     d: '— 750 Р.',
   },
   {
-    a: 'Принт на груди. 32х28см',
+    a: 'Принт на спине. 32х28см',
     b: '- формат А3',
     c: '750 Р. х 1 шт',
     d: '— 750 Р.',
@@ -93,12 +93,17 @@ function Cart() {
       <h1 className={styles.pageTitle}>КОРЗИНА / CART</h1>
       <div className={styles.products}>
         <div className={styles.productsImage}>
-          <img src={testImage} alt="Фото товара" />
+          <img
+            className={styles.productsImage_test}
+            src={testImage}
+            alt="Фото товара"
+          />
         </div>
         <div className={styles.productsInfo}>
           <p className={styles.productsInfo_name}>Футболка CLASSIC черная</p>
           <p className={styles.productsInfo_count}>900 Р. Х 1 шт.</p>
           <p className={styles.productsInfo_sum}>— 900 Р.</p>
+          <p className={styles.ttt2}>Изменить&nbsp;размер</p>
           <p className={styles.productsInfo_text}>
             Универсальный солдат. Унисекс футболка прямого кроя с широким
             размерным рядом. Подойдет, как для мужчин, так и для женщин.
@@ -128,13 +133,19 @@ function Cart() {
                   index != 4 ? `${styles.productsPrint_prewiev} ${styles.productsPrint_prewiev_border}` : `${styles.productsPrint_prewiev}`
                 }
               >
-                <img src={testImagePrew} alt="Превью принта" />
+                <img
+                  className={styles.productsPrint_prewievImg}
+                  src={testImagePrew}
+                  alt="Превью принта"
+                />
                 <span className={styles.productsPrint_prewievPrice}>
                   <p>{item.a}</p>
                   <p className={styles.productsPrint_prewievPrice_right}>
                     {item.b}
                   </p>
-                  <p>{item.c}</p>
+                  <p className={styles.productsPrint_prewievPrice_down}>
+                    {item.c}
+                  </p>
                   <p className={styles.productsPrint_prewievPrice_right}>
                     {item.d}
                   </p>
@@ -159,19 +170,27 @@ function Cart() {
         </div>
         <div className={styles.productsBottom}>
           <span className={styles.productsBottom_button_wrap}>
-            <p className={styles.productsBottom_button}>Удалить товар</p>
+            <p className={styles.productsBottom_button}>Удалить&nbsp;товар</p>
           </span>
           <div className={styles.productsBottom_price}>
-            <p>Текстиль: 900 Р.</p>
-            <p className={styles.productsBottom_pricePrint}>Печать: 3000 Р.</p>
-            <p className={styles.productsBottom_priceAll}>Подытог: 3900 Р.</p>
+            <p>Текстиль: 900&nbsp;Р.</p>
+            <p className={styles.productsBottom_pricePrint}>
+              Печать: 3000&nbsp;Р.
+            </p>
+            <p className={styles.productsBottom_priceAll}>
+              Подытог: 3900&nbsp;Р.
+            </p>
           </div>
         </div>
       </div>
       {/*  */}
       <div className={styles.products}>
         <div className={styles.productsImage}>
-          <img src={testImage} alt="Фото товара" />
+          <img
+            className={styles.productsImage_test}
+            src={testImage}
+            alt="Фото товара"
+          />
         </div>
         <div className={styles.productsInfo}>
           <p className={styles.productsInfo_name}>Футболка CLASSIC черная</p>
@@ -248,7 +267,11 @@ function Cart() {
       </div>
       <div className={styles.products}>
         <div className={styles.productsImage}>
-          <img src={testImage} alt="Фото товара" />
+          <img
+            className={styles.productsImage_test}
+            src={testImage}
+            alt="Фото товара"
+          />
         </div>
         <div className={styles.productsInfo}>
           <p className={styles.productsInfo_name}>Футболка CLASSIC черная</p>
@@ -332,13 +355,13 @@ function Cart() {
           <img src={Ukassa} alt="Ukassa" />
           <div className={styles.payment_buttons}>
             <span className={styles.payment_button}>Оферта</span>
-            &nbsp;/&nbsp;
+            &nbsp;/
             <span type="button" className={styles.payment_button}>
               Гид по размерам
             </span>
-            &nbsp;/&nbsp;
+            &nbsp;/
             <span type="button" className={styles.payment_button}>
-              Гид по уходу
+              Гид&nbsp;по&nbsp;уходу
             </span>
           </div>
         </div>
@@ -367,7 +390,7 @@ function Cart() {
           </p>
         </span>
         <div className={styles.addPrintButton_wrap}>
-          <p>К оформлению  &gt;&gt;</p>
+          <p>К оформлению &gt;&gt;</p>
         </div>
       </div>
     </>
