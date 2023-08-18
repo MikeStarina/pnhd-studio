@@ -43,6 +43,7 @@
 .productsInfo_name {
   font-size: 20px;
   font-weight: 800;
+  margin-top: 12px;
 }
 
 .productsInfo_sum {
@@ -405,7 +406,6 @@
 @media(max-width: 651px) {
   .pageTitle {
     font-size: 20px;
-
     margin: 50px 0 50px 30px;
   }
 
@@ -424,10 +424,7 @@
   }
 
   .productsPrint_prewiev {
-    display: grid;
-    width: 95%;
-    grid-template-columns: auto auto;
-    row-gap: 5px;
+    grid-template-columns: 25% 75%;
   }
 
   .productsPrint_prewievImg {
@@ -632,5 +629,9 @@
 
   .productsPrint_buttons {
     justify-self: start;
+  }
+  .productsPrint_prewiev_border {
+    padding-bottom: 0;
+    border-bottom: none;
   }
 }
