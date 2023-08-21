@@ -163,7 +163,7 @@ export const cartDataReducer = (state = initialState, action) => {
             };
             item.print.lsleeve_preview.preview = {};
           }
-          if (action.print_id === 'lsleeve_print') {
+          if (action.print_id === 'rsleeve_print') {
             item.print.rsleeve = {
               cartParams: undefined,
               file: undefined,

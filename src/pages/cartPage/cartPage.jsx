@@ -1,352 +1,235 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { DELETE_PRINT_FROM_CART } from '../../services/actions/cart-actions';
 import styles from './cartPage.module.css';
 import SizeSelection from '../../components/size-selection/size-selection';
-import testImage from '../../components/images/green_marble_w_main 1.png';
-import testImagePrew from '../../components/images/mailservice 4.png';
 import Mir from '../../components/images/cartPageMir.svg';
 import Visa from '../../components/images/cartPageVisa.svg';
 import MasterCard from '../../components/images/cartPageMastercard.svg';
 import Ukassa from '../../components/images/cartPageUkassa.svg';
+import { apiBaseUrl } from '../../utils/constants';
 
-const testSizeObject = [
-  {
-    name: 'XS',
-    qty: 0,
-    _id: '63dd05d924d623a73dd1a9c50',
-  },
-  {
-    name: 'S',
-    qty: 0,
-    _id: '63dd05d924d623a73dd1a9c51',
-  },
-  {
-    name: 'M',
-    qty: 0,
-    _id: '63dd05d924d623a73dd1a9c52',
-  },
-  {
-    name: 'L',
-    qty: 0,
-    _id: '63dd05d924d623a73dd1a9c53',
-  },
-  {
-    name: 'XL',
-    qty: 0,
-    _id: '63dd05d924d623a73dd1a9c54',
-  },
-  {
-    name: 'XXL',
-    qty: 0,
-    _id: '63dd05d924d623a73dd1a9c55',
-  },
-  {
-    name: 'XXXL',
-    qty: 0,
-    _id: '63dd05d924d623a73dd1a9c56',
-  },
-];
-const testPrewievObject = [
-  {
-    a: 'Принт на груди. 32х28см',
-    b: '- формат А3',
-    c: '750 Р. х 1 шт',
-    d: '— 750 Р.',
-  },
-  {
-    a: 'Принт на спине. 32х28см',
-    b: '- формат А3',
-    c: '750 Р. х 1 шт',
-    d: '— 750 Р.',
-  },
-  {
-    a: 'Принт на л. рукаве. 32х28см',
-    b: '- формат А3',
-    c: '750 Р. х 1 шт',
-    d: '— 750 Р.',
-  },
-  {
-    a: 'Принт на п. рукаве. 32х28см',
-    b: '- формат А3',
-    c: '750 Р. х 1 шт',
-    d: '— 750 Р.',
-  },
-];
-const testPrewievObject2 = [];
-const testPrewievObject3 = [
-  {
-    a: 'Принт на груди. 32х28см',
-    b: '- формат А3',
-    c: '750 Р. х 1 шт',
-    d: '— 750 Р.',
-  },
-  {
-    a: 'Принт на спине. 32х28см',
-    b: '- формат А3',
-    c: '750 Р. х 1 шт',
-    d: '— 750 Р.',
-  },
-];
 function Cart() {
   const [size, setSize] = useState('');
+  const {
+    order,
+    paymentUrl,
+    user_promocode,
+    isPromocodeLoading,
+    promocodeFail,
+    validPromoCode,
+  } = useSelector((store) => store.cartData);
+  const dispatch = useDispatch();
+
+  const deletePrintFromCart = (e) => {
+    dispatch({
+      type: DELETE_PRINT_FROM_CART,
+      item_id: e.target.id,
+      print_id: e.target.name,
+    });
+  };
+  console.log(order);
+  let arr = [];
+  let totalPrintSum = 0;
+  let totalProductsSum = 0;
+
+  const getPreviewArr = (obj) => {
+    const { print, cart_item_id,
+    } = obj;
+    const initialValue = 0;
+    const productPriece = obj.attributes.size.reduce(
+      (accumulator, currentValue) => accumulator + currentValue.qty,
+      initialValue,
+    );
+    arr = [];
+    totalPrintSum = 0;
+    if (!print) return;
+    if (print.front.file) {
+      totalPrintSum += print.front.cartParams.price * productPriece;
+      arr.push({
+        place: 'Принт на груди.',
+        name: 'front_print',
+        format: print.front.cartParams.format,
+        price: print.front.cartParams.price,
+        size: print.front.cartParams.size,
+        preview: print.front_preview.preview,
+        id: cart_item_id,
+      });
+    }
+    if (print.back.file) {
+      totalPrintSum += print.back.cartParams.price * productPriece;
+      arr.push({
+        place: 'Принт на спине.',
+        name: 'back_print',
+        format: print.back.cartParams.format,
+        price: print.back.cartParams.price,
+        size: print.back.cartParams.size,
+        preview: print.back_preview.preview,
+        id: cart_item_id,
+      });
+    }
+    if (print.lsleeve.file) {
+      totalPrintSum += print.lsleeve.cartParams.price * productPriece;
+      arr.push({
+        place: 'Принт на л. рукаве.',
+        name: 'lsleeve_print',
+        format: print.lsleeve.cartParams.format,
+        price: print.lsleeve.cartParams.price,
+        size: print.lsleeve.cartParams.size,
+        preview: print.lsleeve_preview.preview,
+        id: cart_item_id,
+      });
+    }
+    if (print.rsleeve.file) {
+      totalPrintSum += print.rsleeve.cartParams.price * productPriece;
+      arr.push({
+        place: 'Принт на п. рукаве.',
+        name: 'rsleeve_print',
+        format: print.rsleeve.cartParams.format,
+        price: print.rsleeve.cartParams.price,
+        size: print.rsleeve.cartParams.size,
+        preview: print.rsleeve_preview.preview,
+        id: cart_item_id,
+      });
+    }
+  };
   return (
     <>
       <h1 className={styles.pageTitle}>КОРЗИНА / CART</h1>
-      <div className={styles.products}>
-        <div className={styles.productsImage}>
-          <img
-            className={styles.productsImage_test}
-            src={testImage}
-            alt="Фото товара"
-          />
-        </div>
-        <div className={styles.productsInfo}>
-          <p className={styles.productsInfo_name}>Футболка CLASSIC черная</p>
-          <p className={styles.productsInfo_count}>900 Р. Х 1 шт.</p>
-          <p className={styles.productsInfo_sum}>— 900 Р.</p>
-          <p className={styles.ttt2}>Изменить&nbsp;размер</p>
-          <p className={styles.productsInfo_text}>
-            Универсальный солдат. Унисекс футболка прямого кроя с широким
-            размерным рядом. Подойдет, как для мужчин, так и для женщин.
-          </p>
-          <div className={styles.ttt}>
-            {testSizeObject.length > 0 ? (
-              testSizeObject.map((item) => (
-                <SizeSelection
-                  name={item.name}
-                  type="shop"
-                  qty={item.qty}
-                  size={size}
-                  id={item._id}
-                  key={item._id}
-                />
-              ))
-            ) : (
-              <option>Нет в наличии</option>
-            )}
-          </div>
-        </div>
-        <div className={styles.productsPrint}>
-          {testPrewievObject.length > 0 ? (
-            testPrewievObject.map((item, index) => (
-              <div
-                className={
-                  index != 4 ? `${styles.productsPrint_prewiev} ${styles.productsPrint_prewiev_border}` : `${styles.productsPrint_prewiev}`
-                }
+      {order.map((item, index) => {
+        const url = `${apiBaseUrl}${item.attributes.image_url}`;
+        const initialValue = 0;
+        const productPriece = item.attributes.size.reduce(
+          (accumulator, currentValue) => accumulator + currentValue.qty,
+          initialValue,
+        );
+        totalProductsSum += totalPrintSum + item.attributes.price * productPriece;
+        return (
+          // ${}
+          <div className={styles.products}>
+            <div className={styles.productsImage}>
+              <Link
+                to={{ pathname: `/shop/${item.attributes.slug}` }}
+                className={styles.link}
+                key={index}
               >
                 <img
-                  className={styles.productsPrint_prewievImg}
-                  src={testImagePrew}
-                  alt="Превью принта"
+                  className={styles.productsImage_test}
+                  src={url}
+                  alt="Фото товара"
                 />
-                <span className={styles.productsPrint_prewievPrice}>
-                  <p>{item.a}</p>
-                  <p className={styles.productsPrint_prewievPrice_right}>
-                    {item.b}
-                  </p>
-                  <p className={styles.productsPrint_prewievPrice_down}>
-                    {item.c}
-                  </p>
-                  <p className={styles.productsPrint_prewievPrice_right}>
-                    {item.d}
-                  </p>
-                </span>
-                <div className={styles.productsPrint_buttons}>
-                  <span className={styles.productsPrint_button}>Удалить</span>
-                  &nbsp;/&nbsp;
-                  <span type="button" className={styles.productsPrint_button}>
-                    Изменить
-                  </span>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p>Нет в наличии</p>
-          )}
-          {testPrewievObject.length < 4 && (
-            <div className={styles.addPrintButton_wrap}>
-              <p>Добавить принт &gt;</p>
+              </Link>
             </div>
-          )}
-        </div>
-        <div className={styles.productsBottom}>
-          <span className={styles.productsBottom_button_wrap}>
-            <p className={styles.productsBottom_button}>Удалить&nbsp;товар</p>
-          </span>
-          <div className={styles.productsBottom_price}>
-            <p>Текстиль: 900&nbsp;Р.</p>
-            <p className={styles.productsBottom_pricePrint}>
-              Печать: 3000&nbsp;Р.
-            </p>
-            <p className={styles.productsBottom_priceAll}>
-              Подытог: 3900&nbsp;Р.
-            </p>
-          </div>
-        </div>
-      </div>
-      {/*  */}
-      <div className={styles.products}>
-        <div className={styles.productsImage}>
-          <img
-            className={styles.productsImage_test}
-            src={testImage}
-            alt="Фото товара"
-          />
-        </div>
-        <div className={styles.productsInfo}>
-          <p className={styles.productsInfo_name}>Футболка CLASSIC черная</p>
-          <p className={styles.productsInfo_count}>900 Р. Х 1 шт.</p>
-          <p className={styles.productsInfo_sum}>— 900 Р.</p>
-          <p className={styles.productsInfo_text}>
-            Универсальный солдат. Унисекс футболка прямого кроя с широким
-            размерным рядом. Подойдет, как для мужчин, так и для женщин.
-          </p>
-          <div className={styles.ttt}>
-            {testSizeObject.length > 0 ? (
-              testSizeObject.map((item) => (
-                <SizeSelection
-                  name={item.name}
-                  type="shop"
-                  qty={item.qty}
-                  size={size}
-                  id={item._id}
-                  key={item._id}
-                />
-              ))
-            ) : (
-              <option>Нет в наличии</option>
-            )}
-          </div>
-        </div>
-        <div className={styles.productsPrint}>
-          {testPrewievObject2.length > 0 ? (
-            testPrewievObject2.map((item, index) => (
-              <div
-                className={
-                  index != 4 ? `${styles.productsPrint_prewiev} ${styles.productsPrint_prewiev_border}` : `${styles.productsPrint_prewiev}`
-                }
+            <div className={styles.productsInfo}>
+              <Link
+                to={{ pathname: `/shop/${item.attributes.slug}` }}
+                className={styles.link}
+                key={index}
               >
-                <img src={testImagePrew} alt="Превью принта" />
-                <span className={styles.productsPrint_prewievPrice}>
-                  <p>{item.a}</p>
-                  <p className={styles.productsPrint_prewievPrice_right}>
-                    {item.b}
-                  </p>
-                  <p>{item.c}</p>
-                  <p className={styles.productsPrint_prewievPrice_right}>
-                    {item.d}
-                  </p>
-                </span>
-                <div className={styles.productsPrint_buttons}>
-                  <span className={styles.productsPrint_button}>Удалить</span>
-                  &nbsp;/&nbsp;
-                  <span type="button" className={styles.productsPrint_button}>
-                    Изменить
-                  </span>
-                </div>
+                <p className={styles.productsInfo_name}>{item.attributes.name}</p>
+              </Link>
+              <p className={styles.productsInfo_count}>
+                {item.attributes.price} Р. Х {productPriece} шт.
+              </p>
+              <p className={styles.productsInfo_sum}>
+                — {item.attributes.price * productPriece} Р.
+              </p>
+              <p className={styles.ttt2}>Изменить&nbsp;размер</p>
+              <p className={styles.productsInfo_text}>
+                {item.attributes.description}
+              </p>
+              <div className={styles.ttt}>
+                {item.attributes.size.length > 0 ? (
+                  item.attributes.size.map((item) => (
+                    <SizeSelection
+                      name={item.name}
+                      type="shop"
+                      qty={item.qty}
+                      size={size}
+                      id={item._id}
+                      key={item._id}
+                    />
+                  ))
+                ) : (
+                  <option>Нет в наличии</option>
+                )}
               </div>
-            ))
-          ) : (
-            <p>Принты не выбраны</p>
-          )}
-          {testPrewievObject2.length < 4 && (
-            <div className={styles.addPrintButton_wrap}>
-              <p>Добавить принт &gt;</p>
             </div>
-          )}
-        </div>
-        <div className={styles.productsBottom}>
-          <span className={styles.productsBottom_button_wrap}>
-            <p className={styles.productsBottom_button}>Удалить товар</p>
-          </span>
-          <div className={styles.productsBottom_price}>
-            <p>Текстиль: 900 Р.</p>
-            <p className={styles.productsBottom_pricePrint}>Печать: 3000 Р.</p>
-            <p className={styles.productsBottom_priceAll}>Подытог: 3900 Р.</p>
-          </div>
-        </div>
-      </div>
-      <div className={styles.products}>
-        <div className={styles.productsImage}>
-          <img
-            className={styles.productsImage_test}
-            src={testImage}
-            alt="Фото товара"
-          />
-        </div>
-        <div className={styles.productsInfo}>
-          <p className={styles.productsInfo_name}>Футболка CLASSIC черная</p>
-          <p className={styles.productsInfo_count}>900 Р. Х 1 шт.</p>
-          <p className={styles.productsInfo_sum}>— 900 Р.</p>
-          <p className={styles.productsInfo_text}>
-            Универсальный солдат. Унисекс футболка прямого кроя с широким
-            размерным рядом. Подойдет, как для мужчин, так и для женщин.
-          </p>
-          <div className={styles.ttt}>
-            {testSizeObject.length > 0 ? (
-              testSizeObject.map((item) => (
-                <SizeSelection
-                  name={item.name}
-                  type="shop"
-                  qty={item.qty}
-                  size={size}
-                  id={item._id}
-                  key={item._id}
-                />
-              ))
-            ) : (
-              <option>Принты не выбраны</option>
-            )}
-          </div>
-        </div>
-        <div className={styles.productsPrint}>
-          {testPrewievObject3.length > 0 ? (
-            testPrewievObject3.map((item, index) => (
-              <div
-                className={
-                  index != 4 ? `${styles.productsPrint_prewiev} ${styles.productsPrint_prewiev_border}` : `${styles.productsPrint_prewiev}`
-                }
-              >
-                <img src={testImagePrew} alt="Превью принта" />
-                <span className={styles.productsPrint_prewievPrice}>
-                  <p>{item.a}</p>
-                  <p className={styles.productsPrint_prewievPrice_right}>
-                    {item.b}
-                  </p>
-                  <p>{item.c}</p>
-                  <p className={styles.productsPrint_prewievPrice_right}>
-                    {item.d}
-                  </p>
-                </span>
-                <div className={styles.productsPrint_buttons}>
-                  <span className={styles.productsPrint_button}>Удалить</span>
-                  &nbsp;/&nbsp;
-                  <span type="button" className={styles.productsPrint_button}>
-                    Изменить
-                  </span>
+            <div className={styles.productsPrint}>
+              {getPreviewArr(item)}
+              {arr.length > 0 ? (
+                arr.map((elem, index) => {
+                  return (
+                    <div
+                      className={
+                        index != 4 ? `${styles.productsPrint_prewiev} ${styles.productsPrint_prewiev_border}` : `${styles.productsPrint_prewiev}`
+                      }
+                    >
+                      <img
+                        className={styles.productsPrint_prewievImg}
+                        src={elem.preview}
+                        alt="Превью принта"
+                      />
+                      <span className={styles.productsPrint_prewievPrice}>
+                        <p>
+                          {elem.place} {elem.size}
+                        </p>
+                        <p className={styles.productsPrint_prewievPrice_right}>
+                          — формат {elem.format}
+                        </p>
+                        <p className={styles.productsPrint_prewievPrice_down}>
+                          {elem.price} Р. х {productPriece} шт
+                        </p>
+                        <p className={styles.productsPrint_prewievPrice_right}>
+                          — {elem.price * productPriece} Р.
+                        </p>
+                      </span>
+                      <div className={styles.productsPrint_buttons}>
+                        <button type="button" className={styles.productsPrint_button} name={elem.name} id={elem.id} onClick={deletePrintFromCart}>
+                          Удалить
+                        </button>
+                        &nbsp;/&nbsp;
+                        <button
+                          type="button"
+                          className={styles.productsPrint_button}
+                        >
+                          Изменить
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <p>Принты не выбраны</p>
+              )}
+              {arr.length < 4 && (
+                <div className={styles.addPrintButton_wrap}>
+                  <p>Добавить принт &gt;</p>
                 </div>
-              </div>
-            ))
-          ) : (
-            <p>Принты не выбраны</p>
-          )}
-          {testPrewievObject3.length < 4 && (
-            <div className={styles.addPrintButton_wrap}>
-              <p>Добавить принт &gt;</p>
+              )}
             </div>
-          )}
-        </div>
-        <div className={styles.productsBottom}>
-          <span className={styles.productsBottom_button_wrap}>
-            <p className={styles.productsBottom_button}>Удалить товар</p>
-          </span>
-          <div className={styles.productsBottom_price}>
-            <p>Текстиль: 900 Р.</p>
-            <p className={styles.productsBottom_pricePrint}>Печать: 3000 Р.</p>
-            <p className={styles.productsBottom_priceAll}>Подытог: 3900 Р.</p>
+            <div className={styles.productsBottom}>
+              <span className={styles.productsBottom_button_wrap}>
+                <p className={styles.productsBottom_button}>
+                  Удалить&nbsp;товар
+                </p>
+              </span>
+              <div className={styles.productsBottom_price}>
+                <p>Текстиль: {item.attributes.price * productPriece}&nbsp;Р.</p>
+                <p className={styles.productsBottom_pricePrint}>
+                  Печать: {totalPrintSum}&nbsp;Р.
+                </p>
+                <p className={styles.productsBottom_priceAll}>
+                  Подытог:{' '}
+                  {totalPrintSum + item.attributes.price * productPriece}{' '}
+                  &nbsp;Р.
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      {/*  */}
+        );
+      })}
       <div className={styles.payment}>
         <div className={styles.paymentLinks}>
           <img src={Visa} alt="Visa" />
@@ -365,7 +248,9 @@ function Cart() {
             </span>
           </div>
         </div>
-        <p className={styles.paymentPrice}>Итого на сумму: 7200 Р.</p>
+        <p className={styles.paymentPrice}>
+          Итого на сумму: {totalProductsSum} Р.
+        </p>
       </div>
       <div className={styles.makeOrder}>
         <span className={styles.makeOrder_text}>
