@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { DELETE_PRINT_FROM_CART } from '../../services/actions/cart-actions';
 import styles from './cartPage.module.css';
 import SizeSelection from '../../components/size-selection/size-selection';
+import Modal from '../../components/modal/modal';
 import Mir from '../../components/images/cartPageMir.svg';
 import Visa from '../../components/images/cartPageVisa.svg';
 import MasterCard from '../../components/images/cartPageMastercard.svg';
@@ -12,6 +13,7 @@ import { apiBaseUrl } from '../../utils/constants';
 
 function Cart() {
   const [size, setSize] = useState('');
+  const [modalActive, setModalActive] = useState(true);
   const {
     order,
     paymentUrl,
@@ -29,14 +31,13 @@ function Cart() {
       print_id: e.target.name,
     });
   };
-  console.log(order);
+  // console.log(order);
   let arr = [];
   let totalPrintSum = 0;
   let totalProductsSum = 0;
 
   const getPreviewArr = (obj) => {
-    const { print, cart_item_id,
-    } = obj;
+    const { print, cart_item_id } = obj;
     const initialValue = 0;
     const productPriece = obj.attributes.size.reduce(
       (accumulator, currentValue) => accumulator + currentValue.qty,
@@ -106,7 +107,6 @@ function Cart() {
         );
         totalProductsSum += totalPrintSum + item.attributes.price * productPriece;
         return (
-          // ${}
           <div className={styles.products}>
             <div className={styles.productsImage}>
               <Link
@@ -127,7 +127,9 @@ function Cart() {
                 className={styles.link}
                 key={index}
               >
-                <p className={styles.productsInfo_name}>{item.attributes.name}</p>
+                <p className={styles.productsInfo_name}>
+                  {item.attributes.name}
+                </p>
               </Link>
               <p className={styles.productsInfo_count}>
                 {item.attributes.price} Р. Х {productPriece} шт.
@@ -170,6 +172,9 @@ function Cart() {
                         className={styles.productsPrint_prewievImg}
                         src={elem.preview}
                         alt="Превью принта"
+                        onClick={() => {
+                          setModalActive({ open: true, img: elem.preview });
+                        }}
                       />
                       <span className={styles.productsPrint_prewievPrice}>
                         <p>
@@ -186,7 +191,13 @@ function Cart() {
                         </p>
                       </span>
                       <div className={styles.productsPrint_buttons}>
-                        <button type="button" className={styles.productsPrint_button} name={elem.name} id={elem.id} onClick={deletePrintFromCart}>
+                        <button
+                          type="button"
+                          className={styles.productsPrint_button}
+                          name={elem.name}
+                          id={elem.id}
+                          onClick={deletePrintFromCart}
+                        >
                           Удалить
                         </button>
                         &nbsp;/&nbsp;
@@ -278,6 +289,11 @@ function Cart() {
           <p>К оформлению &gt;&gt;</p>
         </div>
       </div>
+      <>
+        <Modal active={modalActive.open} setActive={setModalActive}>
+          <img src={modalActive.img} alt="Превью принта" />
+        </Modal>
+      </>
     </>
   );
 }
