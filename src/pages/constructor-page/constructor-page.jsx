@@ -64,6 +64,7 @@ function Constructor() {
   const imgRef = useRef(null);
   const stageRef = useRef();
   const [squareCircleComponentColor, setSquareCircleComponentColor] = useState(false);
+  const [dash, setDash] = useState(false);
 
   const { order } = useSelector((store) => store.cartData);
   const element = data && data.length > 0 && order && order.find((elem) => elem.cart_item_id === location.state.state);
@@ -183,6 +184,10 @@ function Constructor() {
     dispatch(openPopup(instructionForPopup));
   };
 
+  const openPopupInfo = () => {
+    dispatch(openPopup(['Привет! Сейчас эта функция находится в разработке :)']));
+  };
+
   const closePopupConstructor = () => {
     dispatch(closePopup());
   };
@@ -205,6 +210,7 @@ function Constructor() {
               </Layer>
               <Layer className={styles.layer}>
                 <Print
+                  dash={dash}
                   initialParams={sideItemForPrint(item, activeView)}
                   isSelected={isSelected}
                   onSelect={onSelect}
@@ -320,13 +326,13 @@ function Constructor() {
           <div className={styles.button_container}>
             <div className={styles.btn_img_control}>
               <button
-                onClick={openPopupConstructor}
+                onClick={() => setDash((dash) => !dash)}
                 className={styles.item_button_quest}
               >
                 <Square className={styles.btn_svg} />
               </button>
               <button
-                onClick={openPopupConstructor}
+                onClick={openPopupInfo}
                 className={styles.item_button_quest}
                 onMouseEnter={() => setSquareCircleComponentColor(true)}
                 onMouseLeave={() => setSquareCircleComponentColor(false)}
@@ -334,7 +340,7 @@ function Constructor() {
                 <SquareCircle className={styles.btn_svg} style={{ color: squareCircleComponentColor ? '#00ff00' : '#ffffff' }} />
               </button>
               <button
-                onClick={openPopupConstructor}
+                onClick={openPopupInfo}
                 className={styles.item_button_quest}
               >
                 <WordT className={styles.btn_svg} />
@@ -370,7 +376,7 @@ function Constructor() {
             </p>
 
             <p className={styles.order_info_title}>
-              Итого: {item.price + totalPricePrint} Р.
+              Итого: {(item.price + totalPricePrint) * volumeSize} Р.
             </p>
           </div>
           <div className={styles.button_container_cart}>
