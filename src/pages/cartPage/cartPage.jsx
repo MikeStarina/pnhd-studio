@@ -13,7 +13,8 @@ import { apiBaseUrl } from '../../utils/constants';
 
 function Cart() {
   const [size, setSize] = useState('');
-  const [modalActive, setModalActive] = useState(true);
+  const [prewievImg, setPrewievImg] = useState('');
+  const [modalActive, setModalActive] = useState(false);
   const {
     order,
     paymentUrl,
@@ -23,7 +24,6 @@ function Cart() {
     validPromoCode,
   } = useSelector((store) => store.cartData);
   const dispatch = useDispatch();
-
   const deletePrintFromCart = (e) => {
     dispatch({
       type: DELETE_PRINT_FROM_CART,
@@ -173,7 +173,8 @@ function Cart() {
                         src={elem.preview}
                         alt="Превью принта"
                         onClick={() => {
-                          setModalActive({ open: true, img: elem.preview });
+                          setPrewievImg(elem.preview);
+                          setModalActive(true);
                         }}
                       />
                       <span className={styles.productsPrint_prewievPrice}>
@@ -290,8 +291,8 @@ function Cart() {
         </div>
       </div>
       <>
-        <Modal active={modalActive.open} setActive={setModalActive}>
-          <img src={modalActive.img} alt="Превью принта" />
+        <Modal active={modalActive} setActive={setModalActive}>
+          <img src={prewievImg} alt="Превью принта" />
         </Modal>
       </>
     </>
