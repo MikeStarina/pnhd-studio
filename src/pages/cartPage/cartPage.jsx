@@ -124,7 +124,7 @@ function Cart() {
             <div className={styles.productsInfo}>
               <Link
                 to={{ pathname: `/shop/${item.attributes.slug}` }}
-                className={styles.link}
+                className={`${styles.link} ${styles.link__name}`}
                 key={index}
               >
                 <p className={styles.productsInfo_name}>
@@ -178,16 +178,16 @@ function Cart() {
                         }}
                       />
                       <span className={styles.productsPrint_prewievPrice}>
-                        <p>
+                        <p className={styles.productsPrint_prewievPrice_place}>
                           {elem.place} {elem.size}
                         </p>
-                        <p className={styles.productsPrint_prewievPrice_right}>
+                        <p className={`${styles.productsPrint_prewievPrice_right} ${styles.productsPrint_prewievPrice_right__top}`}>
                           — формат {elem.format}
                         </p>
                         <p className={styles.productsPrint_prewievPrice_down}>
                           {elem.price} Р. х {productPriece} шт
                         </p>
-                        <p className={styles.productsPrint_prewievPrice_right}>
+                        <p className={`${styles.productsPrint_prewievPrice_right} ${styles.productsPrint_prewievPrice_right_down}`}>
                           — {elem.price * productPriece} Р.
                         </p>
                       </span>
