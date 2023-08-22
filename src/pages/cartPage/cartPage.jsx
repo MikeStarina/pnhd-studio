@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { DELETE_PRINT_FROM_CART } from '../../services/actions/cart-actions';
+import { DELETE_PRINT_FROM_CART, DELETE_ITEM_FROM_CART } from '../../services/actions/cart-actions';
 import styles from './cartPage.module.css';
 import SizeSelection from '../../components/size-selection/size-selection';
 import Modal from '../../components/modal/modal';
@@ -29,6 +29,12 @@ function Cart() {
       type: DELETE_PRINT_FROM_CART,
       item_id: e.target.id,
       print_id: e.target.name,
+    });
+  };
+  const deleteItemFromCart = (e) => {
+    dispatch({
+      type: DELETE_ITEM_FROM_CART,
+      payload: e.target.id,
     });
   };
   // console.log(order);
@@ -223,9 +229,14 @@ function Cart() {
             </div>
             <div className={styles.productsBottom}>
               <span className={styles.productsBottom_button_wrap}>
-                <p className={styles.productsBottom_button}>
+                <button
+                  type="button"
+                  className={styles.productsBottom_button}
+                  onClick={deleteItemFromCart}
+                  id={item.cart_item_id}
+                >
                   Удалить&nbsp;товар
-                </p>
+                </button>
               </span>
               <div className={styles.productsBottom_price}>
                 <p>Текстиль: {item.attributes.price * productPriece}&nbsp;Р.</p>

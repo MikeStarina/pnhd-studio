@@ -176,8 +176,10 @@
 }
 
 .productsBottom_button {
+  border: none;
+  background-color: transparent;
   cursor: pointer;
-  padding-bottom: 1px;
+  padding: 0 0 1px 0;
   border-bottom: 1px solid black;
   justify-self: start;
 }
