@@ -16,7 +16,7 @@ import {
   getSize,
   uploadPreview,
 } from '../../services/actions/editor-actions.jsx';
-import { ADD_TO_CART_WITH_PRINT } from '../../services/actions/cart-actions';
+import { ADD_TO_CART, ADD_TO_CART_WITH_PRINT } from '../../services/actions/cart-actions';
 import Print from './print.jsx';
 import Mockup from './mockup';
 import { fileSelect } from '../../utils/utils';
@@ -67,16 +67,21 @@ function Constructor() {
   const [dash, setDash] = useState(false);
 
   const { order } = useSelector((store) => store.cartData);
-  const element = data && data.length > 0 && order && order.find((elem) => elem.cart_item_id === location.state.state);
-  const item = element.attributes;
+  const element = location.state.from.includes('cart') ? data && data.length > 0 && order && order.find((elem) => elem.cart_item_id === location.state.state) : data && data.length > 0 && data.find((elem) => elem.slug === slug);
 
-  const volumeSize = item && item.size.reduce((total, element) => {
+  const item = location.state.from.includes('cart') ? element.attributes : element;
+
+  const itemSize = location.state.from.includes('cart') ? item.size : location.state.size;
+
+  const volumeSize = itemSize && itemSize.reduce((total, element) => {
     let accTotal;
     return (accTotal = total + element.qty);
   }, 0);
 
   useEffect(() => {
-    dispatch(loadPrintFromState(element.print));
+    if (location.state.from.includes('cart')) {
+      dispatch(loadPrintFromState(element.print));
+    }
     return () => {
       dispatch({
         type: DELETE_FILE,
@@ -173,11 +178,27 @@ function Constructor() {
 
     dispatch(clearItemOrder());
 
-    if (location.state.from.includes('cart')) {
-      history.goBack();
-    } else {
-      history.go(-2);
-    }
+    history.goBack();
+  };
+
+  const uuId = uuidv4();
+  const addToPrint = () => {
+    const variant = 'с принтом';
+    // Создает обьект заказа, для сохранения в сесионой памяти
+    const data = addToMemory(variant, location.state.size, item, uuId, front_file, front_file_preview, back_file, back_file_preview, lsleeve_file, lsleeve_file_preview, rsleeve_file, rsleeve_file_preview, badge_file);
+
+    dispatch({
+      type: ADD_TO_CART,
+      payload: { ...data },
+    });
+
+    dispatch({
+      type: CLEAR_ALL_PRINTS,
+    });
+
+    dispatch(clearItemOrder());
+
+    history.go(-2);
   };
 
   const openPopupConstructor = () => {
@@ -327,7 +348,7 @@ function Constructor() {
             <div className={styles.btn_img_control}>
               <button
                 onClick={() => setDash((dash) => !dash)}
-                className={styles.item_button_quest}
+                className={dash ? `${styles.item_button_quest} ${styles.item_button_quest_active}` : `${styles.item_button_quest}`}
               >
                 <Square className={styles.btn_svg} />
               </button>
@@ -383,7 +404,7 @@ function Constructor() {
             <button
               type="button"
               className={styles.item_button}
-              onClick={addToCart}
+              onClick={location.state.from.includes('cart') ? addToCart : addToPrint}
               disabled={isBlockButton}
             />
           </div>

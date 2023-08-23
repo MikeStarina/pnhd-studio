@@ -269,7 +269,6 @@
     padding: 0;
     margin: 0;
     align-self: flex-end;
-    /*box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);*/
 }
 
 .item_button::after {
@@ -279,9 +278,6 @@
 .item_button:hover {
     background-color: #00FF00;
 }
-/*.item_button:hover::after {*/
-/*    content: 'В корзину >';*/
-/*}*/
 
 .item_button_quest {
     width: 40px;
@@ -299,7 +295,6 @@
     padding: 0;
     margin: 30px 0 0 0;
     align-self: flex-end;
-    /*box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);*/
 }
 
 .btn_svg {
@@ -311,6 +306,10 @@
 }
 
 .item_button_quest:hover {
+    background-color: #00FF00;
+}
+
+.item_button_quest_active {
     background-color: #00FF00;
 }
 
