@@ -9,15 +9,30 @@ import { addItemSize, deleteItemOrder } from '../../services/actions/item-action
 import { openPopup } from '../../services/actions/utility-actions';
 import isSizeFunction from '../../utils/isSizeFunction';
 import { ADD_TO_CART } from '../../services/actions/cart-actions';
+import addToMemory from '../../utils/addToMemory';
 
 function ProductContent(item) {
-  const { slug } = useParams();
   const dispatch = useDispatch();
+  // order - список всех размеров тут
   const { order } = useSelector((store) => store.itemReducer);
   const history = useHistory();
   const [size, setSize] = useState('');
-
   const linkSlug = item.slug;
+
+  const {
+    isBlockButton,
+    isSelected,
+    front_file,
+    front_file_preview,
+    back_file,
+    back_file_preview,
+    lsleeve_file,
+    lsleeve_file_preview,
+    rsleeve_file,
+    rsleeve_file_preview,
+    badge_file,
+    activeView,
+  } = useSelector((store) => store.editorState);
 
   useEffect(() => {
     item.sizes?.map((el, i) => {
@@ -59,32 +74,23 @@ function ProductContent(item) {
     dispatch(openPopup(['Нужно выбрать размер']));
   };
 
+  const uuId = uuidv4();
+  const addToPrint = () => {
+    const variant = 'с принтом';
+    // Создает обьект заказа, для сохранения в сесионой памяти
+    const data = addToMemory(variant, order, item, uuId, front_file, front_file_preview, back_file, back_file_preview, lsleeve_file, lsleeve_file_preview, rsleeve_file, rsleeve_file_preview, badge_file);
+
+    dispatch({
+      type: ADD_TO_CART,
+      payload: { ...data },
+    });
+  };
+
   const addToCart = () => {
     if (isSizeFunction(order)) {
-      window.dataLayer.push({
-        ecommerce: {
-          currencyCode: 'RUB',
-          add: {
-            products: [
-              {
-                id: item._id,
-                name: item.name,
-                price: item.price,
-                size: order,
-                category: item.category,
-                variant: 'без принта',
-              },
-            ],
-          },
-        },
-      });
-
-      const data = {
-        attributes: { ...item },
-        cart_item_id: uuidv4(),
-      };
-      data.attributes.size = order;
-      data.attributes.key = uuidv4();
+      const variant = 'без принта';
+      // Создает обьект заказа, для сохранения в сесионой памяти
+      const data = addToMemory(variant, order, item, uuId, front_file, front_file_preview, back_file, back_file_preview, lsleeve_file, lsleeve_file_preview, rsleeve_file, rsleeve_file_preview, badge_file);
 
       dispatch({
         type: ADD_TO_CART,
@@ -142,8 +148,9 @@ function ProductContent(item) {
           <Link
             to={{
               pathname: `/shop/${linkSlug}/constructor`,
-              state: { size: order },
+              state: { state: uuId, from: 'product' },
             }}
+            onClick={addToPrint}
           >
             <Button className={styles.button_up}>
               Добавить принт &gt;

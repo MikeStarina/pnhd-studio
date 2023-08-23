@@ -7,7 +7,7 @@ import {
   SET_FILE_STAGE_PARAMS,
   SET_FILE_CART_PARAMS,
   CLEAR_ALL_PRINTS,
-  ADD_PRINT_PREVIEW,
+  ADD_PRINT_PREVIEW, LOAD_PRINT_FROM_STATE,
 } from '../actions/editor-actions';
 
 const initialState = {
@@ -103,7 +103,6 @@ export const editorReducer = (state = initialState, action) => {
         },
       };
     }
-
     case SET_FILE_CART_PARAMS: {
       return {
         ...state,
@@ -134,7 +133,6 @@ export const editorReducer = (state = initialState, action) => {
         },
       };
     }
-
     case CLEAR_ALL_PRINTS: {
       return (state = initialState);
     }
@@ -176,6 +174,51 @@ export const editorReducer = (state = initialState, action) => {
         rsleeve_file_preview:
                     action.view === 'rsleeve' ? { data: action.data, preview: action.preview } : state.rsleeve_file_preview,
         isBlockButton: false,
+      };
+    }
+    case LOAD_PRINT_FROM_STATE: {
+      return {
+        ...state,
+        front_file: {
+          ...state.front_file,
+          file: action.payload.front.file,
+          stageParams: action.payload.front.stageParams,
+          cartParams: action.payload.front.cartParams,
+        },
+        front_file_preview: {
+          ...state.front_file_preview,
+          preview: action.payload.front_preview.preview,
+        },
+        back_file: {
+          ...state.back_file,
+          file: action.payload.back.file,
+          stageParams: action.payload.back.stageParams,
+          cartParams: action.payload.back.cartParams,
+        },
+        back_file_preview: {
+          ...state.back_file_preview,
+          preview: action.payload.back_preview.preview,
+        },
+        lsleeve_file: {
+          ...state.lsleeve_file,
+          file: action.payload.lsleeve.file,
+          stageParams: action.payload.lsleeve.stageParams,
+          cartParams: action.payload.lsleeve.cartParams,
+        },
+        lsleeve_file_preview: {
+          ...state.lsleeve_file_preview,
+          preview: action.payload.lsleeve_preview.preview,
+        },
+        rsleeve_file: {
+          ...state.rsleeve_file,
+          file: action.payload.rsleeve.file,
+          stageParams: action.payload.rsleeve.stageParams,
+          cartParams: action.payload.rsleeve.cartParams,
+        },
+        rsleeve_file_preview: {
+          ...state.rsleeve_file_preview,
+          preview: action.payload.rsleeve_preview.preview,
+        },
       };
     }
 

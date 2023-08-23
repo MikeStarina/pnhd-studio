@@ -1,10 +1,12 @@
 import React, { useRef, useEffect } from 'react';
-import { Image, Group, Transformer } from 'react-konva';
+import { Image, Group, Transformer, Rect } from 'react-konva';
 import { useSelector, useDispatch } from 'react-redux';
 import useImage from 'use-image';
+import styles from './constructor-page.module.css';
 // import circle50px from '../../components/images/circle50px.png';
 
 function Print({
+  dash,
   initialImageCoords,
   isSelected,
   onSelect,
@@ -37,8 +39,12 @@ function Print({
 
   return (
     <>
-      <Group clip={initialParams}>
+      <Group
+        clip={initialParams}
+      >
+        {dash && (<Rect x={initialParams.x + 2} y={initialParams.y + 2} width={initialParams.width - 4} height={initialParams.height - 4} fill="rgba(255, 0, 0, 0.0)" stroke="#00FF00" strokeWidth={2} dash={[1, 3]} />)}
         <Image
+          className={styles.some}
           image={imageTwo}
           onClick={onSelect}
           onTap={onSelect}
