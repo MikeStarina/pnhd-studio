@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Stage, Layer } from 'react-konva';
 import { v4 as uuidv4 } from 'uuid';
@@ -33,6 +33,9 @@ import { clearItemOrder } from '../../services/actions/item-action';
 import sideItemForPrint from '../../utils/sideItemForPrint';
 import totalPrintPrice from '../../utils/totalPrintPrice';
 import addToMemory from '../../utils/addToMemory';
+import { Square } from '../../ui/icons/square';
+import { SquareCircle } from '../../ui/icons/squareCircle';
+import { WordT } from '../../ui/icons/wordT';
 
 function Constructor() {
   const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
@@ -60,10 +63,17 @@ function Constructor() {
   const location = useLocation();
   const imgRef = useRef(null);
   const stageRef = useRef();
+  const [squareCircleComponentColor, setSquareCircleComponentColor] = useState(false);
+  const [dash, setDash] = useState(false);
 
   const { order } = useSelector((store) => store.cartData);
   const element = data && data.length > 0 && order && order.find((elem) => elem.cart_item_id === location.state.state);
   const item = element.attributes;
+
+  const volumeSize = item && item.size.reduce((total, element) => {
+    let accTotal;
+    return (accTotal = total + element.qty);
+  }, 0);
 
   useEffect(() => {
     dispatch(loadPrintFromState(element.print));
@@ -174,6 +184,10 @@ function Constructor() {
     dispatch(openPopup(instructionForPopup));
   };
 
+  const openPopupInfo = () => {
+    dispatch(openPopup(['Привет! Сейчас эта функция находится в разработке :)']));
+  };
+
   const closePopupConstructor = () => {
     dispatch(closePopup());
   };
@@ -196,6 +210,7 @@ function Constructor() {
               </Layer>
               <Layer className={styles.layer}>
                 <Print
+                  dash={dash}
                   initialParams={sideItemForPrint(item, activeView)}
                   isSelected={isSelected}
                   onSelect={onSelect}
@@ -227,7 +242,7 @@ function Constructor() {
               id="front"
               onClick={setActiveTab}
             >
-              Грудь
+              Грудь &gt;
             </button>
             <button
               type="button"
@@ -235,7 +250,7 @@ function Constructor() {
               id="back"
               onClick={setActiveTab}
             >
-              Спина
+              Спина &gt;
             </button>
             {item.type !== 'totebag' && (
               <button
@@ -246,7 +261,7 @@ function Constructor() {
                 onClick={setActiveTab}
                 type="button"
               >
-                Л.&nbsp;рукав
+                Л.&nbsp;рукав &gt;
               </button>
             )}
             {item.type !== 'totebag' && (
@@ -258,7 +273,7 @@ function Constructor() {
                 onClick={setActiveTab}
                 type="button"
               >
-                П.&nbsp;рукав
+                П.&nbsp;рукав &gt;
               </button>
             )}
           </div>
@@ -292,7 +307,7 @@ function Constructor() {
                   type="file"
                   accept=".jpg, .png"
                   className={styles.file_input}
-                  name="file_input"
+                  id="file_input"
                 />
                 <label
                   htmlFor="file_input"
@@ -302,58 +317,69 @@ function Constructor() {
                     className={styles.file_input_button_text}
                     name="input_button_text"
                   >
-                    {file && file.name ? file.name : 'Выберите файл'}
+                    {file && file.name ? file.name : 'Выберите файл >'}
                   </span>
                 </label>
               </div>
             </form>
           </div>
-          <div className={styles.stage_controls} />
-          <div className={styles.order_info}>
-            <p className={styles.order_info_line}>Текстиль: {item.name}</p>
-            <p className={styles.order_info_line}>
-              Стоимость текстиля: {item.price} Р.
-            </p>
-            <p className={styles.order_info_line}>
-              Печать на груди:{' '}
-              {front_file && front_file.cartParams ? `${front_file.cartParams.format}, ${front_file.cartParams.size}, ${front_file.cartParams.price} Р.` : '-'}
-            </p>
-            <p className={styles.order_info_line}>
-              Печать на спине:{' '}
-              {back_file && back_file.cartParams ? `${back_file.cartParams.format}, ${back_file.cartParams.size}, ${back_file.cartParams.price} Р.` : '-'}
-            </p>
-            <p className={styles.order_info_line}>
-              Печать на левом рукаве:{' '}
-              {lsleeve_file && lsleeve_file.cartParams ? `${lsleeve_file.cartParams.format}, ${lsleeve_file.cartParams.size}, ${lsleeve_file.cartParams.price} Р.` : '-'}
-            </p>
-            <p className={styles.order_info_line}>
-              Печать на правом рукаве:{' '}
-              {rsleeve_file && rsleeve_file.cartParams ? `${rsleeve_file.cartParams.format}, ${rsleeve_file.cartParams.size}, ${rsleeve_file.cartParams.price} Р.` : '-'}
-            </p>
-
-            <p className={styles.order_info_line}>
-              Итого текстиль и печать: {item.price + totalPricePrint} Р.
-            </p>
-          </div>
           <div className={styles.button_container}>
+            <div className={styles.btn_img_control}>
+              <button
+                onClick={() => setDash((dash) => !dash)}
+                className={styles.item_button_quest}
+              >
+                <Square className={styles.btn_svg} />
+              </button>
+              <button
+                onClick={openPopupInfo}
+                className={styles.item_button_quest}
+                onMouseEnter={() => setSquareCircleComponentColor(true)}
+                onMouseLeave={() => setSquareCircleComponentColor(false)}
+              >
+                <SquareCircle className={styles.btn_svg} style={{ color: squareCircleComponentColor ? '#00ff00' : '#ffffff' }} />
+              </button>
+              <button
+                onClick={openPopupInfo}
+                className={styles.item_button_quest}
+              >
+                <WordT className={styles.btn_svg} />
+              </button>
+            </div>
             <button
               onClick={openPopupConstructor}
               className={styles.item_button_quest}
-            />
-            {isOtherPopupVisible && (
-              <PopupModel onClose={closePopupConstructor}>
-                {isOtherPopupVisible.map((el, index) => (
-                  <p
-                    className={
-                      isOtherPopupVisible.length > 1 ? styles.instruction : styles.error
-                    }
-                    key={index}
-                  >
-                    {el}
-                  </p>
-                ))}
-              </PopupModel>
-            )}
+            >
+              ?
+            </button>
+          </div>
+          <div className={styles.order_info}>
+            <p className={styles.order_info_title}>{item.name}</p>
+            <p className={styles.order_info_subtitle}>
+              <span className={styles.order_info_line_span}>{`${item.price} Р. X ${volumeSize} шт.`}<span className={styles.order_info_line_span_end}>{` - ${item.price * volumeSize} Р.`}</span></span>
+            </p>
+            <p className={styles.order_info_line}>
+              <span className={styles.order_info_line_span_title}>Печать на груди:{front_file && front_file.cartParams ? ' ' : ' -'}</span>
+              <span className={front_file && front_file.cartParams && `${styles.order_info_line_span}`}>{front_file && front_file.cartParams && `${front_file.cartParams.format}, ${front_file.cartParams.size}, ${front_file.cartParams.price} Р. X ${volumeSize} шт.`}<span className={styles.order_info_line_span_end}>{front_file && front_file.cartParams && ` - ${front_file.cartParams.price * volumeSize} Р.`}</span></span>
+            </p>
+            <p className={styles.order_info_line}>
+              <span className={styles.order_info_line_span_title}>Печать на спине:{back_file && back_file.cartParams ? ' ' : ' -'}</span>
+              <span className={back_file && back_file.cartParams && `${styles.order_info_line_span}`}>{back_file && back_file.cartParams && `${back_file.cartParams.format}, ${back_file.cartParams.size}, ${back_file.cartParams.price} Р. X ${volumeSize} шт.`}<span className={styles.order_info_line_span_end}>{back_file && back_file.cartParams && ` - ${back_file.cartParams.price * volumeSize} Р.`}</span></span>
+            </p>
+            <p className={styles.order_info_line}>
+              <span className={styles.order_info_line_span_title}>Печать на левом рукаве:{lsleeve_file && lsleeve_file.cartParams ? ' ' : ' -'}</span>
+              <span className={lsleeve_file && lsleeve_file.cartParams && `${styles.order_info_line_span}`}>{lsleeve_file && lsleeve_file.cartParams && `${lsleeve_file.cartParams.format}, ${lsleeve_file.cartParams.size}, ${lsleeve_file.cartParams.price} Р. X ${volumeSize} шт.`}<span className={styles.order_info_line_span_end}>{lsleeve_file && lsleeve_file.cartParams && ` - ${lsleeve_file.cartParams.price * volumeSize} Р.`}</span></span>
+            </p>
+            <p className={styles.order_info_line}>
+              <span className={styles.order_info_line_span_title}>Печать на правом рукаве:{rsleeve_file && rsleeve_file.cartParams ? ' ' : ' -'}</span>
+              <span className={rsleeve_file && rsleeve_file.cartParams && `${styles.order_info_line_span}`}>{rsleeve_file && rsleeve_file.cartParams && `${rsleeve_file.cartParams.format}, ${rsleeve_file.cartParams.size}, ${rsleeve_file.cartParams.price} Р. X ${volumeSize} шт.`}<span className={styles.order_info_line_span_end}>{rsleeve_file && rsleeve_file.cartParams && ` - ${rsleeve_file.cartParams.price * volumeSize} Р.`}</span></span>
+            </p>
+
+            <p className={styles.order_info_title}>
+              Итого: {(item.price + totalPricePrint) * volumeSize} Р.
+            </p>
+          </div>
+          <div className={styles.button_container_cart}>
             <button
               type="button"
               className={styles.item_button}
@@ -362,6 +388,20 @@ function Constructor() {
             />
           </div>
         </div>
+        {isOtherPopupVisible && (
+          <PopupModel onClose={closePopupConstructor}>
+            {isOtherPopupVisible.map((el, index) => (
+              <p
+                className={
+                  isOtherPopupVisible.length > 1 ? styles.instruction : styles.error
+                }
+                key={index}
+              >
+                {el}
+              </p>
+            ))}
+          </PopupModel>
+        )}
       </section>
     )
   );
