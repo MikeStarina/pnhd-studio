@@ -31,7 +31,7 @@ function MainPage() {
         meta={[
           {
             name: 'google-site-verification',
-            content: '5uk74aR3BIHKqqEvXA4F4H51xuG39KFRPi6u_Huhv7E',
+            content: 'M4lIu49eO2o_XQZ5jyQ3zNkORxQftkEpEvf0E04pRFU',
           },
           {
             name: 'yandex-verification',
