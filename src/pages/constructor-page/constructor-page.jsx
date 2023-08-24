@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Stage, Layer } from 'react-konva';
 import { v4 as uuidv4 } from 'uuid';
@@ -12,10 +12,11 @@ import {
   SET_ACTIVE_VIEW,
   SET_FILE_STAGE_PARAMS,
   printUploadFunc,
+  loadPrintFromState,
   getSize,
   uploadPreview,
 } from '../../services/actions/editor-actions.jsx';
-import { ADD_TO_CART_WITH_PRINT } from '../../services/actions/cart-actions';
+import { ADD_TO_CART, ADD_TO_CART_WITH_PRINT } from '../../services/actions/cart-actions';
 import Print from './print.jsx';
 import Mockup from './mockup';
 import { fileSelect } from '../../utils/utils';
@@ -28,6 +29,13 @@ import {
 import { instructionForPopup } from '../../data/instructionForPopup/instructionForPopup';
 import { photoProcessing } from '../../data/photo-processing/photo-processing';
 import { clearItemOrder } from '../../services/actions/item-action';
+// sideItemForPrint - задает окно видимости (его размеры) где отобразится привью картинки
+import sideItemForPrint from '../../utils/sideItemForPrint';
+import totalPrintPrice from '../../utils/totalPrintPrice';
+import addToMemory from '../../utils/addToMemory';
+import { Square } from '../../ui/icons/square';
+import { SquareCircle } from '../../ui/icons/squareCircle';
+import { WordT } from '../../ui/icons/wordT';
 
 function Constructor() {
   const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
@@ -51,22 +59,29 @@ function Constructor() {
   } = useSelector((store) => store.editorState);
   const { data } = useSelector((store) => store.shopData);
   const { isImageLoading } = useSelector((store) => store.utilityState);
-  const { order } = useSelector((store) => store.itemReducer);
   const history = useHistory();
-  const { state } = useLocation();
+  const location = useLocation();
   const imgRef = useRef(null);
   const stageRef = useRef();
+  const [squareCircleComponentColor, setSquareCircleComponentColor] = useState(false);
+  const [dash, setDash] = useState(false);
 
-  const item = data && data.length > 0 && data.find((elem) => elem.slug === slug);
+  const { order } = useSelector((store) => store.cartData);
+  const element = location.state.from.includes('cart') ? data && data.length > 0 && order && order.find((elem) => elem.cart_item_id === location.state.state) : data && data.length > 0 && data.find((elem) => elem.slug === slug);
 
-  let initialParams = {
-    x: 140,
-    y: 100,
-    width: 220,
-    height: 300,
-  };
+  const item = location.state.from.includes('cart') ? element.attributes : element;
+
+  const itemSize = location.state.from.includes('cart') ? item.size : location.state.size;
+
+  const volumeSize = itemSize && itemSize.reduce((total, element) => {
+    let accTotal;
+    return (accTotal = total + element.qty);
+  }, 0);
 
   useEffect(() => {
+    if (location.state.from.includes('cart')) {
+      dispatch(loadPrintFromState(element.print));
+    }
     return () => {
       dispatch({
         type: DELETE_FILE,
@@ -74,77 +89,6 @@ function Constructor() {
       });
     };
   }, []);
-
-  if (activeView === 'back') {
-    if (item.type === 'hoodie') {
-      initialParams = {
-        x: 150,
-        y: 140,
-        width: 200,
-        height: 290,
-      };
-    } else if (item.type === 'totebag') {
-      initialParams = {
-        x: 150,
-        y: 160,
-        width: 200,
-        height: 220,
-      };
-    } else {
-      initialParams = {
-        x: 140,
-        y: 100,
-        width: 220,
-        height: 300,
-      };
-    }
-  } else if (activeView === 'front' && item.type === 'hoodie') {
-    initialParams = {
-      x: 150,
-      y: 130,
-      width: 200,
-      height: 200,
-    };
-  } else if (item.type === 'totebag' && activeView === 'front') {
-    initialParams = {
-      x: 150,
-      y: 160,
-      width: 200,
-      height: 220,
-    };
-  } else if (activeView === 'lsleeve') {
-    if (item.type === 'hoodie' || item.type === 'longsleeve' || item.type === 'sweatshirt') {
-      initialParams = {
-        x: 230,
-        y: 125,
-        width: 55,
-        height: 200,
-      };
-    } else {
-      initialParams = {
-        x: 230,
-        y: 105,
-        width: 80,
-        height: 90,
-      };
-    }
-  } else if (activeView === 'rsleeve') {
-    if (item.type === 'hoodie' || item.type === 'longsleeve' || item.type === 'sweatshirt') {
-      initialParams = {
-        x: 215,
-        y: 125,
-        width: 55,
-        height: 200,
-      };
-    } else {
-      initialParams = {
-        x: 190,
-        y: 105,
-        width: 80,
-        height: 90,
-      };
-    }
-  }
 
   const setActiveTab = (e) => {
     dispatch({
@@ -181,8 +125,10 @@ function Constructor() {
     if (print === undefined) {
       dispatch(openPopup(['Не тот формат файла']));
     } else {
-      // console.log(print);
       data.append('files', print, `${uuidv4()}_${print.name}`);
+
+      /* printUploadFunc - так-же вызывает ф-цию setCoords
+      - которая задает позицию появления привью изображения */
       dispatch(printUploadFunc(data, activeView, item.type, item.color));
     }
     e.currentTarget.reset();
@@ -207,55 +153,42 @@ function Constructor() {
     };
   }
 
-  let totalPrintPrice = 0;
-  totalPrintPrice = front_file.cartParams ? totalPrintPrice + front_file.cartParams.price : totalPrintPrice;
-  totalPrintPrice = back_file.cartParams ? totalPrintPrice + back_file.cartParams.price : totalPrintPrice;
-  totalPrintPrice = lsleeve_file.cartParams ? totalPrintPrice + lsleeve_file.cartParams.price : totalPrintPrice;
-  totalPrintPrice = rsleeve_file.cartParams ? totalPrintPrice + rsleeve_file.cartParams.price : totalPrintPrice;
-  totalPrintPrice = badge_file.cartParams ? totalPrintPrice + badge_file.cartParams.price : totalPrintPrice;
+  // totalPrintPrice Производит подсчет стоимости
+  const totalPricePrint = totalPrintPrice(
+    front_file,
+    back_file,
+    lsleeve_file,
+    rsleeve_file,
+    badge_file,
+  );
 
   const addToCart = () => {
-    window.dataLayer.push({
-      ecommerce: {
-        currencyCode: 'RUB',
-        add: {
-          products: [
-            {
-              id: item._id,
-              name: `${item.name} c печатью`,
-              price: item.price + totalPrintPrice,
-              size: state.size,
-              category: item.category,
-              variant: 'с принтом',
-            },
-          ],
-        },
-      },
-    });
-
-    const data = {
-      attributes: { ...item },
-      cart_item_id: uuidv4(),
-    };
-
-    data.attributes.size = state.size;
-    data.attributes.qty = 1;
-    data.attributes.key = uuidv4();
-
-    data.print = {
-      front: front_file,
-      front_preview: front_file_preview,
-      back: back_file,
-      back_preview: back_file_preview,
-      lsleeve: lsleeve_file,
-      lsleeve_preview: lsleeve_file_preview,
-      rsleeve: rsleeve_file,
-      rsleeve_preview: rsleeve_file_preview,
-      badge: badge_file,
-    };
+    const variant = 'с принтом';
+    // Создает обьект заказа, для сохранения в сесионой памяти
+    const data = addToMemory(variant, item.size, item, element.cart_item_id, front_file, front_file_preview, back_file, back_file_preview, lsleeve_file, lsleeve_file_preview, rsleeve_file, rsleeve_file_preview, badge_file);
 
     dispatch({
       type: ADD_TO_CART_WITH_PRINT,
+      payload: { ...data },
+    });
+
+    dispatch({
+      type: CLEAR_ALL_PRINTS,
+    });
+
+    dispatch(clearItemOrder());
+
+    history.goBack();
+  };
+
+  const uuId = uuidv4();
+  const addToPrint = () => {
+    const variant = 'с принтом';
+    // Создает обьект заказа, для сохранения в сесионой памяти
+    const data = addToMemory(variant, location.state.size, item, uuId, front_file, front_file_preview, back_file, back_file_preview, lsleeve_file, lsleeve_file_preview, rsleeve_file, rsleeve_file_preview, badge_file);
+
+    dispatch({
+      type: ADD_TO_CART,
       payload: { ...data },
     });
 
@@ -270,6 +203,10 @@ function Constructor() {
 
   const openPopupConstructor = () => {
     dispatch(openPopup(instructionForPopup));
+  };
+
+  const openPopupInfo = () => {
+    dispatch(openPopup(['Привет! Сейчас эта функция находится в разработке :)']));
   };
 
   const closePopupConstructor = () => {
@@ -294,7 +231,8 @@ function Constructor() {
               </Layer>
               <Layer className={styles.layer}>
                 <Print
-                  initialParams={initialParams}
+                  dash={dash}
+                  initialParams={sideItemForPrint(item, activeView)}
                   isSelected={isSelected}
                   onSelect={onSelect}
                   file={file && file.file.file.url}
@@ -319,11 +257,13 @@ function Constructor() {
           <div className={styles.tabs_container}>
             <button
               type="button"
-              className={activeView === 'front' ? styles.active_tab : styles.tab}
+              className={
+                activeView === 'front' ? styles.active_tab : styles.tab
+              }
               id="front"
               onClick={setActiveTab}
             >
-              Грудь
+              Грудь &gt;
             </button>
             <button
               type="button"
@@ -331,39 +271,55 @@ function Constructor() {
               id="back"
               onClick={setActiveTab}
             >
-              Спина
+              Спина &gt;
             </button>
             {item.type !== 'totebag' && (
               <button
-                className={activeView === 'lsleeve' ? styles.active_tab : styles.tab}
+                className={
+                  activeView === 'lsleeve' ? styles.active_tab : styles.tab
+                }
                 id="lsleeve"
                 onClick={setActiveTab}
                 type="button"
               >
-                Л.&nbsp;рукав
+                Л.&nbsp;рукав &gt;
               </button>
             )}
             {item.type !== 'totebag' && (
               <button
-                className={activeView === 'rsleeve' ? styles.active_tab : styles.tab}
+                className={
+                  activeView === 'rsleeve' ? styles.active_tab : styles.tab
+                }
                 id="rsleeve"
                 onClick={setActiveTab}
                 type="button"
               >
-                П.&nbsp;рукав
+                П.&nbsp;рукав &gt;
               </button>
             )}
           </div>
 
           <div className={styles.input_container}>
-            <form className={styles.input_form} onChange={onChange} encType="multipart/form-data">
+            <form
+              className={styles.input_form}
+              onChange={onChange}
+              encType="multipart/form-data"
+            >
               {isImageLoading && (
-                <div className={isImageLoading ? styles.loader_active : styles.loader}>
+                <div
+                  className={
+                    isImageLoading ? styles.loader_active : styles.loader
+                  }
+                >
                   <div className={styles.loader_icon} />
                 </div>
               )}
               {!isImageLoading && file && file.name && (
-                <button type="button" className={styles.print_delete_button} onClick={deletePrint}>
+                <button
+                  type="button"
+                  className={styles.print_delete_button}
+                  onClick={deletePrint}
+                >
                   X
                 </button>
               )}
@@ -372,63 +328,101 @@ function Constructor() {
                   type="file"
                   accept=".jpg, .png"
                   className={styles.file_input}
-                  name="file_input"
+                  id="file_input"
                 />
-                <label htmlFor="file_input" className={styles.file_input_button}>
-                  <span className={styles.file_input_button_text} name="input_button_text">
-                    {file && file.name ? file.name : 'Выберите файл'}
+                <label
+                  htmlFor="file_input"
+                  className={styles.file_input_button}
+                >
+                  <span
+                    className={styles.file_input_button_text}
+                    name="input_button_text"
+                  >
+                    {file && file.name ? file.name : 'Выберите файл >'}
                   </span>
                 </label>
               </div>
             </form>
           </div>
-          <div className={styles.stage_controls} />
+          <div className={styles.button_container}>
+            <div className={styles.btn_img_control}>
+              <button
+                onClick={() => setDash((dash) => !dash)}
+                className={dash ? `${styles.item_button_quest} ${styles.item_button_quest_active}` : `${styles.item_button_quest}`}
+              >
+                <Square className={styles.btn_svg} />
+              </button>
+              <button
+                onClick={openPopupInfo}
+                className={styles.item_button_quest}
+                onMouseEnter={() => setSquareCircleComponentColor(true)}
+                onMouseLeave={() => setSquareCircleComponentColor(false)}
+              >
+                <SquareCircle className={styles.btn_svg} style={{ color: squareCircleComponentColor ? '#00ff00' : '#ffffff' }} />
+              </button>
+              <button
+                onClick={openPopupInfo}
+                className={styles.item_button_quest}
+              >
+                <WordT className={styles.btn_svg} />
+              </button>
+            </div>
+            <button
+              onClick={openPopupConstructor}
+              className={styles.item_button_quest}
+            >
+              ?
+            </button>
+          </div>
           <div className={styles.order_info}>
-            <p className={styles.order_info_line}>Текстиль: {item.name}</p>
-            <p className={styles.order_info_line}>Стоимость текстиля: {item.price} Р.</p>
-            <p className={styles.order_info_line}>
-              Печать на груди:{' '}
-              {front_file && front_file.cartParams ? `${front_file.cartParams.format}, ${front_file.cartParams.size}, ${front_file.cartParams.price} Р.` : '-'}
+            <p className={styles.order_info_title}>{item.name}</p>
+            <p className={styles.order_info_subtitle}>
+              <span className={styles.order_info_line_span}>{`${item.price} Р. X ${volumeSize} шт.`}<span className={styles.order_info_line_span_end}>{` - ${item.price * volumeSize} Р.`}</span></span>
             </p>
             <p className={styles.order_info_line}>
-              Печать на спине:{' '}
-              {back_file && back_file.cartParams ? `${back_file.cartParams.format}, ${back_file.cartParams.size}, ${back_file.cartParams.price} Р.` : '-'}
+              <span className={styles.order_info_line_span_title}>Печать на груди:{front_file && front_file.cartParams ? ' ' : ' -'}</span>
+              <span className={front_file && front_file.cartParams && `${styles.order_info_line_span}`}>{front_file && front_file.cartParams && `${front_file.cartParams.format}, ${front_file.cartParams.size}, ${front_file.cartParams.price} Р. X ${volumeSize} шт.`}<span className={styles.order_info_line_span_end}>{front_file && front_file.cartParams && ` - ${front_file.cartParams.price * volumeSize} Р.`}</span></span>
             </p>
             <p className={styles.order_info_line}>
-              Печать на левом рукаве:{' '}
-              {lsleeve_file && lsleeve_file.cartParams ? `${lsleeve_file.cartParams.format}, ${lsleeve_file.cartParams.size}, ${lsleeve_file.cartParams.price} Р.` : '-'}
+              <span className={styles.order_info_line_span_title}>Печать на спине:{back_file && back_file.cartParams ? ' ' : ' -'}</span>
+              <span className={back_file && back_file.cartParams && `${styles.order_info_line_span}`}>{back_file && back_file.cartParams && `${back_file.cartParams.format}, ${back_file.cartParams.size}, ${back_file.cartParams.price} Р. X ${volumeSize} шт.`}<span className={styles.order_info_line_span_end}>{back_file && back_file.cartParams && ` - ${back_file.cartParams.price * volumeSize} Р.`}</span></span>
             </p>
             <p className={styles.order_info_line}>
-              Печать на правом рукаве:{' '}
-              {rsleeve_file && rsleeve_file.cartParams ? `${rsleeve_file.cartParams.format}, ${rsleeve_file.cartParams.size}, ${rsleeve_file.cartParams.price} Р.` : '-'}
+              <span className={styles.order_info_line_span_title}>Печать на левом рукаве:{lsleeve_file && lsleeve_file.cartParams ? ' ' : ' -'}</span>
+              <span className={lsleeve_file && lsleeve_file.cartParams && `${styles.order_info_line_span}`}>{lsleeve_file && lsleeve_file.cartParams && `${lsleeve_file.cartParams.format}, ${lsleeve_file.cartParams.size}, ${lsleeve_file.cartParams.price} Р. X ${volumeSize} шт.`}<span className={styles.order_info_line_span_end}>{lsleeve_file && lsleeve_file.cartParams && ` - ${lsleeve_file.cartParams.price * volumeSize} Р.`}</span></span>
+            </p>
+            <p className={styles.order_info_line}>
+              <span className={styles.order_info_line_span_title}>Печать на правом рукаве:{rsleeve_file && rsleeve_file.cartParams ? ' ' : ' -'}</span>
+              <span className={rsleeve_file && rsleeve_file.cartParams && `${styles.order_info_line_span}`}>{rsleeve_file && rsleeve_file.cartParams && `${rsleeve_file.cartParams.format}, ${rsleeve_file.cartParams.size}, ${rsleeve_file.cartParams.price} Р. X ${volumeSize} шт.`}<span className={styles.order_info_line_span_end}>{rsleeve_file && rsleeve_file.cartParams && ` - ${rsleeve_file.cartParams.price * volumeSize} Р.`}</span></span>
             </p>
 
-            <p className={styles.order_info_line}>
-              Итого текстиль и печать: {item.price + totalPrintPrice} Р.
+            <p className={styles.order_info_title}>
+              Итого: {(item.price + totalPricePrint) * volumeSize} Р.
             </p>
           </div>
-          <div className={styles.button_container}>
-            <button onClick={openPopupConstructor} className={styles.item_button_quest} />
-            {isOtherPopupVisible && (
-              <PopupModel onClose={closePopupConstructor}>
-                {isOtherPopupVisible.map((el, index) => (
-                  <p
-                    className={isOtherPopupVisible.length > 1 ? styles.instruction : styles.error}
-                    key={index}
-                  >
-                    {el}
-                  </p>
-                ))}
-              </PopupModel>
-            )}
+          <div className={styles.button_container_cart}>
             <button
               type="button"
               className={styles.item_button}
-              onClick={addToCart}
+              onClick={location.state.from.includes('cart') ? addToCart : addToPrint}
               disabled={isBlockButton}
             />
           </div>
         </div>
+        {isOtherPopupVisible && (
+          <PopupModel onClose={closePopupConstructor}>
+            {isOtherPopupVisible.map((el, index) => (
+              <p
+                className={
+                  isOtherPopupVisible.length > 1 ? styles.instruction : styles.error
+                }
+                key={index}
+              >
+                {el}
+              </p>
+            ))}
+          </PopupModel>
+        )}
       </section>
     )
   );

@@ -30,10 +30,6 @@ function MainPage() {
         title="Печать на футболках заказать в Санкт-Петербурге цена от 1 штуки в Studio Pinhead"
         meta={[
           {
-            name: 'google-site-verification',
-            content: '5uk74aR3BIHKqqEvXA4F4H51xuG39KFRPi6u_Huhv7E',
-          },
-          {
             name: 'yandex-verification',
             content: 'ea65d19e93bf5159',
           },

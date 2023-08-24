@@ -13,6 +13,7 @@ export const SET_FILE_STAGE_PARAMS = 'SET_FILE_PARAMS';
 export const SET_FILE_CART_PARAMS = 'SET_FILE_CART_PARAMS';
 export const ADD_PRINT_PREVIEW = 'ADD_PRINT_PREVIEW';
 export const SET_EDITOR_VIEW = 'SET_EDITOR_VIEW';
+export const LOAD_PRINT_FROM_STATE = 'LOAD_PRINT_FROM_STATE';
 
 export const getSize = (newAttrs, activeView, color) => {
   // console.log(color)
@@ -98,6 +99,7 @@ export const printUploadFunc = (data, activeView, itemType, itemColor) => {
         });
 
         const currentImage = res;
+        // setCoords - Задает координаты появления привью изображения,
         const imageCoords = setCoords(
           currentImage,
           activeView,
@@ -118,8 +120,6 @@ export const printUploadFunc = (data, activeView, itemType, itemColor) => {
 };
 
 export const uploadPreview = (data, activeView) => {
-  // console.log(data);
-
   return function (dispatch) {
     fetch(`${apiBaseUrl}/api/uploads/`, {
       method: 'POST',
@@ -135,5 +135,14 @@ export const uploadPreview = (data, activeView) => {
           view: activeView,
         });
       });
+  };
+};
+
+export const loadPrintFromState = (payload) => {
+  return function (dispatch) {
+    dispatch({
+      type: LOAD_PRINT_FROM_STATE,
+      payload,
+    });
   };
 };
