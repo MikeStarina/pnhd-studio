@@ -13,6 +13,7 @@ import {
   SET_PAYMENT_URL,
   DELETE_ITEM_FROM_CART,
   DELETE_PRINT_FROM_CART,
+  CHANGE_ITEM_SIZES,
 } from '../actions/cart-actions.jsx';
 
 const initialState = {
@@ -79,6 +80,29 @@ export const cartDataReducer = (state = initialState, action) => {
           }
         }
 
+        return item;
+      });
+
+      return {
+        ...state,
+        order: newOrder,
+      };
+    }
+    case CHANGE_ITEM_SIZES: {
+      const newOrder = state.order;
+
+      newOrder.map((item) => {
+        if (item.cart_item_id === action.id) {
+          item.attributes.size.map((el) => {
+            if (el.name === action.name) {
+              el.qty = action.qty;
+            }
+          });
+          if (item.print) {
+            item.print.qty = action.qty > 0 ? action.qty : 1;
+          }
+        }
+        sessionStorage.setItem('cart', JSON.stringify(newOrder));
         return item;
       });
 

@@ -4,6 +4,7 @@ import { apiBaseUrl } from '../../utils/constants';
 export const ADD_TO_CART = 'ADD_TO_CART';
 export const ADD_TO_CART_WITH_PRINT = 'ADD_TO_CART_WITH_PRINT';
 export const CHANGE_ITEM_QTY = 'CHANGE_ITEM_QTY';
+export const CHANGE_ITEM_SIZES = 'CHANGE_ITEM_SIZES';
 export const SET_CART_VISIBILITY = 'SET_CART_VISIBILITY';
 export const CREATE_ORDER = 'CREATE_ORDER';
 export const CLEAR_CART = 'CLEAR_CART';

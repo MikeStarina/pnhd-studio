@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { DELETE_PRINT_FROM_CART, DELETE_ITEM_FROM_CART } from '../../services/actions/cart-actions';
+import { DELETE_PRINT_FROM_CART, DELETE_ITEM_FROM_CART, SET_CART_VISIBILITY } from '../../services/actions/cart-actions';
 import styles from './cartPage.module.css';
 import SizeSelection from '../../components/size-selection/size-selection';
 import Modal from '../../components/modal/modal';
@@ -14,15 +14,13 @@ import { apiBaseUrl } from '../../utils/constants';
 function Cart() {
   const [size, setSize] = useState('');
   const [prewievImg, setPrewievImg] = useState('');
+  const [modalSizeId, setModalSizeId] = useState({ id: '' });
   const [modalActive, setModalActive] = useState(false);
+  const [modalSizeActive, setModalSizeActive] = useState(false);
   const {
-    order,
-    paymentUrl,
-    user_promocode,
-    isPromocodeLoading,
-    promocodeFail,
-    validPromoCode,
+    order, isVisible,
   } = useSelector((store) => store.cartData);
+  console.log(isVisible);
   const dispatch = useDispatch();
   const deletePrintFromCart = (e) => {
     dispatch({
@@ -37,7 +35,6 @@ function Cart() {
       payload: e.target.id,
     });
   };
-  // console.log(order);
   let arr = [];
   let totalPrintSum = 0;
   let totalProductsSum = 0;
@@ -101,6 +98,26 @@ function Cart() {
       });
     }
   };
+  useEffect(() => {
+    // event: KeyboardEvent - на будущее, для TS
+    function handleEscapeKey(event) {
+      if (event.code === 'Escape') {
+        setModalSizeActive(false);
+      }
+    }
+    document.addEventListener('keydown', handleEscapeKey);
+    return () => document.removeEventListener('keydown', handleEscapeKey);
+  }, []);
+  useEffect(() => {
+    dispatch({
+      type: SET_CART_VISIBILITY,
+      payload: false,
+    });
+
+    return () => {
+      dispatch({ type: SET_CART_VISIBILITY, payload: true });
+    };
+  }, []);
   return (
     <>
       <h1 className={styles.pageTitle}>КОРЗИНА / CART</h1>
@@ -113,7 +130,7 @@ function Cart() {
         );
         totalProductsSum += totalPrintSum + item.attributes.price * productPriece;
         return (
-          <div className={styles.products}>
+          <div className={styles.products} key={index}>
             <div className={styles.productsImage}>
               <Link
                 to={{ pathname: `/shop/${item.attributes.slug}` }}
@@ -143,25 +160,25 @@ function Cart() {
               <p className={styles.productsInfo_sum}>
                 — {item.attributes.price * productPriece} Р.
               </p>
-              <p className={styles.ttt2}>Изменить&nbsp;размер</p>
+              <button type="button" className={styles.ttt2} onClick={(e) => { setModalSizeActive(true); setModalSizeId(e.target.id); }} id={item.cart_item_id}>Изменить&nbsp;размер</button>
               <p className={styles.productsInfo_text}>
                 {item.attributes.description}
               </p>
-              <div className={styles.ttt}>
-                {item.attributes.size.length > 0 ? (
-                  item.attributes.size.map((item) => (
-                    <SizeSelection
-                      name={item.name}
-                      type="shop"
-                      qty={item.qty}
+              <div className={!modalSizeActive || modalSizeId != item.cart_item_id ? styles.ttt : `${styles.modal} ${styles.active}`} onClick={() => { setModalSizeActive(false); }}>
+                <div className={!modalSizeActive ? '' : `${styles.modal__content} ${styles.active}`} onClick={(e) => { e.stopPropagation(); }}>
+                  {item.attributes.size.length > 0 && (
+                    item.attributes.size.map((elem, index) => (
+                      <SizeSelection
+                      type="cart"
+                      name={elem.name}
+                      qty={elem.qty}
                       size={size}
-                      id={item._id}
-                      key={item._id}
-                    />
-                  ))
-                ) : (
-                  <option>Нет в наличии</option>
-                )}
+                      id={item.cart_item_id}
+                      key={elem._id}
+                      />
+                    ))
+                  )}
+                </div>
               </div>
             </div>
             <div className={styles.productsPrint}>
@@ -170,6 +187,7 @@ function Cart() {
                 arr.map((elem, index) => {
                   return (
                     <div
+                    key={index}
                       className={
                         index != 4 ? `${styles.productsPrint_prewiev} ${styles.productsPrint_prewiev_border}` : `${styles.productsPrint_prewiev}`
                       }
@@ -185,7 +203,7 @@ function Cart() {
                       />
                       <span className={styles.productsPrint_prewievPrice}>
                         <p className={styles.productsPrint_prewievPrice_place}>
-                          {elem.place} {elem.size}
+                          <span className={styles.productsPrint_prewievPrice_format}>{elem.place}</span><span className={styles.productsPrint_prewievPrice_size}>{elem.size}</span>
                         </p>
                         <p className={`${styles.productsPrint_prewievPrice_right} ${styles.productsPrint_prewievPrice_right__top}`}>
                           — формат {elem.format}
@@ -303,7 +321,7 @@ function Cart() {
       </div>
       <>
         <Modal active={modalActive} setActive={setModalActive}>
-          <img src={prewievImg} alt="Превью принта" />
+          <img src={prewievImg} alt="Превью принта" className={styles.modalImg} />
         </Modal>
       </>
     </>
