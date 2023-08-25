@@ -120,7 +120,7 @@ function Cart() {
   }, []);
   return (
     <>
-      <h1 className={styles.pageTitle}>КОРЗИНА / CART</h1>
+      <h1 className={styles.pageTitle}>КОРЗИНА / <span>CART</span></h1>
       {order.map((item, index) => {
         const url = `${apiBaseUrl}${item.attributes.image_url}`;
         const initialValue = 0;

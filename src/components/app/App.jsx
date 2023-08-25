@@ -23,6 +23,7 @@ import CartIcon from '../cart/cart-icon.jsx';
 import ItemPage from '../../pages/item-page/item-page.jsx';
 import CartPage from '../../pages/cart-page/cart-page.jsx';
 import Cart from '../../pages/cartPage/cartPage.jsx';
+import Checkout from '../../pages/checkout/checkout.jsx';
 import { RESTORE_CART_FROM_SSTORAGE } from '../../services/actions/cart-actions';
 import Oferta from '../../pages/oferta-page/oferta-page';
 import Page404 from '../../pages/page-404/page-404';
@@ -191,6 +192,9 @@ function App() {
         <Route exact path="/cart">
           {/* {order.length > 0 ? <Cart /> : <Redirect to="/shop" />} */}
           <Cart />
+        </Route>
+        <Route exact path="/chec">
+          <Checkout />
         </Route>
         <Route path="/">
           <Page404 />
