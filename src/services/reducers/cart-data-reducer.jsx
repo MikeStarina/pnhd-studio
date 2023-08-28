@@ -14,6 +14,7 @@ import {
   DELETE_ITEM_FROM_CART,
   DELETE_PRINT_FROM_CART,
   CHANGE_ITEM_SIZES,
+  ADD_ORDER_PRICE,
 } from '../actions/cart-actions.jsx';
 
 const initialState = {
@@ -33,6 +34,7 @@ const initialState = {
     discount: null,
     _id: '',
   },
+  orderPrice: {},
 };
 
 export const cartDataReducer = (state = initialState, action) => {
@@ -247,6 +249,13 @@ export const cartDataReducer = (state = initialState, action) => {
           discount: null,
           _id: '',
         },
+      };
+    }
+
+    case ADD_ORDER_PRICE: {
+      return {
+        ...state,
+        orderPrice: action.payload,
       };
     }
 

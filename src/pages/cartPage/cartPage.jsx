@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { DELETE_PRINT_FROM_CART, DELETE_ITEM_FROM_CART, SET_CART_VISIBILITY } from '../../services/actions/cart-actions';
+import {
+  DELETE_PRINT_FROM_CART,
+  DELETE_ITEM_FROM_CART,
+  SET_CART_VISIBILITY,
+  ADD_ORDER_PRICE,
+} from '../../services/actions/cart-actions';
 import styles from './cartPage.module.css';
 import SizeSelection from '../../components/size-selection/size-selection';
 import Modal from '../../components/modal/modal';
@@ -10,6 +15,7 @@ import Visa from '../../components/images/cartPageVisa.svg';
 import MasterCard from '../../components/images/cartPageMastercard.svg';
 import Ukassa from '../../components/images/cartPageUkassa.svg';
 import { apiBaseUrl } from '../../utils/constants';
+import { getAllPrice, getPreviewArr, getPrintPrice } from '../../utils/cartPage';
 
 function Cart() {
   const [size, setSize] = useState('');
@@ -17,11 +23,11 @@ function Cart() {
   const [modalSizeId, setModalSizeId] = useState({ id: '' });
   const [modalActive, setModalActive] = useState(false);
   const [modalSizeActive, setModalSizeActive] = useState(false);
-  const {
-    order, isVisible,
-  } = useSelector((store) => store.cartData);
-  console.log(isVisible);
+  const { order } = useSelector((store) => store.cartData);
+
   const dispatch = useDispatch();
+  const allOrderPrice = getAllPrice(order);
+
   const deletePrintFromCart = (e) => {
     dispatch({
       type: DELETE_PRINT_FROM_CART,
@@ -35,69 +41,7 @@ function Cart() {
       payload: e.target.id,
     });
   };
-  let arr = [];
-  let totalPrintSum = 0;
-  let totalProductsSum = 0;
 
-  const getPreviewArr = (obj) => {
-    const { print, cart_item_id } = obj;
-    const initialValue = 0;
-    const productPriece = obj.attributes.size.reduce(
-      (accumulator, currentValue) => accumulator + currentValue.qty,
-      initialValue,
-    );
-    arr = [];
-    totalPrintSum = 0;
-    if (!print) return;
-    if (print.front.file) {
-      totalPrintSum += print.front.cartParams.price * productPriece;
-      arr.push({
-        place: 'Принт на груди.',
-        name: 'front_print',
-        format: print.front.cartParams.format,
-        price: print.front.cartParams.price,
-        size: print.front.cartParams.size,
-        preview: print.front_preview.preview,
-        id: cart_item_id,
-      });
-    }
-    if (print.back.file) {
-      totalPrintSum += print.back.cartParams.price * productPriece;
-      arr.push({
-        place: 'Принт на спине.',
-        name: 'back_print',
-        format: print.back.cartParams.format,
-        price: print.back.cartParams.price,
-        size: print.back.cartParams.size,
-        preview: print.back_preview.preview,
-        id: cart_item_id,
-      });
-    }
-    if (print.lsleeve.file) {
-      totalPrintSum += print.lsleeve.cartParams.price * productPriece;
-      arr.push({
-        place: 'Принт на л. рукаве.',
-        name: 'lsleeve_print',
-        format: print.lsleeve.cartParams.format,
-        price: print.lsleeve.cartParams.price,
-        size: print.lsleeve.cartParams.size,
-        preview: print.lsleeve_preview.preview,
-        id: cart_item_id,
-      });
-    }
-    if (print.rsleeve.file) {
-      totalPrintSum += print.rsleeve.cartParams.price * productPriece;
-      arr.push({
-        place: 'Принт на п. рукаве.',
-        name: 'rsleeve_print',
-        format: print.rsleeve.cartParams.format,
-        price: print.rsleeve.cartParams.price,
-        size: print.rsleeve.cartParams.size,
-        preview: print.rsleeve_preview.preview,
-        id: cart_item_id,
-      });
-    }
-  };
   useEffect(() => {
     // event: KeyboardEvent - на будущее, для TS
     function handleEscapeKey(event) {
@@ -108,19 +52,26 @@ function Cart() {
     document.addEventListener('keydown', handleEscapeKey);
     return () => document.removeEventListener('keydown', handleEscapeKey);
   }, []);
+
   useEffect(() => {
     dispatch({
       type: SET_CART_VISIBILITY,
       payload: false,
     });
-
+    dispatch({
+      type: ADD_ORDER_PRICE,
+      payload: allOrderPrice,
+    });
     return () => {
       dispatch({ type: SET_CART_VISIBILITY, payload: true });
     };
-  }, []);
+  }, [order]);
+
   return (
     <>
-      <h1 className={styles.pageTitle}>КОРЗИНА / <span>CART</span></h1>
+      <h1 className={styles.pageTitle}>
+        КОРЗИНА / <span>CART</span>
+      </h1>
       {order.map((item, index) => {
         const url = `${apiBaseUrl}${item.attributes.image_url}`;
         const initialValue = 0;
@@ -128,7 +79,8 @@ function Cart() {
           (accumulator, currentValue) => accumulator + currentValue.qty,
           initialValue,
         );
-        totalProductsSum += totalPrintSum + item.attributes.price * productPriece;
+        const arr = getPreviewArr(item);
+        const printPrice = getPrintPrice(item);
         return (
           <div className={styles.products} key={index}>
             <div className={styles.productsImage}>
@@ -138,7 +90,7 @@ function Cart() {
                 key={index}
               >
                 <img
-                  className={styles.productsImage_test}
+                  className={styles.productsImage_img}
                   src={url}
                   alt="Фото товара"
                 />
@@ -160,34 +112,55 @@ function Cart() {
               <p className={styles.productsInfo_sum}>
                 — {item.attributes.price * productPriece} Р.
               </p>
-              <button type="button" className={styles.ttt2} onClick={(e) => { setModalSizeActive(true); setModalSizeId(e.target.id); }} id={item.cart_item_id}>Изменить&nbsp;размер</button>
+              <button
+                type="button"
+                className={styles.editSizeButton}
+                onClick={(e) => {
+                  setModalSizeActive(true);
+                  setModalSizeId(e.target.id);
+                }}
+                id={item.cart_item_id}
+              >
+                Изменить&nbsp;размер
+              </button>
               <p className={styles.productsInfo_text}>
                 {item.attributes.description}
               </p>
-              <div className={!modalSizeActive || modalSizeId != item.cart_item_id ? styles.ttt : `${styles.modal} ${styles.active}`} onClick={() => { setModalSizeActive(false); }}>
-                <div className={!modalSizeActive ? '' : `${styles.modal__content} ${styles.active}`} onClick={(e) => { e.stopPropagation(); }}>
-                  {item.attributes.size.length > 0 && (
-                    item.attributes.size.map((elem, index) => (
-                      <SizeSelection
-                      type="cart"
-                      name={elem.name}
-                      qty={elem.qty}
-                      size={size}
-                      id={item.cart_item_id}
-                      key={elem._id}
-                      />
-                    ))
-                  )}
+              <div
+                className={
+                  !modalSizeActive || modalSizeId != item.cart_item_id ? styles.modalWrap : `${styles.modal} ${styles.active}`
+                }
+                onClick={() => {
+                  setModalSizeActive(false);
+                }}
+              >
+                <div
+                  className={
+                    !modalSizeActive ? '' : `${styles.modal__content} ${styles.active}`
+                  }
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                >
+                  {item.attributes.size.length > 0 && item.attributes.size.map((elem, index) => (
+                    <SizeSelection
+                        type="cart"
+                        name={elem.name}
+                        qty={elem.qty}
+                        size={size}
+                        id={item.cart_item_id}
+                        key={elem._id}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
             <div className={styles.productsPrint}>
-              {getPreviewArr(item)}
               {arr.length > 0 ? (
                 arr.map((elem, index) => {
                   return (
                     <div
-                    key={index}
+                      key={index}
                       className={
                         index != 4 ? `${styles.productsPrint_prewiev} ${styles.productsPrint_prewiev_border}` : `${styles.productsPrint_prewiev}`
                       }
@@ -203,15 +176,28 @@ function Cart() {
                       />
                       <span className={styles.productsPrint_prewievPrice}>
                         <p className={styles.productsPrint_prewievPrice_place}>
-                          <span className={styles.productsPrint_prewievPrice_format}>{elem.place}</span><span className={styles.productsPrint_prewievPrice_size}>{elem.size}</span>
+                          <span
+                            className={styles.productsPrint_prewievPrice_format}
+                          >
+                            {elem.place}
+                          </span>
+                          <span
+                            className={styles.productsPrint_prewievPrice_size}
+                          >
+                            {elem.size}
+                          </span>
                         </p>
-                        <p className={`${styles.productsPrint_prewievPrice_right} ${styles.productsPrint_prewievPrice_right__top}`}>
+                        <p
+                          className={`${styles.productsPrint_prewievPrice_right} ${styles.productsPrint_prewievPrice_right__top}`}
+                        >
                           — формат {elem.format}
                         </p>
                         <p className={styles.productsPrint_prewievPrice_down}>
                           {elem.price} Р. х {productPriece} шт
                         </p>
-                        <p className={`${styles.productsPrint_prewievPrice_right} ${styles.productsPrint_prewievPrice_right_down}`}>
+                        <p
+                          className={`${styles.productsPrint_prewievPrice_right} ${styles.productsPrint_prewievPrice_right_down}`}
+                        >
                           — {elem.price * productPriece} Р.
                         </p>
                       </span>
@@ -226,12 +212,16 @@ function Cart() {
                           Удалить
                         </button>
                         &nbsp;/&nbsp;
-                        <button
-                          type="button"
-                          className={styles.productsPrint_button}
+                        <Link
+                          to={{
+                            pathname: `/shop/${item.attributes.slug}/constructor`,
+                            state: { state: item.cart_item_id, from: 'cart' },
+                          }}
+                          className={`${styles.link} ${styles.link__name}`}
+                          key={index}
                         >
-                          Изменить
-                        </button>
+                          <span className={styles.productsPrint_button}>Изменить</span>
+                        </Link>
                       </div>
                     </div>
                   );
@@ -241,7 +231,17 @@ function Cart() {
               )}
               {arr.length < 4 && (
                 <div className={styles.addPrintButton_wrap}>
-                  <p>Добавить принт &gt;</p>
+                  <Link
+                  to={{
+                    pathname: `/shop/${item.attributes.slug}/constructor`,
+                    state: { state: item.cart_item_id, from: 'cart' },
+                  }}
+                  className={`${styles.link} ${styles.link__name}`}
+                  key={index}
+                  >
+                    <p className={styles.addPrintButton_wrap_text}>Добавить принт &gt;</p>
+
+                  </Link>
                 </div>
               )}
             </div>
@@ -259,11 +259,11 @@ function Cart() {
               <div className={styles.productsBottom_price}>
                 <p>Текстиль: {item.attributes.price * productPriece}&nbsp;Р.</p>
                 <p className={styles.productsBottom_pricePrint}>
-                  Печать: {totalPrintSum}&nbsp;Р.
+                  Печать: {printPrice}&nbsp;Р.
                 </p>
                 <p className={styles.productsBottom_priceAll}>
                   Подытог:{' '}
-                  {totalPrintSum + item.attributes.price * productPriece}{' '}
+                  {printPrice + item.attributes.price * productPriece}{' '}
                   &nbsp;Р.
                 </p>
               </div>
@@ -290,7 +290,7 @@ function Cart() {
           </div>
         </div>
         <p className={styles.paymentPrice}>
-          Итого на сумму: {totalProductsSum} Р.
+          Итого на сумму: {allOrderPrice.price} Р.
         </p>
       </div>
       <div className={styles.makeOrder}>
@@ -321,7 +321,11 @@ function Cart() {
       </div>
       <>
         <Modal active={modalActive} setActive={setModalActive}>
-          <img src={prewievImg} alt="Превью принта" className={styles.modalImg} />
+          <img
+            src={prewievImg}
+            alt="Превью принта"
+            className={styles.modalImg}
+          />
         </Modal>
       </>
     </>
