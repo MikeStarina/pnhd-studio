@@ -1,0 +1,125 @@
+.dropdown_container {
+    margin: 30px 0 0;
+    text-align: left;
+    position: relative;
+    padding: 0;
+    height: 40px;
+    background-color: #FFFFFF;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    box-sizing: border-box;
+    width:40px;
+    cursor: pointer;
+}
+
+.dropdown_container:hover {
+    background-color: #00FF00;
+}
+
+.dropdown_container_selected {
+    background-color: #00FF00;
+}
+
+.dropdown_item_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+.dropdown_selected_value {
+
+}
+
+.btn_svg {
+    margin: 10px 10px;
+    color: #FFFFFF;
+}
+.btn_svg:hover {
+    color: #00FF00;
+}
+
+.dropdown_menu {
+    position: absolute;
+    transform: translateX(0) translateY(10px);
+    box-sizing: border-box;
+    width: 40px;
+    /*overflow: auto;*/
+    max-height: 150px;
+    background-color: #FFFFFF;
+    z-index: 99;
+    /*padding: 5px;*/
+    /*margin-left: 1px;*/
+    border: 1px solid #000000;
+    border-radius: 5px;
+}
+
+.dropdown_item {
+    padding: 0;
+    cursor: pointer;
+    margin: 0;
+    transition: 0.5s;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.dropdown_item:hover {
+    transition: 0.5s;
+    background-color: #00FF00;
+}
+
+.dropdown_item.selected {
+    color: #FFFFFF;
+}
+
+.dropdown_tools {
+    margin-top: 7px;
+    /*background-image: url(../images/icons/filter-row.svg);*/
+    background-repeat: no-repeat;
+    width: 10px;
+    height: 14px;
+}
+
+.dropdown_menu::-webkit-scrollbar {
+    width: 8px;
+    /* ширина scrollbar */
+}
+
+.dropdown_menu::-webkit-scrollbar-track {
+    background: #FFFFFF;
+    /* цвет дорожки */
+}
+
+.dropdown_menu::-webkit-scrollbar-thumb {
+    background-color: #00FF00;
+    /* цвет плашки */
+    border-radius: 10px;
+    /* закругления плашки */
+    /*border: 1px solid #FFFFFF;   padding вокруг плашки*/
+}
+
+.dropdown_item_wrapper {
+    display: flex;
+}
+
+.wrap {
+    width: 40px;
+}
+
+.dropdown_item_space{
+    padding-left: 10px;
+}
+
+@media(max-width: 960px) {
+    .dropdown_container {
+        padding: 0 12px;
+        height: 26px;
+    }
+}
+
+@media(max-width: 750px) {
+    .dropdown_container {
+        margin-bottom: 20px;
+    }
+}

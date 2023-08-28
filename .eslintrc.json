@@ -31,6 +31,7 @@
     "max-len": "off", // we need fix all disebled rules from here and below... for line STOP
     "import/prefer-default-export": "off",
     "camelcase": "off",
+    "spaced-comment": "warn",
     "react/jsx-one-expression-per-line": "off",
     "operator-linebreak": ["error", "none"],
     "react/jsx-boolean-value": "off",

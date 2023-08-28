@@ -297,6 +297,10 @@
     align-self: flex-end;
 }
 
+.item_button_quest_none {
+    display: none;
+}
+
 .btn_svg {
     margin-top: 3px;
     color: #FFFFFF;

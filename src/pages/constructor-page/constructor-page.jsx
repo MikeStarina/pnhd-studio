@@ -29,11 +29,12 @@ import {
 import { instructionForPopup } from '../../data/instructionForPopup/instructionForPopup';
 import { photoProcessing } from '../../data/photo-processing/photo-processing';
 import { clearItemOrder } from '../../services/actions/item-action';
+import ConstructorFilter from '../../components/ConstructorFilter/ConstructorFilter';
 // sideItemForPrint - задает окно видимости (его размеры) где отобразится привью картинки
 import sideItemForPrint from '../../utils/sideItemForPrint';
 import totalPrintPrice from '../../utils/totalPrintPrice';
 import addToMemory from '../../utils/addToMemory';
-import { Square } from '../../ui/icons/square';
+import { SquareDash } from '../../ui/icons/squareDash';
 import { SquareCircle } from '../../ui/icons/squareCircle';
 import { WordT } from '../../ui/icons/wordT';
 
@@ -65,6 +66,10 @@ function Constructor() {
   const stageRef = useRef();
   const [squareCircleComponentColor, setSquareCircleComponentColor] = useState(false);
   const [dash, setDash] = useState(false);
+  const [squareMask, setSquareMask] = useState(false);
+  const [circleMask, setCircleMask] = useState(false);
+  const [openCircle, setOpenCircle] = useState(false);
+  const [openSquare, setOpenSquare] = useState(false);
 
   const { order } = useSelector((store) => store.cartData);
   const element = location.state.from.includes('cart') ? data && data.length > 0 && order && order.find((elem) => elem.cart_item_id === location.state.state) : data && data.length > 0 && data.find((elem) => elem.slug === slug);
@@ -135,6 +140,9 @@ function Constructor() {
   };
 
   const deletePrint = () => {
+    setCircleMask(false);
+    setSquareMask(false);
+    setOpenCircle(false);
     dispatch({
       type: DELETE_FILE,
       view: activeView,
@@ -148,7 +156,6 @@ function Constructor() {
 
       const data = new FormData();
       data.append('files', scene, `${activeView}_preview_${uuidv4()}.jpg`);
-
       dispatch(uploadPreview(data, activeView));
     };
   }
@@ -213,6 +220,34 @@ function Constructor() {
     dispatch(closePopup());
   };
 
+  const getButtonVisibilitySquare = () => {
+    setSquareMask(true);
+  };
+
+  const getButtonVisibilityCircle = () => {
+    setCircleMask(true);
+  };
+
+  const closeButtonVisibilityCircleSquare = () => {
+    setCircleMask(false);
+    setSquareMask(false);
+  };
+
+  const closeButtonVisibilityOpenCircleSquare = () => {
+    setOpenCircle(false);
+    setOpenSquare(false);
+  };
+
+  const acceptCloseCircleMaskOpenCircle = () => {
+    setCircleMask((circleMask) => !circleMask);
+    setOpenCircle((openCircle) => !openCircle);
+  };
+
+  const acceptCloseSquareMaskOpenSquare = () => {
+    setSquareMask((squareMask) => !squareMask);
+    setOpenSquare((openSquare) => !openSquare);
+  };
+
   return (
     item && (
       <section className={styles.screen}>
@@ -231,6 +266,10 @@ function Constructor() {
               </Layer>
               <Layer className={styles.layer}>
                 <Print
+                  openSquare={openSquare}
+                  squareMask={squareMask}
+                  openCircle={openCircle}
+                  circleMask={circleMask}
                   dash={dash}
                   initialParams={sideItemForPrint(item, activeView)}
                   isSelected={isSelected}
@@ -350,16 +389,18 @@ function Constructor() {
                 onClick={() => setDash((dash) => !dash)}
                 className={dash ? `${styles.item_button_quest} ${styles.item_button_quest_active}` : `${styles.item_button_quest}`}
               >
-                <Square className={styles.btn_svg} />
+                <SquareDash className={styles.btn_svg} />
               </button>
-              <button
-                onClick={openPopupInfo}
-                className={styles.item_button_quest}
-                onMouseEnter={() => setSquareCircleComponentColor(true)}
-                onMouseLeave={() => setSquareCircleComponentColor(false)}
-              >
-                <SquareCircle className={styles.btn_svg} style={{ color: squareCircleComponentColor ? '#00ff00' : '#ffffff' }} />
-              </button>
+              <ConstructorFilter
+                openSquare={openSquare}
+                squareMask={squareMask}
+                openCircle={openCircle}
+                circleMask={circleMask}
+                getButtonVisibilityCircle={getButtonVisibilityCircle}
+                closeButtonVisibilityOpenCircleSquare={closeButtonVisibilityOpenCircleSquare}
+                closeButtonVisibilityCircleSquare={closeButtonVisibilityCircleSquare}
+                getButtonVisibilitySquare={getButtonVisibilitySquare}
+              />
               <button
                 onClick={openPopupInfo}
                 className={styles.item_button_quest}
@@ -367,6 +408,12 @@ function Constructor() {
                 <WordT className={styles.btn_svg} />
               </button>
             </div>
+            <button
+              className={circleMask || squareMask ? styles.item_button_quest : styles.item_button_quest_none}
+              onClick={circleMask ? acceptCloseCircleMaskOpenCircle : acceptCloseSquareMaskOpenSquare}
+            >
+              acc
+            </button>
             <button
               onClick={openPopupConstructor}
               className={styles.item_button_quest}

@@ -1,14 +1,14 @@
-export function Square({ ...props }) {
+export function Circle({ ...props }) {
   return (
     <svg
       width="18"
       height="18"
       viewBox="0 0 18 18"
-      fill="none"
+      fill="black"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <rect width="18" height="18" fill="black" />
+      <circle cx="8.99998" cy="9" r="8" fill="black" />
     </svg>
   );
 }
