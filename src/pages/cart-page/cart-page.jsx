@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation, Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './cart-page.module.css';
 import {
@@ -222,6 +222,7 @@ function CartPage() {
     order.map((el) => {
       if (el.cart_item_id === id) {
         return el.attributes.size.reduce((total, element) => {
+          // console.log(total, element.qty, '<el');
           return (accTotal = total + element.qty);
         }, 0);
       }
