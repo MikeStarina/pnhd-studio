@@ -4,6 +4,7 @@ import tee_classic_sizes from '../../tee_classic_sizes.png';
 import tee_oversize_sizes from '../../tee_oversize_sizes.png';
 import tee_promo_sizes from '../../tee_promo_sizes.png';
 import tee_gildan_sizes from '../../tee_promo_sizes.png';
+import tee_freefit_sizes from '../../tee_freefit_sizes.png';
 import hoodie_classic_sizes from '../../hoodie_classic_sizes.png';
 
 function SizesPage() {
@@ -22,6 +23,14 @@ function SizesPage() {
         <h2 className={styles.section_title}>Футболки OVERSIZE</h2>
         <img
           src={tee_oversize_sizes}
+          alt="size chart oversize tee"
+          className={styles.img}
+        />
+      </section>
+      <section className={styles.section}>
+        <h2 className={styles.section_title}>Футболки FREEFIT</h2>
+        <img
+          src={tee_freefit_sizes}
           alt="size chart oversize tee"
           className={styles.img}
         />
