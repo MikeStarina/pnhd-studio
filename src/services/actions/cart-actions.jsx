@@ -125,23 +125,24 @@ export const createOrder = (
   });
 
   return function (dispatch) {
-    fetch(`${apiBaseUrl}/api/orders`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Content-length': '',
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.paymentUrl) {
-          dispatch({
-            type: SET_PAYMENT_URL,
-            payload: res.paymentUrl,
-          });
-        }
-      });
+    // fetch(`${apiBaseUrl}/api/orders`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Content-length': '',
+    //   },
+    //   body: JSON.stringify(data),
+    // })
+    //   .then((res) => res.json())
+    //   .then((res) => {
+    //     if (res.paymentUrl) {
+    //       dispatch({
+    //         type: SET_PAYMENT_URL,
+    //         payload: res.paymentUrl,
+    //       });
+    //     }
+    //   });
+    console.log(data);
   };
 };
 

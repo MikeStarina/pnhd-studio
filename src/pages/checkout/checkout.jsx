@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
+import { createOrder } from '../../services/actions/cart-actions';
 import {
-  CHANGE_ITEM_QTY,
-  CLEAR_CART,
   SET_CART_VISIBILITY,
-  DELETE_ITEM_FROM_CART,
-  DELETE_PRINT_FROM_CART,
   GET_USER_PROMOCODE,
   DELETE_ACTIVE_PROMOCODE,
   ADD_ORDER_PRICE,
+  CLEAR_CART,
 } from '../../services/actions/cart-actions';
 import {
   SET_USER_DATA,
@@ -23,11 +22,13 @@ import {
   SET_SDEK_DEFAULT_STATE,
   SET_SDEK_RESET_POINTS,
 } from '../../services/actions/shipping-actions';
+import { openPopup, closePopup } from '../../services/actions/utility-actions';
 import { checkPromoCodeValidity } from '../../services/actions/cart-actions';
 import { ShippingMap } from '../../components/shipping-components/shipping-map';
 import { ShippingSelect } from '../../components/shipping-components/shipping-select';
 import useDebounce from '../../hooks/useDebounce';
 import styles from './checkout.module.css';
+import PopupModel from '../../components/popupModel/popupModel';
 
 function Checkout() {
   const dispatch = useDispatch();
@@ -36,18 +37,20 @@ function Checkout() {
     orderPrice,
     paymentUrl,
     user_promocode,
-    isPromocodeLoading,
     promocodeFail,
     validPromoCode,
   } = useSelector((store) => store.cartData);
-  console.log(order);
   const {
     userCartData,
     userShippingData,
   } = useSelector((store) => store.userData);
-  const { shippingCities, shippingTarif, shippingPoints } = useSelector(
-    (store) => store.shippingData.shippingData,
-  );
+  const {
+    shippingCities,
+    shippingTarif,
+    shippingPoints,
+  } = useSelector((store) => store.shippingData.shippingData);
+  const { shippingData } = useSelector((store) => store.shippingData);
+  const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
   const [firstLoadInput, setFirstLoadInput] = useState({
     name: false,
     surname: false,
@@ -58,7 +61,8 @@ function Checkout() {
     pickup: true,
     sdek: false,
   });
-  const [typeShipping, setTypeShipping] = useState(false);
+  // const [resetPopup, setResetPopup] = useState(true);
+  // const [typeShipping, setTypeShipping] = useState(false);
   const [centerMap, setCenterMap] = useState([59.972621, 30.306432]);
   const [mapPoints, setMapPoints] = useState();
   const [debounceCities, setDebounceCities] = useState([]);
@@ -69,21 +73,19 @@ function Checkout() {
   const [checkSelect, setChekSelect] = useState(true);
   const [shippingPrice, setShippingPrice] = useState(0);
   const debouncedSearchTerm = useDebounce(listCities, 500);
-  const regex = /[^0-9]/gi;
+  const shipping_price = validPromoCode.discount_ratio ? orderPrice.price * validPromoCode.discount_ratio + (shippingPrice || 0) : orderPrice.price + (shippingPrice || 0);
+  const shipping_free = validPromoCode.discount_ratio ? orderPrice.price * validPromoCode.discount_ratio : orderPrice.price;
+  const discounted_price = validPromoCode.mechanic === 'freeShipping' ? shipping_free : shipping_price;
+  const orderWeight = order.map((el) => {
+    const sizes = el.attributes.shippingParams;
+    return {
+      weight: sizes.weight,
+      length: sizes.length,
+      width: sizes.width,
+      height: sizes.depth,
+    };
+  });
 
-  const inputChangeHandler = (e) => {
-    let value;
-    if (e.target.name === 'phone') {
-      value = e.target.value.replace(regex, '');
-    }
-    dispatch({
-      type: SET_USER_DATA,
-      inputName: e.target.name,
-      inputSurname: e.target.surname,
-      inputValue: e.target.name === 'phone' ? value : e.target.value,
-      validity: e.target.validity.valid,
-    });
-  };
   const promoSubmitHandler = (e) => {
     e.preventDefault();
     dispatch(checkPromoCodeValidity(user_promocode));
@@ -98,7 +100,67 @@ function Checkout() {
       type: GET_USER_PROMOCODE,
       payload: value,
     });
-  }; const getCities = (elem) => {
+  };
+  // console.log(orderPrice);
+
+  // это похоже на проверку открытия попапа для элемента заказа
+  // const valueButton = order.some(
+  //   (item) => oneItemTotalValue(item.cart_item_id) === 0,
+  // );
+  // console.log(valueButton);
+
+  // это общая цена заказа, реализация с прошлой версии, ее можно убрать
+  // const totalPrice = order.reduce((acc, item) => {
+  //   let printTotalprice = 0;
+  //   const frontPrintPrice = item.print && item.print.front.file ? item.print.front.cartParams.price : 0;
+  //   const backPrintPrice = item.print && item.print.back.file ? item.print.back.cartParams.price : 0;
+  //   const lsleevePrintPrice = item.print && item.print.lsleeve.file ? item.print.lsleeve.cartParams.price : 0;
+  //   const rsleevePrintPrice = item.print && item.print.rsleeve.file ? item.print.rsleeve.cartParams.price : 0;
+  //   const badgePrintPrice = item.print && item.print.badge.file ? item.print.badge.cartParams.price : 0;
+
+  //   printTotalprice = frontPrintPrice + backPrintPrice + lsleevePrintPrice + rsleevePrintPrice + badgePrintPrice;
+
+  //   acc = acc + item.attributes.price * oneItemTotalValue(item.cart_item_id) + printTotalprice * oneItemTotalValue(item.cart_item_id);
+  //   return acc;
+  // }, 0);
+
+  // console.log(totalPrice);
+  // console.log(orderPrice);
+
+  // 1 по идее это логика обрабатывающая изменение кол-ва товара в корзине с прошлой версии
+  // 1 ее по сути можно убрать
+  // useEffect(() => {
+  //   if (!isOtherPopupVisible && resetPopup && valueButton) {
+  //     dispatch(openPopup(['Нужно выбрать размер']));
+  //   }
+  //   if (totalPrice !== 0 && !resetPopup) {
+  //     setResetPopup(true);
+  //   }
+  // }, [totalPrice, valueButton]);
+
+  const { phone } = userCartData;
+  const regex = /[^0-9]/gi;
+  let newPhone;
+  if (phone) {
+    if (phone[0] === '8') {
+      newPhone = phone.replace('8', '7');
+    }
+  }
+  const inputChangeHandler = (e) => {
+    let value;
+    if (e.target.name === 'phone') {
+      value = e.target.value.replace(regex, '');
+    }
+    dispatch({
+      type: SET_USER_DATA,
+      inputName: e.target.name,
+      inputSurname: e.target.surname,
+      inputValue: e.target.name === 'phone' ? value : e.target.value,
+      validity: e.target.validity.valid,
+    });
+  };
+
+  const getCities = (elem) => {
     const list = [];
     if (elem.length >= 3) {
       shippingCities.forEach((item) => {
@@ -114,12 +176,6 @@ function Checkout() {
     }
   };
 
-  useEffect(() => {
-    if (debouncedSearchTerm) {
-      setListCities(listCities);
-      getCities(listCities);
-    }
-  }, [debouncedSearchTerm]);
   const getShippingPoints = () => {
     const arr = shippingPoints.map((item) => {
       return {
@@ -130,25 +186,14 @@ function Checkout() {
     });
     setMapPoints(arr);
   };
-  useEffect(() => {
-    getShippingPoints();
-    setShippingPrice(
-      shippingTarif.total_sum ? Math.ceil(shippingTarif.total_sum) : 0,
-    );
-  }, [shippingPoints]);
-  // подтсраховка от "зажевывания" стоимости доставки
-  useEffect(() => {
-    setShippingPrice(
-      shippingTarif.total_sum ? Math.ceil(shippingTarif.total_sum) : 0,
-    );
-  }, [shippingTarif]);
+
   const setRadioDelivery = (type) => {
     if (type === 'самовывоз') {
       setTypeDelivery({
         pickup: true,
         sdek: false,
       });
-      setTypeShipping(false);
+      // setTypeShipping(false);
       setCenterMap([59.972621, 30.306432]);
     }
     if (type === 'сдэк') {
@@ -178,15 +223,7 @@ function Checkout() {
       });
     }
   };
-  const orderWeight = order.map((el) => {
-    const sizes = el.attributes.shippingParams;
-    return {
-      weight: sizes.weight,
-      length: sizes.length,
-      width: sizes.width,
-      height: sizes.depth,
-    };
-  });
+
   const setPointColor = (el, color) => {
     if (color === '#00FF00') {
       mapPoints.forEach((item) => {
@@ -236,79 +273,143 @@ function Checkout() {
       });
     }
   };
-  // const createOrderHandler = () => {
-  //   if (valueButton) {
-  //     dispatch(openPopup(['Нужно выбрать размер']));
-  //   } else if (!isUserFormValid) {
-  //     if (!userCartData.isNameValid) {
-  //       setFirstLoadInput((firstLoadInput.name = true));
-  //     }
-  //     if (!userCartData.isPhoneValid) {
-  //       setFirstLoadInput((firstLoadInput.phone = true));
-  //     }
-  //     if (!userCartData.isEmailValid) {
-  //       setFirstLoadInput((firstLoadInput.email = true));
-  //     }
-  //     if (!userCartData.isSurnameValid) {
-  //       setFirstLoadInput((firstLoadInput.surname = true));
-  //     }
-  //     setFirstLoadInput({
-  //       ...firstLoadInput,
-  //     });
-  //     if (!userShippingData.isCityValid) {
-  //       setChekInput(false);
-  //     }
-  //     if (!userShippingData.isPvzValid) {
-  //       setChekSelect(false);
-  //     }
-  //     dispatch(openPopup([validationMessage]));
-  //   } else {
-  //     const metrikaProducts = [];
-  //     order.forEach((item) => {
-  //       const frontPrintPrice = item.print && item.print.front.file ? item.print.front.cartParams.price : 0;
-  //       const backPrintPrice = item.print && item.print.back.file ? item.print.back.cartParams.price : 0;
-  //       const lsleevePrintPrice = item.print && item.print.lsleeve.file ? item.print.lsleeve.cartParams.price : 0;
-  //       const rsleevePrintPrice = item.print && item.print.rsleeve.file ? item.print.rsleeve.cartParams.price : 0;
+  const isUserFormValid = userCartData.isNameValid && userCartData.isPhoneValid && userCartData.isEmailValid && userCartData.isSurnameValid && userShippingData.isCityValid && userShippingData.isPvzValid;
+  const validationMessage = `${!userCartData.isNameValid ? 'Имя' : ''} ${
+    !userCartData.isSurnameValid ? 'Фамилия' : ''
+  } ${!userCartData.isPhoneValid ? 'Телефон' : ''} ${
+    !userCartData.isEmailValid ? 'Email' : ''
+  } ${!userShippingData.isCityValid ? 'Город' : ''} ${
+    !userShippingData.isPvzValid ? 'Пункт Выдачи' : ''
+  }`;
 
-  //       const printTotalprice = frontPrintPrice + backPrintPrice + lsleevePrintPrice + rsleevePrintPrice;
+  if (paymentUrl) {
+    window.location.href = paymentUrl;
 
-  //       metrikaProducts.push({
-  //         id: item.attributes._id,
-  //         name:
-  //           printTotalprice > 0 ? `${item.attributes.name} с печатью` : item.attributes.name,
-  //         price: item.attributes.price + printTotalprice,
-  //         category: item.attributes.category,
-  //         variant: item.print ? 'с печатью' : 'без печати',
-  //         quantity: oneItemTotalValue(item.cart_item_id),
-  //       });
-  //     });
+    dispatch({
+      type: CLEAR_CART,
+    });
+  }
+  const handelClosePopup = () => {
+    // if (orderPrice.price === 0) {
+    //   setResetPopup(false);
+    // }
+    dispatch(closePopup());
+  };
 
-  //     window.dataLayer.push({
-  //       ecommerce: {
-  //         currencyCode: 'RUB',
-  //         purchase: {
-  //           actionField: {
-  //             id: uuidv4(),
-  //             revenue: totalPrice,
-  //           },
-  //           products: metrikaProducts,
-  //         },
-  //       },
-  //     });
+  const oneItemTotalValue = (id) => {
+    let accTotal = 0;
+    order.map((el) => {
+      if (el.cart_item_id === id) {
+        return el.attributes.size.reduce((total, element) => {
+          // console.log(total, element.qty, '<el');
+          return (accTotal = total + element.qty);
+        }, 0);
+      }
+      return accTotal;
+    });
+    return accTotal;
+  };
+  const createOrderHandler = () => {
+    // 1 реализация проверки наличия размера у товара перед формированием заказа. Можно удалить
+    // if (valueButton) {
+    //   dispatch(openPopup(['Нужно выбрать размер']));
+    // } else
+    if (!isUserFormValid) {
+      if (!userCartData.isNameValid) {
+        setFirstLoadInput((firstLoadInput.name = true));
+      }
+      if (!userCartData.isPhoneValid) {
+        setFirstLoadInput((firstLoadInput.phone = true));
+      }
+      if (!userCartData.isEmailValid) {
+        setFirstLoadInput((firstLoadInput.email = true));
+      }
+      if (!userCartData.isSurnameValid) {
+        setFirstLoadInput((firstLoadInput.surname = true));
+      }
+      setFirstLoadInput({
+        ...firstLoadInput,
+      });
+      if (!userShippingData.isCityValid) {
+        setChekInput(false);
+      }
+      if (!userShippingData.isPvzValid) {
+        setChekSelect(false);
+      }
+      dispatch(openPopup([validationMessage]));
+    } else {
+      const metrikaProducts = [];
+      order.forEach((item) => {
+        const frontPrintPrice = item.print && item.print.front.file ? item.print.front.cartParams.price : 0;
+        const backPrintPrice = item.print && item.print.back.file ? item.print.back.cartParams.price : 0;
+        const lsleevePrintPrice = item.print && item.print.lsleeve.file ? item.print.lsleeve.cartParams.price : 0;
+        const rsleevePrintPrice = item.print && item.print.rsleeve.file ? item.print.rsleeve.cartParams.price : 0;
 
-  //     dispatch(
-  //       createOrder(
-  //         order,
-  //         totalPrice,
-  //         discounted_price,
-  //         userCartData,
-  //         validPromoCode,
-  //         shippingData,
-  //         userShippingData,
-  //       ),
-  //     );
-  //   }
-  // };
+        const printTotalprice = frontPrintPrice + backPrintPrice + lsleevePrintPrice + rsleevePrintPrice;
+
+        metrikaProducts.push({
+          id: item.attributes._id,
+          name:
+          printTotalprice > 0 ? `${item.attributes.name} с печатью` : item.attributes.name,
+          price: item.attributes.price + printTotalprice,
+          category: item.attributes.category,
+          variant: item.print ? 'с печатью' : 'без печати',
+          quantity: oneItemTotalValue(item.cart_item_id),
+        });
+        console.log('inorder');
+        console.log(metrikaProducts);
+      });
+
+      window.dataLayer.push({
+        ecommerce: {
+          currencyCode: 'RUB',
+          purchase: {
+            actionField: {
+              id: uuidv4(),
+              revenue: orderPrice.price,
+            },
+            products: metrikaProducts,
+          },
+        },
+      });
+
+      console.log('outorder');
+      console.log(metrikaProducts);
+      console.log(window.dataLayer);
+      dispatch(
+        createOrder(
+          order,
+          orderPrice.price,
+          discounted_price,
+          userCartData,
+          validPromoCode,
+          shippingData,
+          userShippingData,
+        ),
+      );
+    }
+  };
+
+  useEffect(() => {
+    getShippingPoints();
+    setShippingPrice(
+      shippingTarif.total_sum ? Math.ceil(shippingTarif.total_sum) : 0,
+    );
+  }, [shippingPoints]);
+
+  // подтсраховка от "зажевывания" стоимости доставки
+  useEffect(() => {
+    setShippingPrice(
+      shippingTarif.total_sum ? Math.ceil(shippingTarif.total_sum) : 0,
+    );
+  }, [shippingTarif]);
+  useEffect(() => {
+    if (debouncedSearchTerm) {
+      setListCities(listCities);
+      getCities(listCities);
+    }
+  }, [debouncedSearchTerm]);
+
   useEffect(() => {
     dispatch({
       type: SET_CART_VISIBILITY,
@@ -317,14 +418,31 @@ function Checkout() {
 
     return () => {
       dispatch({ type: SET_CART_VISIBILITY, payload: true });
+      dispatch({ type: SET_SDEK_DEFAULT_STATE });
     };
   }, []);
+
+  useEffect(() => {
+    if (typeList) {
+      if (listCities.city != userShippingData.city.city) {
+        setUserShippingDataReset();
+        setTypeList(false);
+        setCenterMap([59.972621, 30.306432]);
+        setListPoints(null);
+        // setTypeShipping(false);
+      }
+    }
+  });
+
   useEffect(() => {
     dispatch({
       type: ADD_ORDER_PRICE,
       payload: orderPrice,
     });
   }, [order]);
+
+  // const popupStyle = valueButton ? `${styles.instruction}` : `${styles.popupBlock_message}`;
+
   return (
     <div className={styles.wrap}>
       <h1 className={styles.wrap_title}>
@@ -371,7 +489,7 @@ function Checkout() {
             <input
               type="tel"
               minLength="11"
-              placeholder="89990009900"
+              placeholder="Ваш телефон"
               id="phone"
               name="phone"
               className={
@@ -379,14 +497,14 @@ function Checkout() {
               }
               required
               onChange={inputChangeHandler}
-              value={userCartData.phone}
+              value={newPhone || userCartData.phone}
             />
             <label htmfor="email" className={styles.input_label}>
               Email*:
             </label>
             <input
               type="email"
-              placeholder="name@pnhd.ru"
+              placeholder="Ваш email"
               id="email"
               name="email"
               className={
@@ -404,39 +522,39 @@ function Checkout() {
             <div className={styles.user_radioWrap}>
               <div className={styles.user_radioWrapper}>
                 <input
-                type="radio"
-                id="radioPickup"
-                name="radio"
-                value="1"
-                onClick={() => {
-                  setRadioDelivery('самовывоз');
-                  setDefoultShippingState();
-                  setTypeList(false);
-                  dispatch({
-                    type: SET_DEFAULT_USERSHIPPINGDATA,
-                  });
-                  dispatch({
-                    type: SET_SDEK_DEFAULT_STATE,
-                  });
-                  setChekInput(true);
-                  setChekSelect(true);
-                }}
-                defaultChecked
+                  type="radio"
+                  id="radioPickup"
+                  name="radio"
+                  value="1"
+                  onClick={() => {
+                    setRadioDelivery('самовывоз');
+                    setDefoultShippingState();
+                    setTypeList(false);
+                    dispatch({
+                      type: SET_DEFAULT_USERSHIPPINGDATA,
+                    });
+                    dispatch({
+                      type: SET_SDEK_DEFAULT_STATE,
+                    });
+                    setChekInput(true);
+                    setChekSelect(true);
+                  }}
+                  defaultChecked
                 />
                 <label htmlFor="radioPickup">Самовывоз из студии</label>
               </div>
               <div className={styles.user_radioWrapper}>
                 <input
-                type="radio"
-                id="radioSdek"
-                name="radio"
-                value="2"
-                onClick={() => {
-                  setDefoultShippingState();
-                  dispatch(getSdekCities());
-                  setRadioDelivery('сдэк');
-                  setUserShippingDataReset();
-                }}
+                  type="radio"
+                  id="radioSdek"
+                  name="radio"
+                  value="2"
+                  onClick={() => {
+                    setDefoultShippingState();
+                    dispatch(getSdekCities());
+                    setRadioDelivery('сдэк');
+                    setUserShippingDataReset();
+                  }}
                 />
                 <label htmlFor="radioSdek">Доставка</label>
               </div>
@@ -446,24 +564,23 @@ function Checkout() {
                 <div className={styles.inputShippingWrap}>
                   <label htmlFor="cityInput">Выберите город*:</label>
                   <input
-                  type="text"
-                  id="cityInput"
-                  className={
-                    checkInput ? styles.user_form_input : `${styles.user_form_input} ${styles.user_form_inputError}`
-                  }
-                  required
-                  placeholder="Введите город"
-                  value={listCities.city || listCities}
-                  onChange={(e) => {
-                    console.log(listCities);
-                    setListCities(e.target.value);
-                    setTypeList(false);
-                    dispatch({
-                      type: SET_SDEK_RESET_POINTS,
-                    });
-                    setUserShippingDataReset();
-                    setListPoints(null);
-                  }}
+                    type="text"
+                    id="cityInput"
+                    className={
+                      checkInput ? styles.user_form_input : `${styles.user_form_input} ${styles.user_form_inputError}`
+                    }
+                    required
+                    placeholder="Город"
+                    value={listCities.city || listCities}
+                    onChange={(e) => {
+                      setListCities(e.target.value);
+                      setTypeList(false);
+                      dispatch({
+                        type: SET_SDEK_RESET_POINTS,
+                      });
+                      setUserShippingDataReset();
+                      setListPoints(null);
+                    }}
                   />
                 </div>
                 {!typeList ? (
@@ -516,11 +633,11 @@ function Checkout() {
                     <div className={styles.shippingSelectWrap}>
                       <p>Выберите ПВЗ*: </p>
                       <ShippingSelect
-                      options={mapPoints}
-                      onChange={onChangeSelect}
-                      defaultValue="Выберите пункт выдачи:"
-                      editValue={listPoints}
-                      errBorder={checkSelect}
+                        options={mapPoints}
+                        onChange={onChangeSelect}
+                        defaultValue="Выберите пункт выдачи:"
+                        editValue={listPoints}
+                        errBorder={checkSelect}
                       />
                     </div>
                     {true && (
@@ -545,12 +662,13 @@ function Checkout() {
           <p
             className={`${styles.button_wrapper__text} ${styles.button_wrapper__textShip}`}
           >
-            Стоимость доставки: 800 Р.
+            Стоимость доставки:{' '}
+            {validPromoCode.mechanic === 'freeShipping' ? 'Бесплатная доставка' : `${shippingPrice} Р.`}
           </p>
           <p
             className={`${styles.button_wrapper__text} ${styles.button_wrapper__textPrePrice}`}
           >
-            Подытог: 8000 Р.
+            Подытог: {discounted_price} Р.
           </p>
           <div className={styles.button_wrapperPromo}>
             {!validPromoCode.message && !promocodeFail ? (
@@ -603,13 +721,43 @@ function Checkout() {
           <p
             className={`${styles.button_wrapper__text} ${styles.button_wrapper__textPrePrice}`}
           >
-            Итог: 8000 Р.
+            Итог: {discounted_price} Р.
           </p>
           <button
             type="button"
             className={styles.control_button}
-            // onClick={createOrderHandler}
+            onClick={createOrderHandler}
           />
+          {isOtherPopupVisible && (
+            <PopupModel onClose={handelClosePopup}>
+              {/* <div className={styles.popupBlock}>
+                {!isUserFormValid && !valueButton && (
+                  <p className={styles.validation_message}>Заполните поля:</p>
+                )}
+                {isOtherPopupVisible.map((el, index) => (
+                  <p
+                    className={`${styles.validation_message} ${popupStyle}`}
+                    key={index}
+                  >
+                    {el}
+                  </p>
+                ))}
+              </div> */}
+              <div className={styles.popupBlock}>
+                {!isUserFormValid && (
+                <p className={styles.validation_message}>Заполните поля:</p>
+                )}
+                {isOtherPopupVisible.map((el, index) => (
+                  <p
+                    className={`${styles.validation_message} ${styles.popupBlock_message}`}
+                    key={index}
+                  >
+                    {el}
+                  </p>
+                ))}
+              </div>
+            </PopupModel>
+          )}
         </div>
       </div>
     </div>
