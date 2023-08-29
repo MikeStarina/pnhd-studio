@@ -18,6 +18,8 @@ import { apiBaseUrl } from '../../utils/constants';
 import { getAllPrice, getPreviewArr, getPrintPrice } from '../../utils/cartPage';
 
 function Cart() {
+  const zzz = useSelector((store) => store.cartData);
+  // console.log(zzz);
   const [size, setSize] = useState('');
   const [prewievImg, setPrewievImg] = useState('');
   const [modalSizeId, setModalSizeId] = useState({ id: '' });
@@ -55,17 +57,27 @@ function Cart() {
 
   useEffect(() => {
     dispatch({
-      type: SET_CART_VISIBILITY,
-      payload: false,
-    });
-    dispatch({
       type: ADD_ORDER_PRICE,
       payload: allOrderPrice,
     });
     return () => {
-      dispatch({ type: SET_CART_VISIBILITY, payload: true });
+      dispatch({
+        type: ADD_ORDER_PRICE,
+        payload: allOrderPrice,
+      });
     };
   }, [order]);
+
+  useEffect(() => {
+    dispatch({
+      type: SET_CART_VISIBILITY,
+      payload: false,
+    });
+
+    return () => {
+      dispatch({ type: SET_CART_VISIBILITY, payload: true });
+    };
+  }, []);
 
   return (
     <>
@@ -316,7 +328,18 @@ function Cart() {
           </p>
         </span>
         <div className={styles.addPrintButton_wrap}>
-          <p>К оформлению &gt;&gt;</p>
+          <Link to={{ pathname: '/chec' }} className={`${styles.link} ${styles.link__name}`}>
+            <p
+              className={styles.addPrintButton_wrap_text}
+              onClick={() => {
+                dispatch({
+                  type: ADD_ORDER_PRICE,
+                  payload: allOrderPrice,
+                });
+              }}
+            >К оформлению &gt;&gt;
+            </p>
+          </Link>
         </div>
       </div>
       <>

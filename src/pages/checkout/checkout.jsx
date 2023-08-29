@@ -8,6 +8,7 @@ import {
   DELETE_PRINT_FROM_CART,
   GET_USER_PROMOCODE,
   DELETE_ACTIVE_PROMOCODE,
+  ADD_ORDER_PRICE,
 } from '../../services/actions/cart-actions';
 import {
   SET_USER_DATA,
@@ -32,12 +33,14 @@ function Checkout() {
   const dispatch = useDispatch();
   const {
     order,
+    orderPrice,
     paymentUrl,
     user_promocode,
     isPromocodeLoading,
     promocodeFail,
     validPromoCode,
   } = useSelector((store) => store.cartData);
+  console.log(order);
   const {
     userCartData,
     userShippingData,
@@ -45,7 +48,6 @@ function Checkout() {
   const { shippingCities, shippingTarif, shippingPoints } = useSelector(
     (store) => store.shippingData.shippingData,
   );
-  console.log(shippingTarif);
   const [firstLoadInput, setFirstLoadInput] = useState({
     name: false,
     surname: false,
@@ -307,6 +309,22 @@ function Checkout() {
   //     );
   //   }
   // };
+  useEffect(() => {
+    dispatch({
+      type: SET_CART_VISIBILITY,
+      payload: false,
+    });
+
+    return () => {
+      dispatch({ type: SET_CART_VISIBILITY, payload: true });
+    };
+  }, []);
+  useEffect(() => {
+    dispatch({
+      type: ADD_ORDER_PRICE,
+      payload: orderPrice,
+    });
+  }, [order]);
   return (
     <div className={styles.wrap}>
       <h1 className={styles.wrap_title}>
@@ -522,7 +540,7 @@ function Checkout() {
           <p
             className={`${styles.button_wrapper__text} ${styles.button_wrapper__textPrice}`}
           >
-            Стоимость заказа: 7200 Р.
+            Стоимость заказа: {orderPrice.price} Р.
           </p>
           <p
             className={`${styles.button_wrapper__text} ${styles.button_wrapper__textShip}`}

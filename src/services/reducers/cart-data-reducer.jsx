@@ -9,6 +9,7 @@ import {
   CHANGE_ITEM_QTY,
   CLEAR_CART,
   RESTORE_CART_FROM_SSTORAGE,
+  RESTORE_PRICE_FROM_SSTORAGE,
   SET_CART_VISIBILITY,
   SET_PAYMENT_URL,
   DELETE_ITEM_FROM_CART,
@@ -134,6 +135,13 @@ export const cartDataReducer = (state = initialState, action) => {
         isVisible: true,
       };
     }
+    case RESTORE_PRICE_FROM_SSTORAGE: {
+      return {
+        ...state,
+        orderPrice: action.payload,
+        isVisible: true,
+      };
+    }
     case SET_PAYMENT_URL: {
       return {
         ...state,
@@ -253,9 +261,11 @@ export const cartDataReducer = (state = initialState, action) => {
     }
 
     case ADD_ORDER_PRICE: {
+      const price = action.payload;
+      sessionStorage.setItem('price', JSON.stringify(price));
       return {
         ...state,
-        orderPrice: action.payload,
+        orderPrice: price,
       };
     }
 
