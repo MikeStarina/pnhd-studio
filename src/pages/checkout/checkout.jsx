@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import InputMask from 'react-input-mask';
 import { v4 as uuidv4 } from 'uuid';
 import { createOrder } from '../../services/actions/cart-actions';
 import {
@@ -138,15 +140,16 @@ function Checkout() {
   //   }
   // }, [totalPrice, valueButton]);
 
-  const { phone } = userCartData;
-  const regex = /[^0-9]/gi;
-  let newPhone;
-  if (phone) {
-    if (phone[0] === '8') {
-      newPhone = phone.replace('8', '7');
-    }
-  }
+  // const { phone } = userCartData;
+  // const regex = /[^0-9]/gi;
+  // let newPhone;
+  // if (phone) {
+  //   if (phone[0] === '8') {
+  //     newPhone = phone.replace('8', '7');
+  //   }
+  // }
   const inputChangeHandler = (e) => {
+    const regex = /[\s/+/)/(/-]/g;
     let value;
     if (e.target.name === 'phone') {
       value = e.target.value.replace(regex, '');
@@ -486,7 +489,9 @@ function Checkout() {
             <label htmfor="phone" className={styles.input_label}>
               Телефон*:
             </label>
-            <input
+            <InputMask
+              mask="+7 (999) 999-9999"
+              maskChar="_"
               type="tel"
               minLength="11"
               placeholder="Ваш телефон"
@@ -497,7 +502,8 @@ function Checkout() {
               }
               required
               onChange={inputChangeHandler}
-              value={newPhone || userCartData.phone}
+              // value={newPhone || userCartData.phone}
+              value={userCartData.phone}
             />
             <label htmfor="email" className={styles.input_label}>
               Email*:

@@ -177,6 +177,7 @@ function Cart() {
                         index != 4 ? `${styles.productsPrint_prewiev} ${styles.productsPrint_prewiev_border}` : `${styles.productsPrint_prewiev}`
                       }
                     >
+                      { console.log(elem) }
                       <img
                         className={styles.productsPrint_prewievImg}
                         src={elem.preview}
