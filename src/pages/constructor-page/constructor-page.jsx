@@ -161,6 +161,7 @@ function Constructor() {
 
       const data = new FormData();
       data.append('files', scene, `${activeView}_preview_${uuidv4()}.jpg`);
+
       dispatch(uploadPreview(data, activeView));
     };
   }
@@ -189,7 +190,7 @@ function Constructor() {
     });
 
     dispatch(clearItemOrder());
-    console.log(data, 'save in cart');
+
     history.goBack();
   };
 
@@ -209,7 +210,7 @@ function Constructor() {
     });
 
     dispatch(clearItemOrder());
-    console.log(data, 'save in cart');
+
     history.go(-2);
   };
 
@@ -245,7 +246,6 @@ function Constructor() {
 
   const acceptCloseCircleMaskOpenCircle = () => {
     setCircleMask((circleMask) => !circleMask);
-    // setOpenCircle((openCircle) => !openCircle);
     dispatch({
       type: SET_FILE_FILTER_CIRCLE_STAGE_PARAMS,
       payload: {
@@ -258,7 +258,6 @@ function Constructor() {
 
   const acceptCloseSquareMaskOpenSquare = () => {
     setSquareMask((squareMask) => !squareMask);
-    // setOpenSquare((openSquare) => !openSquare);
     dispatch({
       type: SET_FILE_FILTER_CIRCLE_STAGE_PARAMS,
       payload: {
@@ -268,6 +267,10 @@ function Constructor() {
       view: activeView,
     });
   };
+
+  // useEffect(() => {
+  //   dispatch(getScene(activeView));
+  // }, []);
 
   return (
     item && (
@@ -301,14 +304,13 @@ function Constructor() {
                   imgRef={imgRef}
                   scene={getScene}
                   onChange={(newAttrs) => {
-                    console.log(newAttrs, 'constructor');
                     dispatch({
                       type: SET_FILE_STAGE_PARAMS,
                       payload: newAttrs,
                       view: activeView,
                     });
-                    dispatch(getScene(activeView));
                     dispatch(getSize(newAttrs, activeView, item.color));
+                    dispatch(getScene(activeView));
                   }}
                   onChangeFilter={(coordinates) => {
                     dispatch({
@@ -316,7 +318,7 @@ function Constructor() {
                       payload: coordinates,
                       view: activeView,
                     });
-                    dispatch(getScene(activeView));
+                    // dispatch(getScene(activeView));
                   }}
                 />
               </Layer>
@@ -426,6 +428,7 @@ function Constructor() {
                 initialFilterCoords={file && file.file.stageParamsFilterCircle}
                 // openSquare={openSquare}
                 // squareMask={squareMask}
+                // setFilterCoords={() => setFilterCoords(activeView, 'default')}
                 onChangeFilter={(coordinates) => {
                   dispatch({
                     type: SET_FILE_FILTER_CIRCLE_STAGE_PARAMS,

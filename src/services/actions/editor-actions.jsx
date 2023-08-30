@@ -63,7 +63,7 @@ export const getSize = (newAttrs, activeView, color) => {
   };
 };
 
-export const printUploadFunc = (data, activeView, itemType, itemColor, shape = 'default') => {
+export const printUploadFunc = (data, activeView, itemType, itemColor) => {
   const checkResponse = (res) => {
     if (res.ok || res.created) {
       return res.json();
@@ -112,7 +112,6 @@ export const printUploadFunc = (data, activeView, itemType, itemColor, shape = '
           type: SET_FILE_FILTER_CIRCLE_STAGE_PARAMS,
           payload: filterCoordinates,
           view: activeView,
-          shape,
         });
 
         dispatch(getSize(imageCoords, activeView, itemColor));
@@ -136,7 +135,6 @@ export const uploadPreview = (data, activeView) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        // console.log(res)
         dispatch({
           type: ADD_PRINT_PREVIEW,
           data,

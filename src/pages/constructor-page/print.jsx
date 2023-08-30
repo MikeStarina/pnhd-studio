@@ -36,10 +36,8 @@ function Print({
   // useEffect(() => {
   //   setTimeout(() => {
   //     dispatch(scene(activeView));
-  //   }, 1000);
-  // }, [openCircle, openSquare]);
-
-  // const photoScene = () => dispatch(scene(activeView));
+  //   }, 100);
+  // }, [initialFilterCoords, initialImageCoords]);
 
   useEffect(() => {
     dispatch(scene(activeView));
@@ -49,7 +47,7 @@ function Print({
     if (!openSquare && !openCircle) {
       setImageView(true);
     }
-  }, [imageTwo, openCircle, openSquare, initialFilterCoords]);
+  }, [imageTwo, openCircle, openSquare, initialFilterCoords, initialImageCoords]);
 
   const onCircle = () => {
     onSelect();
@@ -86,14 +84,8 @@ function Print({
     });
   };
 
-  // useEffect(() => {
-  //   console.log(groupRef, '<ref');
-  //   console.log(initialParams, '<initialParams');
-  //   console.log(circleCoordination, '<circleCoordination');
-  // }, [groupRef, openCircle]);
-
-  // console.log(initialFilterCoords, '<<<<NEW');
-  // console.log(initialFilterCoords && initialFilterCoords.openCircle, '<<<<<<<<', openCircle);
+  console.log(initialImageCoords, '<<initialImageCoords');
+  console.log(initialFilterCoords, '<<initialFilterCoords');
 
   return (
     <>
@@ -106,6 +98,7 @@ function Print({
             className={styles.some}
             image={imageTwo}
             onClick={() => onClickImage()}
+            // onClick={onSelect}
             onTap={onSelect}
             ref={imgRef}
             {...initialImageCoords}
@@ -184,8 +177,6 @@ function Print({
             y={initialFilterCoords.positionY}
             draggable
             onDragEnd={(e) => {
-              console.log(groupRef, e);
-              console.log(initialFilterCoords, '<<<<<<filerCoordinates');
               onChangeFilter({
                 ...initialFilterCoords,
                 positionX: e.target.x(),
@@ -211,6 +202,7 @@ function Print({
             ref={circleRef}
             x={initialFilterCoords.x === 250 ? 190 : initialFilterCoords.x === 270 ? 250 : initialFilterCoords.x === 230 ? 210 : initialFilterCoords.x}
             y={initialFilterCoords.y === 180 ? 120 : initialFilterCoords.y === 130 ? 110 : initialFilterCoords.y}
+            rotation={initialFilterCoords.rotation}
             width={initialFilterCoords.width}
             height={initialFilterCoords.height}
             draggable
@@ -247,18 +239,20 @@ function Print({
             clip={{
               x: initialFilterCoords.x === 250 ? 190 : initialFilterCoords.x === 270 ? 250 : initialFilterCoords.x === 230 ? 210 : initialFilterCoords.x,
               y: initialFilterCoords.y === 180 ? 120 : initialFilterCoords.y === 130 ? 110 : initialFilterCoords.y,
+              rotation: initialFilterCoords.rotation,
               width: initialFilterCoords.width,
               height: initialFilterCoords.height,
             }}
             onClick={onSelect}
             onTap={onSelect}
             ref={groupRef}
-            x={initialFilterCoords.positionX}
-            y={initialFilterCoords.positionY}
+            x={initialFilterCoords.rotation === 0 ? initialFilterCoords.positionX : initialFilterCoords.positionX + (initialFilterCoords.rotation * 3)}
+            y={initialFilterCoords.rotation === 0 ? initialFilterCoords.positionY : initialFilterCoords.positionY - (initialFilterCoords.rotation * 3)}
+            // x={initialFilterCoords.positionX}
+            // y={initialFilterCoords.positionY}
+            rotation={initialFilterCoords.rotation}
             draggable
             onDragEnd={(e) => {
-              console.log(groupRef, e);
-              console.log(initialFilterCoords, '<<<<<<filerCoordinates');
               onChangeFilter({
                 ...initialFilterCoords,
                 positionX: e.target.x(),
@@ -287,8 +281,10 @@ function Print({
           ref={trRef}
           boundBoxFunc={(oldBox, newBox) => {
             if (newBox.width < 5 || newBox.height < 5) {
+              console.log('oldBox');
               return oldBox;
             }
+            console.log('newBox');
             return newBox;
           }}
         />

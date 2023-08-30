@@ -8,10 +8,8 @@ import { setFilterCoords } from '../../utils/utils';
 function ConstructorFilter(props) {
   const {
     initialFilterCoords,
-    // openSquare,
     squareMask,
     onChangeFilter,
-    // openCircle,
     circleMask,
     closeButtonVisibilityCircleSquare,
     closeButtonVisibilityOpenCircleSquare,
@@ -34,6 +32,7 @@ function ConstructorFilter(props) {
         openSquare: false,
         openCircle: false,
       });
+      setFilterCoords();
     } else {
       setDropdownVisible((dropdownVisible) => !dropdownVisible);
     }
@@ -79,7 +78,6 @@ function ConstructorFilter(props) {
               <div
                 className={styles.dropdown_item}
                 onClick={(e) => handleItemSelectClick(e, 'square')}
-                // key={option.category}
               >
                 <Square className={styles.btn_svg} />
               </div>

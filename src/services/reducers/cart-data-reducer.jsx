@@ -53,7 +53,6 @@ export const cartDataReducer = (state = initialState, action) => {
       return { ...state };
     }
     case ADD_TO_CART_WITH_PRINT: {
-      console.log(state.order);
       const clonedOrderFirst = state.order;
       const clonedOrder = clonedOrderFirst.map((element) => (element.cart_item_id === action.payload.cart_item_id ? action.payload : element));
 

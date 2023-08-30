@@ -24,8 +24,8 @@ export const fileSelect = (
 };
 
 // Задает координаты появления ФИЛЬТРА для привью изображения, вызывается в файле editor-action (redux)
-export const setFilterCoords = (activeView, shape = 'default') => {
-  console.log(activeView, '<<setFilterCoords');
+export const setFilterCoords = (activeView, shape = 'some') => {
+  // console.log(activeView, '<<setFilterCoords');
   // const filterCoords = {
   //   x: 250,
   //   y: 180,
@@ -53,6 +53,7 @@ export const setFilterCoords = (activeView, shape = 'default') => {
     return {
       x: 250,
       y: 180,
+      rotation: 0,
       width: 120,
       height: 120,
       positionX: 0,
@@ -65,6 +66,7 @@ export const setFilterCoords = (activeView, shape = 'default') => {
     return {
       x: 250,
       y: 180,
+      rotation: 0,
       width: 120,
       height: 120,
       positionX: 0,
@@ -77,6 +79,7 @@ export const setFilterCoords = (activeView, shape = 'default') => {
     return {
       x: 270, // 250  for square
       y: 130, // 110
+      rotation: 0,
       width: 40,
       height: 40,
       positionX: 0,
@@ -89,6 +92,7 @@ export const setFilterCoords = (activeView, shape = 'default') => {
     return {
       x: 230, // 210 square
       y: 130, // 110
+      rotation: 0,
       width: 40,
       height: 40,
       positionX: 0,
