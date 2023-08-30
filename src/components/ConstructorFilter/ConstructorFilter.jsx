@@ -3,12 +3,15 @@ import styles from './ConstructorFilter.module.css';
 import { SquareCircle } from '../../ui/icons/squareCircle';
 import { Circle } from '../../ui/icons/circle';
 import { Square } from '../../ui/icons/square';
+import { setFilterCoords } from '../../utils/utils';
 
 function ConstructorFilter(props) {
   const {
-    openSquare,
+    initialFilterCoords,
+    // openSquare,
     squareMask,
-    openCircle,
+    onChangeFilter,
+    // openCircle,
     circleMask,
     closeButtonVisibilityCircleSquare,
     closeButtonVisibilityOpenCircleSquare,
@@ -17,11 +20,20 @@ function ConstructorFilter(props) {
   } = props;
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [mainSquareCircleComponentColor, setMainSquareCircleComponentColor] = useState(false);
+  const openCircle = initialFilterCoords ? initialFilterCoords.openCircle : false;
+  const openSquare = initialFilterCoords ? initialFilterCoords.openSquare : false;
 
   const toggle = () => {
     if (circleMask || openCircle || openSquare || squareMask) {
       closeButtonVisibilityCircleSquare();
       closeButtonVisibilityOpenCircleSquare();
+      onChangeFilter({
+        ...initialFilterCoords,
+        positionX: 0,
+        positionY: 0,
+        openSquare: false,
+        openCircle: false,
+      });
     } else {
       setDropdownVisible((dropdownVisible) => !dropdownVisible);
     }

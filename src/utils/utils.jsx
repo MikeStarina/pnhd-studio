@@ -23,6 +23,83 @@ export const fileSelect = (
   }
 };
 
+// Задает координаты появления ФИЛЬТРА для привью изображения, вызывается в файле editor-action (redux)
+export const setFilterCoords = (activeView, shape = 'default') => {
+  console.log(activeView, '<<setFilterCoords');
+  // const filterCoords = {
+  //   x: 250,
+  //   y: 180,
+  //   width: 120,
+  //   height: 120,
+  //   positionX: 0,
+  //   positionY: 0,
+  //   openCircle: false,
+  //   openSquare: false,
+  // };
+  // if (shape.includes('square')) {
+  //   return {
+  //     x: 190,
+  //     y: 120,
+  //     width: 120,
+  //     height: 120,
+  //     positionX: 0,
+  //     positionY: 0,
+  //     openCircle: false,
+  //     openSquare: false,
+  //   };
+  // }
+
+  if (activeView.includes('front')) {
+    return {
+      x: 250,
+      y: 180,
+      width: 120,
+      height: 120,
+      positionX: 0,
+      positionY: 0,
+      openCircle: false,
+      openSquare: false,
+    };
+  }
+  if (activeView.includes('back')) {
+    return {
+      x: 250,
+      y: 180,
+      width: 120,
+      height: 120,
+      positionX: 0,
+      positionY: 0,
+      openCircle: false,
+      openSquare: false,
+    };
+  }
+  if (activeView.includes('lsleeve')) {
+    return {
+      x: 270, // 250  for square
+      y: 130, // 110
+      width: 40,
+      height: 40,
+      positionX: 0,
+      positionY: 0,
+      openCircle: false,
+      openSquare: false,
+    };
+  }
+  if (activeView.includes('rsleeve')) {
+    return {
+      x: 230, // 210 square
+      y: 130, // 110
+      width: 40,
+      height: 40,
+      positionX: 0,
+      positionY: 0,
+      openCircle: false,
+      openSquare: false,
+    };
+  }
+  // return filterCoords;
+};
+
 // Задает координаты появления привью изображения, вызывается в файле editor-action (redux)
 export const setCoords = (currentImage, activeView, itemType) => {
   let imageCoords = {

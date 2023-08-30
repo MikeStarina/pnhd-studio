@@ -3,18 +3,18 @@ import { Image, Group, Transformer, Rect, Circle } from 'react-konva';
 import { useSelector, useDispatch } from 'react-redux';
 import useImage from 'use-image';
 import styles from './constructor-page.module.css';
-// import circle50px from '../../components/images/circle50px.png';
+import { SET_FILE_FILTER_CIRCLE_STAGE_PARAMS } from '../../services/actions/editor-actions';
 
 function Print({
-  openSquare,
   squareMask,
-  openCircle,
   circleMask,
   dash,
   initialImageCoords,
+  initialFilterCoords,
   isSelected,
   onSelect,
   onChange,
+  onChangeFilter,
   file,
   imgRef,
   initialParams,
@@ -29,28 +29,17 @@ function Print({
   const [imageView, setImageView] = useState(true);
   const [circleClick, setCircleClick] = useState(false);
   const [imageTwo] = useImage(file, 'Anonymous');
-  const [circleCoordination, setCircleCoordination] = useState({
-    x: 250,
-    y: 180,
-    width: 120,
-    height: 120,
-  });
-  const [squareCoordination, setSquareCoordination] = useState({
-    x: 190,
-    y: 120,
-    width: 120,
-    height: 120,
-  });
 
-  useEffect(() => {
-    console.log(openCircle);
-    setTimeout(() => {
-      dispatch(scene(activeView));
-    }, 1000);
-    console.log('time out done');
-  }, [openCircle, openSquare]);
+  const openCircle = initialFilterCoords ? initialFilterCoords.openCircle : false;
+  const openSquare = initialFilterCoords ? initialFilterCoords.openSquare : false;
 
-  const photoScene = () => dispatch(scene(activeView));
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     dispatch(scene(activeView));
+  //   }, 1000);
+  // }, [openCircle, openSquare]);
+
+  // const photoScene = () => dispatch(scene(activeView));
 
   useEffect(() => {
     dispatch(scene(activeView));
@@ -60,7 +49,7 @@ function Print({
     if (!openSquare && !openCircle) {
       setImageView(true);
     }
-  }, [imageTwo, openCircle, openSquare]);
+  }, [imageTwo, openCircle, openSquare, initialFilterCoords]);
 
   const onCircle = () => {
     onSelect();
@@ -74,24 +63,14 @@ function Print({
 
   useEffect(
     () => {
-      console.log(isSelected, 'isSelected', !circleClick, '!circleClick', !openCircle, '!openCircle', !openSquare, '!openSquare');
       if (isSelected && !circleClick && !openCircle && !openSquare) {
-        console.log('start');
         trRef.current.nodes([imgRef.current]);
         trRef.current.getLayer().batchDraw();
-        console.log('finish');
       }
       if (isSelected && circleClick && !openCircle && !openSquare) {
-        // console.log('start');
         trRef.current.nodes([circleRef.current]);
         trRef.current.getLayer().batchDraw();
-        // console.log('finish');
       }
-      // if (isSelected && openCircle) {
-      // trRef.current.nodes([groupRef.current, imgRef.current]);
-      // trRef.current.getLayer().batchDraw();
-      // console.log(trRef.current.nodes([groupRef.current, imgRef.current]));
-      // }
     },
     [isSelected],
     [imgRef],
@@ -100,13 +79,21 @@ function Print({
     [groupRef],
   );
 
-  const onChangeCoordsCircle = (newAttrs) => {
-    setCircleCoordination(newAttrs);
+  const onChangeFilterCoordinates = (newAttrs) => {
+    dispatch({
+      type: SET_FILE_FILTER_CIRCLE_STAGE_PARAMS,
+      payload: newAttrs,
+    });
   };
 
-  const onChangeCoordsSquare = (newAttrs) => {
-    setSquareCoordination(newAttrs);
-  };
+  // useEffect(() => {
+  //   console.log(groupRef, '<ref');
+  //   console.log(initialParams, '<initialParams');
+  //   console.log(circleCoordination, '<circleCoordination');
+  // }, [groupRef, openCircle]);
+
+  // console.log(initialFilterCoords, '<<<<NEW');
+  // console.log(initialFilterCoords && initialFilterCoords.openCircle, '<<<<<<<<', openCircle);
 
   return (
     <>
@@ -157,11 +144,11 @@ function Print({
             onClick={() => onCircle()}
             onTap={onSelect}
             ref={circleRef}
-            {...circleCoordination}
+            {...initialFilterCoords}
             draggable
             onDragEnd={(e) => {
-              onChangeCoordsCircle({
-                ...circleCoordination,
+              onChangeFilter({
+                ...initialFilterCoords,
                 x: e.target.x(),
                 y: e.target.y(),
               });
@@ -176,8 +163,8 @@ function Print({
 
               node.scaleX(1);
               node.scaleY(1);
-              onChangeCoordsCircle({
-                ...circleCoordination,
+              onChangeFilter({
+                ...initialFilterCoords,
                 x: node.x(),
                 y: node.y(),
                 width: Math.max(5, node.width() * scaleX),
@@ -189,12 +176,22 @@ function Print({
         )}
         {openCircle && (
           <Group
-            clipFunc={(ctx) => { ctx.arc(circleCoordination.x, circleCoordination.y, circleCoordination.width / 2, 0, Math.PI * 2, false); }}
+            clipFunc={(ctx) => { ctx.arc(initialFilterCoords.x, initialFilterCoords.y, initialFilterCoords.width / 2, 0, Math.PI * 2, false); }}
             onClick={onSelect}
             onTap={onSelect}
             ref={groupRef}
+            x={initialFilterCoords.positionX}
+            y={initialFilterCoords.positionY}
             draggable
-            onDragEnd={(e) => { photoScene(); }}
+            onDragEnd={(e) => {
+              console.log(groupRef, e);
+              console.log(initialFilterCoords, '<<<<<<filerCoordinates');
+              onChangeFilter({
+                ...initialFilterCoords,
+                positionX: e.target.x(),
+                positionY: e.target.y(),
+              });
+            }}
           >
             <Image
               className={styles.some}
@@ -212,11 +209,14 @@ function Print({
             onClick={() => onCircle()}
             onTap={onSelect}
             ref={circleRef}
-            {...squareCoordination}
+            x={initialFilterCoords.x === 250 ? 190 : initialFilterCoords.x === 270 ? 250 : initialFilterCoords.x === 230 ? 210 : initialFilterCoords.x}
+            y={initialFilterCoords.y === 180 ? 120 : initialFilterCoords.y === 130 ? 110 : initialFilterCoords.y}
+            width={initialFilterCoords.width}
+            height={initialFilterCoords.height}
             draggable
             onDragEnd={(e) => {
-              onChangeCoordsSquare({
-                ...squareCoordination,
+              onChangeFilter({
+                ...initialFilterCoords,
                 x: e.target.x(),
                 y: e.target.y(),
               });
@@ -231,8 +231,8 @@ function Print({
 
               node.scaleX(1);
               node.scaleY(1);
-              onChangeCoordsSquare({
-                ...squareCoordination,
+              onChangeFilter({
+                ...initialFilterCoords,
                 x: node.x(),
                 y: node.y(),
                 width: Math.max(5, node.width() * scaleX),
@@ -244,12 +244,27 @@ function Print({
         )}
         {openSquare && (
           <Group
-            clip={{ x: squareCoordination.x, y: squareCoordination.y, width: squareCoordination.width, height: squareCoordination.height }}
+            clip={{
+              x: initialFilterCoords.x === 250 ? 190 : initialFilterCoords.x === 270 ? 250 : initialFilterCoords.x === 230 ? 210 : initialFilterCoords.x,
+              y: initialFilterCoords.y === 180 ? 120 : initialFilterCoords.y === 130 ? 110 : initialFilterCoords.y,
+              width: initialFilterCoords.width,
+              height: initialFilterCoords.height,
+            }}
             onClick={onSelect}
             onTap={onSelect}
             ref={groupRef}
+            x={initialFilterCoords.positionX}
+            y={initialFilterCoords.positionY}
             draggable
-            onDragEnd={(e) => { photoScene(); }}
+            onDragEnd={(e) => {
+              console.log(groupRef, e);
+              console.log(initialFilterCoords, '<<<<<<filerCoordinates');
+              onChangeFilter({
+                ...initialFilterCoords,
+                positionX: e.target.x(),
+                positionY: e.target.y(),
+              });
+            }}
           >
             <Image
               className={styles.some}

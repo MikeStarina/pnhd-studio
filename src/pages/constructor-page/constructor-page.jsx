@@ -14,12 +14,12 @@ import {
   printUploadFunc,
   loadPrintFromState,
   getSize,
-  uploadPreview,
+  uploadPreview, SET_FILE_FILTER_CIRCLE_STAGE_PARAMS,
 } from '../../services/actions/editor-actions.jsx';
 import { ADD_TO_CART, ADD_TO_CART_WITH_PRINT } from '../../services/actions/cart-actions';
 import Print from './print.jsx';
 import Mockup from './mockup';
-import { fileSelect } from '../../utils/utils';
+import { fileSelect, setFilterCoords } from '../../utils/utils';
 import PopupModel from '../../components/popupModel/popupModel';
 import {
   closePopup,
@@ -95,7 +95,12 @@ function Constructor() {
     };
   }, []);
 
+  useEffect(() => {
+    setFilterCoords(activeView);
+  }, [activeView]);
+
   const setActiveTab = (e) => {
+    console.log(e);
     dispatch({
       type: SET_ACTIVE_VIEW,
       payload: e.currentTarget.id,
@@ -152,7 +157,7 @@ function Constructor() {
   function getScene(activeView) {
     return async function (dispatch) {
       // const preview = await stageRef.current.toDataURL();
-      const scene = await stageRef.current.toBlob();
+      const scene = await stageRef.current?.toBlob();
 
       const data = new FormData();
       data.append('files', scene, `${activeView}_preview_${uuidv4()}.jpg`);
@@ -184,7 +189,7 @@ function Constructor() {
     });
 
     dispatch(clearItemOrder());
-
+    console.log(data, 'save in cart');
     history.goBack();
   };
 
@@ -204,7 +209,7 @@ function Constructor() {
     });
 
     dispatch(clearItemOrder());
-
+    console.log(data, 'save in cart');
     history.go(-2);
   };
 
@@ -240,12 +245,28 @@ function Constructor() {
 
   const acceptCloseCircleMaskOpenCircle = () => {
     setCircleMask((circleMask) => !circleMask);
-    setOpenCircle((openCircle) => !openCircle);
+    // setOpenCircle((openCircle) => !openCircle);
+    dispatch({
+      type: SET_FILE_FILTER_CIRCLE_STAGE_PARAMS,
+      payload: {
+        ...file.file.stageParamsFilterCircle,
+        openCircle: true,
+      },
+      view: activeView,
+    });
   };
 
   const acceptCloseSquareMaskOpenSquare = () => {
     setSquareMask((squareMask) => !squareMask);
-    setOpenSquare((openSquare) => !openSquare);
+    // setOpenSquare((openSquare) => !openSquare);
+    dispatch({
+      type: SET_FILE_FILTER_CIRCLE_STAGE_PARAMS,
+      payload: {
+        ...file.file.stageParamsFilterCircle,
+        openSquare: true,
+      },
+      view: activeView,
+    });
   };
 
   return (
@@ -276,9 +297,11 @@ function Constructor() {
                   onSelect={onSelect}
                   file={file && file.file.file.url}
                   initialImageCoords={file && file.file.stageParams}
+                  initialFilterCoords={file && file.file.stageParamsFilterCircle}
                   imgRef={imgRef}
                   scene={getScene}
                   onChange={(newAttrs) => {
+                    console.log(newAttrs, 'constructor');
                     dispatch({
                       type: SET_FILE_STAGE_PARAMS,
                       payload: newAttrs,
@@ -286,6 +309,14 @@ function Constructor() {
                     });
                     dispatch(getScene(activeView));
                     dispatch(getSize(newAttrs, activeView, item.color));
+                  }}
+                  onChangeFilter={(coordinates) => {
+                    dispatch({
+                      type: SET_FILE_FILTER_CIRCLE_STAGE_PARAMS,
+                      payload: coordinates,
+                      view: activeView,
+                    });
+                    dispatch(getScene(activeView));
                   }}
                 />
               </Layer>
@@ -392,10 +423,19 @@ function Constructor() {
                 <SquareDash className={styles.btn_svg} />
               </button>
               <ConstructorFilter
-                openSquare={openSquare}
-                squareMask={squareMask}
+                initialFilterCoords={file && file.file.stageParamsFilterCircle}
+                // openSquare={openSquare}
+                // squareMask={squareMask}
+                onChangeFilter={(coordinates) => {
+                  dispatch({
+                    type: SET_FILE_FILTER_CIRCLE_STAGE_PARAMS,
+                    payload: coordinates,
+                    view: activeView,
+                  });
+                }}
                 openCircle={openCircle}
                 circleMask={circleMask}
+                squareMask={squareMask}
                 getButtonVisibilityCircle={getButtonVisibilityCircle}
                 closeButtonVisibilityOpenCircleSquare={closeButtonVisibilityOpenCircleSquare}
                 closeButtonVisibilityCircleSquare={closeButtonVisibilityCircleSquare}

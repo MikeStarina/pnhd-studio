@@ -1,7 +1,7 @@
 import useImage from 'use-image';
 import { IS_IMAGE_LOADING, openPopup } from './utility-actions';
 import { apiBaseUrl } from '../../utils/constants';
-import { setCoords } from '../../utils/utils';
+import { setCoords, setFilterCoords } from '../../utils/utils';
 
 export const IMAGE_SELECT = 'IMAGE_SELECT';
 export const IMAGE_DESELECT = 'IMAGE_DESELECT';
@@ -14,6 +14,7 @@ export const SET_FILE_CART_PARAMS = 'SET_FILE_CART_PARAMS';
 export const ADD_PRINT_PREVIEW = 'ADD_PRINT_PREVIEW';
 export const SET_EDITOR_VIEW = 'SET_EDITOR_VIEW';
 export const LOAD_PRINT_FROM_STATE = 'LOAD_PRINT_FROM_STATE';
+export const SET_FILE_FILTER_CIRCLE_STAGE_PARAMS = 'SET_FILE_FILTER_CIRCLE_STAGE_PARAMS';
 
 export const getSize = (newAttrs, activeView, color) => {
   // console.log(color)
@@ -62,7 +63,7 @@ export const getSize = (newAttrs, activeView, color) => {
   };
 };
 
-export const printUploadFunc = (data, activeView, itemType, itemColor) => {
+export const printUploadFunc = (data, activeView, itemType, itemColor, shape = 'default') => {
   const checkResponse = (res) => {
     if (res.ok || res.created) {
       return res.json();
@@ -105,6 +106,14 @@ export const printUploadFunc = (data, activeView, itemType, itemColor) => {
           activeView,
           itemType,
         );
+
+        const filterCoordinates = setFilterCoords(activeView);
+        dispatch({
+          type: SET_FILE_FILTER_CIRCLE_STAGE_PARAMS,
+          payload: filterCoordinates,
+          view: activeView,
+          shape,
+        });
 
         dispatch(getSize(imageCoords, activeView, itemColor));
         dispatch({
