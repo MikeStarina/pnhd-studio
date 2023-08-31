@@ -9,10 +9,13 @@ import {
   CHANGE_ITEM_QTY,
   CLEAR_CART,
   RESTORE_CART_FROM_SSTORAGE,
+  RESTORE_PRICE_FROM_SSTORAGE,
   SET_CART_VISIBILITY,
   SET_PAYMENT_URL,
   DELETE_ITEM_FROM_CART,
   DELETE_PRINT_FROM_CART,
+  CHANGE_ITEM_SIZES,
+  ADD_ORDER_PRICE,
 } from '../actions/cart-actions.jsx';
 
 const initialState = {
@@ -32,6 +35,7 @@ const initialState = {
     discount: null,
     _id: '',
   },
+  orderPrice: {},
 };
 
 export const cartDataReducer = (state = initialState, action) => {
@@ -87,6 +91,29 @@ export const cartDataReducer = (state = initialState, action) => {
         order: newOrder,
       };
     }
+    case CHANGE_ITEM_SIZES: {
+      const newOrder = state.order;
+
+      newOrder.map((item) => {
+        if (item.cart_item_id === action.id) {
+          item.attributes.size.map((el) => {
+            if (el.name === action.name) {
+              el.qty = action.qty;
+            }
+          });
+          if (item.print) {
+            item.print.qty = action.qty > 0 ? action.qty : 1;
+          }
+        }
+        sessionStorage.setItem('cart', JSON.stringify(newOrder));
+        return item;
+      });
+
+      return {
+        ...state,
+        order: newOrder,
+      };
+    }
     case SET_CART_VISIBILITY: {
       return {
         ...state,
@@ -105,6 +132,13 @@ export const cartDataReducer = (state = initialState, action) => {
       return {
         ...state,
         order: action.payload,
+        isVisible: true,
+      };
+    }
+    case RESTORE_PRICE_FROM_SSTORAGE: {
+      return {
+        ...state,
+        orderPrice: action.payload,
         isVisible: true,
       };
     }
@@ -163,7 +197,7 @@ export const cartDataReducer = (state = initialState, action) => {
             };
             item.print.lsleeve_preview.preview = {};
           }
-          if (action.print_id === 'lsleeve_print') {
+          if (action.print_id === 'rsleeve_print') {
             item.print.rsleeve = {
               cartParams: undefined,
               file: undefined,
@@ -223,6 +257,15 @@ export const cartDataReducer = (state = initialState, action) => {
           discount: null,
           _id: '',
         },
+      };
+    }
+
+    case ADD_ORDER_PRICE: {
+      const price = action.payload;
+      sessionStorage.setItem('price', JSON.stringify(price));
+      return {
+        ...state,
+        orderPrice: price,
       };
     }
 

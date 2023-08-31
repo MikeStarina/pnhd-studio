@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './size-selection.module.css';
 import { updateItemOrder } from '../../services/actions/item-action';
-import { CHANGE_ITEM_QTY } from '../../services/actions/cart-actions';
+import { CHANGE_ITEM_QTY, CHANGE_ITEM_SIZES } from '../../services/actions/cart-actions';
 
 function SizeSelection({ name, qty, id, type }) {
   const { order } = useSelector((store) => store.itemReducer);
@@ -18,6 +18,13 @@ function SizeSelection({ name, qty, id, type }) {
           qty: state + 1,
         }),
       );
+    } else if (type === 'cart') {
+      dispatch({
+        type: CHANGE_ITEM_SIZES,
+        qty: state + 1,
+        id,
+        name,
+      });
     } else {
       dispatch({
         type: CHANGE_ITEM_QTY,
@@ -37,6 +44,13 @@ function SizeSelection({ name, qty, id, type }) {
           qty: state - 1,
         }),
       );
+    } else if (type === 'cart') {
+      dispatch({
+        type: CHANGE_ITEM_SIZES,
+        qty: state - 1,
+        id,
+        name,
+      });
     } else {
       dispatch({
         type: CHANGE_ITEM_QTY,

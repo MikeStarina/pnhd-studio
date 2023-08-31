@@ -111,6 +111,7 @@ function CartPage() {
       shippingTarif.total_sum ? Math.ceil(shippingTarif.total_sum) : 0,
     );
   }, [shippingTarif]);
+
   const findShippingObject = (el, color) => {
     if (el.name === ' ') {
       setListPoints('');
