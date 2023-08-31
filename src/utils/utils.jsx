@@ -51,11 +51,15 @@ export const setFilterCoords = (activeView, shape = 'some') => {
 
   if (activeView.includes('front')) {
     return {
-      x: 250,
-      y: 180,
+      circleX: 250,
+      circleY: 180,
+      squareX: 190,
+      squareY: 120,
       rotation: 0,
-      width: 120,
-      height: 120,
+      widthCircle: 120,
+      heightCircle: 120,
+      widthSquare: 120,
+      heightSquare: 120,
       positionX: 0,
       positionY: 0,
       openCircle: false,
@@ -64,11 +68,15 @@ export const setFilterCoords = (activeView, shape = 'some') => {
   }
   if (activeView.includes('back')) {
     return {
-      x: 250,
-      y: 180,
+      circleX: 250,
+      circleY: 180,
+      squareX: 190,
+      squareY: 120,
       rotation: 0,
-      width: 120,
-      height: 120,
+      widthCircle: 120,
+      heightCircle: 120,
+      widthSquare: 120,
+      heightSquare: 120,
       positionX: 0,
       positionY: 0,
       openCircle: false,
@@ -77,11 +85,15 @@ export const setFilterCoords = (activeView, shape = 'some') => {
   }
   if (activeView.includes('lsleeve')) {
     return {
-      x: 270, // 250  for square
-      y: 130, // 110
+      circleX: 270, // 250  for square
+      circleY: 130, // 110
+      squareX: 250,
+      squareY: 110,
       rotation: 0,
-      width: 40,
-      height: 40,
+      widthCircle: 40,
+      heightCircle: 40,
+      widthSquare: 40,
+      heightSquare: 40,
       positionX: 0,
       positionY: 0,
       openCircle: false,
@@ -90,11 +102,15 @@ export const setFilterCoords = (activeView, shape = 'some') => {
   }
   if (activeView.includes('rsleeve')) {
     return {
-      x: 230, // 210 square
-      y: 130, // 110
+      circleX: 230, // 210 square
+      circleY: 130, // 110
+      squareX: 210,
+      squareY: 110,
       rotation: 0,
-      width: 40,
-      height: 40,
+      widthCircle: 40,
+      heightCircle: 40,
+      widthSquare: 40,
+      heightSquare: 40,
       positionX: 0,
       positionY: 0,
       openCircle: false,

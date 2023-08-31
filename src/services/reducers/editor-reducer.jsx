@@ -5,7 +5,8 @@ import {
   DELETE_FILE,
   SET_ACTIVE_VIEW,
   SET_FILE_STAGE_PARAMS,
-  SET_FILE_FILTER_CIRCLE_STAGE_PARAMS,
+  SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
+  CLEAR_FILE_FILTER_SHAPE_STAGE_PARAMS,
   SET_FILE_CART_PARAMS,
   CLEAR_ALL_PRINTS,
   ADD_PRINT_PREVIEW, LOAD_PRINT_FROM_STATE,
@@ -105,7 +106,7 @@ export const editorReducer = (state = initialState, action) => {
       };
     }
 
-    case SET_FILE_FILTER_CIRCLE_STAGE_PARAMS: {
+    case SET_FILE_FILTER_SHAPE_STAGE_PARAMS: {
       return {
         ...state,
         front_file: {
@@ -127,11 +128,6 @@ export const editorReducer = (state = initialState, action) => {
           ...state.rsleeve_file,
           stageParamsFilterCircle:
             action.view === 'rsleeve' ? action.payload : state.rsleeve_file.stageParamsFilterCircle,
-        },
-        badge_file: {
-          ...state.badge_file,
-          stageParamsFilterCircle:
-            action.view === 'badge' ? action.payload : state.badge_file.stageParamsFilterCircle,
         },
       };
     }

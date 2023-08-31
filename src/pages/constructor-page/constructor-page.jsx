@@ -14,7 +14,7 @@ import {
   printUploadFunc,
   loadPrintFromState,
   getSize,
-  uploadPreview, SET_FILE_FILTER_CIRCLE_STAGE_PARAMS,
+  uploadPreview, SET_FILE_FILTER_SHAPE_STAGE_PARAMS, loadFilterCoordinates,
 } from '../../services/actions/editor-actions.jsx';
 import { ADD_TO_CART, ADD_TO_CART_WITH_PRINT } from '../../services/actions/cart-actions';
 import Print from './print.jsx';
@@ -64,7 +64,6 @@ function Constructor() {
   const location = useLocation();
   const imgRef = useRef(null);
   const stageRef = useRef();
-  const [squareCircleComponentColor, setSquareCircleComponentColor] = useState(false);
   const [dash, setDash] = useState(false);
   const [squareMask, setSquareMask] = useState(false);
   const [circleMask, setCircleMask] = useState(false);
@@ -247,7 +246,7 @@ function Constructor() {
   const acceptCloseCircleMaskOpenCircle = () => {
     setCircleMask((circleMask) => !circleMask);
     dispatch({
-      type: SET_FILE_FILTER_CIRCLE_STAGE_PARAMS,
+      type: SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
       payload: {
         ...file.file.stageParamsFilterCircle,
         openCircle: true,
@@ -259,7 +258,7 @@ function Constructor() {
   const acceptCloseSquareMaskOpenSquare = () => {
     setSquareMask((squareMask) => !squareMask);
     dispatch({
-      type: SET_FILE_FILTER_CIRCLE_STAGE_PARAMS,
+      type: SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
       payload: {
         ...file.file.stageParamsFilterCircle,
         openSquare: true,
@@ -267,10 +266,6 @@ function Constructor() {
       view: activeView,
     });
   };
-
-  // useEffect(() => {
-  //   dispatch(getScene(activeView));
-  // }, []);
 
   return (
     item && (
@@ -310,15 +305,13 @@ function Constructor() {
                       view: activeView,
                     });
                     dispatch(getSize(newAttrs, activeView, item.color));
-                    // dispatch(getScene(activeView));
                   }}
                   onChangeFilter={(coordinates) => {
                     dispatch({
-                      type: SET_FILE_FILTER_CIRCLE_STAGE_PARAMS,
+                      type: SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
                       payload: coordinates,
                       view: activeView,
                     });
-                    // dispatch(getScene(activeView));
                   }}
                 />
               </Layer>
@@ -426,22 +419,22 @@ function Constructor() {
               </button>
               <ConstructorFilter
                 initialFilterCoords={file && file.file.stageParamsFilterCircle}
-                // openSquare={openSquare}
-                // squareMask={squareMask}
-                // setFilterCoords={() => setFilterCoords(activeView, 'default')}
+                onOpenFilter={(activeView) => {
+                  dispatch(loadFilterCoordinates(activeView));
+                }}
+                activeView={activeView}
                 onChangeFilter={(coordinates) => {
                   dispatch({
-                    type: SET_FILE_FILTER_CIRCLE_STAGE_PARAMS,
+                    type: SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
                     payload: coordinates,
                     view: activeView,
                   });
                 }}
-                openCircle={openCircle}
                 circleMask={circleMask}
                 squareMask={squareMask}
-                getButtonVisibilityCircle={getButtonVisibilityCircle}
                 closeButtonVisibilityOpenCircleSquare={closeButtonVisibilityOpenCircleSquare}
                 closeButtonVisibilityCircleSquare={closeButtonVisibilityCircleSquare}
+                getButtonVisibilityCircle={getButtonVisibilityCircle}
                 getButtonVisibilitySquare={getButtonVisibilitySquare}
               />
               <button

@@ -3,11 +3,12 @@ import styles from './ConstructorFilter.module.css';
 import { SquareCircle } from '../../ui/icons/squareCircle';
 import { Circle } from '../../ui/icons/circle';
 import { Square } from '../../ui/icons/square';
-import { setFilterCoords } from '../../utils/utils';
 
 function ConstructorFilter(props) {
   const {
+    onOpenFilter,
     initialFilterCoords,
+    activeView,
     squareMask,
     onChangeFilter,
     circleMask,
@@ -32,9 +33,9 @@ function ConstructorFilter(props) {
         openSquare: false,
         openCircle: false,
       });
-      setFilterCoords();
     } else {
       setDropdownVisible((dropdownVisible) => !dropdownVisible);
+      onOpenFilter(activeView);
     }
   };
 

@@ -3,7 +3,9 @@ import { Image, Group, Transformer, Rect, Circle } from 'react-konva';
 import { useSelector, useDispatch } from 'react-redux';
 import useImage from 'use-image';
 import styles from './constructor-page.module.css';
-import { SET_FILE_FILTER_CIRCLE_STAGE_PARAMS } from '../../services/actions/editor-actions';
+import {
+  SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
+} from '../../services/actions/editor-actions';
 
 function Print({
   squareMask,
@@ -39,17 +41,16 @@ function Print({
       dispatch(scene(activeView));
     }, 100);
     return () => clearTimeout(time);
-  }, [initialFilterCoords, initialImageCoords]);
+  }, [imageTwo, initialFilterCoords, initialImageCoords, openCircle, openSquare]);
 
   useEffect(() => {
-    dispatch(scene(activeView));
     if (openSquare || openCircle) {
       setImageView(false);
     }
     if (!openSquare && !openCircle) {
       setImageView(true);
     }
-  }, [imageTwo, openCircle, openSquare, initialFilterCoords, initialImageCoords]);
+  }, [openCircle, openSquare]);
 
   const onCircle = () => {
     onSelect();
@@ -81,7 +82,7 @@ function Print({
 
   const onChangeFilterCoordinates = (newAttrs) => {
     dispatch({
-      type: SET_FILE_FILTER_CIRCLE_STAGE_PARAMS,
+      type: SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
       payload: newAttrs,
     });
   };
@@ -140,12 +141,16 @@ function Print({
             onTap={onSelect}
             ref={circleRef}
             {...initialFilterCoords}
+            x={initialFilterCoords.circleX}
+            y={initialFilterCoords.circleY}
+            width={initialFilterCoords.widthCircle}
+            height={initialFilterCoords.heightCircle}
             draggable
             onDragEnd={(e) => {
               onChangeFilter({
                 ...initialFilterCoords,
-                x: e.target.x(),
-                y: e.target.y(),
+                circleX: e.target.x(),
+                circleY: e.target.y(),
               });
             }}
             onTransform={(e) => {
@@ -160,10 +165,10 @@ function Print({
               node.scaleY(1);
               onChangeFilter({
                 ...initialFilterCoords,
-                x: node.x(),
-                y: node.y(),
-                width: Math.max(5, node.width() * scaleX),
-                height: Math.max(node.height() * scaleY),
+                circleX: node.x(),
+                circleY: node.y(),
+                widthCircle: Math.max(5, node.width() * scaleX),
+                heightCircle: Math.max(node.height() * scaleY),
                 rotation: node.attrs.rotation,
               });
             }}
@@ -171,7 +176,7 @@ function Print({
         )}
         {openCircle && (
           <Group
-            clipFunc={(ctx) => { ctx.arc(initialFilterCoords.x, initialFilterCoords.y, initialFilterCoords.width / 2, 0, Math.PI * 2, false); }}
+            clipFunc={(ctx) => { ctx.arc(initialFilterCoords.circleX, initialFilterCoords.circleY, initialFilterCoords.widthCircle / 2, 0, Math.PI * 2, false); }}
             onClick={onSelect}
             onTap={onSelect}
             ref={groupRef}
@@ -202,17 +207,17 @@ function Print({
             onClick={() => onCircle()}
             onTap={onSelect}
             ref={circleRef}
-            x={initialFilterCoords.x === 250 ? 190 : initialFilterCoords.x === 270 ? 250 : initialFilterCoords.x === 230 ? 210 : initialFilterCoords.x}
-            y={initialFilterCoords.y === 180 ? 120 : initialFilterCoords.y === 130 ? 110 : initialFilterCoords.y}
+            x={initialFilterCoords.squareX}
+            y={initialFilterCoords.squareY}
             rotation={initialFilterCoords.rotation}
-            width={initialFilterCoords.width}
-            height={initialFilterCoords.height}
+            width={initialFilterCoords.widthSquare}
+            height={initialFilterCoords.heightSquare}
             draggable
             onDragEnd={(e) => {
               onChangeFilter({
                 ...initialFilterCoords,
-                x: e.target.x(),
-                y: e.target.y(),
+                squareX: e.target.x(),
+                squareY: e.target.y(),
               });
             }}
             onTransform={(e) => {
@@ -227,10 +232,10 @@ function Print({
               node.scaleY(1);
               onChangeFilter({
                 ...initialFilterCoords,
-                x: node.x(),
-                y: node.y(),
-                width: Math.max(5, node.width() * scaleX),
-                height: Math.max(node.height() * scaleY),
+                squareX: node.x(),
+                squareY: node.y(),
+                widthSquare: Math.max(5, node.width() * scaleX),
+                heightSquare: Math.max(node.height() * scaleY),
                 rotation: node.attrs.rotation,
               });
             }}
@@ -239,11 +244,11 @@ function Print({
         {openSquare && (
           <Group
             clip={{
-              x: initialFilterCoords.x === 250 ? 190 : initialFilterCoords.x === 270 ? 250 : initialFilterCoords.x === 230 ? 210 : initialFilterCoords.x,
-              y: initialFilterCoords.y === 180 ? 120 : initialFilterCoords.y === 130 ? 110 : initialFilterCoords.y,
+              x: initialFilterCoords.squareX,
+              y: initialFilterCoords.squareY,
               rotation: initialFilterCoords.rotation,
-              width: initialFilterCoords.width,
-              height: initialFilterCoords.height,
+              width: initialFilterCoords.widthSquare,
+              height: initialFilterCoords.heightSquare,
             }}
             onClick={onSelect}
             onTap={onSelect}
@@ -283,10 +288,8 @@ function Print({
           ref={trRef}
           boundBoxFunc={(oldBox, newBox) => {
             if (newBox.width < 5 || newBox.height < 5) {
-              console.log('oldBox');
               return oldBox;
             }
-            console.log('newBox');
             return newBox;
           }}
         />

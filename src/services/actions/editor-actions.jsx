@@ -14,7 +14,8 @@ export const SET_FILE_CART_PARAMS = 'SET_FILE_CART_PARAMS';
 export const ADD_PRINT_PREVIEW = 'ADD_PRINT_PREVIEW';
 export const SET_EDITOR_VIEW = 'SET_EDITOR_VIEW';
 export const LOAD_PRINT_FROM_STATE = 'LOAD_PRINT_FROM_STATE';
-export const SET_FILE_FILTER_CIRCLE_STAGE_PARAMS = 'SET_FILE_FILTER_CIRCLE_STAGE_PARAMS';
+export const SET_FILE_FILTER_SHAPE_STAGE_PARAMS = 'SET_FILE_FILTER_SHAPE_STAGE_PARAMS';
+export const CLEAR_FILE_FILTER_SHAPE_STAGE_PARAMS = 'CLEAR_FILE_FILTER_SHAPE_STAGE_PARAMS';
 
 export const getSize = (newAttrs, activeView, color) => {
   // console.log(color)
@@ -106,14 +107,12 @@ export const printUploadFunc = (data, activeView, itemType, itemColor) => {
           activeView,
           itemType,
         );
-
-        const filterCoordinates = setFilterCoords(activeView);
-        dispatch({
-          type: SET_FILE_FILTER_CIRCLE_STAGE_PARAMS,
-          payload: filterCoordinates,
-          view: activeView,
-        });
-
+        // const filterCoordinates = setFilterCoords(activeView);
+        // dispatch({
+        //   type: SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
+        //   payload: filterCoordinates,
+        //   view: activeView,
+        // });
         dispatch(getSize(imageCoords, activeView, itemColor));
         dispatch({
           type: SET_FILE_STAGE_PARAMS,
@@ -150,6 +149,17 @@ export const loadPrintFromState = (payload) => {
     dispatch({
       type: LOAD_PRINT_FROM_STATE,
       payload,
+    });
+  };
+};
+
+export const loadFilterCoordinates = (activeView) => {
+  const filterCoordinates = setFilterCoords(activeView);
+  return function (dispatch) {
+    dispatch({
+      type: SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
+      payload: filterCoordinates,
+      view: activeView,
     });
   };
 };
