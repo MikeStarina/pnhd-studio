@@ -124,6 +124,8 @@
   padding: 8px 12px;
   cursor: pointer;
   transition: 0.5s all;
+  -webkit-text-fill-color: #000000;
+  color: #000000;
 }
 
 .promo_submit:hover{
@@ -141,6 +143,8 @@
   cursor: pointer;
   padding-bottom: 1px;
   border-bottom: 1px solid black;
+  -webkit-text-fill-color: #000000;
+  color: #000000;
 }
 
 .control_button {
@@ -155,25 +159,21 @@
   font-family: inherit;
   font-weight: 400;
   line-height: 20px;
-  transition: transform 0.15s ease-out;
-  transition: background-color 0.5s all;
+  transition: 0.5s all;
+  -webkit-text-fill-color: #000000;
+  color: #000000;
 }
 
 .control_button::after {
-  content: 'Оплатить >>';
+  content: 'Оплатить';
 }
 
 .control_button:hover {
-  transform: translateY(-5px);
-  transition: transform 0.15s ease-out;
-  transition: background-color 0.5s all;
+  transition: 0.5s all;
   color: black;
   background-color: #00ff00;
 }
 
-.control_button:hover::after {
-  content: 'Оплатить > $';
-}
 
 .cities_wrap {
   background-color: #fff;
