@@ -36,6 +36,7 @@ function Cart() {
     });
   };
   const deleteItemFromCart = (e) => {
+    console.log(e);
     dispatch({
       type: DELETE_ITEM_FROM_CART,
       payload: e.target.id,
@@ -286,13 +287,15 @@ function Cart() {
           <img src={Mir} alt="Mir" />
           <img src={Ukassa} alt="Ukassa" />
           <div className={styles.payment_buttons}>
-            <span className={styles.payment_button}>Оферта</span>
+            <Link to={{ pathname: '/oferta' }} className={`${styles.link} ${styles.link__name}`}>
+              <span className={styles.payment_button}>Оферта </span>
+            </Link>
             &nbsp;/
-            <span type="button" className={styles.payment_button}>
-              Гид по размерам
-            </span>
+            <Link to={{ pathname: '/size_chart' }} className={`${styles.link} ${styles.link__name}`}>
+              <span className={styles.payment_button}>Гид по размерам</span>
+            </Link>
             &nbsp;/
-            <span type="button" className={styles.payment_button}>
+            <span className={styles.payment_button}>
               Гид&nbsp;по&nbsp;уходу
             </span>
           </div>
