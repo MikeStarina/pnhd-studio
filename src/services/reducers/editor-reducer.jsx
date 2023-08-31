@@ -196,7 +196,7 @@ export const editorReducer = (state = initialState, action) => {
       };
     }
     case ADD_PRINT_PREVIEW: {
-      console.log(action.preview, '<<<preview');
+      // console.log(action.preview, '<<<preview');
       return {
         ...state,
         front_file_preview:

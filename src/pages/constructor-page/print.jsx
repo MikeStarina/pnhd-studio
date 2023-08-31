@@ -33,11 +33,13 @@ function Print({
   const openCircle = initialFilterCoords ? initialFilterCoords.openCircle : false;
   const openSquare = initialFilterCoords ? initialFilterCoords.openSquare : false;
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     dispatch(scene(activeView));
-  //   }, 100);
-  // }, [initialFilterCoords, initialImageCoords]);
+  // эфект нужен для корректной фотографии, return - чтобы не было ошибки (не делал скрин при размонтировании)
+  useEffect(() => {
+    const time = setTimeout(() => {
+      dispatch(scene(activeView));
+    }, 100);
+    return () => clearTimeout(time);
+  }, [initialFilterCoords, initialImageCoords]);
 
   useEffect(() => {
     dispatch(scene(activeView));
@@ -84,8 +86,8 @@ function Print({
     });
   };
 
-  console.log(initialImageCoords, '<<initialImageCoords');
-  console.log(initialFilterCoords, '<<initialFilterCoords');
+  // console.log(initialImageCoords, '<<initialImageCoords');
+  // console.log(initialFilterCoords, '<<initialFilterCoords');
 
   return (
     <>

@@ -100,7 +100,7 @@ function Constructor() {
   }, [activeView]);
 
   const setActiveTab = (e) => {
-    console.log(e);
+    // console.log(e);
     dispatch({
       type: SET_ACTIVE_VIEW,
       payload: e.currentTarget.id,
@@ -310,7 +310,7 @@ function Constructor() {
                       view: activeView,
                     });
                     dispatch(getSize(newAttrs, activeView, item.color));
-                    dispatch(getScene(activeView));
+                    // dispatch(getScene(activeView));
                   }}
                   onChangeFilter={(coordinates) => {
                     dispatch({
