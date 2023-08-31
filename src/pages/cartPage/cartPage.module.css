@@ -208,7 +208,6 @@
   transition: 0.5s all;
 }
 .addPrintButton_wrapBottom{
- /* grid-row: 4/4; */
  align-self: end;
  margin-top: -12px;
 }
@@ -244,7 +243,7 @@
   padding-left: 30px;
   justify-self: start;
   -webkit-text-fill-color: #000000;
-    color: #000000;
+  color: #000000;
 }
 
 .productsBottom_button {
@@ -252,13 +251,9 @@
   background-color: transparent;
   cursor: pointer;
   padding: 0 0 1px 0;
-  /* border-bottom: 1px solid black; */
+  border-bottom: 1px solid black;
   justify-self: start;
   font-family: inherit;
-}
-
-.productsBottom_button>span {
-  border-bottom: 1px solid black;
 }
 
 .productsBottom_price {
@@ -816,14 +811,16 @@
     padding-bottom: 0;
     border-bottom: none;
   }
-  .productsBottom_button {
-    padding: 0 0 10px 0;
+  .productsBottom_button_wrap {
+    padding: 0;
+    margin: 0 0 12px 0;
   }
 }
 
 @media(max-width: 380px) {
-  .productsBottom_button {
-    padding: 0 0 10px 0;
+  .productsBottom_button_wrap {
+    padding: 0;
+    margin: 0 0 10px 0;
   }
   .productsPrint_prewievPrice_place{
     display: grid;

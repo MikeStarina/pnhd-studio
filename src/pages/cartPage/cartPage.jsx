@@ -36,6 +36,7 @@ function Cart() {
     });
   };
   const deleteItemFromCart = (e) => {
+    console.log(e);
     dispatch({
       type: DELETE_ITEM_FROM_CART,
       payload: e.target.id,
@@ -261,7 +262,7 @@ function Cart() {
                   onClick={deleteItemFromCart}
                   id={item.cart_item_id}
                 >
-                  <span>Удалить&nbsp;товар</span>
+                  Удалить&nbsp;товар
                 </button>
               </span>
               <div className={styles.productsBottom_price}>
