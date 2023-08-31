@@ -472,7 +472,7 @@
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-@supports (-webkit-appearance: none) or (-moz-appearance: none) {
+/* @supports (-webkit-appearance: none) or (-moz-appearance: none) {
     input[type='radio'] {
         --active: #00ff00;
         --active-inner: #00ff00;
@@ -490,7 +490,6 @@
         position: relative;
         margin: 0;
         cursor: pointer;
-        /* border: 1px solid var(--bc, var(--border)); */
         background: var(--b, var(--background));
         transition:
             background 0.3s,
@@ -578,7 +577,7 @@
     input[type='radio']:checked {
         --s: 0.5;
     }
-}
+} */
 
 @media (max-width: 1250px) {
     .cart_item {

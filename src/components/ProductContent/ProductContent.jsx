@@ -91,7 +91,6 @@ function ProductContent(item) {
       dispatch(openPopup(['Нужно выбрать размер']));
     }
   };
-
   return (
     <div className={styles.product_box}>
       <div className={styles.description}>

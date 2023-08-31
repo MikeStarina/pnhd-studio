@@ -7,7 +7,7 @@ import styles from './cart-icon.module.css';
 function CartIcon({ qty }) {
   return (
     <div className={styles.cart_wrapper}>
-      <Link to="/checkout" className={styles.link}>
+      <Link to="/cart" className={styles.link}>
         <div className={styles.counter_wrapper}>
           <p className={styles.counter}>{qty}</p>
         </div>

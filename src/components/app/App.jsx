@@ -22,7 +22,9 @@ import Constructor from '../../pages/constructor-page/constructor-page.jsx';
 import CartIcon from '../cart/cart-icon.jsx';
 import ItemPage from '../../pages/item-page/item-page.jsx';
 import CartPage from '../../pages/cart-page/cart-page.jsx';
-import { RESTORE_CART_FROM_SSTORAGE } from '../../services/actions/cart-actions';
+import Cart from '../../pages/cartPage/cartPage.jsx';
+import Checkout from '../../pages/checkout/checkout.jsx';
+import { RESTORE_CART_FROM_SSTORAGE, RESTORE_PRICE_FROM_SSTORAGE } from '../../services/actions/cart-actions';
 import Oferta from '../../pages/oferta-page/oferta-page';
 import Page404 from '../../pages/page-404/page-404';
 import SizesPage from '../../pages/sizes-page/sizes-page';
@@ -61,12 +63,17 @@ function App() {
 
   useEffect(() => {
     const autoSavedCart = sessionStorage.getItem('cart');
-    // console.log(autoSavedCart);
-
+    const autoSavedPrice = sessionStorage.getItem('price');
     if (autoSavedCart) {
       dispatch({
         type: RESTORE_CART_FROM_SSTORAGE,
         payload: JSON.parse(autoSavedCart),
+      });
+    }
+    if (autoSavedPrice) {
+      dispatch({
+        type: RESTORE_PRICE_FROM_SSTORAGE,
+        payload: JSON.parse(autoSavedPrice),
       });
     }
   }, []);
@@ -183,11 +190,12 @@ function App() {
         <Route exact path="/shop/:id/constructor">
           {useLocation().state ? <Constructor /> : <Redirect to="/shop" />}
         </Route>
-
-        <Route exact path="/checkout">
-          {order.length > 0 ? <CartPage /> : <Redirect to="/shop" />}
+        <Route exact path="/cart">
+          {order.length > 0 ? <Cart /> : <Redirect to="/shop" />}
         </Route>
-
+        <Route exact path="/checkout">
+          {order.length > 0 ? <Checkout /> : <Redirect to="/checkout" />}
+        </Route>
         <Route path="/">
           <Page404 />
         </Route>
