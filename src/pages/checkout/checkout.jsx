@@ -42,15 +42,12 @@ function Checkout() {
     promocodeFail,
     validPromoCode,
   } = useSelector((store) => store.cartData);
-  const {
-    userCartData,
-    userShippingData,
-  } = useSelector((store) => store.userData);
-  const {
-    shippingCities,
-    shippingTarif,
-    shippingPoints,
-  } = useSelector((store) => store.shippingData.shippingData);
+  const { userCartData, userShippingData } = useSelector(
+    (store) => store.userData,
+  );
+  const { shippingCities, shippingTarif, shippingPoints } = useSelector(
+    (store) => store.shippingData.shippingData,
+  );
   const { shippingData } = useSelector((store) => store.shippingData);
   const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
   const [firstLoadInput, setFirstLoadInput] = useState({
@@ -63,8 +60,6 @@ function Checkout() {
     pickup: true,
     sdek: false,
   });
-  // const [resetPopup, setResetPopup] = useState(true);
-  // const [typeShipping, setTypeShipping] = useState(false);
   const [centerMap, setCenterMap] = useState([59.972621, 30.306432]);
   const [mapPoints, setMapPoints] = useState();
   const [debounceCities, setDebounceCities] = useState([]);
@@ -103,51 +98,6 @@ function Checkout() {
       payload: value,
     });
   };
-  // console.log(orderPrice);
-
-  // это похоже на проверку открытия попапа для элемента заказа
-  // const valueButton = order.some(
-  //   (item) => oneItemTotalValue(item.cart_item_id) === 0,
-  // );
-  // console.log(valueButton);
-
-  // это общая цена заказа, реализация с прошлой версии, ее можно убрать
-  // const totalPrice = order.reduce((acc, item) => {
-  //   let printTotalprice = 0;
-  //   const frontPrintPrice = item.print && item.print.front.file ? item.print.front.cartParams.price : 0;
-  //   const backPrintPrice = item.print && item.print.back.file ? item.print.back.cartParams.price : 0;
-  //   const lsleevePrintPrice = item.print && item.print.lsleeve.file ? item.print.lsleeve.cartParams.price : 0;
-  //   const rsleevePrintPrice = item.print && item.print.rsleeve.file ? item.print.rsleeve.cartParams.price : 0;
-  //   const badgePrintPrice = item.print && item.print.badge.file ? item.print.badge.cartParams.price : 0;
-
-  //   printTotalprice = frontPrintPrice + backPrintPrice + lsleevePrintPrice + rsleevePrintPrice + badgePrintPrice;
-
-  //   acc = acc + item.attributes.price * oneItemTotalValue(item.cart_item_id) + printTotalprice * oneItemTotalValue(item.cart_item_id);
-  //   return acc;
-  // }, 0);
-
-  // console.log(totalPrice);
-  // console.log(orderPrice);
-
-  // 1 по идее это логика обрабатывающая изменение кол-ва товара в корзине с прошлой версии
-  // 1 ее по сути можно убрать
-  // useEffect(() => {
-  //   if (!isOtherPopupVisible && resetPopup && valueButton) {
-  //     dispatch(openPopup(['Нужно выбрать размер']));
-  //   }
-  //   if (totalPrice !== 0 && !resetPopup) {
-  //     setResetPopup(true);
-  //   }
-  // }, [totalPrice, valueButton]);
-
-  // const { phone } = userCartData;
-  // const regex = /[^0-9]/gi;
-  // let newPhone;
-  // if (phone) {
-  //   if (phone[0] === '8') {
-  //     newPhone = phone.replace('8', '7');
-  //   }
-  // }
   const inputChangeHandler = (e) => {
     const regex = /[\s/+/)/(/-]/g;
     let value;
@@ -196,7 +146,6 @@ function Checkout() {
         pickup: true,
         sdek: false,
       });
-      // setTypeShipping(false);
       setCenterMap([59.972621, 30.306432]);
     }
     if (type === 'сдэк') {
@@ -293,9 +242,6 @@ function Checkout() {
     });
   }
   const handelClosePopup = () => {
-    // if (orderPrice.price === 0) {
-    //   setResetPopup(false);
-    // }
     dispatch(closePopup());
   };
 
@@ -304,7 +250,6 @@ function Checkout() {
     order.map((el) => {
       if (el.cart_item_id === id) {
         return el.attributes.size.reduce((total, element) => {
-          // console.log(total, element.qty, '<el');
           return (accTotal = total + element.qty);
         }, 0);
       }
@@ -313,10 +258,6 @@ function Checkout() {
     return accTotal;
   };
   const createOrderHandler = () => {
-    // 1 реализация проверки наличия размера у товара перед формированием заказа. Можно удалить
-    // if (valueButton) {
-    //   dispatch(openPopup(['Нужно выбрать размер']));
-    // } else
     if (!isUserFormValid) {
       if (!userCartData.isNameValid) {
         setFirstLoadInput((firstLoadInput.name = true));
@@ -353,14 +294,12 @@ function Checkout() {
         metrikaProducts.push({
           id: item.attributes._id,
           name:
-          printTotalprice > 0 ? `${item.attributes.name} с печатью` : item.attributes.name,
+            printTotalprice > 0 ? `${item.attributes.name} с печатью` : item.attributes.name,
           price: item.attributes.price + printTotalprice,
           category: item.attributes.category,
           variant: item.print ? 'с печатью' : 'без печати',
           quantity: oneItemTotalValue(item.cart_item_id),
         });
-        console.log('inorder');
-        console.log(metrikaProducts);
       });
 
       window.dataLayer.push({
@@ -375,10 +314,6 @@ function Checkout() {
           },
         },
       });
-
-      console.log('outorder');
-      console.log(metrikaProducts);
-      console.log(window.dataLayer);
       dispatch(
         createOrder(
           order,
@@ -406,6 +341,7 @@ function Checkout() {
       shippingTarif.total_sum ? Math.ceil(shippingTarif.total_sum) : 0,
     );
   }, [shippingTarif]);
+
   useEffect(() => {
     if (debouncedSearchTerm) {
       setListCities(listCities);
@@ -432,7 +368,6 @@ function Checkout() {
         setTypeList(false);
         setCenterMap([59.972621, 30.306432]);
         setListPoints(null);
-        // setTypeShipping(false);
       }
     }
   });
@@ -443,9 +378,6 @@ function Checkout() {
       payload: orderPrice,
     });
   }, [order]);
-
-  // const popupStyle = valueButton ? `${styles.instruction}` : `${styles.popupBlock_message}`;
-
   return (
     <div className={styles.wrap}>
       <h1 className={styles.wrap_title}>
@@ -502,7 +434,6 @@ function Checkout() {
               }
               required
               onChange={inputChangeHandler}
-              // value={newPhone || userCartData.phone}
               value={userCartData.phone}
             />
             <label htmfor="email" className={styles.input_label}>
@@ -736,22 +667,9 @@ function Checkout() {
           />
           {isOtherPopupVisible && (
             <PopupModel onClose={handelClosePopup}>
-              {/* <div className={styles.popupBlock}>
-                {!isUserFormValid && !valueButton && (
-                  <p className={styles.validation_message}>Заполните поля:</p>
-                )}
-                {isOtherPopupVisible.map((el, index) => (
-                  <p
-                    className={`${styles.validation_message} ${popupStyle}`}
-                    key={index}
-                  >
-                    {el}
-                  </p>
-                ))}
-              </div> */}
               <div className={styles.popupBlock}>
                 {!isUserFormValid && (
-                <p className={styles.validation_message}>Заполните поля:</p>
+                  <p className={styles.validation_message}>Заполните поля:</p>
                 )}
                 {isOtherPopupVisible.map((el, index) => (
                   <p

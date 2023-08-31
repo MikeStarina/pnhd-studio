@@ -18,8 +18,6 @@ import { apiBaseUrl } from '../../utils/constants';
 import { getAllPrice, getPreviewArr, getPrintPrice } from '../../utils/cartPage';
 
 function Cart() {
-  const zzz = useSelector((store) => store.cartData);
-  // console.log(zzz);
   const [size, setSize] = useState('');
   const [prewievImg, setPrewievImg] = useState('');
   const [modalSizeId, setModalSizeId] = useState({ id: '' });
@@ -168,7 +166,7 @@ function Cart() {
               </div>
             </div>
             <div className={styles.productsPrint}>
-              {arr.length > 0 ? (
+              {arr.length > 0 && (
                 arr.map((elem, index) => {
                   return (
                     <div
@@ -177,7 +175,6 @@ function Cart() {
                         index != 4 ? `${styles.productsPrint_prewiev} ${styles.productsPrint_prewiev_border}` : `${styles.productsPrint_prewiev}`
                       }
                     >
-                      { console.log(elem) }
                       <img
                         className={styles.productsPrint_prewievImg}
                         src={elem.preview}
@@ -239,11 +236,9 @@ function Cart() {
                     </div>
                   );
                 })
-              ) : (
-                <p>Принты не выбраны</p>
               )}
               {arr.length < 4 && (
-                <div className={styles.addPrintButton_wrap}>
+                <div className={arr.length === 0 ? `${styles.addPrintButton_wrap} ${styles.addPrintButton_wrapBottom}` : `${styles.addPrintButton_wrap}`}>
                   <Link
                   to={{
                     pathname: `/shop/${item.attributes.slug}/constructor`,
@@ -329,7 +324,7 @@ function Cart() {
           </p>
         </span>
         <div className={styles.addPrintButton_wrap}>
-          <Link to={{ pathname: '/chec' }} className={`${styles.link} ${styles.link__name}`}>
+          <Link to={{ pathname: '/checkout' }} className={`${styles.link} ${styles.link__name}`}>
             <p
               className={styles.addPrintButton_wrap_text}
               onClick={() => {

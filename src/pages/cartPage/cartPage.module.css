@@ -199,11 +199,15 @@
 
 .addPrintButton_wrap {
   box-sizing: border-box;
-  border: 2px solid black;
+  border: 1px solid black;
   border-radius: 8px;
   justify-self: end;
 }
-
+.addPrintButton_wrapBottom{
+ grid-row: 4/4;
+ align-self: end;
+ margin-bottom: 10px;
+}
 .addPrintButton_wrap_text,.addPrintButton_wrap>p {
   margin: 0;
   padding: 9.6px 27.5px;
@@ -552,6 +556,7 @@
 
   .productsInfo_name {
     font-size: 13px;
+    text-align: right;
   }
 
   .productsInfo,
@@ -614,6 +619,10 @@
     font-size:16px
   }
   
+  .addPrintButton_wrap_text,.addPrintButton_wrap>p {
+    margin: 0;
+    padding: 4px 24.5px;
+  }
 }
 
 @media(max-width: 550px) {

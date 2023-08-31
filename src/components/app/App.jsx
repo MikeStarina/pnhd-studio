@@ -190,15 +190,11 @@ function App() {
         <Route exact path="/shop/:id/constructor">
           {useLocation().state ? <Constructor /> : <Redirect to="/shop" />}
         </Route>
-
-        {/* <Route exact path="/checkout">
-          {order.length > 0 ? <CartPage /> : <Redirect to="/shop" />}
-        </Route> */}
         <Route exact path="/cart">
           {order.length > 0 ? <Cart /> : <Redirect to="/shop" />}
         </Route>
-        <Route exact path="/chec">
-          {order.length > 0 ? <Checkout /> : <Redirect to="/chec" />}
+        <Route exact path="/checkout">
+          {order.length > 0 ? <Checkout /> : <Redirect to="/checkout" />}
         </Route>
         <Route path="/">
           <Page404 />
