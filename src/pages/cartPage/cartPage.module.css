@@ -633,6 +633,7 @@
   }
   
   .addPrintButton_wrap_text,.addPrintButton_wrap>p {
+    font-size: 12px;
     margin: 0;
     padding: 4px 24.5px;
   }
@@ -798,7 +799,7 @@
     line-height: 10px;
   }
 
-  .makeOrder>div {
+  .makeOrder>div.addPrintButton_wrap {
     grid-row: 1/2;
     margin-bottom: 40px;
   }
