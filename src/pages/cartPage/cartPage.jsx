@@ -36,7 +36,6 @@ function Cart() {
     });
   };
   const deleteItemFromCart = (e) => {
-    console.log(e);
     dispatch({
       type: DELETE_ITEM_FROM_CART,
       payload: e.target.id,
@@ -81,7 +80,7 @@ function Cart() {
   return (
     <>
       <h1 className={styles.pageTitle}>
-        КОРЗИНА / <span>CART</span>
+        КОРЗИНА / <i>CART</i>
       </h1>
       {order.map((item, index) => {
         const url = `${apiBaseUrl}${item.attributes.image_url}`;
@@ -113,9 +112,9 @@ function Cart() {
                 className={`${styles.link} ${styles.link__name}`}
                 key={index}
               >
-                <p className={styles.productsInfo_name}>
+                <h2 className={styles.productsInfo_name}>
                   {item.attributes.name}
-                </p>
+                </h2>
               </Link>
               <p className={styles.productsInfo_count}>
                 {item.attributes.price} Р. Х {productPriece} шт.
@@ -185,7 +184,7 @@ function Cart() {
                           setModalActive(true);
                         }}
                       />
-                      <span className={styles.productsPrint_prewievPrice}>
+                      <div className={styles.productsPrint_prewievPrice}>
                         <p className={styles.productsPrint_prewievPrice_place}>
                           <span
                             className={styles.productsPrint_prewievPrice_format}
@@ -211,7 +210,7 @@ function Cart() {
                         >
                           — {elem.price * productPriece} Р.
                         </p>
-                      </span>
+                      </div>
                       <div className={styles.productsPrint_buttons}>
                         <button
                           type="button"
@@ -231,7 +230,7 @@ function Cart() {
                           className={`${styles.link} ${styles.link__name}`}
                           key={index}
                         >
-                          <span className={styles.productsPrint_button}>Изменить</span>
+                          <button className={styles.productsPrint_button}>Изменить</button>
                         </Link>
                       </div>
                     </div>
@@ -248,14 +247,13 @@ function Cart() {
                   className={`${styles.link} ${styles.link__name}`}
                   key={index}
                   >
-                    <p className={styles.addPrintButton_wrap_text}>Добавить принт &gt;</p>
-
+                    <button className={styles.addPrintButton_wrap_text}>Добавить принт &gt;</button>
                   </Link>
                 </div>
               )}
             </div>
             <div className={styles.productsBottom}>
-              <span className={styles.productsBottom_button_wrap}>
+              <div className={styles.productsBottom_button_wrap}>
                 <button
                   type="button"
                   className={styles.productsBottom_button}
@@ -264,7 +262,7 @@ function Cart() {
                 >
                   Удалить&nbsp;товар
                 </button>
-              </span>
+              </div>
               <div className={styles.productsBottom_price}>
                 <p>Текстиль: {item.attributes.price * productPriece}&nbsp;Р.</p>
                 <p className={styles.productsBottom_pricePrint}>
@@ -305,7 +303,7 @@ function Cart() {
         </p>
       </div>
       <div className={styles.makeOrder}>
-        <span className={styles.makeOrder_text}>
+        <div className={styles.makeOrder_text}>
           <p>
             Мы обрабатываем онлайн заказы ежедневно с 11 до 19. Если вы оформили
             заказ в нерабочее время, то он будет обработан на следующий рабочий
@@ -325,10 +323,10 @@ function Cart() {
             Доставка осуществляется курьерской службой СДЕК. Срок выполнения
             заказа не учитывает доставку.
           </p>
-        </span>
+        </div>
         <div className={styles.addPrintButton_wrap}>
           <Link to={{ pathname: '/checkout' }} className={`${styles.link} ${styles.link__name}`}>
-            <p
+            <button
               className={styles.addPrintButton_wrap_text}
               onClick={() => {
                 dispatch({
@@ -337,7 +335,7 @@ function Cart() {
                 });
               }}
             >К оформлению &gt;&gt;
-            </p>
+            </button>
           </Link>
         </div>
       </div>
