@@ -286,6 +286,10 @@ label {
 .popupBlock_message {
   padding-top: 30px;
 }
+
+.user_radioWrapper>input{
+  accent-color: #000;
+}
 @media(max-width:651px) {
   .wrap_title {
     margin: 70px 0 50px 0;
