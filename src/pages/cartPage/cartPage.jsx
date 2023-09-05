@@ -36,7 +36,6 @@ function Cart() {
     });
   };
   const deleteItemFromCart = (e) => {
-    console.log(e);
     dispatch({
       type: DELETE_ITEM_FROM_CART,
       payload: e.target.id,
