@@ -34,3 +34,26 @@
   font-family: inherit;
   cursor: pointer;
 }
+
+.button_transparent{
+  color:rgb(0, 255, 0);
+  
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.button_transparent:hover{
+  text-decoration: underline;
+}
+
+.button_transparent::before{
+  content: '/ ';
+}
+
+@media (max-width: 1180px) {
+  .button_transparent::before{
+    content: '';
+  }
+}
