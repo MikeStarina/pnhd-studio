@@ -11,14 +11,14 @@ import isSizeFunction from '../../utils/isSizeFunction';
 import { ADD_TO_CART } from '../../services/actions/cart-actions';
 import addToMemory from '../../utils/addToMemory';
 
-function ProductContent(item) {
+function ProductContent(items) {
+  console.log(items);
   const dispatch = useDispatch();
   // order - список всех размеров тут
   const { order } = useSelector((store) => store.itemReducer);
   const history = useHistory();
   const [size, setSize] = useState('');
-  const linkSlug = item.slug;
-
+  const linkSlug = items.slug;
   const {
     isBlockButton,
     isSelected,
@@ -35,12 +35,12 @@ function ProductContent(item) {
   } = useSelector((store) => store.editorState);
 
   useEffect(() => {
-    item.sizes?.map((el, i) => {
+    items.sizes?.map((el, i) => {
       dispatch(
         addItemSize({
           name: el.name,
           qty: 0,
-          _id: item._id + i,
+          _id: items._id + i,
         }),
       );
     });
@@ -48,27 +48,27 @@ function ProductContent(item) {
     return () => {
       dispatch(deleteItemOrder());
     };
-  }, [item]);
+  }, [items]);
 
   useEffect(() => {
-    if (item) {
+    if (items) {
       window.dataLayer.push({
         ecommerce: {
           currencyCode: 'RUB',
           detail: {
             products: [
               {
-                id: item._id,
-                name: item.name,
-                price: item.price,
-                category: item.category,
+                id: items._id,
+                name: items.name,
+                price: items.price,
+                category: items.category,
               },
             ],
           },
         },
       });
     }
-  }, [item]);
+  }, [items]);
 
   const addToConstructor = () => {
     dispatch(openPopup(['Нужно выбрать размер']));
@@ -79,7 +79,7 @@ function ProductContent(item) {
     if (isSizeFunction(order)) {
       const variant = 'без принта';
       // Создает обьект заказа, для сохранения в сесионой памяти
-      const data = addToMemory(variant, order, item, uuId, front_file, front_file_preview, back_file, back_file_preview, lsleeve_file, lsleeve_file_preview, rsleeve_file, rsleeve_file_preview, badge_file);
+      const data = addToMemory(variant, order, items, uuId, front_file, front_file_preview, back_file, back_file_preview, lsleeve_file, lsleeve_file_preview, rsleeve_file, rsleeve_file_preview, badge_file);
 
       dispatch({
         type: ADD_TO_CART,
@@ -95,12 +95,11 @@ function ProductContent(item) {
     <div className={styles.product_box}>
       <div className={styles.description}>
         <div className={styles.title_box}>
-          <h1 className={styles.title}>{item.name}</h1>
-          <p className={styles.text}>&#8213; {item.price} P.</p>
+          <h1 className={styles.title}>{items.name}</h1>
+          <p className={styles.text}>&#8213; {items.price} P.</p>
         </div>
         <p className={styles.text}>
-          Универсальный солдат. Унисекс футболка прямого кроя с широким размерным рядом. Подойдет,
-          как для мужчин, так и для женщин.
+          {items.description}
         </p>
         <ul className={styles.box_link}>
           <li className={styles.menu_elem}>
@@ -119,7 +118,7 @@ function ProductContent(item) {
           Выберите размер:
         </label>
         {order.length > 0 ? (
-          order.map((item) => (
+          order.map((item, index) => (
             <SizeSelection
               name={item.name}
               type="shop"
@@ -127,12 +126,13 @@ function ProductContent(item) {
               size={size}
               id={item._id}
               key={item._id}
+              a={items.sizes[index].qty}
             />
           ))
         ) : (
           <option>Нет в наличии</option>
         )}
-        {item.isForPrinting && !item.isSale && item.sizes.length > 0 && (isSizeFunction(order) ? (
+        {items.isForPrinting && !items.isSale && items.sizes.length > 0 && (isSizeFunction(order) ? (
           <Link
             to={{
               pathname: `/shop/${linkSlug}/constructor`,
@@ -152,7 +152,7 @@ function ProductContent(item) {
         ))}
         <Button
           onClickTo={addToCart}
-          className={item.isForPrinting ? `${styles.button_down}` : `${styles.button_up}`}
+          className={items.isForPrinting ? `${styles.button_down}` : `${styles.button_up}`}
         >
           В корзину &gt;
         </Button>

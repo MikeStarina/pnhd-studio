@@ -40,6 +40,7 @@ export const getShopData = () => {
     })
       .then(checkResponse)
       .then((res) => {
+        console.log(res);
         dispatch({
           type: GET_DATA,
           payload: res.data,

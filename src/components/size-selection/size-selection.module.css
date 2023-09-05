@@ -41,7 +41,7 @@
 }
 
 .span_x {
-  padding: 8px 10px 0 7px;
+  padding: 4px 10px 0 7px;
   display: inline-block;
   font-size: 0.8em;
 }
@@ -53,7 +53,7 @@
   background-color: rgba(0, 0, 0, 0);
   padding: 0;
   display: flex;
-  /*text-align: center;*/
+  /* text-align: center; */
   justify-content: center;
   align-items: end;
   box-sizing: border-box;
@@ -94,6 +94,11 @@
   background-color: #000000;
 }
 
+.block_wrap{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 @media (max-width: 390px) {
   .block {
     width: 180px;
