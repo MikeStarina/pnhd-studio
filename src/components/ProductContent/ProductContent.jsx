@@ -126,7 +126,7 @@ function ProductContent(items) {
               size={size}
               id={item._id}
               key={item._id}
-              a={items.sizes[index].qty}
+              remain={items.sizes[index].qty}
             />
           ))
         ) : (

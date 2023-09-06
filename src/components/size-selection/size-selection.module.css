@@ -109,7 +109,14 @@
 .product_remain_litle{
   color: rgba(255, 0, 0, 0.50);
 }
-.product_remain_nope{
+.product_remain_nope,
+.block_disable{
+  color: rgba(0, 0, 0, 0.50);
+}
+.block_disable{
+  cursor:default;
+}
+.block_disable:hover:disabled {
   color: rgba(0, 0, 0, 0.50);
 }
 .product_remain>p{

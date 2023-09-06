@@ -4,7 +4,7 @@ import styles from './size-selection.module.css';
 import { updateItemOrder } from '../../services/actions/item-action';
 import { CHANGE_ITEM_QTY, CHANGE_ITEM_SIZES } from '../../services/actions/cart-actions';
 
-function SizeSelection({ name, qty, id, type, a }) {
+function SizeSelection({ name, qty, id, type, remain }) {
   // console.log(a);
   const { order } = useSelector((store) => store.itemReducer);
   const dispatch = useDispatch();
@@ -64,7 +64,7 @@ function SizeSelection({ name, qty, id, type, a }) {
 
   return (
     <div className={styles.block_wrap}>
-      <div className={styles.block}>
+      <div className={`${styles.block} ${remain === 0 ? `${styles.block_disable}` : ''}`}>
         <p className={styles.text}>
           <span className={styles.span_size}>{name}</span>
         </p>
@@ -72,19 +72,19 @@ function SizeSelection({ name, qty, id, type, a }) {
         <p className={styles.text_size}>{type === 'shop' ? state : qty}</p>
 
         <button
-        className={styles.button_size}
+        className={`${styles.button_size}  ${remain === 0 ? `${styles.block_disable}` : ''}`}
         onClick={() => onChangeMinus(name)}
         type="button"
         disabled={state === 0}
         >
           &lt;
         </button>
-        <button className={styles.button_size} onClick={() => onChangePlus(name)} type="button">
+        <button className={`${styles.button_size} ${remain === 0 ? `${styles.block_disable}` : ''}`} onClick={() => onChangePlus(name)} type="button" disabled={state === remain}>
           &gt;
         </button>
       </div>
-      <div className={`${styles.product_remain} ${a > 5 ? `${styles.product_remain_many}` : (a <= 5 && a != 0) ? `${styles.product_remain_litle}` : `${styles.product_remain_nope}`}`}>
-        <p>&bull; {a} шт</p>
+      <div className={`${styles.product_remain} ${remain > 5 ? `${styles.product_remain_many}` : (remain <= 5 && remain != 0) ? `${styles.product_remain_litle}` : `${styles.product_remain_nope}`}`}>
+        <p>&bull; {remain} шт</p>
       </div>
     </div>
   );
