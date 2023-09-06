@@ -63,7 +63,7 @@ const fullscreenMenu = ({ openPopup }) => {
         >
           / INST
         </a>
-        <Button onClickTo={openPopup} type="callback">
+        <Button onClickTo={openPopup} type="transparent">
           ПЕРЕЗВОНИТЬ?
         </Button>
       </div>

@@ -14,6 +14,13 @@ function Button({ children, className = '', onClickTo, type = 'empty' }) {
         {children}
       </button>
       )}
+      {
+        type === 'transparent' && (
+          <button className={`${styles.button_transparent} ${extClassName}`} onClick={onClickTo}>
+            {children}
+          </button>
+        )
+      }
     </>
   );
 }
