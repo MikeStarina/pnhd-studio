@@ -99,8 +99,7 @@ function ProductContent(item) {
           <p className={styles.text}>&#8213; {item.price} P.</p>
         </div>
         <p className={styles.text}>
-          Универсальный солдат. Унисекс футболка прямого кроя с широким размерным рядом. Подойдет,
-          как для мужчин, так и для женщин.
+          {item.description}
         </p>
         <ul className={styles.box_link}>
           <li className={styles.menu_elem}>
