@@ -83,8 +83,8 @@ function SizeSelection({ name, qty, id, type, a }) {
           &gt;
         </button>
       </div>
-      <div>
-        <span>{a}</span>
+      <div className={`${styles.product_remain} ${a > 5 ? `${styles.product_remain_many}` : (a <= 5 && a != 0) ? `${styles.product_remain_litle}` : `${styles.product_remain_nope}`}`}>
+        <p>&bull; {a} шт</p>
       </div>
     </div>
   );

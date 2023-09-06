@@ -99,6 +99,23 @@
   flex-direction: row;
   align-items: center;
 }
+.product_remain{
+  margin-left: -10px;
+  font-size: 12px;
+}
+.product_remain_many{
+  color:rgba(0, 255, 0, 0.50);
+}
+.product_remain_litle{
+  color: rgba(255, 0, 0, 0.50);
+}
+.product_remain_nope{
+  color: rgba(0, 0, 0, 0.50);
+}
+.product_remain>p{
+  margin: 0;
+}
+
 @media (max-width: 390px) {
   .block {
     width: 180px;
