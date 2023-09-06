@@ -10,6 +10,7 @@ import {
   SET_FILE_CART_PARAMS,
   CLEAR_ALL_PRINTS,
   ADD_PRINT_PREVIEW, LOAD_PRINT_FROM_STATE,
+  SET_TEXT,
 } from '../actions/editor-actions';
 
 const initialState = {
@@ -132,7 +133,34 @@ export const editorReducer = (state = initialState, action) => {
       };
     }
 
+    case SET_TEXT: {
+      return {
+        ...state,
+        front_file: {
+          ...state.front_file,
+          text:
+            action.view === 'front' ? action.payload : state.front_file.text,
+        },
+        back_file: {
+          ...state.back_file,
+          text:
+            action.view === 'back' ? action.payload : state.front_file.text,
+        },
+        lsleeve_file: {
+          ...state.lsleeve_file,
+          text:
+            action.view === 'lsleeve' ? action.payload : state.front_file.text,
+        },
+        rsleeve_file: {
+          ...state.rsleeve_file,
+          text:
+            action.view === 'rsleeve' ? action.payload : state.front_file.text,
+        },
+      };
+    }
+
     case SET_FILE_CART_PARAMS: {
+      console.log('cartParams>>', action.payload);
       return {
         ...state,
         front_file: {
@@ -192,7 +220,6 @@ export const editorReducer = (state = initialState, action) => {
       };
     }
     case ADD_PRINT_PREVIEW: {
-      // console.log(action.preview, '<<<preview');
       return {
         ...state,
         front_file_preview:

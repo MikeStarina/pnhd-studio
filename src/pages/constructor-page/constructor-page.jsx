@@ -14,10 +14,10 @@ import {
   printUploadFunc,
   loadPrintFromState,
   getSize,
-  uploadPreview, SET_FILE_FILTER_SHAPE_STAGE_PARAMS, loadFilterCoordinates,
+  uploadPreview, SET_FILE_FILTER_SHAPE_STAGE_PARAMS, loadFilterCoordinates, setText,
 } from '../../services/actions/editor-actions.jsx';
 import { ADD_TO_CART, ADD_TO_CART_WITH_PRINT } from '../../services/actions/cart-actions';
-import Print from './print.jsx';
+import Print from './print';
 import Mockup from './mockup';
 import { fileSelect, setFilterCoords } from '../../utils/utils';
 import PopupModel from '../../components/popupModel/popupModel';
@@ -37,6 +37,7 @@ import addToMemory from '../../utils/addToMemory';
 import { SquareDash } from '../../ui/icons/squareDash';
 import { SquareCircle } from '../../ui/icons/squareCircle';
 import { WordT } from '../../ui/icons/wordT';
+import ConstructorText from '../../components/ConstructorText/ConstructorText';
 
 function Constructor() {
   const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
@@ -294,6 +295,7 @@ function Constructor() {
                   isSelected={isSelected}
                   onSelect={onSelect}
                   file={file && file.file.file.url}
+                  initialText={front_file && front_file.text}
                   initialImageCoords={file && file.file.stageParams}
                   initialFilterCoords={file && file.file.stageParamsFilterCircle}
                   imgRef={imgRef}
@@ -437,12 +439,19 @@ function Constructor() {
                 getButtonVisibilityCircle={getButtonVisibilityCircle}
                 getButtonVisibilitySquare={getButtonVisibilitySquare}
               />
-              <button
-                onClick={openPopupInfo}
-                className={styles.item_button_quest}
-              >
-                <WordT className={styles.btn_svg} />
-              </button>
+              <ConstructorText
+                initialText={front_file && front_file.text}
+                onOpenText={(activeView) => {
+                  dispatch(setText(activeView));
+                }}
+                activeView={activeView}
+                circleMask={circleMask}
+                squareMask={squareMask}
+                closeButtonVisibilityOpenCircleSquare={closeButtonVisibilityOpenCircleSquare}
+                closeButtonVisibilityCircleSquare={closeButtonVisibilityCircleSquare}
+                getButtonVisibilityCircle={getButtonVisibilityCircle}
+                getButtonVisibilitySquare={getButtonVisibilitySquare}
+              />
             </div>
             <button
               className={circleMask || squareMask ? styles.item_button_quest : styles.item_button_quest_none}

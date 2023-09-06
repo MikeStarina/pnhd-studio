@@ -1,7 +1,7 @@
 import useImage from 'use-image';
 import { IS_IMAGE_LOADING, openPopup } from './utility-actions';
 import { apiBaseUrl } from '../../utils/constants';
-import { setCoords, setFilterCoords } from '../../utils/utils';
+import { setCoords, setFilterCoords, setTextCoordinates } from '../../utils/utils';
 
 export const IMAGE_SELECT = 'IMAGE_SELECT';
 export const IMAGE_DESELECT = 'IMAGE_DESELECT';
@@ -16,6 +16,7 @@ export const SET_EDITOR_VIEW = 'SET_EDITOR_VIEW';
 export const LOAD_PRINT_FROM_STATE = 'LOAD_PRINT_FROM_STATE';
 export const SET_FILE_FILTER_SHAPE_STAGE_PARAMS = 'SET_FILE_FILTER_SHAPE_STAGE_PARAMS';
 export const CLEAR_FILE_FILTER_SHAPE_STAGE_PARAMS = 'CLEAR_FILE_FILTER_SHAPE_STAGE_PARAMS';
+export const SET_TEXT = 'SET_TEXT';
 
 export const getSize = (newAttrs, activeView, color) => {
   // console.log(color)
@@ -159,6 +160,28 @@ export const loadFilterCoordinates = (activeView) => {
     dispatch({
       type: SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
       payload: filterCoordinates,
+      view: activeView,
+    });
+  };
+};
+
+export const setText = (activeView) => {
+  const textCoordinates = setTextCoordinates(activeView);
+  return function (dispatch) {
+    dispatch({
+      type: SET_TEXT,
+      payload: textCoordinates,
+      view: activeView,
+    });
+  };
+};
+
+export const changeTextState = (payload, activeView) => {
+  console.log(payload, 'payload');
+  return function (dispatch) {
+    dispatch({
+      type: SET_TEXT,
+      payload,
       view: activeView,
     });
   };

@@ -1,10 +1,11 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Image, Group, Transformer, Rect, Circle } from 'react-konva';
+import { Image, Group, Transformer, Rect, Circle, Text } from 'react-konva';
 import { useSelector, useDispatch } from 'react-redux';
 import useImage from 'use-image';
 import styles from './constructor-page.module.css';
 import {
-  SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
+  changeTextState, getSize,
+  SET_FILE_FILTER_SHAPE_STAGE_PARAMS, setText,
 } from '../../services/actions/editor-actions';
 
 function Print({
@@ -13,6 +14,7 @@ function Print({
   dash,
   initialImageCoords,
   initialFilterCoords,
+  initialText,
   isSelected,
   onSelect,
   onChange,
@@ -23,13 +25,21 @@ function Print({
   scene,
 }) {
   const trRef = useRef(null);
-  const circleRef = useRef();
-  const groupRef = useRef();
+  const circleRef = useRef(null);
+  const textRef = useRef(null);
+  const groupRef = useRef(null);
 
   const dispatch = useDispatch();
   const { activeView } = useSelector((store) => store.editorState);
   const [imageView, setImageView] = useState(true);
   const [circleClick, setCircleClick] = useState(false);
+  const [textClick, setTextClick] = useState(false);
+  const [textView, setTextView] = useState(true);
+  const [textPosition, setTextPosition] = useState({
+    isDragging: false,
+    x: 200,
+    y: 150,
+  });
   const [imageTwo] = useImage(file, 'Anonymous');
 
   const openCircle = initialFilterCoords ? initialFilterCoords.openCircle : false;
@@ -41,7 +51,7 @@ function Print({
       dispatch(scene(activeView));
     }, 100);
     return () => clearTimeout(time);
-  }, [imageTwo, initialFilterCoords, initialImageCoords, openCircle, openSquare]);
+  }, [imageTwo, initialFilterCoords, initialImageCoords, openCircle, openSquare, initialText]);
 
   useEffect(() => {
     if (openSquare || openCircle) {
@@ -55,11 +65,18 @@ function Print({
   const onCircle = () => {
     onSelect();
     setCircleClick(true);
+    setTextClick(false);
   };
 
   const onClickImage = () => {
     onSelect();
     setCircleClick(false);
+    setTextClick(false);
+  };
+
+  const onClickText = () => {
+    onSelect();
+    setTextClick(true);
   };
 
   useEffect(
@@ -72,9 +89,14 @@ function Print({
         trRef.current.nodes([circleRef.current]);
         trRef.current.getLayer().batchDraw();
       }
+      if (isSelected && textClick) {
+        trRef.current.nodes([textRef.current]);
+        trRef.current.getLayer().batchDraw();
+      }
     },
     [isSelected],
     [imgRef],
+    [textRef],
     [circleClick],
     [circleRef],
     [groupRef],
@@ -88,7 +110,7 @@ function Print({
   };
 
   // console.log(initialImageCoords, '<<initialImageCoords');
-  // console.log(initialFilterCoords, '<<initialFilterCoords');
+  console.log(initialText, '<<initialText');
 
   return (
     <>
@@ -96,12 +118,36 @@ function Print({
         clip={initialParams}
       >
         {dash && (<Rect x={initialParams.x + 2} y={initialParams.y + 2} width={initialParams.width - 4} height={initialParams.height - 4} fill="rgba(255, 0, 0, 0.0)" stroke="#00FF00" strokeWidth={2} dash={[1, 3]} />)}
+        {initialText && initialText.openText && initialText.downText && (
+          <Text
+            text={initialText.setText}
+            x={initialText.x}
+            y={initialText.y}
+            fontSize={initialText.setSize}
+            fontFamily={initialText.fontFamily}
+            draggable
+            fill={initialText.isDragging ? '#00FF00' : initialText.setColor}
+            onDragStart={() => {
+              dispatch(changeTextState({
+                ...initialText,
+                isDragging: true,
+              }, activeView));
+            }}
+            onDragEnd={(e) => {
+              dispatch(changeTextState({
+                ...initialText,
+                isDragging: false,
+                x: e.target.x(),
+                y: e.target.y(),
+              }, activeView));
+            }}
+          />
+        )}
         {imageView && (
           <Image
             className={styles.some}
             image={imageTwo}
             onClick={() => onClickImage()}
-            // onClick={onSelect}
             onTap={onSelect}
             ref={imgRef}
             {...initialImageCoords}
@@ -276,6 +322,52 @@ function Print({
               {...initialImageCoords}
             />
           </Group>
+        )}
+        {initialText && initialText.openText && !initialText.downText && (
+          <Text
+            text={initialText.setText}
+            x={initialText.x}
+            y={initialText.y}
+            width={initialText.width}
+            height={initialText.height}
+            fontSize={initialText.setSize}
+            fontFamily={initialText.fontFamily}
+            onClick={() => onClickText()}
+            onTap={onSelect}
+            ref={textRef}
+            draggable
+            fill={initialText.isDragging ? '#00FF00' : initialText.setColor}
+            onDragStart={() => {
+              dispatch(changeTextState({
+                ...initialText,
+                isDragging: true,
+              }, activeView));
+            }}
+            onDragEnd={(e) => {
+              dispatch(changeTextState({
+                ...initialText,
+                isDragging: false,
+                x: e.target.x(),
+                y: e.target.y(),
+              }, activeView));
+            }}
+            onTransformEnd={(e) => {
+              const node = textRef.current;
+              const scaleX = node.scaleX();
+              const scaleY = node.scaleY();
+
+              node.scaleX(1);
+              node.scaleY(1);
+              dispatch(changeTextState({
+                ...initialText,
+                x: node.x(),
+                y: node.y(),
+                width: Math.max(5, node.width() * scaleX),
+                height: Math.max(node.height() * scaleY),
+                rotation: node.attrs.rotation,
+              }, activeView));
+            }}
+          />
         )}
       </Group>
       {isSelected && (

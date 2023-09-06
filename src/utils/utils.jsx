@@ -23,32 +23,27 @@ export const fileSelect = (
   }
 };
 
+export const setTextCoordinates = (activeView) => {
+  if (activeView.includes('front')) {
+    return {
+      openText: true,
+      downText: false,
+      setText: 'Введите текст',
+      isDragging: false,
+      setColor: '#00ff00',
+      setSize: 30,
+      fontFamily: 'calibri',
+      x: 140,
+      y: 100,
+      width: 230,
+      height: 60,
+      rotation: 0,
+    };
+  }
+};
+
 // Задает координаты появления ФИЛЬТРА для привью изображения, вызывается в файле editor-action (redux)
 export const setFilterCoords = (activeView, shape = 'some') => {
-  // console.log(activeView, '<<setFilterCoords');
-  // const filterCoords = {
-  //   x: 250,
-  //   y: 180,
-  //   width: 120,
-  //   height: 120,
-  //   positionX: 0,
-  //   positionY: 0,
-  //   openCircle: false,
-  //   openSquare: false,
-  // };
-  // if (shape.includes('square')) {
-  //   return {
-  //     x: 190,
-  //     y: 120,
-  //     width: 120,
-  //     height: 120,
-  //     positionX: 0,
-  //     positionY: 0,
-  //     openCircle: false,
-  //     openSquare: false,
-  //   };
-  // }
-
   if (activeView.includes('front')) {
     return {
       circleX: 250,
@@ -117,7 +112,6 @@ export const setFilterCoords = (activeView, shape = 'some') => {
       openSquare: false,
     };
   }
-  // return filterCoords;
 };
 
 // Задает координаты появления привью изображения, вызывается в файле editor-action (redux)
