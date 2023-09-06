@@ -209,7 +209,9 @@
 .addPrintButton_wrap_text{
   border: 1px solid black;
   background-color: transparent;
-  border-radius: 5px;
+  border-radius: 5px;  
+  -webkit-text-fill-color: #000000;
+  color: #000000;
 }
 .addPrintButton_wrap_text,.addPrintButton_wrap>p {
   margin: 0;
