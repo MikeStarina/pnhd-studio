@@ -108,6 +108,7 @@ export const editorReducer = (state = initialState, action) => {
     }
 
     case SET_FILE_FILTER_SHAPE_STAGE_PARAMS: {
+      console.log('SET_FILE_FILTER_SHAPE_STAGE_PARAMS>>', action.payload);
       return {
         ...state,
         front_file: {
@@ -160,7 +161,7 @@ export const editorReducer = (state = initialState, action) => {
     }
 
     case SET_FILE_CART_PARAMS: {
-      console.log('cartParams>>', action.payload);
+      console.log('SET_FILE_CART_PARAMS>>', action.payload);
       return {
         ...state,
         front_file: {

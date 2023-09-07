@@ -189,8 +189,8 @@ function Print({
             {...initialFilterCoords}
             x={initialFilterCoords.circleX}
             y={initialFilterCoords.circleY}
-            width={initialFilterCoords.widthCircle}
-            height={initialFilterCoords.heightCircle}
+            width={initialFilterCoords.widthShape}
+            height={initialFilterCoords.heightShape}
             draggable
             onDragEnd={(e) => {
               onChangeFilter({
@@ -213,8 +213,8 @@ function Print({
                 ...initialFilterCoords,
                 circleX: node.x(),
                 circleY: node.y(),
-                widthCircle: Math.max(5, node.width() * scaleX),
-                heightCircle: Math.max(node.height() * scaleY),
+                widthShape: Math.max(5, node.width() * scaleX),
+                heightShape: Math.max(node.height() * scaleY),
                 rotation: node.attrs.rotation,
               });
             }}
@@ -222,7 +222,7 @@ function Print({
         )}
         {openCircle && (
           <Group
-            clipFunc={(ctx) => { ctx.arc(initialFilterCoords.circleX, initialFilterCoords.circleY, initialFilterCoords.widthCircle / 2, 0, Math.PI * 2, false); }}
+            clipFunc={(ctx) => { ctx.arc(initialFilterCoords.circleX, initialFilterCoords.circleY, initialFilterCoords.widthShape / 2, 0, Math.PI * 2, false); }}
             onClick={onSelect}
             onTap={onSelect}
             ref={groupRef}
@@ -256,8 +256,8 @@ function Print({
             x={initialFilterCoords.squareX}
             y={initialFilterCoords.squareY}
             rotation={initialFilterCoords.rotation}
-            width={initialFilterCoords.widthSquare}
-            height={initialFilterCoords.heightSquare}
+            width={initialFilterCoords.widthShape}
+            height={initialFilterCoords.heightShape}
             draggable
             onDragEnd={(e) => {
               onChangeFilter({
@@ -280,8 +280,8 @@ function Print({
                 ...initialFilterCoords,
                 squareX: node.x(),
                 squareY: node.y(),
-                widthSquare: Math.max(5, node.width() * scaleX),
-                heightSquare: Math.max(node.height() * scaleY),
+                widthShape: Math.max(5, node.width() * scaleX),
+                heightShape: Math.max(node.height() * scaleY),
                 rotation: node.attrs.rotation,
               });
             }}
@@ -293,8 +293,8 @@ function Print({
               x: initialFilterCoords.squareX,
               y: initialFilterCoords.squareY,
               rotation: initialFilterCoords.rotation,
-              width: initialFilterCoords.widthSquare,
-              height: initialFilterCoords.heightSquare,
+              width: initialFilterCoords.widthShape,
+              height: initialFilterCoords.heightShape,
             }}
             onClick={onSelect}
             onTap={onSelect}

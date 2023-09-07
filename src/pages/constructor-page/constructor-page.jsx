@@ -314,6 +314,7 @@ function Constructor() {
                       payload: coordinates,
                       view: activeView,
                     });
+                    dispatch(getSize(coordinates, activeView, item.color));
                   }}
                 />
               </Layer>
@@ -420,6 +421,9 @@ function Constructor() {
                 <SquareDash className={styles.btn_svg} />
               </button>
               <ConstructorFilter
+                file={file && file.file.file.url}
+                itemColor={item.color}
+                initialImageCoords={file && file.file.stageParams}
                 initialFilterCoords={file && file.file.stageParamsFilterCircle}
                 onOpenFilter={(activeView) => {
                   dispatch(loadFilterCoordinates(activeView));

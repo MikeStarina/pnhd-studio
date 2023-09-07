@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import styles from './ConstructorFilter.module.css';
 import { SquareCircle } from '../../ui/icons/squareCircle';
 import { Circle } from '../../ui/icons/circle';
 import { Square } from '../../ui/icons/square';
+import { getSize } from '../../services/actions/editor-actions';
 
 function ConstructorFilter(props) {
   const {
     onOpenFilter,
     initialFilterCoords,
+    initialImageCoords,
     activeView,
+    itemColor,
+    file,
     squareMask,
     onChangeFilter,
     circleMask,
@@ -17,13 +22,16 @@ function ConstructorFilter(props) {
     getButtonVisibilityCircle,
     getButtonVisibilitySquare,
   } = props;
+  const dispatch = useDispatch();
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [mainSquareCircleComponentColor, setMainSquareCircleComponentColor] = useState(false);
+  // const [firstLoad, setFirstLoad] = useState(false);
   const openCircle = initialFilterCoords ? initialFilterCoords.openCircle : false;
   const openSquare = initialFilterCoords ? initialFilterCoords.openSquare : false;
 
   const toggle = () => {
     if (circleMask || openCircle || openSquare || squareMask) {
+      dispatch(getSize(initialImageCoords, activeView, itemColor));
       closeButtonVisibilityCircleSquare();
       closeButtonVisibilityOpenCircleSquare();
       onChangeFilter({
@@ -43,9 +51,11 @@ function ConstructorFilter(props) {
     e.stopPropagation();
     if (type.includes('circle')) {
       getButtonVisibilityCircle();
+      dispatch(getSize(initialFilterCoords, activeView, itemColor));
     }
     if (type.includes('square')) {
       getButtonVisibilitySquare();
+      dispatch(getSize(initialFilterCoords, activeView, itemColor));
     }
     setDropdownVisible(false);
   };

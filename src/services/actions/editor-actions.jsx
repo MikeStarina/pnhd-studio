@@ -18,14 +18,19 @@ export const SET_FILE_FILTER_SHAPE_STAGE_PARAMS = 'SET_FILE_FILTER_SHAPE_STAGE_P
 export const CLEAR_FILE_FILTER_SHAPE_STAGE_PARAMS = 'CLEAR_FILE_FILTER_SHAPE_STAGE_PARAMS';
 export const SET_TEXT = 'SET_TEXT';
 
+export const getTextSize = (data, activeView) => {
+
+};
+
 export const getSize = (newAttrs, activeView, color) => {
-  // console.log(color)
+  // console.log(newAttrs);
 
   return function (dispatch) {
-    const width = newAttrs.width * 0.16;
-    const height = newAttrs.height * 0.14;
+    const width = newAttrs.width !== undefined ? newAttrs.width * 0.16 : newAttrs.widthShape * 0.16;
+    const height = newAttrs.height !== undefined ? newAttrs.height * 0.16 : newAttrs.heightShape * 0.16;
     const printSqr = width * height;
-
+    console.log(width, '<width');
+    console.log(height, '<height');
     let screenSize = '';
     let priceCounter = 0;
 
@@ -154,9 +159,10 @@ export const loadPrintFromState = (payload) => {
   };
 };
 
-export const loadFilterCoordinates = (activeView) => {
+export const loadFilterCoordinates = (activeView, itemColor) => {
   const filterCoordinates = setFilterCoords(activeView);
   return function (dispatch) {
+    // dispatch(getSize(filterCoordinates, activeView, itemColor));
     dispatch({
       type: SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
       payload: filterCoordinates,

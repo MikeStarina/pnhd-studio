@@ -83,6 +83,7 @@ function Cart() {
         КОРЗИНА / <i>CART</i>
       </h1>
       {order.map((item, index) => {
+        console.log(item);
         const url = `${apiBaseUrl}${item.attributes.image_url}`;
         const initialValue = 0;
         const productPriece = item.attributes.size.reduce(
@@ -168,6 +169,7 @@ function Cart() {
             <div className={styles.productsPrint}>
               {arr.length > 0 && (
                 arr.map((elem, index) => {
+                  console.log(elem, '<element');
                   return (
                     <div
                       key={index}
