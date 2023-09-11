@@ -647,7 +647,7 @@
     text-align: justify;
   }
   .modal__content {
-    width: 50vw;
+    /* width: 50vw; */
   }
   .productsPrint_prewievPrice_place{
     display: block;
@@ -818,6 +818,12 @@
   .productsBottom_button_wrap {
     padding: 0;
     margin: 0 0 12px 0;
+  }
+}
+
+@media(max-width: 480px) {
+  .modal__content {
+   /* width: 55vw; */
   }
 }
 

@@ -135,12 +135,20 @@ export const createOrder = (
     })
       .then((res) => res.json())
       .then((res) => {
-        if (res.paymentUrl) {
-          dispatch({
-            type: SET_PAYMENT_URL,
-            payload: res.paymentUrl,
-          });
-        }
+        // if (res.paymentUrl) {
+        //   dispatch({
+        //     type: SET_PAYMENT_URL,
+        //     payload: res.paymentUrl,
+        //   });
+        // }
+        fetch(`${apiBaseUrl}/api/payments`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Content-length': '',
+          },
+          body: JSON.stringify({ object: { metadata: { id: res.id } } }),
+        });
       });
   };
 };

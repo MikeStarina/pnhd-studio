@@ -12,7 +12,6 @@ import { ADD_TO_CART } from '../../services/actions/cart-actions';
 import addToMemory from '../../utils/addToMemory';
 
 function ProductContent(items) {
-  console.log(items);
   const dispatch = useDispatch();
   // order - список всех размеров тут
   const { order } = useSelector((store) => store.itemReducer);
