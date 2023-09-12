@@ -5,7 +5,6 @@ import { updateItemOrder } from '../../services/actions/item-action';
 import { CHANGE_ITEM_QTY, CHANGE_ITEM_SIZES } from '../../services/actions/cart-actions';
 
 function SizeSelection({ name, qty, id, type, remain }) {
-  // console.log(a);
   const { order } = useSelector((store) => store.itemReducer);
   const dispatch = useDispatch();
   const [state, setState] = useState(qty);

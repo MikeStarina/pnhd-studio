@@ -18,6 +18,7 @@ function ProductContent(items) {
   const history = useHistory();
   const [size, setSize] = useState('');
   const linkSlug = items.slug;
+
   const {
     isBlockButton,
     isSelected,
