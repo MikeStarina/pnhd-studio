@@ -234,13 +234,13 @@ function Checkout() {
     !userShippingData.isPvzValid ? 'Пункт Выдачи' : ''
   }`;
 
-  // if (paymentUrl) {
-  //   window.location.href = paymentUrl;
+  if (paymentUrl) {
+    window.location.href = paymentUrl;
 
-  //   dispatch({
-  //     type: CLEAR_CART,
-  //   });
-  // }
+    dispatch({
+      type: CLEAR_CART,
+    });
+  }
 
   const handelClosePopup = () => {
     dispatch(closePopup());
