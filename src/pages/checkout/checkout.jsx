@@ -241,7 +241,6 @@ function Checkout() {
       type: CLEAR_CART,
     });
   }
-
   const handelClosePopup = () => {
     dispatch(closePopup());
   };
