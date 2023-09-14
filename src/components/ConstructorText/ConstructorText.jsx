@@ -13,6 +13,7 @@ function ConstructorText(props) {
     initialImageCoords,
     initialFilterCoords,
     onOpenText,
+    onCloseText,
     initialText,
     activeView,
     file,
@@ -43,6 +44,7 @@ function ConstructorText(props) {
         });
       } else {
         dispatch(textCostZero(activeView));
+        onCloseText(initialImageCoords, initialFilterCoords)
       }
     }
     if (!dropdownVisibleText && (initialText && !initialText.openText)) {

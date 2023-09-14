@@ -476,6 +476,9 @@ function Constructor() {
                 initialImageCoords={file && file.file.stageParams}
                 initialFilterCoords={file && file.file.stageParamsFilterCircle}
                 initialText={textFile && textFile.text}
+                onCloseText={(initialImageCoords, initialFilterCoords) => {
+                  dispatch(getSize(initialImageCoords, activeView, item.color, initialFilterCoords));
+                }}
                 onOpenText={(initialImageCoords, activeView, initialFilterCoords) => {
                   dispatch(setText(initialImageCoords, activeView, item.color, initialFilterCoords));
                 }}
