@@ -55,7 +55,6 @@ export const getPriceCalc = (newAttrs, color) => {
 };
 
 export const printFilterTextCost = (stageParams, textCoordinates, itemColor, filterCoordinates) => {
-  console.log('printFilterTextCost');
   let totalHeight = 0;
   let totalWidth = 0;
   const text = textCoordinates;
@@ -74,7 +73,6 @@ export const printFilterTextCost = (stageParams, textCoordinates, itemColor, fil
     return stageParams;
   };
   const stage = stageShape(stageParams);
-  console.log(stage, '<stage');
 
   const firstElementY = text.y <= stage.y ? text : stage;
   const secondElementY = stage.y >= text.y ? stage : text;
@@ -105,8 +103,7 @@ export const printFilterTextCost = (stageParams, textCoordinates, itemColor, fil
   if (heightFirst < secondElementY.y) {
     totalHeight = firstElementY.height + secondElementY.height;
   }
-  console.log(totalHeight, 'totalHeight');
-  console.log(totalWidth, 'totalWidth');
+
   return getPriceCalc({ width: totalWidth, height: totalHeight }, itemColor);
 };
 

@@ -8,6 +8,8 @@ import { getSize } from '../../services/actions/editor-actions';
 
 function ConstructorFilter(props) {
   const {
+    dropdownVisibleFilter,
+    setDropdownVisibleFilter,
     onOpenFilter,
     initialText,
     initialFilterCoords,
@@ -24,9 +26,7 @@ function ConstructorFilter(props) {
     getButtonVisibilitySquare,
   } = props;
   const dispatch = useDispatch();
-  const [dropdownVisible, setDropdownVisible] = useState(false);
   const [mainSquareCircleComponentColor, setMainSquareCircleComponentColor] = useState(false);
-  // const [firstLoad, setFirstLoad] = useState(false);
   const openCircle = initialFilterCoords ? initialFilterCoords.openCircle : false;
   const openSquare = initialFilterCoords ? initialFilterCoords.openSquare : false;
 
@@ -44,33 +44,33 @@ function ConstructorFilter(props) {
         openMask: false,
       });
     } else {
-      setDropdownVisible((dropdownVisible) => !dropdownVisible);
+      setDropdownVisibleFilter((dropdownVisibleFilter) => !dropdownVisibleFilter);
       onOpenFilter(initialImageCoords, activeView, initialText);
     }
   };
 
   const handleItemSelectClick = (e, type) => {
     e.stopPropagation();
-    if (type.includes('circle')) {
-      getButtonVisibilityCircle();
-      onChangeFilter(initialImageCoords, initialText, {
-        ...initialFilterCoords,
-        openMask: true,
-      });
-      // dispatch(getSize(initialFilterCoords, activeView, itemColor, initialText));
+    if (file) {
+      if (type.includes('circle')) {
+        getButtonVisibilityCircle();
+        onChangeFilter(initialImageCoords, initialText, {
+          ...initialFilterCoords,
+          openMask: true,
+        });
+      }
+      if (type.includes('square')) {
+        getButtonVisibilitySquare();
+        onChangeFilter(initialImageCoords, initialText, {
+          ...initialFilterCoords,
+          openMask: true,
+        });
+      }
+      setDropdownVisibleFilter(false);
     }
-    if (type.includes('square')) {
-      getButtonVisibilitySquare();
-      onChangeFilter(initialImageCoords, initialText, {
-        ...initialFilterCoords,
-        openMask: true,
-      });
-      // dispatch(getSize(initialFilterCoords, activeView, itemColor, initialText));
-    }
-    setDropdownVisible(false);
   };
 
-  useEffect(() => {}, [dropdownVisible]);
+  useEffect(() => {}, [dropdownVisibleFilter]);
 
   return (
     <div className={styles.wrap}>
@@ -78,17 +78,17 @@ function ConstructorFilter(props) {
         onMouseEnter={() => setMainSquareCircleComponentColor(true)}
         onMouseLeave={() => setMainSquareCircleComponentColor(false)}
         className={
-          dropdownVisible || circleMask || openCircle || openSquare || squareMask ? `${styles.dropdown_container} ${styles.dropdown_container_selected}` : `${styles.dropdown_container}`
+          dropdownVisibleFilter || circleMask || openCircle || openSquare || squareMask ? `${styles.dropdown_container} ${styles.dropdown_container_selected}` : `${styles.dropdown_container}`
         }
       >
         <div onClick={() => toggle()} className={styles.dropdown_input}>
           <div className={styles.dropdown_item_wrapper}>
             <div className={styles.dropdown_selected_value}>
-              <SquareCircle className={styles.btn_svg} style={{ color: dropdownVisible || openCircle || circleMask || openSquare || squareMask || mainSquareCircleComponentColor ? '#00ff00' : '#ffffff' }} />
+              <SquareCircle className={styles.btn_svg} style={{ color: dropdownVisibleFilter || openCircle || circleMask || openSquare || squareMask || mainSquareCircleComponentColor ? '#00ff00' : '#ffffff' }} />
             </div>
             <div className={styles.dropdown_tools} />
           </div>
-          {dropdownVisible && (
+          {dropdownVisibleFilter && (
             <div className={styles.dropdown_menu}>
               <div
                 className={styles.dropdown_item}

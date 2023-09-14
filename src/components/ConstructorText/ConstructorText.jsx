@@ -7,6 +7,8 @@ import { changeTextState, DELETE_FILE, getSize, textCostZero } from '../../servi
 
 function ConstructorText(props) {
   const {
+    dropdownVisibleText,
+    setDropdownVisibleText,
     itemColor,
     initialImageCoords,
     initialFilterCoords,
@@ -15,26 +17,21 @@ function ConstructorText(props) {
     activeView,
     file,
   } = props;
-  const [dropdownVisible, setDropdownVisible] = useState(false);
   const [mainSquareCircleComponentColor, setMainSquareCircleComponentColor] = useState(false);
   const dispatch = useDispatch();
 
   const [imageTwo] = useImage(file, 'Anonymous');
 
-  // console.log(initialText, 'initialText');
   const toggle = (e) => {
     e.stopPropagation();
-    if (!dropdownVisible && !initialText) {
-      console.log('stranno4');
-      setDropdownVisible((dropdownVisible) => true);
+    if (!dropdownVisibleText && !initialText) {
+      setDropdownVisibleText((dropdownVisibleText) => true);
       onOpenText(initialImageCoords, activeView, initialFilterCoords);
     }
-    if (dropdownVisible) {
-      console.log('stranno3');
-      setDropdownVisible((dropdownVisible) => false);
+    if (dropdownVisibleText) {
+      setDropdownVisibleText((dropdownVisible) => false);
     }
-    if (!dropdownVisible && initialText?.openText) {
-      console.log('stranno2');
+    if (!dropdownVisibleText && initialText?.openText) {
       dispatch(changeTextState({
         ...initialText,
         openText: false,
@@ -48,19 +45,17 @@ function ConstructorText(props) {
         dispatch(textCostZero(activeView));
       }
     }
-    if (!dropdownVisible && (initialText && !initialText.openText)) {
-      console.log('stranno1');
-      setDropdownVisible((dropdownVisible) => true);
+    if (!dropdownVisibleText && (initialText && !initialText.openText)) {
+      setDropdownVisibleText((dropdownVisibleText) => true);
       onOpenText(initialImageCoords, activeView, initialFilterCoords);
     }
   };
 
   const handleItemSelectClick = (e, type) => {
     e.stopPropagation();
-    console.log(e.target, '< click');
   };
 
-  useEffect(() => {}, [dropdownVisible]);
+  useEffect(() => {}, [dropdownVisibleText]);
 
   return (
     <div className={styles.wrap}>
@@ -68,7 +63,7 @@ function ConstructorText(props) {
         onMouseEnter={() => setMainSquareCircleComponentColor(true)}
         onMouseLeave={() => setMainSquareCircleComponentColor(false)}
         className={
-          dropdownVisible || (initialText && initialText.openText) ? `${styles.dropdown_container} ${styles.dropdown_container_selected}` : `${styles.dropdown_container}`
+          dropdownVisibleText || (initialText && initialText.openText) ? `${styles.dropdown_container} ${styles.dropdown_container_selected}` : `${styles.dropdown_container}`
         }
       >
         <div onClick={(e) => toggle(e)} className={styles.dropdown_input}>
@@ -78,7 +73,7 @@ function ConstructorText(props) {
             </div>
             <div className={styles.dropdown_tools} />
           </div>
-          {dropdownVisible && (
+          {dropdownVisibleText && (
             <div className={styles.dropdown_menu}>
               <div
                 className={styles.dropdown_item}

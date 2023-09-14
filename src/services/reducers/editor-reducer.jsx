@@ -12,14 +12,10 @@ import {
   ADD_PRINT_PREVIEW,
   LOAD_PRINT_FROM_STATE,
   SET_TEXT,
-  SET_CART_PARAMS_IMAGE_COST,
-  SET_CART_PARAMS_TEXT_COST,
   SET_CART_PARAMS_TEXT_COST_ZERO,
 } from '../actions/editor-actions';
 
 const initialState = {
-  imageCost: 0,
-  textCost: 0,
   isBlockButton: false,
   isSelected: false,
   front_file: {},
@@ -83,7 +79,6 @@ export const editorReducer = (state = initialState, action) => {
     }
 
     case SET_FILE_STAGE_PARAMS: {
-      console.log('SET_FILE_STAGE_PARAMS>>', action.payload);
       return {
         ...state,
         front_file: {
@@ -115,7 +110,6 @@ export const editorReducer = (state = initialState, action) => {
     }
 
     case SET_FILE_FILTER_SHAPE_STAGE_PARAMS: {
-      // console.log('SET_FILE_FILTER_SHAPE_STAGE_PARAMS>>', action.payload);
       return {
         ...state,
         front_file: {
@@ -142,7 +136,6 @@ export const editorReducer = (state = initialState, action) => {
     }
 
     case SET_TEXT: {
-      // console.log(action.payload);
       return {
         ...state,
         front_file: {
@@ -167,32 +160,6 @@ export const editorReducer = (state = initialState, action) => {
         },
       };
     }
-
-    // case SET_CART_PARAMS_IMAGE_COST: {
-    //   return {
-    //     ...state,
-    //     front_file: {
-    //       ...state.front_file,
-    //       imageCost:
-    //         action.view === 'front' ? action.payload : state.front_file.imageCost,
-    //     },
-    //     back_file: {
-    //       ...state.back_file,
-    //       imageCost:
-    //         action.view === 'back' ? action.payload : state.back_file.imageCost,
-    //     },
-    //     lsleeve_file: {
-    //       ...state.lsleeve_file,
-    //       imageCost:
-    //         action.view === 'lsleeve' ? action.payload : state.lsleeve_file.imageCost,
-    //     },
-    //     rsleeve_file: {
-    //       ...state.rsleeve_file,
-    //       imageCost:
-    //         action.view === 'rsleeve' ? action.payload : state.rsleeve_file.imageCost,
-    //     },
-    //   };
-    // }
 
     case SET_CART_PARAMS_TEXT_COST_ZERO: {
       return {
@@ -219,32 +186,6 @@ export const editorReducer = (state = initialState, action) => {
         },
       };
     }
-
-    // case SET_CART_PARAMS_TEXT_COST: {
-    //   return {
-    //     ...state,
-    //     front_file: {
-    //       ...state.front_file,
-    //       textCost:
-    //         action.view === 'front' ? action.payload : state.front_file.textCost,
-    //     },
-    //     back_file: {
-    //       ...state.back_file,
-    //       textCost:
-    //         action.view === 'back' ? action.payload : state.back_file.textCost,
-    //     },
-    //     lsleeve_file: {
-    //       ...state.lsleeve_file,
-    //       textCost:
-    //         action.view === 'lsleeve' ? action.payload : state.lsleeve_file.textCost,
-    //     },
-    //     rsleeve_file: {
-    //       ...state.rsleeve_file,
-    //       textCost:
-    //         action.view === 'rsleeve' ? action.payload : state.rsleeve_file.textCost,
-    //     },
-    //   };
-    // }
 
     case SET_FILE_CART_PARAMS: {
       // console.log('SET_FILE_CART_PARAMS>>', action.payload);

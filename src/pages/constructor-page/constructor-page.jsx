@@ -40,8 +40,6 @@ import sideItemForPrint from '../../utils/sideItemForPrint';
 import totalPrintPrice from '../../utils/totalPrintPrice';
 import addToMemory from '../../utils/addToMemory';
 import { SquareDash } from '../../ui/icons/squareDash';
-import { SquareCircle } from '../../ui/icons/squareCircle';
-import { WordT } from '../../ui/icons/wordT';
 import ConstructorText from '../../components/ConstructorText/ConstructorText';
 
 function Constructor() {
@@ -75,7 +73,8 @@ function Constructor() {
   const [circleMask, setCircleMask] = useState(false);
   const [openCircle, setOpenCircle] = useState(false);
   const [openSquare, setOpenSquare] = useState(false);
-  const [allCost, setAllCost] = useState(false);
+  const [dropdownVisibleFilter, setDropdownVisibleFilter] = useState(false);
+  const [dropdownVisibleText, setDropdownVisibleText] = useState(false);
 
   const { order } = useSelector((store) => store.cartData);
   const element = location.state.from.includes('cart') ? data && data.length > 0 && order && order.find((elem) => elem.cart_item_id === location.state.state) : data && data.length > 0 && data.find((elem) => elem.slug === slug);
@@ -106,7 +105,6 @@ function Constructor() {
   }, [activeView]);
 
   const setActiveTab = (e) => {
-    // console.log(e);
     dispatch({
       type: SET_ACTIVE_VIEW,
       payload: e.currentTarget.id,
@@ -350,6 +348,7 @@ function Constructor() {
               }
               id="front"
               onClick={setActiveTab}
+              disabled={dropdownVisibleText || circleMask || squareMask}
             >
               Грудь &gt;
             </button>
@@ -358,6 +357,7 @@ function Constructor() {
               className={activeView === 'back' ? styles.active_tab : styles.tab}
               id="back"
               onClick={setActiveTab}
+              disabled={dropdownVisibleText || circleMask || squareMask}
             >
               Спина &gt;
             </button>
@@ -369,6 +369,7 @@ function Constructor() {
                 id="lsleeve"
                 onClick={setActiveTab}
                 type="button"
+                disabled={dropdownVisibleText || circleMask || squareMask}
               >
                 Л.&nbsp;рукав &gt;
               </button>
@@ -381,6 +382,7 @@ function Constructor() {
                 id="rsleeve"
                 onClick={setActiveTab}
                 type="button"
+                disabled={dropdownVisibleText || circleMask || squareMask}
               >
                 П.&nbsp;рукав &gt;
               </button>
@@ -441,6 +443,8 @@ function Constructor() {
                 <SquareDash className={styles.btn_svg} />
               </button>
               <ConstructorFilter
+                dropdownVisibleFilter={dropdownVisibleFilter}
+                setDropdownVisibleFilter={setDropdownVisibleFilter}
                 file={file && file.file.file.url}
                 itemColor={item.color}
                 initialText={textFile && textFile.text}
@@ -466,6 +470,8 @@ function Constructor() {
                 getButtonVisibilitySquare={getButtonVisibilitySquare}
               />
               <ConstructorText
+                dropdownVisibleText={dropdownVisibleText}
+                setDropdownVisibleText={setDropdownVisibleText}
                 itemColor={item.color}
                 initialImageCoords={file && file.file.stageParams}
                 initialFilterCoords={file && file.file.stageParamsFilterCircle}
@@ -527,7 +533,7 @@ function Constructor() {
               type="button"
               className={styles.item_button}
               onClick={location.state.from.includes('cart') ? addToCart : addToPrint}
-              disabled={isBlockButton}
+              disabled={isBlockButton || dropdownVisibleText || circleMask || squareMask}
             />
           </div>
         </div>

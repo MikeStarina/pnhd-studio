@@ -3,15 +3,8 @@ import { Image, Group, Transformer, Rect, Circle, Text } from 'react-konva';
 import { useSelector, useDispatch } from 'react-redux';
 import useImage from 'use-image';
 import styles from './constructor-page.module.css';
-import {
-  changeTextState,
-  getSize,
-  // SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
-  setText,
-} from '../../services/actions/editor-actions';
 
 function Print({
-  itemColor,
   squareMask,
   circleMask,
   dash,
@@ -38,12 +31,6 @@ function Print({
   const [imageView, setImageView] = useState(true);
   const [circleClick, setCircleClick] = useState(false);
   const [textClick, setTextClick] = useState(false);
-  const [textView, setTextView] = useState(true);
-  const [textPosition, setTextPosition] = useState({
-    isDragging: false,
-    x: 200,
-    y: 150,
-  });
   const [imageTwo] = useImage(file, 'Anonymous');
 
   const openCircle = initialFilterCoords ? initialFilterCoords.openCircle : false;
@@ -106,13 +93,6 @@ function Print({
     [groupRef],
   );
 
-  // const onChangeFilterCoordinates = (newAttrs) => {
-  //   dispatch({
-  //     type: SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
-  //     payload: newAttrs,
-  //   });
-  // };
-
   const onTransformText = () => {
     const node = textRef.current;
     const scaleX = node.scaleX();
@@ -146,9 +126,6 @@ function Print({
       rotation: node.attrs.rotation,
     });
   };
-
-  // console.log(initialImageCoords, '<<initialImageCoords');
-  // console.log(initialText, '<<initialText');
 
   return (
     <>
