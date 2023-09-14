@@ -211,6 +211,8 @@
   background-color: transparent;
   border-radius: 5px;
   cursor: pointer;
+  -webkit-text-fill-color: #000000;
+  color: #000000;
 }
 .addPrintButton_wrap_text,.addPrintButton_wrap>p {
   margin: 0;
