@@ -9,6 +9,7 @@ import { getSize } from '../../services/actions/editor-actions';
 function ConstructorFilter(props) {
   const {
     onOpenFilter,
+    initialText,
     initialFilterCoords,
     initialImageCoords,
     activeView,
@@ -31,7 +32,7 @@ function ConstructorFilter(props) {
 
   const toggle = () => {
     if (circleMask || openCircle || openSquare || squareMask) {
-      dispatch(getSize(initialImageCoords, activeView, itemColor));
+      dispatch(getSize(initialImageCoords, activeView, itemColor, initialText));
       closeButtonVisibilityCircleSquare();
       closeButtonVisibilityOpenCircleSquare();
       onChangeFilter({
@@ -40,10 +41,11 @@ function ConstructorFilter(props) {
         positionY: 0,
         openSquare: false,
         openCircle: false,
+        openMask: false,
       });
     } else {
       setDropdownVisible((dropdownVisible) => !dropdownVisible);
-      onOpenFilter(activeView);
+      onOpenFilter(initialImageCoords, activeView, initialText);
     }
   };
 
@@ -51,11 +53,19 @@ function ConstructorFilter(props) {
     e.stopPropagation();
     if (type.includes('circle')) {
       getButtonVisibilityCircle();
-      dispatch(getSize(initialFilterCoords, activeView, itemColor));
+      onChangeFilter(initialImageCoords, initialText, {
+        ...initialFilterCoords,
+        openMask: true,
+      });
+      // dispatch(getSize(initialFilterCoords, activeView, itemColor, initialText));
     }
     if (type.includes('square')) {
       getButtonVisibilitySquare();
-      dispatch(getSize(initialFilterCoords, activeView, itemColor));
+      onChangeFilter(initialImageCoords, initialText, {
+        ...initialFilterCoords,
+        openMask: true,
+      });
+      // dispatch(getSize(initialFilterCoords, activeView, itemColor, initialText));
     }
     setDropdownVisible(false);
   };

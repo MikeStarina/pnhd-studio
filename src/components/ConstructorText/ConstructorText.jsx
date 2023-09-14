@@ -1,55 +1,63 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import useImage from 'use-image';
 import styles from './ConstructorText.module.css';
-import { SquareCircle } from '../../ui/icons/squareCircle';
-import { Circle } from '../../ui/icons/circle';
-import { Square } from '../../ui/icons/square';
 import { WordT } from '../../ui/icons/wordT';
-import { changeTextState } from '../../services/actions/editor-actions';
+import { changeTextState, DELETE_FILE, getSize, textCostZero } from '../../services/actions/editor-actions';
 
 function ConstructorText(props) {
   const {
+    itemColor,
+    initialImageCoords,
+    initialFilterCoords,
     onOpenText,
     initialText,
     activeView,
-    squareMask,
-    // onChangeFilter,
-    circleMask,
-    closeButtonVisibilityCircleSquare,
-    closeButtonVisibilityOpenCircleSquare,
-    getButtonVisibilityCircle,
-    getButtonVisibilitySquare,
+    file,
   } = props;
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [mainSquareCircleComponentColor, setMainSquareCircleComponentColor] = useState(false);
   const dispatch = useDispatch();
 
+  const [imageTwo] = useImage(file, 'Anonymous');
+
+  // console.log(initialText, 'initialText');
   const toggle = (e) => {
     e.stopPropagation();
     if (!dropdownVisible && !initialText) {
+      console.log('stranno4');
       setDropdownVisible((dropdownVisible) => true);
-      onOpenText(activeView);
+      onOpenText(initialImageCoords, activeView, initialFilterCoords);
     }
     if (dropdownVisible) {
+      console.log('stranno3');
       setDropdownVisible((dropdownVisible) => false);
     }
     if (!dropdownVisible && initialText?.openText) {
+      console.log('stranno2');
       dispatch(changeTextState({
         ...initialText,
         openText: false,
       }, activeView));
+      if (!imageTwo) {
+        dispatch({
+          type: DELETE_FILE,
+          view: activeView,
+        });
+      } else {
+        dispatch(textCostZero(activeView));
+      }
     }
     if (!dropdownVisible && (initialText && !initialText.openText)) {
+      console.log('stranno1');
       setDropdownVisible((dropdownVisible) => true);
-      dispatch(changeTextState({
-        ...initialText,
-        openText: true,
-      }, activeView));
+      onOpenText(initialImageCoords, activeView, initialFilterCoords);
     }
   };
 
   const handleItemSelectClick = (e, type) => {
     e.stopPropagation();
+    console.log(e.target, '< click');
   };
 
   useEffect(() => {}, [dropdownVisible]);
@@ -115,6 +123,7 @@ function ConstructorText(props) {
                         ...initialText,
                         setSize: e.target.value * 1,
                       }, activeView));
+                      dispatch(getSize(initialText, activeView, itemColor));
                     }}
                     placeholder={initialText.setSize}
                   />

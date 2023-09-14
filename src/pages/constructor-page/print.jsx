@@ -4,11 +4,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import useImage from 'use-image';
 import styles from './constructor-page.module.css';
 import {
-  changeTextState, getSize,
-  SET_FILE_FILTER_SHAPE_STAGE_PARAMS, setText,
+  changeTextState,
+  getSize,
+  // SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
+  setText,
 } from '../../services/actions/editor-actions';
 
 function Print({
+  itemColor,
   squareMask,
   circleMask,
   dash,
@@ -19,6 +22,7 @@ function Print({
   onSelect,
   onChange,
   onChangeFilter,
+  OnChangeText,
   file,
   imgRef,
   initialParams,
@@ -102,15 +106,49 @@ function Print({
     [groupRef],
   );
 
-  const onChangeFilterCoordinates = (newAttrs) => {
-    dispatch({
-      type: SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
-      payload: newAttrs,
+  // const onChangeFilterCoordinates = (newAttrs) => {
+  //   dispatch({
+  //     type: SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
+  //     payload: newAttrs,
+  //   });
+  // };
+
+  const onTransformText = () => {
+    const node = textRef.current;
+    const scaleX = node.scaleX();
+    const scaleY = node.scaleY();
+
+    node.scaleX(1);
+    node.scaleY(1);
+    OnChangeText(initialImageCoords, {
+      ...initialText,
+      x: node.x(),
+      y: node.y(),
+      width: Math.max(5, node.width() * scaleX),
+      height: Math.max(node.height() * scaleY),
+      rotation: node.attrs.rotation,
+    });
+  };
+
+  const onTransformCircle = () => {
+    const node = circleRef.current;
+    const scaleX = node.scaleX();
+    const scaleY = node.scaleY();
+
+    node.scaleX(1);
+    node.scaleY(1);
+    onChangeFilter(initialImageCoords, initialText, {
+      ...initialFilterCoords,
+      squareX: node.x(),
+      squareY: node.y(),
+      widthShape: Math.max(5, node.width() * scaleX),
+      heightShape: Math.max(node.height() * scaleY),
+      rotation: node.attrs.rotation,
     });
   };
 
   // console.log(initialImageCoords, '<<initialImageCoords');
-  console.log(initialText, '<<initialText');
+  // console.log(initialText, '<<initialText');
 
   return (
     <>
@@ -123,24 +161,36 @@ function Print({
             text={initialText.setText}
             x={initialText.x}
             y={initialText.y}
+            width={initialText.width}
             fontSize={initialText.setSize}
             fontFamily={initialText.fontFamily}
+            onClick={() => onClickText()}
+            onTap={onSelect}
+            ref={textRef}
             draggable
             fill={initialText.isDragging ? '#00FF00' : initialText.setColor}
             onDragStart={() => {
-              dispatch(changeTextState({
+              const node = textRef.current;
+              const scaleY = node.scaleY();
+              OnChangeText(initialImageCoords, {
                 ...initialText,
                 isDragging: true,
-              }, activeView));
+                height: Math.max(node.height() * scaleY),
+              }, initialFilterCoords);
             }}
             onDragEnd={(e) => {
-              dispatch(changeTextState({
+              const node = textRef.current;
+              const scaleY = node.scaleY();
+              OnChangeText(initialImageCoords, {
                 ...initialText,
                 isDragging: false,
                 x: e.target.x(),
                 y: e.target.y(),
-              }, activeView));
+                height: Math.max(node.height() * scaleY),
+              }, initialFilterCoords);
+              // dispatch(getSize(initialText, activeView, itemColor));
             }}
+            onTransform={onTransformText}
           />
         )}
         {imageView && (
@@ -157,7 +207,7 @@ function Print({
                 ...initialImageCoords,
                 x: e.target.x(),
                 y: e.target.y(),
-              });
+              }, initialText);
             }}
             onTransform={(e) => {
               const node = imgRef.current;
@@ -176,7 +226,7 @@ function Print({
                 width: Math.max(5, node.width() * scaleX),
                 height: Math.max(node.height() * scaleY),
                 rotation: node.attrs.rotation,
-              });
+              }, initialText);
             }}
           />
         )}
@@ -193,7 +243,7 @@ function Print({
             height={initialFilterCoords.heightShape}
             draggable
             onDragEnd={(e) => {
-              onChangeFilter({
+              onChangeFilter(initialImageCoords, initialText, {
                 ...initialFilterCoords,
                 circleX: e.target.x(),
                 circleY: e.target.y(),
@@ -202,22 +252,7 @@ function Print({
             onTransform={(e) => {
               const node = circleRef.current;
             }}
-            onTransformEnd={(e) => {
-              const node = circleRef.current;
-              const scaleX = node.scaleX();
-              const scaleY = node.scaleY();
-
-              node.scaleX(1);
-              node.scaleY(1);
-              onChangeFilter({
-                ...initialFilterCoords,
-                circleX: node.x(),
-                circleY: node.y(),
-                widthShape: Math.max(5, node.width() * scaleX),
-                heightShape: Math.max(node.height() * scaleY),
-                rotation: node.attrs.rotation,
-              });
-            }}
+            onTransformEnd={onTransformCircle}
           />
         )}
         {openCircle && (
@@ -230,7 +265,7 @@ function Print({
             y={initialFilterCoords.positionY}
             draggable
             onDragEnd={(e) => {
-              onChangeFilter({
+              onChangeFilter(initialImageCoords, initialText, {
                 ...initialFilterCoords,
                 positionX: e.target.x(),
                 positionY: e.target.y(),
@@ -260,7 +295,7 @@ function Print({
             height={initialFilterCoords.heightShape}
             draggable
             onDragEnd={(e) => {
-              onChangeFilter({
+              onChangeFilter(initialImageCoords, initialText, {
                 ...initialFilterCoords,
                 squareX: e.target.x(),
                 squareY: e.target.y(),
@@ -269,22 +304,7 @@ function Print({
             onTransform={(e) => {
               const node = circleRef.current;
             }}
-            onTransformEnd={(e) => {
-              const node = circleRef.current;
-              const scaleX = node.scaleX();
-              const scaleY = node.scaleY();
-
-              node.scaleX(1);
-              node.scaleY(1);
-              onChangeFilter({
-                ...initialFilterCoords,
-                squareX: node.x(),
-                squareY: node.y(),
-                widthShape: Math.max(5, node.width() * scaleX),
-                heightShape: Math.max(node.height() * scaleY),
-                rotation: node.attrs.rotation,
-              });
-            }}
+            onTransformEnd={onTransformCircle}
           />
         )}
         {openSquare && (
@@ -301,12 +321,10 @@ function Print({
             ref={groupRef}
             x={initialFilterCoords.rotation === 0 ? initialFilterCoords.positionX : initialFilterCoords.positionX + (initialFilterCoords.rotation * 3)}
             y={initialFilterCoords.rotation === 0 ? initialFilterCoords.positionY : initialFilterCoords.positionY - (initialFilterCoords.rotation * 3)}
-            // x={initialFilterCoords.positionX}
-            // y={initialFilterCoords.positionY}
             rotation={initialFilterCoords.rotation}
             draggable
             onDragEnd={(e) => {
-              onChangeFilter({
+              onChangeFilter(initialImageCoords, initialText, {
                 ...initialFilterCoords,
                 positionX: e.target.x(),
                 positionY: e.target.y(),
@@ -329,7 +347,6 @@ function Print({
             x={initialText.x}
             y={initialText.y}
             width={initialText.width}
-            height={initialText.height}
             fontSize={initialText.setSize}
             fontFamily={initialText.fontFamily}
             onClick={() => onClickText()}
@@ -338,35 +355,27 @@ function Print({
             draggable
             fill={initialText.isDragging ? '#00FF00' : initialText.setColor}
             onDragStart={() => {
-              dispatch(changeTextState({
+              const node = textRef.current;
+              const scaleY = node.scaleY();
+              OnChangeText(initialImageCoords, {
                 ...initialText,
                 isDragging: true,
-              }, activeView));
+                height: Math.max(node.height() * scaleY),
+              }, initialFilterCoords);
             }}
             onDragEnd={(e) => {
-              dispatch(changeTextState({
+              const node = textRef.current;
+              const scaleY = node.scaleY();
+              OnChangeText(initialImageCoords, {
                 ...initialText,
                 isDragging: false,
                 x: e.target.x(),
                 y: e.target.y(),
-              }, activeView));
-            }}
-            onTransformEnd={(e) => {
-              const node = textRef.current;
-              const scaleX = node.scaleX();
-              const scaleY = node.scaleY();
-
-              node.scaleX(1);
-              node.scaleY(1);
-              dispatch(changeTextState({
-                ...initialText,
-                x: node.x(),
-                y: node.y(),
-                width: Math.max(5, node.width() * scaleX),
                 height: Math.max(node.height() * scaleY),
-                rotation: node.attrs.rotation,
-              }, activeView));
+              }, initialFilterCoords);
+              // dispatch(getSize(initialText, activeView, itemColor));
             }}
+            onTransform={onTransformText}
           />
         )}
       </Group>

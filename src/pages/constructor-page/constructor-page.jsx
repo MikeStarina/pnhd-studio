@@ -14,12 +14,17 @@ import {
   printUploadFunc,
   loadPrintFromState,
   getSize,
-  uploadPreview, SET_FILE_FILTER_SHAPE_STAGE_PARAMS, loadFilterCoordinates, setText,
+  uploadPreview,
+  SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
+  loadFilterCoordinates,
+  setText,
+  changeTextState,
+  printFilterTextCost,
 } from '../../services/actions/editor-actions.jsx';
 import { ADD_TO_CART, ADD_TO_CART_WITH_PRINT } from '../../services/actions/cart-actions';
 import Print from './print';
 import Mockup from './mockup';
-import { fileSelect, setFilterCoords } from '../../utils/utils';
+import { fileSelect, setFilterCoords, textFileSelect } from '../../utils/utils';
 import PopupModel from '../../components/popupModel/popupModel';
 import {
   closePopup,
@@ -70,6 +75,7 @@ function Constructor() {
   const [circleMask, setCircleMask] = useState(false);
   const [openCircle, setOpenCircle] = useState(false);
   const [openSquare, setOpenSquare] = useState(false);
+  const [allCost, setAllCost] = useState(false);
 
   const { order } = useSelector((store) => store.cartData);
   const element = location.state.from.includes('cart') ? data && data.length > 0 && order && order.find((elem) => elem.cart_item_id === location.state.state) : data && data.length > 0 && data.find((elem) => elem.slug === slug);
@@ -119,6 +125,15 @@ function Constructor() {
   };
 
   const file = fileSelect(
+    activeView,
+    front_file,
+    back_file,
+    lsleeve_file,
+    rsleeve_file,
+    badge_file,
+  );
+
+  const textFile = textFileSelect(
     activeView,
     front_file,
     back_file,
@@ -286,6 +301,7 @@ function Constructor() {
               </Layer>
               <Layer className={styles.layer}>
                 <Print
+                  itemColor={item.color}
                   openSquare={openSquare}
                   squareMask={squareMask}
                   openCircle={openCircle}
@@ -295,26 +311,30 @@ function Constructor() {
                   isSelected={isSelected}
                   onSelect={onSelect}
                   file={file && file.file.file.url}
-                  initialText={front_file && front_file.text}
+                  initialText={textFile && textFile.text}
                   initialImageCoords={file && file.file.stageParams}
                   initialFilterCoords={file && file.file.stageParamsFilterCircle}
                   imgRef={imgRef}
                   scene={getScene}
-                  onChange={(newAttrs) => {
+                  onChange={(newAttrs, second) => {
                     dispatch({
                       type: SET_FILE_STAGE_PARAMS,
                       payload: newAttrs,
                       view: activeView,
                     });
-                    dispatch(getSize(newAttrs, activeView, item.color));
+                    dispatch(getSize(newAttrs, activeView, item.color, second));
                   }}
-                  onChangeFilter={(coordinates) => {
+                  onChangeFilter={(initialImageCoords, initialText, coordinates) => {
                     dispatch({
                       type: SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
                       payload: coordinates,
                       view: activeView,
                     });
-                    dispatch(getSize(coordinates, activeView, item.color));
+                    dispatch(getSize(initialImageCoords, activeView, item.color, initialText, coordinates));
+                  }}
+                  OnChangeText={(first, textCoordinates, initialFilterCoords) => {
+                    dispatch(changeTextState(textCoordinates, activeView));
+                    dispatch(getSize(first, activeView, item.color, textCoordinates, initialFilterCoords));
                   }}
                 />
               </Layer>
@@ -423,18 +443,20 @@ function Constructor() {
               <ConstructorFilter
                 file={file && file.file.file.url}
                 itemColor={item.color}
+                initialText={textFile && textFile.text}
                 initialImageCoords={file && file.file.stageParams}
                 initialFilterCoords={file && file.file.stageParamsFilterCircle}
-                onOpenFilter={(activeView) => {
-                  dispatch(loadFilterCoordinates(activeView));
+                onOpenFilter={(initialImageCoords, activeView, initialText) => {
+                  dispatch(loadFilterCoordinates(initialImageCoords, activeView, item.color, initialText));
                 }}
                 activeView={activeView}
-                onChangeFilter={(coordinates) => {
+                onChangeFilter={(initialImageCoords, initialText, coordinates) => {
                   dispatch({
                     type: SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
                     payload: coordinates,
                     view: activeView,
                   });
+                  dispatch(getSize(initialImageCoords, activeView, item.color, initialText, coordinates));
                 }}
                 circleMask={circleMask}
                 squareMask={squareMask}
@@ -444,10 +466,14 @@ function Constructor() {
                 getButtonVisibilitySquare={getButtonVisibilitySquare}
               />
               <ConstructorText
-                initialText={front_file && front_file.text}
-                onOpenText={(activeView) => {
-                  dispatch(setText(activeView));
+                itemColor={item.color}
+                initialImageCoords={file && file.file.stageParams}
+                initialFilterCoords={file && file.file.stageParamsFilterCircle}
+                initialText={textFile && textFile.text}
+                onOpenText={(initialImageCoords, activeView, initialFilterCoords) => {
+                  dispatch(setText(initialImageCoords, activeView, item.color, initialFilterCoords));
                 }}
+                file={file && file.file.file.url}
                 activeView={activeView}
                 circleMask={circleMask}
                 squareMask={squareMask}

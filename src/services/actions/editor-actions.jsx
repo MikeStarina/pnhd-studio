@@ -12,63 +12,125 @@ export const SET_ACTIVE_VIEW = 'SET_ACTIVE_VIEW';
 export const SET_FILE_STAGE_PARAMS = 'SET_FILE_PARAMS';
 export const SET_FILE_CART_PARAMS = 'SET_FILE_CART_PARAMS';
 export const ADD_PRINT_PREVIEW = 'ADD_PRINT_PREVIEW';
-export const SET_EDITOR_VIEW = 'SET_EDITOR_VIEW';
 export const LOAD_PRINT_FROM_STATE = 'LOAD_PRINT_FROM_STATE';
 export const SET_FILE_FILTER_SHAPE_STAGE_PARAMS = 'SET_FILE_FILTER_SHAPE_STAGE_PARAMS';
 export const CLEAR_FILE_FILTER_SHAPE_STAGE_PARAMS = 'CLEAR_FILE_FILTER_SHAPE_STAGE_PARAMS';
 export const SET_TEXT = 'SET_TEXT';
+export const SET_CART_PARAMS_IMAGE_COST = 'SET_CART_PARAMS_IMAGE_COST';
+export const SET_CART_PARAMS_TEXT_COST = 'SET_CART_PARAMS_TEXT_COST';
+export const SET_CART_PARAMS_TEXT_COST_ZERO = 'SET_CART_PARAMS_TEXT_COST_ZERO';
 
-export const getTextSize = (data, activeView) => {
+export const getPriceCalc = (newAttrs, color) => {
+  const width = newAttrs.width !== undefined ? newAttrs.width * 0.16 : newAttrs.widthShape * 0.16;
+  const height = newAttrs.height !== undefined ? newAttrs.height * 0.16 : newAttrs.heightShape * 0.16;
+  const printSqr = width * height;
 
+  let screenSize = '';
+  let priceCounter = 0;
+
+  if (printSqr <= 150) {
+    screenSize = 'А6';
+    priceCounter = color && color === 'белый' ? 300 : 400;
+  } else if (printSqr > 150 && printSqr <= 315) {
+    screenSize = 'А5';
+    priceCounter = color && color === 'белый' ? 400 : 500;
+  } else if (printSqr > 315 && printSqr <= 609) {
+    screenSize = 'А4';
+    priceCounter = color && color === 'белый' ? 500 : 650;
+  } else if (printSqr > 609 && printSqr <= 1218) {
+    screenSize = 'А3';
+    priceCounter = color && color === 'белый' ? 650 : 750;
+  } else if (printSqr > 1218 && printSqr <= 1420) {
+    screenSize = 'А3+';
+    priceCounter = color && color === 'белый' ? 750 : 900;
+  } else {
+    screenSize = 'А3+';
+    priceCounter = color && color === 'белый' ? 750 : 900;
+  }
+
+  const displayWidth = Math.round(width) > 35 ? 35 : Math.round(width);
+  const displayHeight = Math.round(height) > 42 ? 42 : Math.round(height);
+
+  return { priceCounter, screenSize, displayWidth, displayHeight };
 };
 
-export const getSize = (newAttrs, activeView, color) => {
-  // console.log(newAttrs);
+export const printFilterTextCost = (stageParams, textCoordinates, itemColor, filterCoordinates) => {
+  console.log('printFilterTextCost');
+  let totalHeight = 0;
+  let totalWidth = 0;
+  const text = textCoordinates;
 
-  return function (dispatch) {
-    const width = newAttrs.width !== undefined ? newAttrs.width * 0.16 : newAttrs.widthShape * 0.16;
-    const height = newAttrs.height !== undefined ? newAttrs.height * 0.16 : newAttrs.heightShape * 0.16;
-    const printSqr = width * height;
-    console.log(width, '<width');
-    console.log(height, '<height');
-    let screenSize = '';
-    let priceCounter = 0;
+  const heightShape = filterCoordinates && filterCoordinates.heightShape;
+  const widthShape = filterCoordinates && filterCoordinates.widthShape;
 
-    if (printSqr <= 150) {
-      screenSize = 'А6';
-      priceCounter = color && color === 'белый' ? 300 : 400;
-    } else if (printSqr > 150 && printSqr <= 315) {
-      screenSize = 'А5';
-      priceCounter = color && color === 'белый' ? 400 : 500;
-    } else if (printSqr > 315 && printSqr <= 609) {
-      screenSize = 'А4';
-      priceCounter = color && color === 'белый' ? 500 : 650;
-    } else if (printSqr > 609 && printSqr <= 1218) {
-      screenSize = 'А3';
-      priceCounter = color && color === 'белый' ? 650 : 750;
-    } else if (printSqr > 1218 && printSqr <= 1420) {
-      screenSize = 'А3+';
-      priceCounter = color && color === 'белый' ? 750 : 900;
-    } else {
-      screenSize = 'А3+';
-      priceCounter = color && color === 'белый' ? 750 : 900;
+  const stageShape = (stageParams) => {
+    if (filterCoordinates) {
+      return {
+        ...stageParams,
+        width: widthShape,
+        height: heightShape,
+      };
     }
+    return stageParams;
+  };
+  const stage = stageShape(stageParams);
+  console.log(stage, '<stage');
 
-    const displayWidth = Math.round(width) > 35 ? 35 : Math.round(width);
-    const displayHeight = Math.round(height) > 42 ? 42 : Math.round(height);
+  const firstElementY = text.y <= stage.y ? text : stage;
+  const secondElementY = stage.y >= text.y ? stage : text;
+  const heightFirst = firstElementY.y + firstElementY.height;
+  const heightSecond = secondElementY.y + secondElementY.height;
+
+  const firstElementX = text.x <= stage.x ? text : stage;
+  const secondElementX = stage.x >= text.x ? stage : text;
+  const widthFirst = firstElementX.x + firstElementX.width;
+  const widthSecond = secondElementX.x + secondElementX.width;
+
+  if (widthFirst >= widthSecond) {
+    totalWidth = firstElementX.width;
+  }
+  if (widthFirst < widthSecond && widthFirst > secondElementX.x) {
+    totalWidth = secondElementX.width + (secondElementX.x - firstElementX.x);
+  }
+  if (widthFirst < secondElementX.x) {
+    totalWidth = firstElementX.width + secondElementX.width;
+  }
+
+  if (heightFirst >= heightSecond) {
+    totalHeight = firstElementY.height;
+  }
+  if (heightFirst < heightSecond && heightFirst > secondElementY.y) {
+    totalHeight = secondElementY.height + (secondElementY.y - firstElementY.y);
+  }
+  if (heightFirst < secondElementY.y) {
+    totalHeight = firstElementY.height + secondElementY.height;
+  }
+  console.log(totalHeight, 'totalHeight');
+  console.log(totalWidth, 'totalWidth');
+  return getPriceCalc({ width: totalWidth, height: totalHeight }, itemColor);
+};
+
+export const getSize = (newAttrs, activeView, color, textCoordinates, filterCoordinates) => {
+  return function (dispatch) {
+    const cost = textCoordinates && newAttrs ? printFilterTextCost(newAttrs, textCoordinates, color, filterCoordinates) : textCoordinates ? getPriceCalc(textCoordinates, color) : filterCoordinates ? getPriceCalc(filterCoordinates, color) : getPriceCalc(newAttrs, color);
 
     dispatch({
       type: SET_FILE_CART_PARAMS,
       payload: {
-        price: priceCounter,
-        format: screenSize,
-        size: `${displayWidth} x ${displayHeight} см.`,
+        price: cost.priceCounter,
+        format: cost.screenSize,
+        size: `${cost.displayWidth} x ${cost.displayHeight} см.`,
         place: activeView,
       },
       view: activeView,
     });
   };
 };
+
+export const textCostZero = (activeView) => ({
+  type: SET_CART_PARAMS_TEXT_COST_ZERO,
+  view: activeView,
+});
 
 export const printUploadFunc = (data, activeView, itemType, itemColor) => {
   const checkResponse = (res) => {
@@ -113,12 +175,6 @@ export const printUploadFunc = (data, activeView, itemType, itemColor) => {
           activeView,
           itemType,
         );
-        // const filterCoordinates = setFilterCoords(activeView);
-        // dispatch({
-        //   type: SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
-        //   payload: filterCoordinates,
-        //   view: activeView,
-        // });
         dispatch(getSize(imageCoords, activeView, itemColor));
         dispatch({
           type: SET_FILE_STAGE_PARAMS,
@@ -159,10 +215,9 @@ export const loadPrintFromState = (payload) => {
   };
 };
 
-export const loadFilterCoordinates = (activeView, itemColor) => {
+export const loadFilterCoordinates = (initialImageCoords, activeView, itemColor, initialText) => {
   const filterCoordinates = setFilterCoords(activeView);
   return function (dispatch) {
-    // dispatch(getSize(filterCoordinates, activeView, itemColor));
     dispatch({
       type: SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
       payload: filterCoordinates,
@@ -171,7 +226,7 @@ export const loadFilterCoordinates = (activeView, itemColor) => {
   };
 };
 
-export const setText = (activeView) => {
+export const setText = (initialImageCoords, activeView, itemColor, initialFilterCoords) => {
   const textCoordinates = setTextCoordinates(activeView);
   return function (dispatch) {
     dispatch({
@@ -179,11 +234,11 @@ export const setText = (activeView) => {
       payload: textCoordinates,
       view: activeView,
     });
+    dispatch(getSize(initialImageCoords, activeView, itemColor, textCoordinates, initialFilterCoords));
   };
 };
 
 export const changeTextState = (payload, activeView) => {
-  console.log(payload, 'payload');
   return function (dispatch) {
     dispatch({
       type: SET_TEXT,

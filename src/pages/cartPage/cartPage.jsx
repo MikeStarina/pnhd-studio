@@ -76,7 +76,7 @@ function Cart() {
       dispatch({ type: SET_CART_VISIBILITY, payload: true });
     };
   }, []);
-
+  console.log(order, '<order');
   return (
     <>
       <h1 className={styles.pageTitle}>

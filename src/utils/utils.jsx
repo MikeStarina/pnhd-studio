@@ -23,6 +23,28 @@ export const fileSelect = (
   }
 };
 
+export const textFileSelect = (
+  activeView,
+  front_file,
+  back_file,
+  lsleeve_file,
+  rsleeve_file,
+  badge_file,
+) => {
+  if (activeView.includes('front') && front_file.text) {
+    return front_file;
+  }
+  if (activeView.includes('back') && back_file.text) {
+    return back_file;
+  }
+  if (activeView.includes('lsleeve') && lsleeve_file.text) {
+    return lsleeve_file;
+  }
+  if (activeView.includes('rsleeve') && rsleeve_file.text) {
+    return rsleeve_file;
+  }
+};
+
 export const setTextCoordinates = (activeView) => {
   if (activeView.includes('front')) {
     return {
@@ -36,14 +58,64 @@ export const setTextCoordinates = (activeView) => {
       x: 140,
       y: 100,
       width: 230,
-      height: 60,
+      height: 30,
+      rotation: 0,
+      scaleX: 1,
+      scaleY: 1,
+    };
+  }
+  if (activeView.includes('back')) {
+    return {
+      openText: true,
+      downText: false,
+      setText: 'Введите текст',
+      isDragging: false,
+      setColor: '#00ff00',
+      setSize: 30,
+      fontFamily: 'calibri',
+      x: 140,
+      y: 100,
+      width: 230,
+      height: 30,
+      rotation: 0,
+    };
+  }
+  if (activeView.includes('lsleeve')) {
+    return {
+      openText: true,
+      downText: false,
+      setText: 'Введите текст',
+      isDragging: false,
+      setColor: '#00ff00',
+      setSize: 20,
+      fontFamily: 'calibri',
+      x: 230,
+      y: 110,
+      width: 80,
+      height: 40,
+      rotation: 0,
+    };
+  }
+  if (activeView.includes('rsleeve')) {
+    return {
+      openText: true,
+      downText: false,
+      setText: 'Введите текст',
+      isDragging: false,
+      setColor: '#00ff00',
+      setSize: 20,
+      fontFamily: 'calibri',
+      x: 190,
+      y: 110,
+      width: 80,
+      height: 40,
       rotation: 0,
     };
   }
 };
 
 // Задает координаты появления ФИЛЬТРА для привью изображения, вызывается в файле editor-action (redux)
-export const setFilterCoords = (activeView, shape = 'some') => {
+export const setFilterCoords = (activeView) => {
   if (activeView.includes('front')) {
     return {
       circleX: 250,
@@ -53,12 +125,11 @@ export const setFilterCoords = (activeView, shape = 'some') => {
       rotation: 0,
       widthShape: 120,
       heightShape: 120,
-      // widthSquare: 120,
-      // heightSquare: 120,
       positionX: 0,
       positionY: 0,
       openCircle: false,
       openSquare: false,
+      openMask: false,
     };
   }
   if (activeView.includes('back')) {
@@ -70,46 +141,43 @@ export const setFilterCoords = (activeView, shape = 'some') => {
       rotation: 0,
       widthShape: 120,
       heightShape: 120,
-      // widthSquare: 120,
-      // heightSquare: 120,
       positionX: 0,
       positionY: 0,
       openCircle: false,
       openSquare: false,
+      openMask: false,
     };
   }
   if (activeView.includes('lsleeve')) {
     return {
-      circleX: 270, // 250  for square
-      circleY: 130, // 110
+      circleX: 270,
+      circleY: 130,
       squareX: 250,
       squareY: 110,
       rotation: 0,
       widthShape: 40,
       heightShape: 40,
-      // widthSquare: 40,
-      // heightSquare: 40,
       positionX: 0,
       positionY: 0,
       openCircle: false,
       openSquare: false,
+      openMask: false,
     };
   }
   if (activeView.includes('rsleeve')) {
     return {
-      circleX: 230, // 210 square
-      circleY: 130, // 110
+      circleX: 230,
+      circleY: 130,
       squareX: 210,
       squareY: 110,
       rotation: 0,
       widthShape: 40,
       heightShape: 40,
-      // widthSquare: 40,
-      // heightSquare: 40,
       positionX: 0,
       positionY: 0,
       openCircle: false,
       openSquare: false,
+      openMask: false,
     };
   }
 };
