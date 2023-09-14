@@ -1,0 +1,403 @@
+/* .wrap{font-family: 'Neue_machina', Arial, Helvetica, sans-serif;} */
+.wrap{
+  max-width: 1536px;
+}
+.header {
+  background-image: url('../../components/images/friendsPage/zagitova/zagitova_main_bgi.png');
+  /* filter: sepia(30%); */
+  background-position: center;
+  background-size: cover;
+}
+
+.header_text {
+  padding: 406px 0 290px 208px;
+}
+
+.header_text>h2 {
+  font-size: 60px;
+  color: #C0B8AD;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 60px;
+  letter-spacing: -2.4px;
+  text-transform: uppercase;
+  margin: 0;
+  padding: 0;
+}
+
+.biography {
+  background-color: #C0B8AD;
+}
+
+.biography_text {
+  max-width: 1023px;
+  padding: 226px 0 245px 216px;
+}
+
+.biography_text>p {
+  color: #000;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.biography_textLink {
+  margin-top: 40px;
+}
+
+.social_link,
+.social_link_mem {
+  -webkit-text-fill-color: #000000;
+  color: #000000;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.social_link:first-child {
+  margin-right: 30px;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
+
+.gallery>img {
+  width: 100%;
+  object-fit: cover;
+
+}
+
+.memHistory {
+  background-color: #000;
+  color: #C0B8AD;
+}
+
+.memHistory_wrap {
+  max-width: 935px;
+  padding: 235px 0 229px 216px;
+}
+
+.memHistory_wrap>h2 {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  text-transform: uppercase;
+  margin: 0;
+  padding-bottom: 52px;
+}
+
+.memHistory_text,
+.memHistory_textDown {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.memHistory_textDown {
+  padding: 23px 0;
+}
+
+.social_link_mem {
+  -webkit-text-fill-color: #C0B8AD;
+  color: #C0B8AD;
+  margin-right: 0px;
+}
+
+.memImage {
+  background-image: url('../../components/images/friendsPage/zagitova/mem_image_bgi.png');
+  padding-bottom: 800px;
+}
+
+.recommendation {
+  background-color: #000;
+  color: #C0B8AD;
+
+}
+
+.recommendation_wrap {
+  padding: 252px 0 177px 216px;
+}
+
+.recommendation_wrap>div>p {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.recommendation_top,
+.recommendation_bottom {
+  display: flex;
+  flex-direction: row;
+  align-items: center
+}
+
+.recommendation_top>p {
+  max-width: 735px;
+  padding-left: 48px;
+}
+
+.recommendation_bottom {
+  padding-left: 228px;
+}
+
+.recommendation_bottom>p {
+  padding-right: 426px;
+}
+
+.sale {
+  display: flex;
+  flex-direction: row;
+}
+
+.sale_productBgi {
+  background-image: url('../../components/images/friendsPage/zagitova/zagitova_sale_bgi.png');
+  width: 652px;
+  height: 978px;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; 
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.sale_sizes {
+  margin: 0;
+  padding: 143px 0 0 196px;
+  box-sizing: border-box;
+  width: 584px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: visible;
+}
+
+.description {
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0 0 80px;
+  display: flex;
+  flex-direction: column;
+  /* position: fixed; */
+  position: sticky;
+  top: 108px;
+  left: auto;
+  right: auto;
+  max-width: 584px;
+  width: inherit;
+  /*height: 200px;*/
+  /*outline: #d60080 1px solid;*/
+}
+
+.title_box {
+  display: flex;
+  min-height: 62px;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-bottom: 40px;
+}
+
+.title {
+  margin: 0;
+  padding: 0;
+  max-width: 80%;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 20.5px;
+}
+
+.text {
+  padding: 0;
+  margin: 0;
+  padding-bottom: 60px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 16px;
+  text-align: justify;
+  font-style: normal;
+  line-height: 20px;
+}
+
+.box_link {
+  margin: 45px 0;
+  padding: 0;
+  /*height: 100%;*/
+  list-style-type: none;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5px;
+}
+
+.menu_elem {
+  margin: 0;
+  padding: 0;
+}
+
+.menu_link {
+  margin: 0;
+  padding: 0;
+  color: rgb(0, 0, 0);
+  font-size: 16px;
+  line-height: 20px;
+  text-decoration: none;
+  border-bottom: 1px solid #000000;
+  transition: 0.5s all;
+}
+
+.menu_link:hover {
+  border-bottom: 1px solid #C0B8AD;
+  color: #C0B8AD;
+  transition: 0.5s all;
+}
+
+.select_label {
+  font-size: 16px;
+  line-height: 16.4px;
+  font-weight: 400;
+  text-align: left;
+  padding: 0;
+  margin: 0 0 13px 0;
+}
+
+.button_up {
+  margin-top: 34px;
+}
+
+.button_down {
+  margin-top: 45px;
+  transition: 0.5s all;
+}
+
+.button_down:hover {
+  background-color: #C0B8AD;
+  transition: 0.5s all;
+
+}
+
+.footer_links{
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+}
+
+.footer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #C0B8AD;
+}
+.footer_links{
+  margin: 131px 0 342px;
+  padding: 0;
+}
+.menu_link_footer{
+  text-decoration: none;
+  padding-right: 29px;
+  color: #000;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 136.5%; /* 27.3px */
+}
+
+.footer_companyInfo{
+  color: #000;
+text-align: center;
+font-size: 20px;
+font-style: normal;
+font-weight: 400;
+line-height: 15px;
+margin-bottom: 96px;
+}
+
+.footer_merch{
+  color: #000;
+font-size: 20px;
+font-style: normal;
+font-weight: 400;
+margin-bottom: 96px;
+}
+@media screen and (max-width: 1480px) {
+  .product_box {
+    margin-left: 70px;
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  .product_box {
+    margin-left: 60px;
+  }
+
+  .description {
+    max-width: 400px;
+  }
+}
+
+@media screen and (max-width: 1250px) {
+  .product_box {
+    margin: 0 auto;
+    padding-top: 10px;
+    width: 100%;
+  }
+
+  .description {
+    padding: 0 10px 100px;
+    position: relative;
+    top: 0;
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .title {
+    font-weight: 800;
+    font-size: 14px;
+    line-height: 14.35px;
+  }
+
+  .menu_link {
+    font-size: 12px;
+    line-height: 12.3px;
+    font-weight: 400;
+  }
+
+  .title_box {
+    min-height: 38px;
+  }
+
+  .box_link {
+    margin-bottom: 57px;
+  }
+
+  .text {
+    font-size: 12px;
+    line-height: 12.3px;
+    font-weight: 400;
+  }
+
+  .select_label {
+    font-size: 12px;
+    line-height: 12.3px;
+    font-weight: 400;
+  }
+
+  .select_label {
+    margin-bottom: 17px;
+  }
+
+  .button_up {
+    margin: 45px auto 0;
+  }
+
+  .button_down {
+    margin: 10px auto 0;
+  }
+}
