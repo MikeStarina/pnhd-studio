@@ -1,21 +1,46 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import Button from '../../ui/Button/Button';
 import SizeSelection from '../../components/size-selection/size-selection';
 import styles from './zagitova-page.module.css';
-import zg1 from '../../components/images/friendsPage/zagitova/zagitova_gallery_1.png';
-import zg2 from '../../components/images/friendsPage/zagitova/zagitova_gallery_2.png';
-import zg3 from '../../components/images/friendsPage/zagitova/zagitova_gallery_3.png';
-import zg4 from '../../components/images/friendsPage/zagitova/zagitova_gallery_4.png';
-import zg5 from '../../components/images/friendsPage/zagitova/zagitova_gallery_5.png';
-import zg6 from '../../components/images/friendsPage/zagitova/zagitova_gallery_6.png';
+import zgGallery from '../../components/images/friendsPage/zagitova/zagitova_gallery.png';
 import zgRecomendCircle from '../../components/images/friendsPage/zagitova/zagitova_recomendation.svg';
+import zgSale from '../../components/images/friendsPage/zagitova/zagitova_sale_bgi.png';
+import { getFriendProduct } from '../../services/actions/friends-actions';
+import isSizeFunction from '../../utils/isSizeFunction';
+import addToMemory from '../../utils/addToMemory';
+import { ADD_TO_CART } from '../../services/actions/cart-actions';
+import { openPopup } from '../../services/actions/utility-actions';
 
 function ZagitovaPage() {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const [size, setSize] = useState('');
-  const { data } = useSelector((store) => store.shopData);
+  // const { data } = useSelector((store) => store.shopData);
+  // console.log(products);
+  useEffect(() => {
+    dispatch(getFriendProduct('zagitova'));
+  }, []);
   // поставлено как пример пока не будет сделана коллекция в бд
+  const { products } = useSelector((store) => store.friendData);
+  console.log(products[0]);
+  const addToCart = () => {
+    if (isSizeFunction(products[0].sizes)) {
+      const variant = 'безызбежно';
+      // Создает обьект заказа, для сохранения в сесионой памяти
+      const data = addToMemory(variant, products, products[0], products.uuId, products.front_file, products.front_file_preview, products.back_file, products.back_file_preview, products.lsleeve_file, products.lsleeve_file_preview, products.rsleeve_file, products.rsleeve_file_preview, products.badge_file);
+
+      dispatch({
+        type: ADD_TO_CART,
+        payload: { ...data },
+      });
+
+      history.goBack();
+    } else {
+      dispatch(openPopup(['Нужно выбрать размер']));
+    }
+  };
   return (
     <section className={styles.wrap}>
       <div className={styles.header}>
@@ -77,12 +102,7 @@ function ZagitovaPage() {
         </div>
       </div>
       <div className={styles.gallery}>
-        <img className={styles.gallery1} src={zg1} alt="Загитова фото" />
-        <img src={zg2} alt="Загитова фото" />
-        <img src={zg3} alt="Загитова фото" />
-        <img src={zg4} alt="Загитова фото" />
-        <img src={zg5} alt="Загитова фото" />
-        <img src={zg6} alt="Загитова фото" />
+        <img src={zgGallery} alt="Загитова фото" />
       </div>
       <div className={styles.memHistory}>
         <div className={styles.memHistory_wrap}>
@@ -121,20 +141,14 @@ function ZagitovaPage() {
           <div className={styles.recommendation_top}>
             <img src={zgRecomendCircle} alt="Фото Загитовой" />
             <p>
-              “ С футболкой получилось совсем случайно. Кто-то из друзей в шутку
-              подарил и я в ней сфотографировалась. После этого мне написали
-              буквально все с вопросом «где взять такую же?». Пришлось взяться
-              за дело уже серьезно – посмотреть образцы, разобраться с методами
-              печати…В итоге получились классные хлопковые футболки. Если хотели
-              себе одну, то смело берите! “
+              “ Очень странно было читать такое большое количество реакций после этого интервью, а тем более видеть такое количество негатива из-за обычной оговорки. Мне захотелось напомнить всем, что ошибаться – это нормально и что меня не задевают комментарии. Я придумала кучу идей и футболка с надписью, как старейший способ заявить о своей позиции, понравилась мне больше всего, так что встречайте #безызбежно на текстиле, не нервничайте и будьте самими сабими :) “
             </p>
           </div>
           <div className={styles.recommendation_bottom}>
-            <p>А. Загитова</p>
+            <p>А.&nbsp;Загитова</p>
             <svg
+              className={styles.recommendation_bottomSvg}
               xmlns="http://www.w3.org/2000/svg"
-              width="503"
-              height="256"
               viewBox="0 0 503 256"
               fill="none"
             >
@@ -147,7 +161,9 @@ function ZagitovaPage() {
         </div>
       </div>
       <div className={styles.sale}>
-        <div className={styles.sale_productBgi} />
+        {/* <div className={styles.sale_productBgi} /> */}
+
+        <img className={styles.photo} src={zgSale} alt="#Безызбежно" />
         <div className={styles.sale_sizes}>
           <div className={styles.description}>
             <div className={styles.title_box}>
@@ -180,17 +196,19 @@ function ZagitovaPage() {
             <label className={styles.select_label} htmfor="sizeSelect">
               Выберите размер:
             </label>
-            {data[0] && data[0].sizes.map((item) => (
-              <SizeSelection
-                  name={item.name}
-                  type="shop"
-                  qty={item.qty}
-                  size={size}
-                  id={item._id}
-                  key={item._id}
-              />
-            ))}
-            <Button className={styles.button_down}>В корзину &gt;</Button>
+            {products ? (products[0].sizes?.map((item, index) => (
+              <span className={styles.selectionTest} key={index}>
+                <SizeSelection
+              name={item.name}
+              type="shop"
+              qty={item.qty}
+              size={size}
+              id={item._id}
+              key={index}
+                />
+              </span>
+            ))) : <p>Нет в наличии</p>}
+            <Button className={styles.button_down} onClickTo={addToCart}>В корзину &gt;</Button>
           </div>
         </div>
       </div>
@@ -202,7 +220,11 @@ function ZagitovaPage() {
             </Link>
           </li>
           <li>
-            <Link to={{ pathname: 'https://pnhd.ru' }} className={styles.menu_link_footer} target="blank">
+            <Link
+              to={{ pathname: 'https://pnhd.ru' }}
+              className={styles.menu_link_footer}
+              target="blank"
+            >
               Оптовый отдел
             </Link>
           </li>
