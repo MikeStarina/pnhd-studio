@@ -24,7 +24,7 @@ function Cart() {
   const [modalActive, setModalActive] = useState(false);
   const [modalSizeActive, setModalSizeActive] = useState(false);
   const { order } = useSelector((store) => store.cartData);
-
+  // console.log(order);
   const dispatch = useDispatch();
   const allOrderPrice = getAllPrice(order);
 
@@ -247,8 +247,9 @@ function Cart() {
                   }}
                   className={`${styles.link} ${styles.link__name}`}
                   key={index}
+                  disabled={!item.attributes.isForPrinting}
                   >
-                    <button className={styles.addPrintButton_wrap_text}>Добавить принт &gt;</button>
+                    <button className={styles.addPrintButton_wrap_text} disabled={!item.attributes.isForPrinting}>Добавить принт &gt;</button>
                   </Link>
                 </div>
               )}

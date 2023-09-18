@@ -17,6 +17,7 @@ function ProductContent(items) {
   const { order } = useSelector((store) => store.itemReducer);
   const history = useHistory();
   const [size, setSize] = useState('');
+
   const linkSlug = items.slug;
 
   const {

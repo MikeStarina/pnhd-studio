@@ -33,6 +33,8 @@ import PrintingMethod from '../../pages/printing-method/printing-method';
 import TypeOfPrint from '../../pages/type-of-print/type-of-print';
 import PopupCallBack from '../popupCallBack/popupCallBack';
 import ProductCard from '../../pages/ProductCard/ProductCard';
+import ZagitovaPage from '../../pages/friends-page/zagitova-page';
+import { getFriendProduct } from '../../services/actions/friends-actions';
 
 function App() {
   const dispatch = useDispatch();
@@ -81,7 +83,9 @@ function App() {
   useEffect(() => {
     dispatch(getShopData());
   }, []);
-
+  useEffect(() => {
+    dispatch(getFriendProduct('zagitova'));
+  }, []);
   useEffect(() => {
     dispatch({
       type: CLOSE_MODAL_MENU,
@@ -115,11 +119,11 @@ function App() {
           <PopupCallBack />
         </PopupModel>
       )}
-      {mainMenu.isVisible && <MainMenu closeMenu={closeMenu} openPopup={handelOpenPopupHeader} />}
-      {!mainMenu.isVisible && (
+      {(mainMenu.isVisible && location.pathname !== '/zagitova') && <MainMenu closeMenu={closeMenu} openPopup={handelOpenPopupHeader} />}
+      {(!mainMenu.isVisible && location.pathname !== '/zagitova') && (
         <FullscreenMenu openPopup={handelOpenPopupHeader} />
       )}
-      {!mainMenu.isVisible && (
+      {(!mainMenu.isVisible && location.pathname !== '/zagitova') && (
         <BurgerIcon openMenu={openMenu} openPopup={handelOpenPopupHeader} />
       )}
       {order && order.length > 0 && isVisible && (
@@ -187,6 +191,10 @@ function App() {
           <TypeOfPrint method={typeOfPrintData.inscriptions} />
         </Route>
 
+        <Route exact path="/zagitova">
+          <ZagitovaPage />
+        </Route>
+
         <Route exact path="/shop/:id/constructor">
           {useLocation().state ? <Constructor /> : <Redirect to="/shop" />}
         </Route>
@@ -200,7 +208,7 @@ function App() {
           <Page404 />
         </Route>
       </Switch>
-      <Footer />
+      {window.location.pathname !== '/zagitova' ? <Footer /> : null}
     </>
   );
 }
