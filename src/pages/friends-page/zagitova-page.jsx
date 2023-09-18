@@ -1,35 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
 import Button from '../../ui/Button/Button';
 import SizeSelection from '../../components/size-selection/size-selection';
 import styles from './zagitova-page.module.css';
 import zgGallery from '../../components/images/friendsPage/zagitova/zagitova_gallery.png';
 import zgRecomendCircle from '../../components/images/friendsPage/zagitova/zagitova_recomendation.svg';
 import zgSale from '../../components/images/friendsPage/zagitova/zagitova_sale_bgi.png';
-import { getFriendProduct } from '../../services/actions/friends-actions';
 import isSizeFunction from '../../utils/isSizeFunction';
 import addToMemory from '../../utils/addToMemory';
 import { ADD_TO_CART } from '../../services/actions/cart-actions';
 import { openPopup } from '../../services/actions/utility-actions';
+import { closePopup } from '../../services/actions/utility-actions';
+import PopupModel from '../../components/popupModel/popupModel';
+import { addItemSize, deleteItemOrder } from '../../services/actions/item-action';
 
 function ZagitovaPage() {
   const dispatch = useDispatch();
   const history = useHistory();
   const [size, setSize] = useState('');
-  // const { data } = useSelector((store) => store.shopData);
-  // console.log(products);
-  useEffect(() => {
-    dispatch(getFriendProduct('zagitova'));
-  }, []);
-  // поставлено как пример пока не будет сделана коллекция в бд
+  const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
+  const { order } = useSelector((store) => store.itemReducer);
+
   const { products } = useSelector((store) => store.friendData);
-  console.log(products[0]);
+  const uuId = uuidv4();
+  const closePopupConstructor = () => {
+    dispatch(closePopup());
+  };
+
   const addToCart = () => {
-    if (isSizeFunction(products[0].sizes)) {
+    if (isSizeFunction(order)) {
       const variant = 'безызбежно';
       // Создает обьект заказа, для сохранения в сесионой памяти
-      const data = addToMemory(variant, products, products[0], products.uuId, products.front_file, products.front_file_preview, products.back_file, products.back_file_preview, products.lsleeve_file, products.lsleeve_file_preview, products.rsleeve_file, products.rsleeve_file_preview, products.badge_file);
+      const data = addToMemory(variant, products.sizes, products, uuId, products.front_file, products.front_file_preview, products.back_file, products.back_file_preview, products.lsleeve_file, products.lsleeve_file_preview, products.rsleeve_file, products.rsleeve_file_preview, products.badge_file);
 
       dispatch({
         type: ADD_TO_CART,
@@ -41,6 +45,21 @@ function ZagitovaPage() {
       dispatch(openPopup(['Нужно выбрать размер']));
     }
   };
+  useEffect(() => {
+    products?.sizes?.map((el, i) => {
+      dispatch(
+        addItemSize({
+          name: el.name,
+          qty: 0,
+          _id: products._id + i,
+        }),
+      );
+    });
+
+    return () => {
+      dispatch(deleteItemOrder());
+    };
+  }, [products]);
   return (
     <section className={styles.wrap}>
       <div className={styles.header}>
@@ -196,7 +215,7 @@ function ZagitovaPage() {
             <label className={styles.select_label} htmfor="sizeSelect">
               Выберите размер:
             </label>
-            {products ? (products[0].sizes?.map((item, index) => (
+            {products ? (products.sizes?.map((item, index) => (
               <span className={styles.selectionTest} key={index}>
                 <SizeSelection
               name={item.name}
@@ -260,6 +279,15 @@ function ZagitovaPage() {
         </span>
         <p className={styles.footer_merch}>MERCH AGAINST THE MACHINES!</p>
       </div>
+      {isOtherPopupVisible && (
+      <PopupModel onClose={closePopupConstructor}>
+        {isOtherPopupVisible.map((el, index) => (
+          <p className={styles.instruction} key={index}>
+            {el}
+          </p>
+        ))}
+      </PopupModel>
+      )}
     </section>
   );
 }

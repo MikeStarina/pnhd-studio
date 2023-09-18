@@ -73,7 +73,7 @@ function ProductContent(item) {
   const addToConstructor = () => {
     dispatch(openPopup(['Нужно выбрать размер']));
   };
-
+  console.log(order);
   const uuId = uuidv4();
   const addToCart = () => {
     if (isSizeFunction(order)) {

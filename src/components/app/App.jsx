@@ -34,6 +34,7 @@ import TypeOfPrint from '../../pages/type-of-print/type-of-print';
 import PopupCallBack from '../popupCallBack/popupCallBack';
 import ProductCard from '../../pages/ProductCard/ProductCard';
 import ZagitovaPage from '../../pages/friends-page/zagitova-page';
+import { getFriendProduct } from '../../services/actions/friends-actions';
 
 function App() {
   const dispatch = useDispatch();
@@ -82,7 +83,9 @@ function App() {
   useEffect(() => {
     dispatch(getShopData());
   }, []);
-
+  useEffect(() => {
+    dispatch(getFriendProduct('zagitova'));
+  }, []);
   useEffect(() => {
     dispatch({
       type: CLOSE_MODAL_MENU,

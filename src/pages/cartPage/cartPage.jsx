@@ -24,7 +24,7 @@ function Cart() {
   const [modalActive, setModalActive] = useState(false);
   const [modalSizeActive, setModalSizeActive] = useState(false);
   const { order } = useSelector((store) => store.cartData);
-
+  console.log(order);
   const dispatch = useDispatch();
   const allOrderPrice = getAllPrice(order);
 
