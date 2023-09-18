@@ -6,6 +6,7 @@ import { cartDataReducer } from '../reducers/cart-data-reducer.jsx';
 import { userDataReducer } from '../reducers/user-data-reducer.jsx';
 import { shippingReducer } from '../reducers/shipping-reducer.jsx';
 import { itemReducer } from '../reducers/item-reducer.js';
+import { friendReducer } from '../reducers/friends-reducer.jsx';
 
 export const rootReducer = combineReducers({
   utilityState: utilityReducer,
@@ -14,5 +15,6 @@ export const rootReducer = combineReducers({
   cartData: cartDataReducer,
   userData: userDataReducer,
   shippingData: shippingReducer,
+  friendData: friendReducer,
   itemReducer,
 });
