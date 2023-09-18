@@ -160,6 +160,7 @@ function Cart() {
                         size={size}
                         id={item.cart_item_id}
                         key={elem._id}
+                        remain={item.attributes.sizes[index].qty}
                     />
                   ))}
                 </div>
