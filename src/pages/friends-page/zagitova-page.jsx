@@ -15,6 +15,7 @@ import { openPopup } from '../../services/actions/utility-actions';
 import { closePopup } from '../../services/actions/utility-actions';
 import PopupModel from '../../components/popupModel/popupModel';
 import { addItemSize, deleteItemOrder } from '../../services/actions/item-action';
+import Cart from '../cartPage/cartPage';
 
 function ZagitovaPage() {
   const dispatch = useDispatch();
@@ -22,8 +23,22 @@ function ZagitovaPage() {
   const [size, setSize] = useState('');
   const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
   const { order } = useSelector((store) => store.itemReducer);
-
+  const {
+    isBlockButton,
+    isSelected,
+    front_file,
+    front_file_preview,
+    back_file,
+    back_file_preview,
+    lsleeve_file,
+    lsleeve_file_preview,
+    rsleeve_file,
+    rsleeve_file_preview,
+    badge_file,
+    activeView,
+  } = useSelector((store) => store.editorState);
   const { products } = useSelector((store) => store.friendData);
+  // console.log(products);
   const uuId = uuidv4();
   const closePopupConstructor = () => {
     dispatch(closePopup());
@@ -33,19 +48,21 @@ function ZagitovaPage() {
     if (isSizeFunction(order)) {
       const variant = 'безызбежно';
       // Создает обьект заказа, для сохранения в сесионой памяти
-      const data = addToMemory(variant, products.sizes, products, uuId, products.front_file, products.front_file_preview, products.back_file, products.back_file_preview, products.lsleeve_file, products.lsleeve_file_preview, products.rsleeve_file, products.rsleeve_file_preview, products.badge_file);
-
+      const data = addToMemory(variant, order, products, uuId, front_file, front_file_preview, back_file, back_file_preview, lsleeve_file, lsleeve_file_preview, rsleeve_file, rsleeve_file_preview, badge_file);
+      console.log(data);
       dispatch({
         type: ADD_TO_CART,
         payload: { ...data },
       });
 
-      history.goBack();
+      history.push('/cart');
     } else {
       dispatch(openPopup(['Нужно выбрать размер']));
     }
   };
+
   useEffect(() => {
+    console.log(products);
     products?.sizes?.map((el, i) => {
       dispatch(
         addItemSize({
@@ -187,13 +204,10 @@ function ZagitovaPage() {
           <div className={styles.description}>
             <div className={styles.title_box}>
               <h1 className={styles.title}>Футболка #БЕЗЫЗБЕЖНО</h1>
-              <p className={styles.text}>&#8213; 3000 Р.</p>
+              <p className={styles.text}>&#8213; {products?.price} Р.</p>
             </div>
             <p className={styles.text}>
-              Прямая классическая унисекс футболка #БЕЗЫЗБЕЖНО в черном цвете.
-              100% хлопок, плотность 180 грамм на квадратный метр. Универсальный
-              классический крой для удобства выбора размера, спущенная линия
-              плеча и усиленные швы. Сделано в России.
+              {products?.description}
             </p>
             <ul className={styles.box_link}>
               <li className={styles.menu_elem}>
@@ -215,7 +229,7 @@ function ZagitovaPage() {
             <label className={styles.select_label} htmfor="sizeSelect">
               Выберите размер:
             </label>
-            {products ? (products.sizes?.map((item, index) => (
+            {order.length > 0 ? (order.map((item, index) => (
               <span className={styles.selectionTest} key={index}>
                 <SizeSelection
               name={item.name}

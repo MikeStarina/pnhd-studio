@@ -18,7 +18,7 @@ function ProductContent(item) {
   const history = useHistory();
   const [size, setSize] = useState('');
   const linkSlug = item.slug;
-
+  // console.log(item);
   const {
     isBlockButton,
     isSelected,
@@ -73,14 +73,14 @@ function ProductContent(item) {
   const addToConstructor = () => {
     dispatch(openPopup(['Нужно выбрать размер']));
   };
-  console.log(order);
+
   const uuId = uuidv4();
   const addToCart = () => {
     if (isSizeFunction(order)) {
       const variant = 'без принта';
       // Создает обьект заказа, для сохранения в сесионой памяти
       const data = addToMemory(variant, order, item, uuId, front_file, front_file_preview, back_file, back_file_preview, lsleeve_file, lsleeve_file_preview, rsleeve_file, rsleeve_file_preview, badge_file);
-
+      console.log(data);
       dispatch({
         type: ADD_TO_CART,
         payload: { ...data },
