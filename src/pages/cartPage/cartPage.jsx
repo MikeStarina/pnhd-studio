@@ -95,7 +95,7 @@ function Cart() {
           <div className={styles.products} key={index}>
             <div className={styles.productsImage}>
               <Link
-                to={{ pathname: `/shop/${item.attributes.slug}` }}
+                to={!item.attributes.isForPrinting ? { pathname: '/zagitova' } : { pathname: `/shop/${item.attributes.slug}` }}
                 className={styles.link}
                 key={index}
               >
@@ -108,7 +108,7 @@ function Cart() {
             </div>
             <div className={styles.productsInfo}>
               <Link
-                to={{ pathname: `/shop/${item.attributes.slug}` }}
+                to={!item.attributes.isForPrinting ? { pathname: '/zagitova' } : { pathname: `/shop/${item.attributes.slug}` }}
                 className={`${styles.link} ${styles.link__name}`}
                 key={index}
               >
@@ -240,17 +240,18 @@ function Cart() {
               )}
               {arr.length < 4 && (
                 <div className={arr.length === 0 ? `${styles.addPrintButton_wrap} ${styles.addPrintButton_wrapBottom}` : `${styles.addPrintButton_wrap}`}>
-                  <Link
-                  to={{
-                    pathname: `/shop/${item.attributes.slug}/constructor`,
-                    state: { state: item.cart_item_id, from: 'cart' },
-                  }}
-                  className={`${styles.link} ${styles.link__name}`}
-                  key={index}
-                  disabled={!item.attributes.isForPrinting}
-                  >
-                    <button className={styles.addPrintButton_wrap_text} disabled={!item.attributes.isForPrinting}>Добавить принт &gt;</button>
-                  </Link>
+                  {item.attributes.isForPrinting && (
+                    <Link
+                      to={{
+                        pathname: `/shop/${item.attributes.slug}/constructor`,
+                        state: { state: item.cart_item_id, from: 'cart' },
+                      }}
+                      className={`${styles.link} ${styles.link__name}`}
+                      key={index}
+                    >
+                      <button className={styles.addPrintButton_wrap_text} disabled={!item.attributes.isForPrinting}>Добавить принт &gt;</button>
+                    </Link>
+                  )}
                 </div>
               )}
             </div>
