@@ -15,7 +15,8 @@ import { openPopup } from '../../services/actions/utility-actions';
 import { closePopup } from '../../services/actions/utility-actions';
 import PopupModel from '../../components/popupModel/popupModel';
 import { addItemSize, deleteItemOrder } from '../../services/actions/item-action';
-import Cart from '../cartPage/cartPage';
+import Photos from '../../components/Photos/Photos';
+import PhotosMobile from '../../components/PhotosMobile/PhotosMobile';
 
 function ZagitovaPage() {
   const dispatch = useDispatch();
@@ -44,6 +45,23 @@ function ZagitovaPage() {
     dispatch(closePopup());
   };
 
+  function getCurrentDimension() {
+    return {
+      width: window.innerWidth,
+    };
+  }
+
+  const [screenWidth, setScreenWidth] = useState(getCurrentDimension());
+  useEffect(() => {
+    const updateDimension = () => {
+      setScreenWidth(getCurrentDimension());
+    };
+    window.addEventListener('resize', updateDimension);
+    return () => {
+      window.removeEventListener('resize', updateDimension);
+    };
+  }, [screenWidth]);
+
   const addToCart = () => {
     if (isSizeFunction(order)) {
       const variant = 'безызбежно';
@@ -62,7 +80,6 @@ function ZagitovaPage() {
   };
 
   useEffect(() => {
-    console.log(products);
     products?.sizes?.map((el, i) => {
       dispatch(
         addItemSize({
@@ -77,6 +94,7 @@ function ZagitovaPage() {
       dispatch(deleteItemOrder());
     };
   }, [products]);
+
   return (
     <section className={styles.wrap}>
       <div className={styles.header}>
@@ -196,11 +214,9 @@ function ZagitovaPage() {
           </div>
         </div>
       </div>
-      <div className={styles.sale}>
-        {/* <div className={styles.sale_productBgi} /> */}
-
-        <img className={styles.photo} src={zgSale} alt="#Безызбежно" />
-        <div className={styles.sale_sizes}>
+      <section className={styles.section_photos}>
+        {screenWidth.width > 1250 ? <Photos {...products} /> : <PhotosMobile {...products} />}
+        <div className={styles.product_box}>
           <div className={styles.description}>
             <div className={styles.title_box}>
               <h1 className={styles.title}>Футболка #БЕЗЫЗБЕЖНО</h1>
@@ -232,19 +248,21 @@ function ZagitovaPage() {
             {order.length > 0 ? (order.map((item, index) => (
               <span className={styles.selectionTest} key={index}>
                 <SizeSelection
-              name={item.name}
-              type="shop"
-              qty={item.qty}
-              size={size}
-              id={item._id}
-              key={index}
+                  name={item.name}
+                  type="shop"
+                  qty={item.qty}
+                  size={size}
+                  id={item._id}
+                  key={index}
+                  remain={products.sizes[index].qty}
                 />
               </span>
             ))) : <p>Нет в наличии</p>}
             <Button className={styles.button_down} onClickTo={addToCart}>В корзину &gt;</Button>
           </div>
         </div>
-      </div>
+      </section>
+
       <div className={styles.footer}>
         <ul className={styles.footer_links}>
           <li>
