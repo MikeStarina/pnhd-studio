@@ -55,7 +55,7 @@ function ShopGallery() {
               {' '}
               <span className={styles.textStyle_italic}>MAN</span>
             </h5>
-            <Link to="/shop?category=man" className={styles.card_button}>
+            <Link to="/shop?category=Мужское" className={styles.card_button}>
               СМОТРЕТЬ
             </Link>
           </div>
@@ -77,7 +77,7 @@ function ShopGallery() {
                 WOMAN
               </span>
             </h5>
-            <Link to="/shop?category=woman" className={styles.card_button}>
+            <Link to="/shop?category=Женское" className={styles.card_button}>
               СМОТРЕТЬ
             </Link>
           </div>
@@ -98,7 +98,7 @@ function ShopGallery() {
               <span className={styles.textStyle_italic}>??</span>
             </h5>
             <Link
-              to="/shop?category=accesorize"
+              to="/shop?category=Аксессуары"
               className={styles.card_button}
             >
               СМОТРЕТЬ
