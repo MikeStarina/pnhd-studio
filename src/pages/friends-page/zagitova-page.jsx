@@ -19,6 +19,7 @@ import { addItemSize, deleteItemOrder } from '../../services/actions/item-action
 import Photos from '../../components/Photos/Photos';
 import PhotosMobile from '../../components/PhotosMobile/PhotosMobile';
 import { Sign } from '../../components/images/friendsPage/zagitova/Sign';
+import zagitova from '../../components/images/friendsPage/zagitova/zagitova_logo.svg';
 
 function ZagitovaPage() {
   const dispatch = useDispatch();
@@ -69,7 +70,7 @@ function ZagitovaPage() {
       const variant = 'безызбежно';
       // Создает обьект заказа, для сохранения в сесионой памяти
       const data = addToMemory(variant, order, products, uuId, front_file, front_file_preview, back_file, back_file_preview, lsleeve_file, lsleeve_file_preview, rsleeve_file, rsleeve_file_preview, badge_file);
-      console.log(data);
+      //console.log(data);
       dispatch({
         type: ADD_TO_CART,
         payload: { ...data },
@@ -99,6 +100,7 @@ function ZagitovaPage() {
 
   return (
     <section className={styles.wrap}>
+      <img src={zagitova} alt="логотип" className={styles.logo}></img>
       <div className={styles.header}>
         <div className={styles.header_text}>
           <h2>
@@ -258,12 +260,12 @@ function ZagitovaPage() {
 
       <div className={styles.footer}>
         <ul className={styles.footer_links}>
-          <li>
+          <li className={styles.footer_link_item}>
             <Link to="/" className={styles.menu_link_footer}>
               Студия
             </Link>
           </li>
-          <li>
+          <li className={styles.footer_link_item}>
             <Link
               to={{ pathname: 'https://pnhd.ru' }}
               className={styles.menu_link_footer}
@@ -272,22 +274,22 @@ function ZagitovaPage() {
               Оптовый отдел
             </Link>
           </li>
-          <li>
+          <li className={styles.footer_link_item}>
             <Link to="/shop" className={styles.menu_link_footer}>
               Каталог
             </Link>
           </li>
-          <li>
+          <li className={styles.footer_link_item}>
             <Link to="/#contacts" className={styles.menu_link_footer}>
               Контакты
             </Link>
           </li>
-          <li>
+          <li className={styles.footer_link_item}>
             <Link to="/oferta" className={styles.menu_link_footer}>
               Оферта
             </Link>
           </li>
-          <li>
+          <li className={styles.footer_link_item}>
             <Link
               to="/size_chart"
               className={styles.menu_link_footer}
@@ -297,6 +299,7 @@ function ZagitovaPage() {
             </Link>
           </li>
         </ul>
+        <img src={zagitova} alt="лого" className={styles.footer_logo}></img>
         <span className={styles.footer_companyInfo}>
           <p>ООО “ПИНХЭД СТУДИО”</p>
           <p>ИНН: 7810463916</p>

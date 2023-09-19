@@ -1,6 +1,18 @@
 /* .wrap{font-family: 'Neue_machina', Arial, Helvetica, sans-serif;} */
 .wrap {
   max-width: 1536px;
+  position: relative;
+}
+
+.logo {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  width: 50px;
+  z-index: 5;
+}
+.footer_logo {
+  width: 75px;
 }
 
 .header {
@@ -285,7 +297,7 @@
   list-style: none;
   display: flex;
   flex-direction: row;
-  margin: 131px 0 342px;
+  margin: 131px 0 150px;
   padding: 0;
 }
 
@@ -298,6 +310,7 @@
 
 .menu_link_footer {
   text-decoration: none;
+  text-align: center;
   padding-right: 29px;  
   -webkit-text-fill-color: #000000;
   color: #000;
@@ -316,6 +329,7 @@
   font-weight: 400;
   line-height: 15px;
   margin-bottom: 96px;
+  margin-top: 150px;
 }
 
 .footer_merch {
@@ -431,6 +445,19 @@
   .header_text>h2 {
     font-size: 30px;
     line-height: 30px;
+  }
+  .footer_link_item {
+    display: flex;
+    justify-content: center;
+  }
+
+  .menu_link_footer {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
   }
 
   .biography_text>p,
