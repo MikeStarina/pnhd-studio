@@ -99,7 +99,7 @@ function ZagitovaPage() {
 
   return (
     <section className={styles.wrap}>
-      <img src={zagitova} alt="логотип" className={styles.logo}></img>
+      <img src={zagitova} alt="логотип" className={styles.logo} />
       <div className={styles.header}>
         <div className={styles.header_text}>
           <h2>
@@ -298,7 +298,7 @@ function ZagitovaPage() {
             </Link>
           </li>
         </ul>
-        <img src={zagitova} alt="лого" className={styles.footer_logo}></img>
+        <img src={zagitova} alt="лого" className={styles.footer_logo} />
         <span className={styles.footer_companyInfo}>
           <p>ООО “ПИНХЭД СТУДИО”</p>
           <p>ИНН: 7810463916</p>
