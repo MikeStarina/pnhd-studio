@@ -454,7 +454,7 @@
   }
 
   .recommendation_bottom {
-    padding-left: 52px;
+    padding-left: 0;
   }
 
   .photo {
@@ -528,7 +528,7 @@
   }
 
   .button_down {
-    margin: 10px auto 0;
+    margin: 60px auto 0;
   }
 }
 
