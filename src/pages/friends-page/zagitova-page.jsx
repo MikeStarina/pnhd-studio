@@ -70,7 +70,6 @@ function ZagitovaPage() {
       const variant = 'безызбежно';
       // Создает обьект заказа, для сохранения в сесионой памяти
       const data = addToMemory(variant, order, products, uuId, front_file, front_file_preview, back_file, back_file_preview, lsleeve_file, lsleeve_file_preview, rsleeve_file, rsleeve_file_preview, badge_file);
-      //console.log(data);
       dispatch({
         type: ADD_TO_CART,
         payload: { ...data },
