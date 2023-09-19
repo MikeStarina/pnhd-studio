@@ -587,7 +587,7 @@
     background-repeat: no-repeat;
   }
   .recommendation_wrap {
-    padding: 60px 20px;
+    padding: 35px 20px;
   }
   .recommendation_top>img{
     width: 110px;
@@ -604,9 +604,9 @@
     padding-left: 0; 
     padding-top: 16px;
   }
-  .recommendation_bottomSvg {
+  .sign{
     width: 181px;
-    height: 92px;
+    height: 142px;
     margin-right: -20px;
   }
   .sale_sizes {
