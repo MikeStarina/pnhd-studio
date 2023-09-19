@@ -6,6 +6,7 @@ import Button from '../../ui/Button/Button';
 import SizeSelection from '../../components/size-selection/size-selection';
 import styles from './zagitova-page.module.css';
 import zgGallery from '../../components/images/friendsPage/zagitova/zagitova_gallery.png';
+import minSize from '../../components/images/friendsPage/zagitova/minSize.png';
 import zgRecomendCircle from '../../components/images/friendsPage/zagitova/zagitova_recomendation.svg';
 import zgSale from '../../components/images/friendsPage/zagitova/zagitova_sale_bgi.png';
 import isSizeFunction from '../../utils/isSizeFunction';
@@ -157,7 +158,8 @@ function ZagitovaPage() {
         </div>
       </div>
       <div className={styles.gallery}>
-        <img src={zgGallery} alt="Загитова фото" />
+        <img src={zgGallery} className={styles.bigImage} alt="Загитова фото" />
+        <img src={minSize} className={styles.lessImage} alt="Загитова фото" />
       </div>
       <div className={styles.memHistory}>
         <div className={styles.memHistory_wrap}>
