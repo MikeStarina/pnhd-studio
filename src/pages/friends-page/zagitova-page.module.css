@@ -449,6 +449,10 @@
     flex-direction: column;
   }
 
+  .avatar {
+    margin-bottom: 50px;
+  }
+
   .recommendation_wrap {
     padding: 252px 30px 177px 30px;
   }
@@ -586,9 +590,9 @@
     padding: 60px 20px;
   }
   .recommendation_top>img{
-    width: 90px;
-    height: 90px;
-    padding-bottom: 40px;
+    width: 110px;
+    height: 110px;
+    /*padding-bottom: 40px;*/
   }
   .recommendation_top>p{
     padding: 0;
