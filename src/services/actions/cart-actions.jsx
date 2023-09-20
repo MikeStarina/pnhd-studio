@@ -28,6 +28,7 @@ export const createOrder = (
   validPromoCode,
   shippingData,
   userShippingData,
+  shopping_price,
 ) => {
   const data = {
     order_total_price: totalPrice,
@@ -41,7 +42,7 @@ export const createOrder = (
     isShipping: shippingData.isShipping,
     shipping_city: userShippingData.city,
     shipping_point: userShippingData.pvz,
-    shipping_price: Math.ceil(shippingData.shippingTarif.total_sum),
+    shipping_price: shopping_price,
     packages: [],
   };
   order.forEach((order_item) => {
