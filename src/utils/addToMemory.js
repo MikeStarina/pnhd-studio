@@ -18,6 +18,7 @@ const addToMemory = (variant, order, item, uuId, front_file, front_file_preview,
       },
     },
   });
+  console.log(front_file, front_file_preview, back_file, back_file_preview, lsleeve_file, lsleeve_file_preview, rsleeve_file, rsleeve_file_preview, badge_file);
   const data = {
     attributes: { ...item },
     cart_item_id: uuId,
