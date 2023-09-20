@@ -31,7 +31,7 @@ function Footer() {
         <p className={styles.label_info}>ОГРН: 1137847215440</p>
         <div>
           <Link to={{ pathname: 'https://vk.com/pinheadspb' }} className={styles.social_link} target="blank"><Vk className={styles.social} /></Link>
-          <Link to={{ pathname: 'https://t.me/pnhd_studio' }} className={styles.social_link} target="blank"><Telegram className={styles.social} /></Link>
+          <Link to={{ pathname: 'https://t.me/pnhd_studio_bot' }} className={styles.social_link} target="blank"><Telegram className={styles.social} /></Link>
         </div>
       </div>
       <div className={styles.block_sign}>

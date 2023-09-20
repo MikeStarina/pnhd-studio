@@ -257,6 +257,15 @@ function Checkout() {
     });
     return accTotal;
   };
+
+  // Вычисляет доставку с страховкой (0.75%) + эквайринг 3,5% все к стоимости доставки
+  const deliveryTotalCalc = (sumOrder, delivery) => {
+    // Доставка + страховка
+    const deliveryOnly = Math.round(delivery + sumOrder * 0.0075);
+    // + эквайринг
+    return Math.round(deliveryOnly / 0.965);
+  };
+
   const createOrderHandler = () => {
     if (!isUserFormValid) {
       if (!userCartData.isNameValid) {
@@ -323,6 +332,7 @@ function Checkout() {
           validPromoCode,
           shippingData,
           userShippingData,
+          deliveryTotalCalc(orderPrice.price, shippingTarif.total_sum),
         ),
       );
     }
@@ -331,14 +341,14 @@ function Checkout() {
   useEffect(() => {
     getShippingPoints();
     setShippingPrice(
-      shippingTarif.total_sum ? Math.ceil(shippingTarif.total_sum) : 0,
+      shippingTarif.total_sum ? Math.ceil(deliveryTotalCalc(orderPrice.price, shippingTarif.total_sum)) : 0,
     );
   }, [shippingPoints]);
 
   // подтсраховка от "зажевывания" стоимости доставки
   useEffect(() => {
     setShippingPrice(
-      shippingTarif.total_sum ? Math.ceil(shippingTarif.total_sum) : 0,
+      shippingTarif.total_sum ? Math.ceil(deliveryTotalCalc(orderPrice.price, shippingTarif.total_sum)) : 0,
     );
   }, [shippingTarif]);
 
