@@ -38,11 +38,11 @@ function FirstScreen() {
         </span>
         футболках и худи от 15 минут*! Клик, чтобы начать!
       </p>
-      <HashLink className={styles.link} to="/#pricelist">
+      <Link className={styles.link} to="/shop">
         <button type="button" className={styles.button}>
-          ЦЕНЫ
+          КАТАЛОГ
         </button>
-      </HashLink>
+      </Link>
     </section>
   );
 }

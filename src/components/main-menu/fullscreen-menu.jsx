@@ -43,7 +43,7 @@ const fullscreenMenu = ({ openPopup }) => {
           {contactPhone}
         </a>
         <a
-          href="https://t.me/pnhd_studio"
+          href="https://t.me/pnhd_studio_bot"
           className={styles.social_link}
           target="blank"
         >

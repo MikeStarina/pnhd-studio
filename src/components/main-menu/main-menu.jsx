@@ -69,6 +69,13 @@ function MainMenu({ closeMenu, openPopup }) {
           >
             ВК
           </a>
+          <a
+            className={styles.menu_link}
+            href="https://t.me/pnhd_studio_bot"
+            target="blank"
+          >
+            ТЕЛЕГРАМ
+          </a>
         </div>
 
         <div className={styles.wrapper}>

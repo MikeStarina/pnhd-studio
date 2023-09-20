@@ -47,7 +47,7 @@ function MapScreen() {
         <p className={styles.description}>Каждый день с 11:00 до 20:00</p>
         <div className={styles.socials_container}>
           <a
-            href="https://t.me/pnhd_studio"
+            href="https://t.me/pnhd_studio_bot"
             className={styles.socials}
             target="blank"
           >
