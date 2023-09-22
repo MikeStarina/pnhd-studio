@@ -95,7 +95,7 @@ function Cart() {
           <div className={styles.products} key={index}>
             <div className={styles.productsImage}>
               <Link
-                to={!item.attributes.isForPrinting ? { pathname: '/zagitova' } : { pathname: `/shop/${item.attributes.slug}` }}
+                to={item.attributes.name.includes('#Безызбежно') ? { pathname: '/zagitova' } : { pathname: `/shop/${item.attributes.slug}` }}
                 className={styles.link}
                 key={index}
               >
@@ -108,7 +108,7 @@ function Cart() {
             </div>
             <div className={styles.productsInfo}>
               <Link
-                to={!item.attributes.isForPrinting ? { pathname: '/zagitova' } : { pathname: `/shop/${item.attributes.slug}` }}
+                to={item.attributes.name.includes('#Безызбежно') ? { pathname: '/zagitova' } : { pathname: `/shop/${item.attributes.slug}` }}
                 className={`${styles.link} ${styles.link__name}`}
                 key={index}
               >

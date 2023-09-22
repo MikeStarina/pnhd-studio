@@ -40,10 +40,12 @@
 
 .biography {
   background-color: #C0B8AD;
-  padding: 226px 30px 245px 216px;
+  /*padding: 226px 30px 245px 216px;*/
+  padding: 226px 0 245px;
 }
 
 .biography_text {
+  margin: 0 auto;
   max-width: 1023px;
 }
 
@@ -87,11 +89,13 @@
 .memHistory {
   background-color: #000;
   color: #C0B8AD;
+  padding: 235px 0 229px;
 }
 
 .memHistory_wrap {
   max-width: 935px;
-  padding: 235px 30px 229px 216px;
+  margin: 0 auto;
+  /*padding: 235px 30px 229px 216px;*/
 }
 
 .memHistory_wrap>h2 {
@@ -368,6 +372,18 @@
     margin-left: 60px;
   }
 
+  .biography {
+    padding: 226px 150px 245px;
+  }
+
+  .memHistory {
+    padding: 235px 150px 229px;
+  }
+
+  /*.memHistory_wrap {*/
+  /*  padding: 235px 150px 229px;*/
+  /*}*/
+
   .description {
     /*padding: 0 10px 100px;*/
     max-width: 400px;
@@ -379,6 +395,14 @@
     margin: 0 auto;
     padding-top: 10px;
     width: 100%;
+  }
+
+  .biography {
+    padding: 226px 100px 245px;
+  }
+
+  .memHistory {
+    padding: 235px 100px 229px;
   }
 
   .section_photos {
@@ -399,11 +423,7 @@
     padding: 406px 0 290px 104px;
   }
 
-  .biography {
-    padding: 226px 30px 245px;
-  }
-
-  .memHistory_wrap {
+  .memHistory {
     padding: 235px 30px 229px;
   }
 
@@ -421,6 +441,14 @@
 }
 
 @media(max-width:1000px) {
+  .biography {
+    padding: 226px 100px 245px;
+  }
+
+  .memHistory {
+    padding: 235px 100px 229px;
+  }
+
   .sale {
     flex-direction: column;
     align-items: center;
@@ -431,6 +459,14 @@
 @media(max-width:750px) {
   .header {
     background-image: url('../../components/images/friendsPage/zagitova/zagitova_main_bgi_second.png');
+  }
+
+  .biography {
+    padding: 226px 60px 245px;
+  }
+
+  .memHistory {
+    padding: 235px 60px 229px;
   }
 
   .memImage {
@@ -446,9 +482,18 @@
     font-size: 30px;
     line-height: 30px;
   }
+
+  .biography {
+    padding: 226px 30px 245px;
+  }
+
   .footer_link_item {
     display: flex;
     justify-content: center;
+  }
+
+  .memHistory {
+    padding: 235px 30px 229px;
   }
 
   .menu_link_footer {
@@ -596,9 +641,12 @@
     font-size: 12px;
   }
 
+  .memHistory {
+    padding: 60px 20px;
+  }
+
   .memHistory_wrap {
     max-width: 935px;
-    padding: 60px 20px;
   }
   
   .memHistory_wrap>h2 {
