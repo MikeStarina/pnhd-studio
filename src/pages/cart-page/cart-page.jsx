@@ -88,13 +88,11 @@ function CartPage() {
   const dispatch = useDispatch();
   const debouncedSearchTerm = useDebounce(listCities, 500);
   const getShippingPoints = () => {
-    const arr = shippingPoints.map((item) => {
-      return {
-        name: item.name,
-        coordinates: [item.location.latitude, item.location.longitude],
-        color: '#1E98FF',
-      };
-    });
+    const arr = shippingPoints.map((item) => ({
+      name: item.name,
+      coordinates: [item.location.latitude, item.location.longitude],
+      color: '#1E98FF',
+    }));
     setMapPoints(arr);
   };
 
@@ -222,10 +220,7 @@ function CartPage() {
     let accTotal = 0;
     order.map((el) => {
       if (el.cart_item_id === id) {
-        return el.attributes.size.reduce((total, element) => {
-          // console.log(total, element.qty, '<el');
-          return (accTotal = total + element.qty);
-        }, 0);
+        return el.attributes.size.reduce((total, element) => (accTotal = total + element.qty), 0);
       }
       return accTotal;
     });
@@ -481,56 +476,55 @@ function CartPage() {
       </div>
 
       <ul className={styles.cart_container}>
-        {order && order.map((item) => {
-          return (
-            <li className={styles.cart_item} key={item.cart_item_id}>
-              <button
+        {order && order.map((item) => (
+          <li className={styles.cart_item} key={item.cart_item_id}>
+            <button
                 type="button"
                 className={styles.delete_item_from_cart}
                 id={item.cart_item_id}
                 onClick={deleteItemFromCart}
-              >
-                x
-              </button>
-              <div className={styles.textile_description}>
-                <div className={styles.desc_box}>
-                  <img
+            >
+              x
+            </button>
+            <div className={styles.textile_description}>
+              <div className={styles.desc_box}>
+                <img
                     src={`${apiBaseUrl}${item.attributes.image_url}`}
                     alt="item pic"
                     className={styles.item_img}
-                  />
-                  <div className={styles.text_wrapper}>
-                    <h3 className={styles.title}>{item.attributes.name}</h3>
-                    <p className={styles.description} />
-                    <div className={styles.qty_input_wrapper}>
-                      <label
+                />
+                <div className={styles.text_wrapper}>
+                  <h3 className={styles.title}>{item.attributes.name}</h3>
+                  <p className={styles.description} />
+                  <div className={styles.qty_input_wrapper}>
+                    <label
                         htmfor={item.cart_item_id}
                         className={styles.description}
-                      />
-                      {item.attributes.size ? (
-                        item.attributes.size.map((el, i) => (
-                          <SizeSelection
+                    />
+                    {item.attributes.size ? (
+                      item.attributes.size.map((el, i) => (
+                        <SizeSelection
                               name={el.name}
                               qty={el.qty}
                               id={item.cart_item_id}
                               key={item.cart_item_id + i}
-                          />
-                        ))
-                      ) : (
-                        <option>Нет в наличии</option>
-                      )}
-                    </div>
+                        />
+                      ))
+                    ) : (
+                      <option>Нет в наличии</option>
+                    )}
                   </div>
                 </div>
-                <p className={styles.price}>
-                  =
-                  {' '}
-                  {item.attributes.price * oneItemTotalValue(item.cart_item_id)}
-                  {' '}
-                  P.
-                </p>
               </div>
-              {item.print && item.print.front.file && (
+              <p className={styles.price}>
+                =
+                {' '}
+                {item.attributes.price * oneItemTotalValue(item.cart_item_id)}
+                {' '}
+                P.
+              </p>
+            </div>
+            {item.print && item.print.front.file && (
               <ItemPrint
                 print={item.print.front_preview.preview}
                 params={item.print.front}
@@ -539,8 +533,8 @@ function CartPage() {
                 print_id="front_print"
                 item_id={item.cart_item_id}
               />
-              )}
-              {item.print && item.print.back.file && (
+            )}
+            {item.print && item.print.back.file && (
               <ItemPrint
                 print={item.print.back_preview.preview}
                 params={item.print.back}
@@ -549,8 +543,8 @@ function CartPage() {
                 print_id="back_print"
                 item_id={item.cart_item_id}
               />
-              )}
-              {item.print && item.print.lsleeve.file && (
+            )}
+            {item.print && item.print.lsleeve.file && (
               <ItemPrint
                 print={item.print.lsleeve_preview.preview}
                 params={item.print.lsleeve}
@@ -559,8 +553,8 @@ function CartPage() {
                 print_id="lsleeve_print"
                 item_id={item.cart_item_id}
               />
-              )}
-              {item.print && item.print.rsleeve.file && (
+            )}
+            {item.print && item.print.rsleeve.file && (
               <ItemPrint
                 print={item.print.rsleeve_preview.preview}
                 params={item.print.rsleeve}
@@ -569,10 +563,9 @@ function CartPage() {
                 print_id="rsleeve_print"
                 item_id={item.cart_item_id}
               />
-              )}
-            </li>
-          );
-        })}
+            )}
+          </li>
+        ))}
       </ul>
       <div className={styles.checkout_container}>
         <div className={styles.form_wrapper}>
@@ -707,9 +700,8 @@ function CartPage() {
                   debounceCities.length > 0 && (
                     <div className={styles.cities_wrap}>
                       <ul className={styles.cities_list}>
-                        {debounceCities.map((item, index) => {
-                          return (
-                            <li
+                        {debounceCities.map((item, index) => (
+                          <li
                               key={index}
                               onClick={() => {
                                 if (item.latitude) {
@@ -736,13 +728,12 @@ function CartPage() {
                                 );
                               }}
                               className={styles.cities_listItem}
-                            >
-                              {item.city}
-                              ,
-                              {item.region}
-                            </li>
-                          );
-                        })}
+                          >
+                            {item.city}
+                            ,
+                            {item.region}
+                          </li>
+                        ))}
                       </ul>
                     </div>
                   )

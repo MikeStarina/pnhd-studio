@@ -8,45 +8,39 @@ function PrintingFaq(data) {
   return (
     <section className={styles.screen}>
       <h3 className={styles.heading}>{title}</h3>
-      {variants.map((item, index) => {
-        return (
-          <div className={styles.block_wrapper} key={index}>
-            <img
+      {variants.map((item, index) => (
+        <div className={styles.block_wrapper} key={index}>
+          <img
               src={circle50px}
               className={styles.screen_circle}
               alt="circle"
-            />
-            <div className={styles.text_wrapper}>
-              <h4 className={styles.screen_heading}>{item.screen_heading}</h4>
-              {Array.isArray(item.screen_description) ? (
-                item.screen_description.map((item, index) => {
-                  return (
-                    <p
+          />
+          <div className={styles.text_wrapper}>
+            <h4 className={styles.screen_heading}>{item.screen_heading}</h4>
+            {Array.isArray(item.screen_description) ? (
+              item.screen_description.map((item, index) => (
+                <p
                       className={`${styles.screen_description} ${styles.screen_description_bottom}`}
                       key={index}
-                    >
-                      {item}
-                    </p>
-                  );
-                })
-              ) : (
-                <p className={styles.screen_description}>
-                  {item.screen_description}
+                >
+                  {item}
                 </p>
-              )}
-            </div>
+              ))
+            ) : (
+              <p className={styles.screen_description}>
+                {item.screen_description}
+              </p>
+            )}
           </div>
-        );
-      })}
+        </div>
+      ))}
       {Array.isArray(description) && (
         <>
-          {description.map((item, index) => {
-            return (
-              <div className={styles.block_wrapper} key={index}>
-                <p className={styles.bottom_description}>{item}</p>
-              </div>
-            );
-          })}
+          {description.map((item, index) => (
+            <div className={styles.block_wrapper} key={index}>
+              <p className={styles.bottom_description}>{item}</p>
+            </div>
+          ))}
         </>
       )}
       {(!Array.isArray(description) && description.length) > 3 && (

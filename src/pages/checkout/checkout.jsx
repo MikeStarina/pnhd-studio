@@ -130,13 +130,11 @@ function Checkout() {
   };
 
   const getShippingPoints = () => {
-    const arr = shippingPoints.map((item) => {
-      return {
-        name: item.name,
-        coordinates: [item.location.latitude, item.location.longitude],
-        color: '#1E98FF',
-      };
-    });
+    const arr = shippingPoints.map((item) => ({
+      name: item.name,
+      coordinates: [item.location.latitude, item.location.longitude],
+      color: '#1E98FF',
+    }));
     setMapPoints(arr);
   };
 
@@ -249,9 +247,7 @@ function Checkout() {
     let accTotal = 0;
     order.map((el) => {
       if (el.cart_item_id === id) {
-        return el.attributes.size.reduce((total, element) => {
-          return (accTotal = total + element.qty);
-        }, 0);
+        return el.attributes.size.reduce((total, element) => (accTotal = total + element.qty), 0);
       }
       return accTotal;
     });
@@ -534,9 +530,8 @@ function Checkout() {
                   debounceCities.length > 0 && (
                     <div className={styles.cities_wrap}>
                       <ul className={styles.cities_list}>
-                        {debounceCities.map((item, index) => {
-                          return (
-                            <li
+                        {debounceCities.map((item, index) => (
+                          <li
                               key={index}
                               onClick={() => {
                                 if (item.latitude) {
@@ -563,11 +558,10 @@ function Checkout() {
                                 );
                               }}
                               className={styles.cities_listItem}
-                            >
-                              {item.city},{item.region}
-                            </li>
-                          );
-                        })}
+                          >
+                            {item.city},{item.region}
+                          </li>
+                        ))}
                       </ul>
                     </div>
                   )
