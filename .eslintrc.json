@@ -68,7 +68,7 @@
     "func-names": "off", // From here and below is correct rules !!!
     "react/jsx-props-no-spreading": "off",
     "prettier/prettier": "off",
-    "arrow-body-style": "off",
+    "arrow-body-style": ["error", "as-needed"],//в работе
     "prefer-arrow-callback": "off",
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
   }

@@ -49,13 +49,11 @@ function Accordion() {
               }
             >
               {Array.isArray(item.content) ? (
-                item.content.map((item, index) => {
-                  return (
-                    <p key={index} className={styles.accordion_contentText}>
-                      {item.item}
-                    </p>
-                  );
-                })
+                item.content.map((item, index) => (
+                  <p key={index} className={styles.accordion_contentText}>
+                    {item.item}
+                  </p>
+                ))
               ) : (
                 <p className={styles.accordion_contentText}>{item.content}</p>
               )}

@@ -38,12 +38,10 @@ export const itemReducer = (state = initialState, action) => {
     case CLEAR_ITEM_ORDER: {
       return {
         ...state,
-        order: state.order.map((item) => {
-          return {
-            ...item,
-            qty: 0,
-          };
-        }),
+        order: state.order.map((item) => ({
+          ...item,
+          qty: 0,
+        })),
       };
     }
 
