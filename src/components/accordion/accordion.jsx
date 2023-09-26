@@ -13,7 +13,6 @@ function Accordion() {
 
     setIsActive(index);
   };
-
   return (
     <section className={styles.wrapper}>
       <div className={styles.accordion}>
