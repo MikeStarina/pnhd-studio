@@ -23,9 +23,6 @@ function BurgerIcon({ openMenu, openPopup }) {
       >
         / WA
       </a>
-      <button className={styles.button} onClick={openPopup}>
-        / ПЕРЕЗВОНИТЬ?
-      </button>
       <img
         src={burger}
         alt="main menu"
