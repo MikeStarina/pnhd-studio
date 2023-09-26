@@ -71,11 +71,6 @@ function CaseGallery() {
             TELEGRAM
           </button>
         </a>
-        <a href="whatsapp://send?phone=79313566552" target="blank">
-          <button type="button" className={styles.link_button}>
-            WHATSAPP
-          </button>
-        </a>
       </div>
     </>
   );
