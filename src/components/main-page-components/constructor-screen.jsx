@@ -7,7 +7,7 @@ function ConstructorScreen() {
     <section className={styles.screen}>
       <h5 className={styles.heading}>
         А КАК
-        <span className={styles.textStyle_italic}>ПЕЧАТАЕТЕ?</span>
+        <span className={styles.textStyle_italic}> ПЕЧАТАЕТЕ?</span>
       </h5>
     </section>
   );

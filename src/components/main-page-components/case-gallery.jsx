@@ -6,6 +6,7 @@ import sample2 from '../images/sample2.webp';
 import sample3 from '../images/sample3.webp';
 import sample4 from '../images/sample4.webp';
 import sample5 from '../images/sample5.webp';
+import { telegram, vkontakte } from '../../utils/constants';
 
 function CaseGallery() {
   return (
@@ -60,12 +61,12 @@ function CaseGallery() {
             INSTAGRAM
           </button>
         </a>
-        <a href="https://vk.com/pinheadspb" target="blank">
+        <a href={vkontakte} target="blank">
           <button type="button" className={styles.link_button}>
             VK
           </button>
         </a>
-        <a href="https://t.me/pnhd_studio" target="blank">
+        <a href={telegram} target="blank">
           <button type="button" className={styles.link_button}>
             TELEGRAM
           </button>

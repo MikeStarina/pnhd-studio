@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import styles from './map-screen.module.css';
 // import { YMaps, Map, Placemark, ZoomControl } from '@pbe/react-yandex-maps';
 import { contactPhone } from '../../utils/constants';
+import { telegram, vkontakte } from '../../utils/constants';
 
 const YMaps = lazy(() => import('@pbe/react-yandex-maps').then(({ YMaps }) => ({ default: YMaps })));
 const Map = lazy(() => import('@pbe/react-yandex-maps').then(({ Map }) => ({ default: Map })));
@@ -47,14 +48,14 @@ function MapScreen() {
         <p className={styles.description}>Каждый день с 11:00 до 20:00</p>
         <div className={styles.socials_container}>
           <a
-            href="https://t.me/pnhd_studio_bot"
+            href={telegram}
             className={styles.socials}
             target="blank"
           >
             / TG
           </a>
           <a
-            href="https://vk.com/pinheadspb"
+            href={vkontakte}
             className={styles.socials}
             target="blank"
           >
