@@ -29,7 +29,7 @@
     align-items: center;
     cursor: pointer;
     text-transform: uppercase;
-    font-size: 40px;
+    font-size: 20px;
     font-weight: 400;
     line-height: 41px;
     letter-spacing: 0em;
@@ -37,7 +37,7 @@
 }
 
 .accordion_content {
-    font-size: 20px;
+    font-size: 16px;
     max-height: 0;
     overflow: hidden;
     transition: all 0.5s cubic-bezier(0, 1, 0, 1);
@@ -61,12 +61,12 @@
 
 .accordion_gtRight {
     width: 45px;
-    margin-left: -6px;
+    margin-left: -2px;
 }
 
 .accordion_text {
     position: absolute;
-    font-size: 40px;
+    font-size: 20px;
     font-weight: 400;
     left: 100px;
 }
@@ -82,7 +82,7 @@
     }
 
     .accordion_content {
-        font-size: 15px;
+        font-size: 10px;
     }
 
     .accordion_mainText {
@@ -98,6 +98,6 @@
     }
 
     .accordion_text {
-        font-size: 20px;
+        font-size: 14px;
     }
 }

@@ -4,6 +4,7 @@ import { HashLink } from 'react-router-hash-link';
 import { contactPhone } from '../../utils/constants';
 import styles from './fullscreen-menu.module.css';
 import Button from '../../ui/Button/Button';
+import { telegram, vkontakte } from '../../utils/constants';
 
 const fullscreenMenu = ({ openPopup }) => {
   return (
@@ -43,14 +44,14 @@ const fullscreenMenu = ({ openPopup }) => {
           {contactPhone}
         </a>
         <a
-          href="https://t.me/pnhd_studio"
+          href={telegram}
           className={styles.social_link}
           target="blank"
         >
           / TG
         </a>
         <a
-          href="https://vk.com/pinheadspb"
+          href={vkontakte}
           className={styles.social_link}
           target="blank"
         >
@@ -63,9 +64,6 @@ const fullscreenMenu = ({ openPopup }) => {
         >
           / INST
         </a>
-        <Button onClickTo={openPopup} type="transparent">
-          ПЕРЕЗВОНИТЬ?
-        </Button>
       </div>
     </header>
   );

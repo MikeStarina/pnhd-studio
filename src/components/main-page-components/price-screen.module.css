@@ -22,7 +22,7 @@
 .description {
     padding: 0;
     margin: 0 0 60px 0;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 20px;
     font-weight: 500;
     max-width: 600px;
@@ -47,7 +47,7 @@
     background-color: transparent;
     color: black;
     font-family: inherit;
-    font-size: 30px;
+    font-size: 20px;
     line-height: 30px;
     font-weight: 600;
     margin: 0;
@@ -66,7 +66,7 @@
     background-color: transparent;
     color: black;
     font-family: inherit;
-    font-size: 30px;
+    font-size: 20px;
     line-height: 30px;
     font-weight: 600;
     margin: 0;
@@ -148,14 +148,14 @@
     }
 
     .button {
-        font-size: 15px;
+        font-size: 20px;
         line-height: 15px;
         font-weight: 600;
         height: 30px;
     }
 
     .button_active {
-        font-size: 15px;
+        font-size: 20px;
         line-height: 15px;
         font-weight: 600;
         height: 30px;
@@ -169,7 +169,7 @@
     }
 
     .description {
-        font-size: 15px;
+        font-size: 10px;
         line-height: 15px;
     }
 

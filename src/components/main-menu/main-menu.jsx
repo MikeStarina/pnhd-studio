@@ -1,11 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { HashLink } from 'react-router-hash-link';
 import styles from './main-menu.module.css';
 import closeIcon from '../images/closeIcon.svg';
-import { contactPhone } from '../../utils/constants';
-import Button from '../../ui/Button/Button';
 
 function MainMenu({ closeMenu, openPopup }) {
   const clickOnEmptyHandler = (e) => {
@@ -69,6 +66,13 @@ function MainMenu({ closeMenu, openPopup }) {
           >
             ВК
           </a>
+          <a
+            className={styles.menu_link}
+            href="https://t.me/pnhd_studio_bot"
+            target="blank"
+          >
+            ТЕЛЕГРАМ
+          </a>
         </div>
 
         <div className={styles.wrapper}>
@@ -80,9 +84,6 @@ function MainMenu({ closeMenu, openPopup }) {
             КОНТАКТЫ
           </HashLink>
         </div>
-        <Button onClickTo={openPopup} type="callback" className={styles.button_call}>
-          ПЕРЕЗВОНИТЬ?
-        </Button>
       </div>
       <script src="//cdn.callibri.ru/callibri.js" async id="calltr" />
     </div>
