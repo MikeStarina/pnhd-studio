@@ -44,7 +44,7 @@ function ConstructorText(props) {
         });
       } else {
         dispatch(textCostZero(activeView));
-        onCloseText(initialImageCoords, initialFilterCoords)
+        onCloseText(initialImageCoords, initialFilterCoords);
       }
     }
     if (!dropdownVisibleText && (initialText && !initialText.openText)) {
