@@ -64,11 +64,11 @@
     "react/no-unknown-property": "off",
     "react/destructuring-assignment": "off",
     "consistent-return": "off",
-    "react/no-array-index-key": "off",
+    // "react/no-array-index-key": "off",
     "func-names": "off", // From here and below is correct rules !!!
     "react/jsx-props-no-spreading": "off",
     "prettier/prettier": "off",
-    "arrow-body-style": ["error", "as-needed"],//в работе
+    "arrow-body-style": "off",
     "prefer-arrow-callback": "off",
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
   }
