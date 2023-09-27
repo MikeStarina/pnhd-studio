@@ -11,7 +11,7 @@ import {
 import {
   CLOSE_MODAL_MENU,
   closePopup,
-} from '../../services/actions/utility-actions.jsx';
+} from '../../services/actions/utility-actions';
 import styles from './shop-page.module.css';
 import CardsBlock from '../../components/shop-page-components/cards-block';
 import PopupModel from '../../components/popupModel/popupModel';

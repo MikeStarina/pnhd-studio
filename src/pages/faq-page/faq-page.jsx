@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { CLOSE_MODAL_MENU } from '../../services/actions/utility-actions.jsx';
-// import styles from './faq-page.module.css';
+import { CLOSE_MODAL_MENU } from '../../services/actions/utility-actions';
 
 function FaqPage() {
   const dispatch = useDispatch();

@@ -5,7 +5,10 @@ import { v4 as uuidv4 } from 'uuid';
 import styles from './ProductContent.module.css';
 import SizeSelection from '../size-selection/size-selection';
 import Button from '../../ui/Button/Button';
-import { addItemSize, deleteItemOrder } from '../../services/actions/item-action';
+import {
+  addItemSize,
+  deleteItemOrder,
+} from '../../services/actions/item-action';
 import { openPopup } from '../../services/actions/utility-actions';
 import isSizeFunction from '../../utils/isSizeFunction';
 import { ADD_TO_CART } from '../../services/actions/cart-actions';
@@ -80,7 +83,21 @@ function ProductContent(items) {
     if (isSizeFunction(order)) {
       const variant = 'без принта';
       // Создает обьект заказа, для сохранения в сесионой памяти
-      const data = addToMemory(variant, order, items, uuId, front_file, front_file_preview, back_file, back_file_preview, lsleeve_file, lsleeve_file_preview, rsleeve_file, rsleeve_file_preview, badge_file);
+      const data = addToMemory(
+        variant,
+        order,
+        items,
+        uuId,
+        front_file,
+        front_file_preview,
+        back_file,
+        back_file_preview,
+        lsleeve_file,
+        lsleeve_file_preview,
+        rsleeve_file,
+        rsleeve_file_preview,
+        badge_file,
+      );
 
       dispatch({
         type: ADD_TO_CART,
@@ -99,9 +116,7 @@ function ProductContent(items) {
           <h1 className={styles.title}>{items.name}</h1>
           <p className={styles.text}>&#8213; {items.price} P.</p>
         </div>
-        <p className={styles.text}>
-          {items.description}
-        </p>
+        <p className={styles.text}>{items.description}</p>
         <ul className={styles.box_link}>
           <li className={styles.menu_elem}>
             <Link to="/size_chart" className={styles.menu_link} target="blank">
@@ -133,27 +148,32 @@ function ProductContent(items) {
         ) : (
           <option>Нет в наличии</option>
         )}
-        {items.isForPrinting && !items.isSale && items.sizes.length > 0 && (isSizeFunction(order) ? (
-          <Link
-            to={{
-              pathname: `/shop/${linkSlug}/constructor`,
-              // state: { state: uuId, from: 'product' },
-              state: { size: order, from: 'product' },
-            }}
-            // onClick={addToPrint}
-          >
-            <Button className={styles.button_up}>
+        {items.isForPrinting &&
+          !items.isSale &&
+          items.sizes.length > 0 &&
+          (isSizeFunction(order) ? (
+            <Link
+              to={{
+                pathname: `/shop/${linkSlug}/constructor`,
+                // state: { state: uuId, from: 'product' },
+                state: { size: order, from: 'product' },
+              }}
+              // onClick={addToPrint}
+            >
+              <Button className={styles.button_up}>Добавить принт &gt;</Button>
+            </Link>
+          ) : (
+            <Button onClickTo={addToConstructor} className={styles.button_up}>
               Добавить принт &gt;
             </Button>
-          </Link>
-        ) : (
-          <Button onClickTo={addToConstructor} className={styles.button_up}>
-            Добавить принт &gt;
-          </Button>
-        ))}
+          ))}
         <Button
           onClickTo={addToCart}
-          className={items.isForPrinting ? `${styles.button_down}` : `${styles.button_up}`}
+          className={
+            items.isForPrinting
+              ? `${styles.button_down}`
+              : `${styles.button_up}`
+          }
         >
           В корзину &gt;
         </Button>

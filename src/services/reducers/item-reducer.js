@@ -12,7 +12,7 @@ const initialState = {
   isSize: false,
 };
 
-export const itemReducer = (state = initialState, action) => {
+const itemReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_ITEM_SIZE: {
       return {
@@ -68,3 +68,5 @@ export const itemReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+export default itemReducer;

@@ -2,10 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import styles from './footer.module.css';
-import { PayCardsLabel } from '../../ui/icons/pay-cards-label';
-import { Vk } from '../../ui/icons/vk';
-import { Telegram } from '../../ui/icons/telegram';
-import { footerData } from '../../data/footer/data';
+import PayCardsLabel from '../../ui/icons/pay-cards-label';
+import Vk from '../../ui/icons/vk';
+import Telegram from '../../ui/icons/telegram';
+import footerData from '../../data/footer/data';
 import { telegram, vkontakte } from '../../utils/constants';
 
 function Footer() {

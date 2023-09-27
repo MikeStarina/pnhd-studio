@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { CLOSE_MODAL_MENU } from '../../services/actions/utility-actions.jsx';
+import { CLOSE_MODAL_MENU } from '../../services/actions/utility-actions';
 import styles from './main-page.module.css';
-import FirstScreen from '../../components/main-page-components/first-screen.jsx';
-import FaqScreen from '../../components/main-page-components/faq-screen.jsx';
-import ThirdScreen from '../../components/main-page-components/third-screen.jsx';
-import CaseGallery from '../../components/main-page-components/case-gallery.jsx';
-import ConstructorScreen from '../../components/main-page-components/constructor-screen.jsx';
-import MethodsGallery from '../../components/main-page-components/methods-gallery.jsx';
-import ShopGallery from '../../components/main-page-components/shop-gallery.jsx';
-import PriceScreen from '../../components/main-page-components/price-screen.jsx';
-import FeedbackScreen from '../../components/main-page-components/feedback-screen.jsx';
-import MapScreen from '../../components/main-page-components/map-screen.jsx';
-import Accordion from '../../components/accordion/accordion.jsx';
+import FirstScreen from '../../components/main-page-components/first-screen';
+import FaqScreen from '../../components/main-page-components/faq-screen';
+import ThirdScreen from '../../components/main-page-components/third-screen';
+import CaseGallery from '../../components/main-page-components/case-gallery';
+import ConstructorScreen from '../../components/main-page-components/constructor-screen';
+import MethodsGallery from '../../components/main-page-components/methods-gallery';
+import ShopGallery from '../../components/main-page-components/shop-gallery';
+import PriceScreen from '../../components/main-page-components/price-screen';
+import FeedbackScreen from '../../components/main-page-components/feedback-screen';
+import MapScreen from '../../components/main-page-components/map-screen';
+import Accordion from '../../components/accordion/accordion';
 
 function MainPage() {
   const dispatch = useDispatch();

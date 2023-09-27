@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './accordion.module.css';
-import { accordionData } from '../../data/accordion/accordionData';
+import accordionData from '../../data/accordion/accordionData';
 
 function Accordion() {
   const gt = '\u{003E}';
@@ -10,9 +10,9 @@ function Accordion() {
     if (isActive === index) {
       return setIsActive(null);
     }
-
     setIsActive(index);
   };
+
   return (
     <section className={styles.wrapper}>
       <div className={styles.accordion}>

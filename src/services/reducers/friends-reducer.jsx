@@ -5,12 +5,18 @@ export const initialState = {
   products: null,
 };
 
-export const friendReducer = (state = initialState, action) => {
+const friendReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_FRIEND_PRODUCT: {
-      return { ...state, data: action.payload.data, products: { ...action.payload.data.products[0] } };
+      return {
+        ...state,
+        data: action.payload.data,
+        products: { ...action.payload.data.products[0] },
+      };
     }
     default:
       return state;
   }
 };
+
+export default friendReducer;

@@ -1,4 +1,4 @@
-export const footerData = [
+const footerData = [
   {
     name: 'Клиентам',
     styles: 'customer',
@@ -109,3 +109,5 @@ export const footerData = [
     ],
   },
 ];
+
+export default footerData;

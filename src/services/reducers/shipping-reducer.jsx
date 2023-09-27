@@ -15,7 +15,7 @@ export const initialState = {
   },
 };
 
-export const shippingReducer = (state = initialState, action) => {
+const shippingReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_SDEK_CITIES: {
       return {
@@ -74,3 +74,5 @@ export const shippingReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+export default shippingReducer;

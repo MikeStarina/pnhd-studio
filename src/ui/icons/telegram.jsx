@@ -1,4 +1,4 @@
-export function Telegram({ ...props }) {
+function Telegram({ ...props }) {
   return (
     <svg
       width="18"
@@ -15,3 +15,5 @@ export function Telegram({ ...props }) {
     </svg>
   );
 }
+
+export default Telegram;

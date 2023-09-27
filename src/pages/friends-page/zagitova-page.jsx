@@ -15,10 +15,13 @@ import { ADD_TO_CART } from '../../services/actions/cart-actions';
 import { openPopup } from '../../services/actions/utility-actions';
 import { closePopup } from '../../services/actions/utility-actions';
 import PopupModel from '../../components/popupModel/popupModel';
-import { addItemSize, deleteItemOrder } from '../../services/actions/item-action';
+import {
+  addItemSize,
+  deleteItemOrder,
+} from '../../services/actions/item-action';
 import Photos from '../../components/Photos/Photos';
 import PhotosMobile from '../../components/PhotosMobile/PhotosMobile';
-import { Sign } from '../../components/images/friendsPage/zagitova/Sign';
+import Sign from '../../components/images/friendsPage/zagitova/Sign';
 import zagitova from '../../components/images/friendsPage/zagitova/zagitova_logo.svg';
 
 function ZagitovaPage() {
@@ -69,7 +72,21 @@ function ZagitovaPage() {
     if (isSizeFunction(order)) {
       const variant = 'безызбежно';
       // Создает обьект заказа, для сохранения в сесионой памяти
-      const data = addToMemory(variant, order, products, uuId, front_file, front_file_preview, back_file, back_file_preview, lsleeve_file, lsleeve_file_preview, rsleeve_file, rsleeve_file_preview, badge_file);
+      const data = addToMemory(
+        variant,
+        order,
+        products,
+        uuId,
+        front_file,
+        front_file_preview,
+        back_file,
+        back_file_preview,
+        lsleeve_file,
+        lsleeve_file_preview,
+        rsleeve_file,
+        rsleeve_file_preview,
+        badge_file,
+      );
       dispatch({
         type: ADD_TO_CART,
         payload: { ...data },
@@ -119,21 +136,22 @@ function ZagitovaPage() {
       <div className={styles.biography}>
         <div className={styles.biography_text}>
           <p>
-            Алина Загитова родилась в 2002 году в Ижевске.
-            С раннего детства она занималась фигурным катанием и уже
-            тогда демонстрировала большие способности. В возрасте 12 лет
-            она переехала в Москву для продолжения спортивной карьеры и стала
-            тренироваться в Школе фигурного катания под руководством Этери Тутберидзе.
+            Алина Загитова родилась в 2002 году в Ижевске. С раннего детства она
+            занималась фигурным катанием и уже тогда демонстрировала большие
+            способности. В возрасте 12 лет она переехала в Москву для
+            продолжения спортивной карьеры и стала тренироваться в Школе
+            фигурного катания под руководством Этери Тутберидзе.
           </p>
           <p>
-            Начиная с 2016 года, Загитова стала выступать на международных соревнованиях.
-            Она завоевала золотую медаль на Чемпионате мира среди юниоров 2017 года. <br />
-            В 2018 году она выиграла Чемпионат Европы и завоевала золотую и серебряную медаль
-            на зимних Олимпийских играх, проходивших в Пхенчхане.
+            Начиная с 2016 года, Загитова стала выступать на международных
+            соревнованиях. Она завоевала золотую медаль на Чемпионате мира среди
+            юниоров 2017 года. <br />В 2018 году она выиграла Чемпионат Европы и
+            завоевала золотую и серебряную медаль на зимних Олимпийских играх,
+            проходивших в Пхенчхане.
           </p>
           <p>
-            После олимпийского золота Алина Загитова продолжила участвовать
-            в международных соревнованиях и в 2019 году выиграла Чемпионат мира.
+            После олимпийского золота Алина Загитова продолжила участвовать в
+            международных соревнованиях и в 2019 году выиграла Чемпионат мира.
             Сейчас Алина активно участвует в различных шоу и ледовых спектаклях,
             продолжая радовать своих поклонников своим талантом и мастерством.
           </p>
@@ -194,9 +212,20 @@ function ZagitovaPage() {
       <div className={styles.recommendation}>
         <div className={styles.recommendation_wrap}>
           <div className={styles.recommendation_top}>
-            <img src={zgRecomendCircle} className={styles.avatar} alt="Фото Загитовой" />
+            <img
+              src={zgRecomendCircle}
+              className={styles.avatar}
+              alt="Фото Загитовой"
+            />
             <p>
-              “ Очень странно было читать такое большое количество реакций после этого интервью, а тем более видеть такое количество негатива из-за обычной оговорки. Мне захотелось напомнить всем, что ошибаться – это нормально и что меня не задевают комментарии. Я придумала кучу идей и футболка с надписью, как старейший способ заявить о своей позиции, понравилась мне больше всего, так что встречайте #безызбежно на текстиле, не нервничайте и будьте самими сабими :) “
+              “ Очень странно было читать такое большое количество реакций после
+              этого интервью, а тем более видеть такое количество негатива из-за
+              обычной оговорки. Мне захотелось напомнить всем, что ошибаться –
+              это нормально и что меня не задевают комментарии. Я придумала кучу
+              идей и футболка с надписью, как старейший способ заявить о своей
+              позиции, понравилась мне больше всего, так что встречайте
+              #безызбежно на текстиле, не нервничайте и будьте самими сабими :)
+              “
             </p>
           </div>
           <div className={styles.recommendation_bottom}>
@@ -206,16 +235,18 @@ function ZagitovaPage() {
         </div>
       </div>
       <section className={styles.section_photos}>
-        {screenWidth.width > 1250 ? <Photos {...products} /> : <PhotosMobile {...products} />}
+        {screenWidth.width > 1250 ? (
+          <Photos {...products} />
+        ) : (
+          <PhotosMobile {...products} />
+        )}
         <div className={styles.product_box}>
           <div className={styles.description}>
             <div className={styles.title_box}>
               <h1 className={styles.title}>Футболка #БЕЗЫЗБЕЖНО</h1>
               <p className={styles.text}>&#8213; {products?.price} Р.</p>
             </div>
-            <p className={styles.text}>
-              {products?.description}
-            </p>
+            <p className={styles.text}>{products?.description}</p>
             <ul className={styles.box_link}>
               <li className={styles.menu_elem}>
                 <Link
@@ -236,20 +267,26 @@ function ZagitovaPage() {
             <label className={styles.select_label} htmfor="sizeSelect">
               Выберите размер:
             </label>
-            {order.length > 0 ? (order.map((item, index) => (
-              <span className={styles.selectionTest} key={index}>
-                <SizeSelection
-                  name={item.name}
-                  type="shop"
-                  qty={item.qty}
-                  size={size}
-                  id={item._id}
-                  key={index}
-                  remain={products.sizes[index].qty}
-                />
-              </span>
-            ))) : <p>Нет в наличии</p>}
-            <Button className={styles.button_down} onClickTo={addToCart}>В корзину &gt;</Button>
+            {order.length > 0 ? (
+              order.map((item, index) => (
+                <span className={styles.selectionTest} key={index}>
+                  <SizeSelection
+                    name={item.name}
+                    type="shop"
+                    qty={item.qty}
+                    size={size}
+                    id={item._id}
+                    key={index}
+                    remain={products.sizes[index].qty}
+                  />
+                </span>
+              ))
+            ) : (
+              <p>Нет в наличии</p>
+            )}
+            <Button className={styles.button_down} onClickTo={addToCart}>
+              В корзину &gt;
+            </Button>
           </div>
         </div>
       </section>
@@ -304,13 +341,13 @@ function ZagitovaPage() {
         <p className={styles.footer_merch}>MERCH AGAINST THE MACHINES!</p>
       </div>
       {isOtherPopupVisible && (
-      <PopupModel onClose={closePopupConstructor}>
-        {isOtherPopupVisible.map((el, index) => (
-          <p className={styles.instruction} key={index}>
-            {el}
-          </p>
-        ))}
-      </PopupModel>
+        <PopupModel onClose={closePopupConstructor}>
+          {isOtherPopupVisible.map((el, index) => (
+            <p className={styles.instruction} key={index}>
+              {el}
+            </p>
+          ))}
+        </PopupModel>
       )}
     </section>
   );
