@@ -81,22 +81,7 @@ function ConstructorText(props) {
                 className={styles.dropdown_item}
               >
                 <form onClick={(e) => handleItemSelectClick(e)}>
-                  <input
-                    type="color"
-                    value={initialText.setColor}
-                    onChange={(e) => {
-                      dispatch(changeTextState({
-                        ...initialText,
-                        setColor: e.target.value,
-                      }, activeView));
-                    }}
-                  />
-                </form>
-              </div>
-              <div
-                className={styles.dropdown_item}
-              >
-                <form onClick={(e) => handleItemSelectClick(e)}>
+                  <label className={styles.dropdown_item_label}>Текст:</label>
                   <input
                     type="text"
                     onChange={(e) => {
@@ -113,6 +98,24 @@ function ConstructorText(props) {
                 className={styles.dropdown_item}
               >
                 <form onClick={(e) => handleItemSelectClick(e)}>
+                  <label className={styles.dropdown_item_label}>Шрифт:</label>
+                  <input
+                    type="text"
+                    onChange={(e) => {
+                      dispatch(changeTextState({
+                        ...initialText,
+                        setText: e.target.value,
+                      }, activeView));
+                    }}
+                    placeholder="Введите текст"
+                  />
+                </form>
+              </div>
+              <div
+                className={styles.dropdown_item}
+              >
+                <form onClick={(e) => handleItemSelectClick(e)}>
+                  <label className={styles.dropdown_item_label}>Размер:</label>
                   <input
                     type="number"
                     onChange={(e) => {
@@ -129,18 +132,39 @@ function ConstructorText(props) {
               <div
                 className={styles.dropdown_item}
               >
-                <button
-                    onClick={(e) => {
-                      handleItemSelectClick(e);
+                <form
+                  className={styles.form}
+                  onClick={(e) => handleItemSelectClick(e)}
+                >
+                  <label className={styles.dropdown_item_label}>Цвет:</label>
+                  <input
+                    className={styles.input_color}
+                    type="color"
+                    value={initialText.setColor}
+                    onChange={(e) => {
                       dispatch(changeTextState({
                         ...initialText,
-                        downText: !initialText.downText,
+                        setColor: e.target.value,
                       }, activeView));
                     }}
-                >
-                  под
-                </button>
+                  />
+                </form>
               </div>
+              {/* <div */}
+              {/*  className={styles.dropdown_item} */}
+              {/* > */}
+                {/* <button */}
+                {/*    onClick={(e) => { */}
+                {/*      handleItemSelectClick(e); */}
+                {/*      dispatch(changeTextState({ */}
+                {/*        ...initialText, */}
+                {/*        downText: !initialText.downText, */}
+                {/*      }, activeView)); */}
+                {/*    }} */}
+                {/* > */}
+                {/*  под */}
+                {/* </button> */}
+              {/* </div> */}
             </div>
           )}
         </div>
