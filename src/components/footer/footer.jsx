@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { v4 as uuid } from 'uuid';
 import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import styles from './footer.module.css';
@@ -11,12 +12,12 @@ import { telegram, vkontakte } from '../../utils/constants';
 function Footer() {
   return (
     <footer className={styles.footer} id="footer">
-      {footerData.map((item, index) => (
-        <div className={styles.item_block} style={{ gridArea: item.styles }} key={index}>
+      {footerData.map((item) => (
+        <div className={styles.item_block} style={{ gridArea: item.styles }} key={item.id}>
           <p className={styles.block_menu}>{item.name}</p>
           <ul className={styles.block_info}>
-            {item.list.map((element, ind) => (
-              <li key={ind}>
+            {item.list.map((element) => (
+              <li key={element.id}>
                 <HashLink to={element.link} target={element.target} className={styles.info_link}>
                   {element.type}
                 </HashLink>

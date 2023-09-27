@@ -17,10 +17,10 @@ function Accordion() {
     <section className={styles.wrapper}>
       <div className={styles.accordion}>
         <p className={styles.accordion_mainText}>{mainText}</p>
-        {data.map((item, index) => (
-          <div className={styles.accordion_item} key={index}>
-            <div className={styles.accordion_title} onClick={() => toggle(index)}>
-              <span className={styles.accordion_gt}>{isActive === index ? '-' : gt}</span>
+        {data.map((item) => (
+          <div className={styles.accordion_item} key={item.id}>
+            <div className={styles.accordion_title} onClick={() => toggle(item.id)}>
+              <span className={styles.accordion_gt}>{isActive === item.id ? '-' : gt}</span>
               <h2 className={styles.accordion_text}>
                 {item.title_italicFirst ? (
                   <i>
@@ -34,23 +34,23 @@ function Accordion() {
                 &#32;
                 {item.title_italicLast ? <i>{item.title_italicLast}</i> : ''}
               </h2>
-              {isActive != index && (
+              {isActive != item.id && (
                 <span className={styles.accordion_gt}>
                   &#62;
                   <span className={styles.accordion_gtRight}>&#62;</span>
                 </span>
               )}
-              {isActive === index && <span className={styles.accordion_gt}> </span>}
+              {isActive === item.id && <span className={styles.accordion_gt}> </span>}
             </div>
             <div
               className={
-                isActive === index ? `${styles.accordion_content} ${styles.accordion_content_show}` : `${styles.accordion_content}`
+                isActive === item.id ? `${styles.accordion_content} ${styles.accordion_content_show}` : `${styles.accordion_content}`
               }
             >
               {Array.isArray(item.content) ? (
-                item.content.map((item, index) => (
-                  <p key={index} className={styles.accordion_contentText}>
-                    {item.item}
+                item.content.map((elem) => (
+                  <p key={elem.id} className={styles.accordion_contentText}>
+                    {elem.item}
                   </p>
                 ))
               ) : (
