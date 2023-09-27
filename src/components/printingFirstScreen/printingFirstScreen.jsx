@@ -62,6 +62,13 @@ function PrintingFirstScreen({ data, typePage }) {
                     }
         />
       )}
+      {typePage === 'product' && (
+        <div
+          className={
+                        info.price_type === 'Футболки' ? `${styles.main_wrap} ${styles.main_wrap_futbolki}` : info.price_type === 'Худи' ? `${styles.main_wrap} ${styles.main_wrap_hudi}` : info.price_type === 'Свитшот' ? `${styles.main_wrap} ${styles.main_wrap_sweatshirt}` : info.price_type === 'Кепка' ? `${styles.main_wrap} ${styles.main_wrap_cap}` : styles.main_wrap
+                    }
+        />
+      )}
       {typePage === 'types' && (
         <h1 className={styles.main_heading}>
           А&nbsp;ЧТО&nbsp;ПЕЧАТАТЬ?&nbsp;&gt;
@@ -72,6 +79,13 @@ function PrintingFirstScreen({ data, typePage }) {
       {typePage === 'method' && (
         <h1 className={styles.main_heading}>
           METHODS&nbsp;&gt;
+          {' '}
+          {info.main_heading.toUpperCase()}
+        </h1>
+      )}
+      {typePage === 'product' && (
+        <h1 className={`${styles.main_heading} ${styles.main_headingProduct}`}>
+          НА ЧЕМ ПЕЧАТАТЬ?&nbsp;&gt;
           {' '}
           {info.main_heading.toUpperCase()}
         </h1>

@@ -7,7 +7,7 @@ function PrintingFaq(data) {
 
   return (
     <section className={styles.screen}>
-      <h3 className={styles.heading}>{title}</h3>
+      {title != 'null' ? <h3 className={styles.heading}>{title}</h3> : ''}
       {variants.map((item, index) => {
         return (
           <div className={styles.block_wrapper} key={index}>

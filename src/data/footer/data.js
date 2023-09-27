@@ -88,23 +88,23 @@ export const footerData = [
     list: [
       {
         type: 'Печать на футболках',
-        link: '/',
+        link: '/pechat-na-futbolkah',
       },
       {
         type: 'Печать на худи',
-        link: '/',
+        link: '/pechat-na-hudi',
       },
       {
         type: 'Печать на свитшотах',
-        link: '/',
+        link: '/pechat-na-svitshotah',
       },
       {
         type: 'Печать на шопперах',
-        link: '/',
+        link: '/pechat-na-shopperah',
       },
       {
         type: 'Печать кепках',
-        link: '/',
+        link: '/pechat-na-kepkah',
       },
     ],
   },
