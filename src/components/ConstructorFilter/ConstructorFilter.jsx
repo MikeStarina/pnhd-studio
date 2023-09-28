@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styles from './ConstructorFilter.module.css';
-import { SquareCircle } from '../../ui/icons/squareCircle';
-import { Circle } from '../../ui/icons/circle';
-import { Square } from '../../ui/icons/square';
+import SquareCircle from '../../ui/icons/squareCircle';
+import Circle from '../../ui/icons/circle';
+import Square from '../../ui/icons/square';
 import { getSize } from '../../services/actions/editor-actions';
 
 function ConstructorFilter(props) {

@@ -140,6 +140,10 @@
     left: 115px;
 }
 
+.input_text {
+    width: 170px;
+}
+
 .input_color {
     /*appearance: none;*/
     /*-moz-appearance: none;*/

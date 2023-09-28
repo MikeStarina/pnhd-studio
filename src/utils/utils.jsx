@@ -114,7 +114,8 @@ export const setTextCoordinates = (activeView) => {
   }
 };
 
-// Задает координаты появления ФИЛЬТРА для привью изображения, вызывается в файле editor-action (redux)
+// Задает координаты появления ФИЛЬТРА для привью изображения,
+// вызывается в файле editor-action (redux)
 export const setFilterCoords = (activeView) => {
   if (activeView.includes('front')) {
     return {

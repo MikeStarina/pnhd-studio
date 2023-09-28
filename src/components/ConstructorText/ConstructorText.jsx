@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import useImage from 'use-image';
 import styles from './ConstructorText.module.css';
-import { WordT } from '../../ui/icons/wordT';
+import WordT from '../../ui/icons/wordT';
 import { changeTextState, DELETE_FILE, getSize, textCostZero } from '../../services/actions/editor-actions';
 
 function ConstructorText(props) {
@@ -55,7 +55,7 @@ function ConstructorText(props) {
 
   const handleItemSelectClick = (e) => {
     e.stopPropagation();
-    console.log('  Croissant One , Dela Gothic One  ');
+    // console.log('  Croissant One , Dela Gothic One  ');
   };
 
   useEffect(() => {}, [dropdownVisibleText]);
@@ -84,6 +84,7 @@ function ConstructorText(props) {
                 <form onClick={(e) => handleItemSelectClick(e)}>
                   <label className={styles.dropdown_item_label}>Текст:</label>
                   <input
+                    className={styles.input_text}
                     type="text"
                     onChange={(e) => {
                       dispatch(changeTextState({
@@ -101,6 +102,7 @@ function ConstructorText(props) {
                 <form onClick={(e) => handleItemSelectClick(e)}>
                   <label className={styles.dropdown_item_label}>Шрифт:</label>
                   <input
+                    className={styles.input_text}
                     type="text"
                     value={initialText.fontFamily}
                     onChange={(e) => {

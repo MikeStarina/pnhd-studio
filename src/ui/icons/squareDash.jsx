@@ -1,4 +1,4 @@
-export function SquareDash({ ...props }) {
+function SquareDash({ ...props }) {
   return (
     <svg
       width="18"
@@ -19,3 +19,5 @@ export function SquareDash({ ...props }) {
     </svg>
   );
 }
+
+export default SquareDash;

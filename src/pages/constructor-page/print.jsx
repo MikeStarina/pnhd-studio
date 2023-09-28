@@ -35,16 +35,28 @@ function Print({
   const [imageTwo] = useImage(file, 'Anonymous');
   const [loaded, setLoaded] = useState(false);
 
-  const openCircle = initialFilterCoords ? initialFilterCoords.openCircle : false;
-  const openSquare = initialFilterCoords ? initialFilterCoords.openSquare : false;
+  const openCircle = initialFilterCoords
+    ? initialFilterCoords.openCircle
+    : false;
+  const openSquare = initialFilterCoords
+    ? initialFilterCoords.openSquare
+    : false;
 
-  // эфект нужен для корректной фотографии (printScreen), return - чтобы не было ошибки (не делал скрин при размонтировании)
+  // эфект нужен для корректной фотографии (printScreen),
+  // return - чтобы не было ошибки (не делал скрин при размонтировании)
   useEffect(() => {
     const time = setTimeout(() => {
       dispatch(scene(activeView));
     }, 100);
     return () => clearTimeout(time);
-  }, [imageTwo, initialFilterCoords, initialImageCoords, openCircle, openSquare, initialText]);
+  }, [
+    imageTwo,
+    initialFilterCoords,
+    initialImageCoords,
+    openCircle,
+    openSquare,
+    initialText,
+  ]);
 
   useEffect(() => {
     if (openSquare || openCircle) {
@@ -57,7 +69,7 @@ function Print({
 
   useEffect(() => {
     if (initialText) {
-      console.log(initialText, '<<');
+      // console.log(initialText, '<<');
       (async () => {
         await WebFontLoader.load({
           google: {
@@ -149,10 +161,19 @@ function Print({
 
   return (
     <>
-      <Group
-        clip={initialParams}
-      >
-        {dash && (<Rect x={initialParams.x + 2} y={initialParams.y + 2} width={initialParams.width - 4} height={initialParams.height - 4} fill="rgba(255, 0, 0, 0.0)" stroke="#00FF00" strokeWidth={2} dash={[1, 3]} />)}
+      <Group clip={initialParams}>
+        {dash && (
+          <Rect
+            x={initialParams.x + 2}
+            y={initialParams.y + 2}
+            width={initialParams.width - 4}
+            height={initialParams.height - 4}
+            fill="rgba(255, 0, 0, 0.0)"
+            stroke="#00FF00"
+            strokeWidth={2}
+            dash={[1, 3]}
+          />
+        )}
         {/* {initialText && initialText.openText && initialText.downText && ( */}
         {/*  <Text */}
         {/*    text={initialText.setText} */}
@@ -199,11 +220,14 @@ function Print({
             {...initialImageCoords}
             draggable
             onDragEnd={(e) => {
-              onChange({
-                ...initialImageCoords,
-                x: e.target.x(),
-                y: e.target.y(),
-              }, initialText);
+              onChange(
+                {
+                  ...initialImageCoords,
+                  x: e.target.x(),
+                  y: e.target.y(),
+                },
+                initialText,
+              );
             }}
             onTransform={(e) => {
               const node = imgRef.current;
@@ -215,14 +239,17 @@ function Print({
 
               node.scaleX(1);
               node.scaleY(1);
-              onChange({
-                ...initialImageCoords,
-                x: node.x(),
-                y: node.y(),
-                width: Math.max(5, node.width() * scaleX),
-                height: Math.max(node.height() * scaleY),
-                rotation: node.attrs.rotation,
-              }, initialText);
+              onChange(
+                {
+                  ...initialImageCoords,
+                  x: node.x(),
+                  y: node.y(),
+                  width: Math.max(5, node.width() * scaleX),
+                  height: Math.max(node.height() * scaleY),
+                  rotation: node.attrs.rotation,
+                },
+                initialText,
+              );
             }}
           />
         )}
@@ -253,7 +280,16 @@ function Print({
         )}
         {openCircle && (
           <Group
-            clipFunc={(ctx) => { ctx.arc(initialFilterCoords.circleX, initialFilterCoords.circleY, initialFilterCoords.widthShape / 2, 0, Math.PI * 2, false); }}
+            clipFunc={(ctx) => {
+              ctx.arc(
+                initialFilterCoords.circleX,
+                initialFilterCoords.circleY,
+                initialFilterCoords.widthShape / 2,
+                0,
+                Math.PI * 2,
+                false,
+              );
+            }}
             onClick={onSelect}
             onTap={onSelect}
             ref={groupRef}
@@ -315,8 +351,18 @@ function Print({
             onClick={onSelect}
             onTap={onSelect}
             ref={groupRef}
-            x={initialFilterCoords.rotation === 0 ? initialFilterCoords.positionX : initialFilterCoords.positionX + (initialFilterCoords.rotation * 3)}
-            y={initialFilterCoords.rotation === 0 ? initialFilterCoords.positionY : initialFilterCoords.positionY - (initialFilterCoords.rotation * 3)}
+            x={
+              initialFilterCoords.rotation === 0
+                ? initialFilterCoords.positionX
+                : initialFilterCoords.positionX +
+                  initialFilterCoords.rotation * 3
+            }
+            y={
+              initialFilterCoords.rotation === 0
+                ? initialFilterCoords.positionY
+                : initialFilterCoords.positionY -
+                  initialFilterCoords.rotation * 3
+            }
             rotation={initialFilterCoords.rotation}
             draggable
             onDragEnd={(e) => {
@@ -353,22 +399,30 @@ function Print({
             onDragStart={() => {
               const node = textRef.current;
               const scaleY = node.scaleY();
-              OnChangeText(initialImageCoords, {
-                ...initialText,
-                isDragging: true,
-                height: Math.max(node.height() * scaleY),
-              }, initialFilterCoords);
+              OnChangeText(
+                initialImageCoords,
+                {
+                  ...initialText,
+                  isDragging: true,
+                  height: Math.max(node.height() * scaleY),
+                },
+                initialFilterCoords,
+              );
             }}
             onDragEnd={(e) => {
               const node = textRef.current;
               const scaleY = node.scaleY();
-              OnChangeText(initialImageCoords, {
-                ...initialText,
-                isDragging: false,
-                x: e.target.x(),
-                y: e.target.y(),
-                height: Math.max(node.height() * scaleY),
-              }, initialFilterCoords);
+              OnChangeText(
+                initialImageCoords,
+                {
+                  ...initialText,
+                  isDragging: false,
+                  x: e.target.x(),
+                  y: e.target.y(),
+                  height: Math.max(node.height() * scaleY),
+                },
+                initialFilterCoords,
+              );
               // dispatch(getSize(initialText, activeView, itemColor));
             }}
             onTransform={onTransformText}
