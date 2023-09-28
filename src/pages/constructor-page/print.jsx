@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import WebFontLoader from 'webfontloader';
 import { Image, Group, Transformer, Rect, Circle, Text } from 'react-konva';
 import { useSelector, useDispatch } from 'react-redux';
 import useImage from 'use-image';
@@ -32,11 +33,12 @@ function Print({
   const [circleClick, setCircleClick] = useState(false);
   const [textClick, setTextClick] = useState(false);
   const [imageTwo] = useImage(file, 'Anonymous');
+  const [loaded, setLoaded] = useState(false);
 
   const openCircle = initialFilterCoords ? initialFilterCoords.openCircle : false;
   const openSquare = initialFilterCoords ? initialFilterCoords.openSquare : false;
 
-  // эфект нужен для корректной фотографии, return - чтобы не было ошибки (не делал скрин при размонтировании)
+  // эфект нужен для корректной фотографии (printScreen), return - чтобы не было ошибки (не делал скрин при размонтировании)
   useEffect(() => {
     const time = setTimeout(() => {
       dispatch(scene(activeView));
@@ -52,6 +54,24 @@ function Print({
       setImageView(true);
     }
   }, [openCircle, openSquare]);
+
+  useEffect(() => {
+    if (initialText) {
+      console.log(initialText, '<<');
+      (async () => {
+        await WebFontLoader.load({
+          google: {
+            families: [initialText.fontFamily],
+          },
+          fontactive: () => {
+            setTimeout(() => {
+              setLoaded(true);
+            }, 3000);
+          },
+        });
+      })();
+    }
+  }, [initialText]);
 
   const onCircle = () => {
     onSelect();
@@ -133,43 +153,42 @@ function Print({
         clip={initialParams}
       >
         {dash && (<Rect x={initialParams.x + 2} y={initialParams.y + 2} width={initialParams.width - 4} height={initialParams.height - 4} fill="rgba(255, 0, 0, 0.0)" stroke="#00FF00" strokeWidth={2} dash={[1, 3]} />)}
-        {initialText && initialText.openText && initialText.downText && (
-          <Text
-            text={initialText.setText}
-            x={initialText.x}
-            y={initialText.y}
-            width={initialText.width}
-            fontSize={initialText.setSize}
-            fontFamily={initialText.fontFamily}
-            onClick={() => onClickText()}
-            onTap={onSelect}
-            ref={textRef}
-            draggable
-            fill={initialText.isDragging ? '#00FF00' : initialText.setColor}
-            onDragStart={() => {
-              const node = textRef.current;
-              const scaleY = node.scaleY();
-              OnChangeText(initialImageCoords, {
-                ...initialText,
-                isDragging: true,
-                height: Math.max(node.height() * scaleY),
-              }, initialFilterCoords);
-            }}
-            onDragEnd={(e) => {
-              const node = textRef.current;
-              const scaleY = node.scaleY();
-              OnChangeText(initialImageCoords, {
-                ...initialText,
-                isDragging: false,
-                x: e.target.x(),
-                y: e.target.y(),
-                height: Math.max(node.height() * scaleY),
-              }, initialFilterCoords);
-              // dispatch(getSize(initialText, activeView, itemColor));
-            }}
-            onTransform={onTransformText}
-          />
-        )}
+        {/* {initialText && initialText.openText && initialText.downText && ( */}
+        {/*  <Text */}
+        {/*    text={initialText.setText} */}
+        {/*    x={initialText.x} */}
+        {/*    y={initialText.y} */}
+        {/*    width={initialText.width} */}
+        {/*    fontSize={initialText.setSize} */}
+        {/*    fontFamily={initialText.fontFamily} */}
+        {/*    onClick={() => onClickText()} */}
+        {/*    onTap={onSelect} */}
+        {/*    ref={textRef} */}
+        {/*    draggable */}
+        {/*    fill={initialText.isDragging ? '#00FF00' : initialText.setColor} */}
+        {/*    onDragStart={() => { */}
+        {/*      const node = textRef.current; */}
+        {/*      const scaleY = node.scaleY(); */}
+        {/*      OnChangeText(initialImageCoords, { */}
+        {/*        ...initialText, */}
+        {/*        isDragging: true, */}
+        {/*        height: Math.max(node.height() * scaleY), */}
+        {/*      }, initialFilterCoords); */}
+        {/*    }} */}
+        {/*    onDragEnd={(e) => { */}
+        {/*      const node = textRef.current; */}
+        {/*      const scaleY = node.scaleY(); */}
+        {/*      OnChangeText(initialImageCoords, { */}
+        {/*        ...initialText, */}
+        {/*        isDragging: false, */}
+        {/*        x: e.target.x(), */}
+        {/*        y: e.target.y(), */}
+        {/*        height: Math.max(node.height() * scaleY), */}
+        {/*      }, initialFilterCoords); */}
+        {/*    }} */}
+        {/*    onTransform={onTransformText} */}
+        {/*  /> */}
+        {/* )} */}
         {imageView && (
           <Image
             className={styles.some}
@@ -325,7 +344,7 @@ function Print({
             y={initialText.y}
             width={initialText.width}
             fontSize={initialText.setSize}
-            fontFamily={initialText.fontFamily}
+            fontFamily={loaded ? initialText.fontFamily : 'Arial'}
             onClick={() => onClickText()}
             onTap={onSelect}
             ref={textRef}

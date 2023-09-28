@@ -53,8 +53,9 @@ function ConstructorText(props) {
     }
   };
 
-  const handleItemSelectClick = (e, type) => {
+  const handleItemSelectClick = (e) => {
     e.stopPropagation();
+    console.log('  Croissant One , Dela Gothic One  ');
   };
 
   useEffect(() => {}, [dropdownVisibleText]);
@@ -76,7 +77,7 @@ function ConstructorText(props) {
             <div className={styles.dropdown_tools} />
           </div>
           {dropdownVisibleText && (
-            <div className={styles.dropdown_menu}>
+            <div className={styles.dropdown_menu} onClick={(e) => e.stopPropagation()}>
               <div
                 className={styles.dropdown_item}
               >
@@ -101,13 +102,14 @@ function ConstructorText(props) {
                   <label className={styles.dropdown_item_label}>Шрифт:</label>
                   <input
                     type="text"
+                    value={initialText.fontFamily}
                     onChange={(e) => {
+                      console.log(e.target.value, '<<attention');
                       dispatch(changeTextState({
                         ...initialText,
-                        setText: e.target.value,
+                        fontFamily: e.target.value,
                       }, activeView));
                     }}
-                    placeholder="Введите текст"
                   />
                 </form>
               </div>
@@ -117,7 +119,12 @@ function ConstructorText(props) {
                 <form onClick={(e) => handleItemSelectClick(e)}>
                   <label className={styles.dropdown_item_label}>Размер:</label>
                   <input
+                    className={styles.input_color}
+                    style={{ paddingLeft: 7 }}
                     type="number"
+                    step={2}
+                    min={10}
+                    value={initialText.setSize}
                     onChange={(e) => {
                       dispatch(changeTextState({
                         ...initialText,
@@ -125,8 +132,8 @@ function ConstructorText(props) {
                       }, activeView));
                       dispatch(getSize(initialText, activeView, itemColor));
                     }}
-                    placeholder={initialText.setSize}
                   />
+                  <span className={styles.px}>px</span>
                 </form>
               </div>
               <div

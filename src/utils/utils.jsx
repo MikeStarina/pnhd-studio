@@ -54,7 +54,7 @@ export const setTextCoordinates = (activeView) => {
       isDragging: false,
       setColor: '#00ff00',
       setSize: 30,
-      fontFamily: 'calibri',
+      fontFamily: 'monospace',
       x: 140,
       y: 100,
       width: 230,
