@@ -544,14 +544,14 @@ function Constructor() {
         </div>
         {isOtherPopupVisible && (
           <PopupModel onClose={closePopupConstructor}>
-            {isOtherPopupVisible.map((el, index) => (
+            {isOtherPopupVisible.map((el) => (
               <p
                 className={
                   isOtherPopupVisible.length > 1
                     ? styles.instruction
                     : styles.error
                 }
-                key={index}
+                key={el}
               >
                 {el}
               </p>

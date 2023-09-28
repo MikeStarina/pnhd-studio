@@ -105,7 +105,6 @@ function ShopPage() {
     dispatch({ type: SET_DEFAULTFILTER });
     setFilterVisible('close');
   };
-
   return (
     <main className={styles.main_screen}>
       <Helmet
@@ -188,8 +187,8 @@ function ShopPage() {
       <CardsBlock />
       {isOtherPopupVisible && (
         <PopupModel onClose={handelClosePopup}>
-          {isOtherPopupVisible.map((el, index) => (
-            <p className={styles.validation_message} key={index}>
+          {isOtherPopupVisible.map((el) => (
+            <p className={styles.validation_message} key={el}>
               {el}
             </p>
           ))}

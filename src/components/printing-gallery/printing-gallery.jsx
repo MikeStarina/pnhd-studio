@@ -12,7 +12,7 @@ function PrintingGallery(data) {
             src={item}
             loading="lazy"
             decoding="async"
-            key={index}
+            key={item}
         />
       ))}
     </section>

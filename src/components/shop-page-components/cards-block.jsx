@@ -209,7 +209,7 @@ function CardsBlock() {
               <Link
                   to={{ pathname: `/shop/${item.slug}` }}
                   className={styles.link}
-                  key={index}
+                  key={item.slug}
               >
                 <CardItem
                     title={item.name}

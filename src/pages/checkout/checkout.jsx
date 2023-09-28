@@ -581,9 +581,9 @@ function Checkout() {
                   debounceCities.length > 0 && (
                     <div className={styles.cities_wrap}>
                       <ul className={styles.cities_list}>
-                        {debounceCities.map((item, index) => (
+                        {debounceCities.map((item) => (
                           <li
-                            key={index}
+                            key={item.code}
                             onClick={() => {
                               if (item.latitude) {
                                 setCenterMap([item.latitude, item.longitude]);
@@ -730,10 +730,10 @@ function Checkout() {
                 {!isUserFormValid && (
                   <p className={styles.validation_message}>Заполните поля:</p>
                 )}
-                {isOtherPopupVisible.map((el, index) => (
+                {isOtherPopupVisible.map((el) => (
                   <p
                     className={`${styles.validation_message} ${styles.popupBlock_message}`}
-                    key={index}
+                    key={el}
                   >
                     {el}
                   </p>

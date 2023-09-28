@@ -269,6 +269,7 @@ function ZagitovaPage() {
             </label>
             {order.length > 0 ? (
               order.map((item, index) => (
+                // eslint-disable-next-line react/no-array-index-key
                 <span className={styles.selectionTest} key={index}>
                   <SizeSelection
                     name={item.name}
@@ -276,6 +277,7 @@ function ZagitovaPage() {
                     qty={item.qty}
                     size={size}
                     id={item._id}
+                    // eslint-disable-next-line react/no-array-index-key
                     key={index}
                     remain={products.sizes[index].qty}
                   />
@@ -342,8 +344,8 @@ function ZagitovaPage() {
       </div>
       {isOtherPopupVisible && (
         <PopupModel onClose={closePopupConstructor}>
-          {isOtherPopupVisible.map((el, index) => (
-            <p className={styles.instruction} key={index}>
+          {isOtherPopupVisible.map((el) => (
+            <p className={styles.instruction} key={el}>
               {el}
             </p>
           ))}

@@ -81,13 +81,12 @@ function Cart() {
       dispatch({ type: SET_CART_VISIBILITY, payload: true });
     };
   }, []);
-
   return (
     <>
       <h1 className={styles.pageTitle}>
         КОРЗИНА / <i>CART</i>
       </h1>
-      {order.map((item, index) => {
+      {order.map((item) => {
         const url = `${apiBaseUrl}${item.attributes.image_url}`;
         const initialValue = 0;
         const productPriece = item.attributes.size.reduce(
@@ -97,7 +96,7 @@ function Cart() {
         const arr = getPreviewArr(item);
         const printPrice = getPrintPrice(item);
         return (
-          <div className={styles.products} key={index}>
+          <div className={styles.products} key={item.cart_item_id}>
             <div className={styles.productsImage}>
               <Link
                 to={
@@ -106,7 +105,7 @@ function Cart() {
                     : { pathname: `/shop/${item.attributes.slug}` }
                 }
                 className={styles.link}
-                key={index}
+                key={item.attributes.slug}
               >
                 <img
                   className={styles.productsImage_img}
@@ -123,7 +122,7 @@ function Cart() {
                     : { pathname: `/shop/${item.attributes.slug}` }
                 }
                 className={`${styles.link} ${styles.link__name}`}
-                key={index}
+                key={item.attributes.slug}
               >
                 <h2 className={styles.productsInfo_name}>
                   {item.attributes.name}
@@ -188,7 +187,7 @@ function Cart() {
               {arr.length > 0 &&
                 arr.map((elem, index) => (
                   <div
-                    key={index}
+                    key={elem.name}
                     className={
                       index != 4
                         ? `${styles.productsPrint_prewiev} ${styles.productsPrint_prewiev_border}`
@@ -248,7 +247,7 @@ function Cart() {
                           state: { state: item.cart_item_id, from: 'cart' },
                         }}
                         className={`${styles.link} ${styles.link__name}`}
-                        key={index}
+                        key={item.cart_item_id}
                       >
                         <button className={styles.productsPrint_button}>
                           Изменить
@@ -272,7 +271,7 @@ function Cart() {
                         state: { state: item.cart_item_id, from: 'cart' },
                       }}
                       className={`${styles.link} ${styles.link__name}`}
-                      key={index}
+                      key={item.cart_item_id}
                     >
                       <button
                         className={styles.addPrintButton_wrap_text}
