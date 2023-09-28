@@ -13,6 +13,7 @@ import { apiBaseUrl } from '../../utils/constants';
 import styles from './PhotosMobile.module.css';
 
 function PhotosMobile(item) {
+  console.log(item);
   return (
     <>
       <Swiper
@@ -25,7 +26,7 @@ function PhotosMobile(item) {
         className={styles.swiper}
       >
         {item.galleryPhotos && item.galleryPhotos.map((el, index) => (
-          <SwiperSlide key={index} className={styles.swiper_slide}>
+          <SwiperSlide key={el} className={styles.swiper_slide}>
             <img src={`${apiBaseUrl}${el}`} alt={item.name} />
           </SwiperSlide>
         ))}

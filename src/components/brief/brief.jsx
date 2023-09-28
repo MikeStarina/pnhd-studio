@@ -1,9 +1,9 @@
+import { v4 as uuid } from 'uuid';
 import styles from './brief.module.css';
 
 function Brief({ title, subtitle, type }) {
   // Если приходит масив, добавляет стили
   const classBrief = Array.isArray(subtitle) ? styles.brief_subtitle_array : '';
-  console.log(type);
   return (
     <section className={styles.brief}>
       {type === 'h3' ? (
@@ -13,8 +13,8 @@ function Brief({ title, subtitle, type }) {
       )}
 
       {classBrief ? (
-        subtitle.map((el, i) => (
-          <p className={`${styles.brief_subtitle} ${classBrief}`} key={i}>
+        subtitle.map((el) => (
+          <p className={`${styles.brief_subtitle} ${classBrief}`} key={uuid()}>
             {el}
           </p>
         ))

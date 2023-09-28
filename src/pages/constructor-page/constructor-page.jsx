@@ -15,32 +15,30 @@ import {
   loadPrintFromState,
   getSize,
   uploadPreview,
-  SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
-  loadFilterCoordinates,
-  setText,
-  changeTextState,
-  printFilterTextCost,
-} from '../../services/actions/editor-actions.jsx';
-import { ADD_TO_CART, ADD_TO_CART_WITH_PRINT } from '../../services/actions/cart-actions';
+} from '../../services/actions/editor-actions';
+import {
+  ADD_TO_CART,
+  ADD_TO_CART_WITH_PRINT,
+} from '../../services/actions/cart-actions';
 import Print from './print';
 import Mockup from './mockup';
-import { fileSelect, setFilterCoords, textFileSelect } from '../../utils/utils';
+import { fileSelect } from '../../utils/utils';
 import PopupModel from '../../components/popupModel/popupModel';
 import {
   closePopup,
   openPopup,
   SET_POPUP_VISIBILITY,
 } from '../../services/actions/utility-actions';
-import { instructionForPopup } from '../../data/instructionForPopup/instructionForPopup';
-import { photoProcessing } from '../../data/photo-processing/photo-processing';
+import instructionForPopup from '../../data/instructionForPopup/instructionForPopup';
+import photoProcessing from '../../data/photo-processing/photo-processing';
 import { clearItemOrder } from '../../services/actions/item-action';
-import ConstructorFilter from '../../components/ConstructorFilter/ConstructorFilter';
 // sideItemForPrint - задает окно видимости (его размеры) где отобразится привью картинки
 import sideItemForPrint from '../../utils/sideItemForPrint';
 import totalPrintPrice from '../../utils/totalPrintPrice';
 import addToMemory from '../../utils/addToMemory';
-import { SquareDash } from '../../ui/icons/squareDash';
-import ConstructorText from '../../components/ConstructorText/ConstructorText';
+import Square from '../../ui/icons/square';
+import SquareCircle from '../../ui/icons/squareCircle';
+import WordT from '../../ui/icons/wordT';
 
 function Constructor() {
   const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
@@ -68,25 +66,32 @@ function Constructor() {
   const location = useLocation();
   const imgRef = useRef(null);
   const stageRef = useRef();
+  const [squareCircleComponentColor, setSquareCircleComponentColor] =
+    useState(false);
   const [dash, setDash] = useState(false);
-  const [squareMask, setSquareMask] = useState(false);
-  const [circleMask, setCircleMask] = useState(false);
-  const [openCircle, setOpenCircle] = useState(false);
-  const [openSquare, setOpenSquare] = useState(false);
-  const [dropdownVisibleFilter, setDropdownVisibleFilter] = useState(false);
-  const [dropdownVisibleText, setDropdownVisibleText] = useState(false);
 
   const { order } = useSelector((store) => store.cartData);
-  const element = location.state.from.includes('cart') ? data && data.length > 0 && order && order.find((elem) => elem.cart_item_id === location.state.state) : data && data.length > 0 && data.find((elem) => elem.slug === slug);
+  const element = location.state.from.includes('cart')
+    ? data &&
+    data.length > 0 &&
+    order &&
+    order.find((elem) => elem.cart_item_id === location.state.state)
+    : data && data.length > 0 && data.find((elem) => elem.slug === slug);
 
-  const item = location.state.from.includes('cart') ? element.attributes : element;
+  const item = location.state.from.includes('cart')
+    ? element.attributes
+    : element;
 
-  const itemSize = location.state.from.includes('cart') ? item.size : location.state.size;
+  const itemSize = location.state.from.includes('cart')
+    ? item.size
+    : location.state.size;
 
-  const volumeSize = itemSize && itemSize.reduce((total, element) => {
-    let accTotal;
-    return (accTotal = total + element.qty);
-  }, 0);
+  const volumeSize =
+    itemSize &&
+    itemSize.reduce((total, element) => {
+      let accTotal;
+      return (accTotal = total + element.qty);
+    }, 0);
 
   useEffect(() => {
     if (location.state.from.includes('cart')) {
@@ -99,10 +104,6 @@ function Constructor() {
       });
     };
   }, []);
-
-  useEffect(() => {
-    setFilterCoords(activeView);
-  }, [activeView]);
 
   const setActiveTab = (e) => {
     dispatch({
@@ -131,15 +132,6 @@ function Constructor() {
     badge_file,
   );
 
-  const textFile = textFileSelect(
-    activeView,
-    front_file,
-    back_file,
-    lsleeve_file,
-    rsleeve_file,
-    badge_file,
-  );
-
   const onChange = (e) => {
     e.preventDefault();
 
@@ -158,9 +150,6 @@ function Constructor() {
   };
 
   const deletePrint = () => {
-    setCircleMask(false);
-    setSquareMask(false);
-    setOpenCircle(false);
     dispatch({
       type: DELETE_FILE,
       view: activeView,
@@ -170,7 +159,7 @@ function Constructor() {
   function getScene(activeView) {
     return async function (dispatch) {
       // const preview = await stageRef.current.toDataURL();
-      const scene = await stageRef.current?.toBlob();
+      const scene = await stageRef.current.toBlob();
 
       const data = new FormData();
       data.append('files', scene, `${activeView}_preview_${uuidv4()}.jpg`);
@@ -191,7 +180,21 @@ function Constructor() {
   const addToCart = () => {
     const variant = 'с принтом';
     // Создает обьект заказа, для сохранения в сесионой памяти
-    const data = addToMemory(variant, item.size, item, element.cart_item_id, front_file, front_file_preview, back_file, back_file_preview, lsleeve_file, lsleeve_file_preview, rsleeve_file, rsleeve_file_preview, badge_file);
+    const data = addToMemory(
+      variant,
+      item.size,
+      item,
+      element.cart_item_id,
+      front_file,
+      front_file_preview,
+      back_file,
+      back_file_preview,
+      lsleeve_file,
+      lsleeve_file_preview,
+      rsleeve_file,
+      rsleeve_file_preview,
+      badge_file,
+    );
 
     dispatch({
       type: ADD_TO_CART_WITH_PRINT,
@@ -211,7 +214,21 @@ function Constructor() {
   const addToPrint = () => {
     const variant = 'с принтом';
     // Создает обьект заказа, для сохранения в сесионой памяти
-    const data = addToMemory(variant, location.state.size, item, uuId, front_file, front_file_preview, back_file, back_file_preview, lsleeve_file, lsleeve_file_preview, rsleeve_file, rsleeve_file_preview, badge_file);
+    const data = addToMemory(
+      variant,
+      location.state.size,
+      item,
+      uuId,
+      front_file,
+      front_file_preview,
+      back_file,
+      back_file_preview,
+      lsleeve_file,
+      lsleeve_file_preview,
+      rsleeve_file,
+      rsleeve_file_preview,
+      badge_file,
+    );
 
     dispatch({
       type: ADD_TO_CART,
@@ -232,53 +249,13 @@ function Constructor() {
   };
 
   const openPopupInfo = () => {
-    dispatch(openPopup(['Привет! Сейчас эта функция находится в разработке :)']));
+    dispatch(
+      openPopup(['Привет! Сейчас эта функция находится в разработке :)']),
+    );
   };
 
   const closePopupConstructor = () => {
     dispatch(closePopup());
-  };
-
-  const getButtonVisibilitySquare = () => {
-    setSquareMask(true);
-  };
-
-  const getButtonVisibilityCircle = () => {
-    setCircleMask(true);
-  };
-
-  const closeButtonVisibilityCircleSquare = () => {
-    setCircleMask(false);
-    setSquareMask(false);
-  };
-
-  const closeButtonVisibilityOpenCircleSquare = () => {
-    setOpenCircle(false);
-    setOpenSquare(false);
-  };
-
-  const acceptCloseCircleMaskOpenCircle = () => {
-    setCircleMask((circleMask) => !circleMask);
-    dispatch({
-      type: SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
-      payload: {
-        ...file.file.stageParamsFilterCircle,
-        openCircle: true,
-      },
-      view: activeView,
-    });
-  };
-
-  const acceptCloseSquareMaskOpenSquare = () => {
-    setSquareMask((squareMask) => !squareMask);
-    dispatch({
-      type: SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
-      payload: {
-        ...file.file.stageParamsFilterCircle,
-        openSquare: true,
-      },
-      view: activeView,
-    });
   };
 
   return (
@@ -299,40 +276,22 @@ function Constructor() {
               </Layer>
               <Layer className={styles.layer}>
                 <Print
-                  itemColor={item.color}
-                  openSquare={openSquare}
-                  squareMask={squareMask}
-                  openCircle={openCircle}
-                  circleMask={circleMask}
                   dash={dash}
                   initialParams={sideItemForPrint(item, activeView)}
                   isSelected={isSelected}
                   onSelect={onSelect}
                   file={file && file.file.file.url}
-                  initialText={textFile && textFile.text}
                   initialImageCoords={file && file.file.stageParams}
-                  initialFilterCoords={file && file.file.stageParamsFilterCircle}
                   imgRef={imgRef}
                   scene={getScene}
-                  onChange={(newAttrs, second) => {
+                  onChange={(newAttrs) => {
                     dispatch({
                       type: SET_FILE_STAGE_PARAMS,
                       payload: newAttrs,
                       view: activeView,
                     });
-                    dispatch(getSize(newAttrs, activeView, item.color, second));
-                  }}
-                  onChangeFilter={(initialImageCoords, initialText, coordinates) => {
-                    dispatch({
-                      type: SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
-                      payload: coordinates,
-                      view: activeView,
-                    });
-                    dispatch(getSize(initialImageCoords, activeView, item.color, initialText, coordinates));
-                  }}
-                  OnChangeText={(first, textCoordinates, initialFilterCoords) => {
-                    dispatch(changeTextState(textCoordinates, activeView));
-                    dispatch(getSize(first, activeView, item.color, textCoordinates, initialFilterCoords));
+                    dispatch(getScene(activeView));
+                    dispatch(getSize(newAttrs, activeView, item.color));
                   }}
                 />
               </Layer>
@@ -348,7 +307,6 @@ function Constructor() {
               }
               id="front"
               onClick={setActiveTab}
-              disabled={dropdownVisibleText || circleMask || squareMask}
             >
               Грудь &gt;
             </button>
@@ -357,7 +315,6 @@ function Constructor() {
               className={activeView === 'back' ? styles.active_tab : styles.tab}
               id="back"
               onClick={setActiveTab}
-              disabled={dropdownVisibleText || circleMask || squareMask}
             >
               Спина &gt;
             </button>
@@ -369,7 +326,6 @@ function Constructor() {
                 id="lsleeve"
                 onClick={setActiveTab}
                 type="button"
-                disabled={dropdownVisibleText || circleMask || squareMask}
               >
                 Л.&nbsp;рукав &gt;
               </button>
@@ -382,7 +338,6 @@ function Constructor() {
                 id="rsleeve"
                 onClick={setActiveTab}
                 type="button"
-                disabled={dropdownVisibleText || circleMask || squareMask}
               >
                 П.&nbsp;рукав &gt;
               </button>
@@ -438,66 +393,34 @@ function Constructor() {
             <div className={styles.btn_img_control}>
               <button
                 onClick={() => setDash((dash) => !dash)}
-                className={dash ? `${styles.item_button_quest} ${styles.item_button_quest_active}` : `${styles.item_button_quest}`}
+                className={
+                  dash
+                    ? `${styles.item_button_quest} ${styles.item_button_quest_active}`
+                    : `${styles.item_button_quest}`
+                }
               >
-                <SquareDash className={styles.btn_svg} />
+                <Square className={styles.btn_svg} />
               </button>
-              <ConstructorFilter
-                dropdownVisibleFilter={dropdownVisibleFilter}
-                setDropdownVisibleFilter={setDropdownVisibleFilter}
-                file={file && file.file.file.url}
-                itemColor={item.color}
-                initialText={textFile && textFile.text}
-                initialImageCoords={file && file.file.stageParams}
-                initialFilterCoords={file && file.file.stageParamsFilterCircle}
-                onOpenFilter={(initialImageCoords, activeView, initialText) => {
-                  dispatch(loadFilterCoordinates(initialImageCoords, activeView, item.color, initialText));
-                }}
-                activeView={activeView}
-                onChangeFilter={(initialImageCoords, initialText, coordinates) => {
-                  dispatch({
-                    type: SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
-                    payload: coordinates,
-                    view: activeView,
-                  });
-                  dispatch(getSize(initialImageCoords, activeView, item.color, initialText, coordinates));
-                }}
-                circleMask={circleMask}
-                squareMask={squareMask}
-                closeButtonVisibilityOpenCircleSquare={closeButtonVisibilityOpenCircleSquare}
-                closeButtonVisibilityCircleSquare={closeButtonVisibilityCircleSquare}
-                getButtonVisibilityCircle={getButtonVisibilityCircle}
-                getButtonVisibilitySquare={getButtonVisibilitySquare}
-              />
-              <ConstructorText
-                dropdownVisibleText={dropdownVisibleText}
-                setDropdownVisibleText={setDropdownVisibleText}
-                itemColor={item.color}
-                initialImageCoords={file && file.file.stageParams}
-                initialFilterCoords={file && file.file.stageParamsFilterCircle}
-                initialText={textFile && textFile.text}
-                onCloseText={(initialImageCoords, initialFilterCoords) => {
-                  dispatch(getSize(initialImageCoords, activeView, item.color, initialFilterCoords));
-                }}
-                onOpenText={(initialImageCoords, activeView, initialFilterCoords) => {
-                  dispatch(setText(initialImageCoords, activeView, item.color, initialFilterCoords));
-                }}
-                file={file && file.file.file.url}
-                activeView={activeView}
-                circleMask={circleMask}
-                squareMask={squareMask}
-                closeButtonVisibilityOpenCircleSquare={closeButtonVisibilityOpenCircleSquare}
-                closeButtonVisibilityCircleSquare={closeButtonVisibilityCircleSquare}
-                getButtonVisibilityCircle={getButtonVisibilityCircle}
-                getButtonVisibilitySquare={getButtonVisibilitySquare}
-              />
+              <button
+                onClick={openPopupInfo}
+                className={styles.item_button_quest}
+                onMouseEnter={() => setSquareCircleComponentColor(true)}
+                onMouseLeave={() => setSquareCircleComponentColor(false)}
+              >
+                <SquareCircle
+                  className={styles.btn_svg}
+                  style={{
+                    color: squareCircleComponentColor ? '#00ff00' : '#ffffff',
+                  }}
+                />
+              </button>
+              <button
+                onClick={openPopupInfo}
+                className={styles.item_button_quest}
+              >
+                <WordT className={styles.btn_svg} />
+              </button>
             </div>
-            <button
-              className={circleMask || squareMask ? styles.item_button_quest : styles.item_button_quest_none}
-              onClick={circleMask ? acceptCloseCircleMaskOpenCircle : acceptCloseSquareMaskOpenSquare}
-            >
-              acc
-            </button>
             <button
               onClick={openPopupConstructor}
               className={styles.item_button_quest}
@@ -508,23 +431,100 @@ function Constructor() {
           <div className={styles.order_info}>
             <p className={styles.order_info_title}>{item.name}</p>
             <p className={styles.order_info_subtitle}>
-              <span className={styles.order_info_line_span}>{`${item.price} Р. X ${volumeSize} шт.`}<span className={styles.order_info_line_span_end}>{` - ${item.price * volumeSize} Р.`}</span></span>
+              <span className={styles.order_info_line_span}>
+                {`${item.price} Р. X ${volumeSize} шт.`}
+                <span className={styles.order_info_line_span_end}>{` - ${
+                  item.price * volumeSize
+                } Р.`}
+                </span>
+              </span>
             </p>
             <p className={styles.order_info_line}>
-              <span className={styles.order_info_line_span_title}>Печать на груди:{front_file && front_file.cartParams ? ' ' : ' -'}</span>
-              <span className={front_file && front_file.cartParams && `${styles.order_info_line_span}`}>{front_file && front_file.cartParams && `${front_file.cartParams.format}, ${front_file.cartParams.size}, ${front_file.cartParams.price} Р. X ${volumeSize} шт.`}<span className={styles.order_info_line_span_end}>{front_file && front_file.cartParams && ` - ${front_file.cartParams.price * volumeSize} Р.`}</span></span>
+              <span className={styles.order_info_line_span_title}>
+                Печать на груди:
+                {front_file && front_file.cartParams ? ' ' : ' -'}
+              </span>
+              <span
+                className={
+                  front_file &&
+                  front_file.cartParams &&
+                  `${styles.order_info_line_span}`
+                }
+              >
+                {front_file &&
+                  front_file.cartParams &&
+                  `${front_file.cartParams.format}, ${front_file.cartParams.size}, ${front_file.cartParams.price} Р. X ${volumeSize} шт.`}
+                <span className={styles.order_info_line_span_end}>
+                  {front_file &&
+                    front_file.cartParams &&
+                    ` - ${front_file.cartParams.price * volumeSize} Р.`}
+                </span>
+              </span>
             </p>
             <p className={styles.order_info_line}>
-              <span className={styles.order_info_line_span_title}>Печать на спине:{back_file && back_file.cartParams ? ' ' : ' -'}</span>
-              <span className={back_file && back_file.cartParams && `${styles.order_info_line_span}`}>{back_file && back_file.cartParams && `${back_file.cartParams.format}, ${back_file.cartParams.size}, ${back_file.cartParams.price} Р. X ${volumeSize} шт.`}<span className={styles.order_info_line_span_end}>{back_file && back_file.cartParams && ` - ${back_file.cartParams.price * volumeSize} Р.`}</span></span>
+              <span className={styles.order_info_line_span_title}>
+                Печать на спине:{back_file && back_file.cartParams ? ' ' : ' -'}
+              </span>
+              <span
+                className={
+                  back_file &&
+                  back_file.cartParams &&
+                  `${styles.order_info_line_span}`
+                }
+              >
+                {back_file &&
+                  back_file.cartParams &&
+                  `${back_file.cartParams.format}, ${back_file.cartParams.size}, ${back_file.cartParams.price} Р. X ${volumeSize} шт.`}
+                <span className={styles.order_info_line_span_end}>
+                  {back_file &&
+                    back_file.cartParams &&
+                    ` - ${back_file.cartParams.price * volumeSize} Р.`}
+                </span>
+              </span>
             </p>
             <p className={styles.order_info_line}>
-              <span className={styles.order_info_line_span_title}>Печать на левом рукаве:{lsleeve_file && lsleeve_file.cartParams ? ' ' : ' -'}</span>
-              <span className={lsleeve_file && lsleeve_file.cartParams && `${styles.order_info_line_span}`}>{lsleeve_file && lsleeve_file.cartParams && `${lsleeve_file.cartParams.format}, ${lsleeve_file.cartParams.size}, ${lsleeve_file.cartParams.price} Р. X ${volumeSize} шт.`}<span className={styles.order_info_line_span_end}>{lsleeve_file && lsleeve_file.cartParams && ` - ${lsleeve_file.cartParams.price * volumeSize} Р.`}</span></span>
+              <span className={styles.order_info_line_span_title}>
+                Печать на левом рукаве:
+                {lsleeve_file && lsleeve_file.cartParams ? ' ' : ' -'}
+              </span>
+              <span
+                className={
+                  lsleeve_file &&
+                  lsleeve_file.cartParams &&
+                  `${styles.order_info_line_span}`
+                }
+              >
+                {lsleeve_file &&
+                  lsleeve_file.cartParams &&
+                  `${lsleeve_file.cartParams.format}, ${lsleeve_file.cartParams.size}, ${lsleeve_file.cartParams.price} Р. X ${volumeSize} шт.`}
+                <span className={styles.order_info_line_span_end}>
+                  {lsleeve_file &&
+                    lsleeve_file.cartParams &&
+                    ` - ${lsleeve_file.cartParams.price * volumeSize} Р.`}
+                </span>
+              </span>
             </p>
             <p className={styles.order_info_line}>
-              <span className={styles.order_info_line_span_title}>Печать на правом рукаве:{rsleeve_file && rsleeve_file.cartParams ? ' ' : ' -'}</span>
-              <span className={rsleeve_file && rsleeve_file.cartParams && `${styles.order_info_line_span}`}>{rsleeve_file && rsleeve_file.cartParams && `${rsleeve_file.cartParams.format}, ${rsleeve_file.cartParams.size}, ${rsleeve_file.cartParams.price} Р. X ${volumeSize} шт.`}<span className={styles.order_info_line_span_end}>{rsleeve_file && rsleeve_file.cartParams && ` - ${rsleeve_file.cartParams.price * volumeSize} Р.`}</span></span>
+              <span className={styles.order_info_line_span_title}>
+                Печать на правом рукаве:
+                {rsleeve_file && rsleeve_file.cartParams ? ' ' : ' -'}
+              </span>
+              <span
+                className={
+                  rsleeve_file &&
+                  rsleeve_file.cartParams &&
+                  `${styles.order_info_line_span}`
+                }
+              >
+                {rsleeve_file &&
+                  rsleeve_file.cartParams &&
+                  `${rsleeve_file.cartParams.format}, ${rsleeve_file.cartParams.size}, ${rsleeve_file.cartParams.price} Р. X ${volumeSize} шт.`}
+                <span className={styles.order_info_line_span_end}>
+                  {rsleeve_file &&
+                    rsleeve_file.cartParams &&
+                    ` - ${rsleeve_file.cartParams.price * volumeSize} Р.`}
+                </span>
+              </span>
             </p>
 
             <p className={styles.order_info_title}>
@@ -535,19 +535,23 @@ function Constructor() {
             <button
               type="button"
               className={styles.item_button}
-              onClick={location.state.from.includes('cart') ? addToCart : addToPrint}
-              disabled={isBlockButton || dropdownVisibleText || circleMask || squareMask}
+              onClick={
+                location.state.from.includes('cart') ? addToCart : addToPrint
+              }
+              disabled={isBlockButton}
             />
           </div>
         </div>
         {isOtherPopupVisible && (
           <PopupModel onClose={closePopupConstructor}>
-            {isOtherPopupVisible.map((el, index) => (
+            {isOtherPopupVisible.map((el) => (
               <p
                 className={
-                  isOtherPopupVisible.length > 1 ? styles.instruction : styles.error
+                  isOtherPopupVisible.length > 1
+                    ? styles.instruction
+                    : styles.error
                 }
-                key={index}
+                key={el}
               >
                 {el}
               </p>

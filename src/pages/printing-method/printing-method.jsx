@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './printing-method.module.css';
-import PrintingGallery from '../../components/printing-gallery/printing-gallery.jsx';
-import PrintingFaq from '../../components/printing-faq/printing-faq.jsx';
-import PrintingMethodPrice from '../../components/printing-methods-components/printing-method-price.jsx';
-import MapScreen from '../../components/main-page-components/map-screen.jsx';
+import PrintingGallery from '../../components/printing-gallery/printing-gallery';
+import PrintingFaq from '../../components/printing-faq/printing-faq';
+import PrintingMethodPrice from '../../components/printing-methods-components/printing-method-price';
+import MapScreen from '../../components/main-page-components/map-screen';
 import PrintingFirstScreen from '../../components/printingFirstScreen/printingFirstScreen';
 
 function PrintingMethod(data) {

@@ -8,7 +8,7 @@ import {
   SET_THIRDSELECTEDITEM,
   SET_DEFAULTFILTER,
   SET_FILTERS,
-} from '../actions/shop-data-actions.jsx';
+} from '../actions/shop-data-actions';
 
 const initialState = {
   data: [],
@@ -23,7 +23,7 @@ const initialState = {
   thirdCount: 0,
 };
 
-export const shopDataReducer = (state = initialState, action) => {
+const shopDataReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_DATA: {
       return {
@@ -207,3 +207,5 @@ export const shopDataReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+export default shopDataReducer;

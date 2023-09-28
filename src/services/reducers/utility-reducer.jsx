@@ -32,7 +32,7 @@ const initialState = {
   message: '',
 };
 
-export const utilityReducer = (state = initialState, action) => {
+const utilityReducer = (state = initialState, action) => {
   switch (action.type) {
     case OPEN_MODAL_MENU: {
       return {
@@ -129,3 +129,5 @@ export const utilityReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+export default utilityReducer;

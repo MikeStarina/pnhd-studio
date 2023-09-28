@@ -16,7 +16,7 @@ import {
   DELETE_PRINT_FROM_CART,
   CHANGE_ITEM_SIZES,
   ADD_ORDER_PRICE,
-} from '../actions/cart-actions.jsx';
+} from '../actions/cart-actions';
 
 const initialState = {
   order: [],
@@ -38,7 +38,7 @@ const initialState = {
   orderPrice: {},
 };
 
-export const cartDataReducer = (state = initialState, action) => {
+const cartDataReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_TO_CART: {
       const clonedOrder = state.order;
@@ -58,7 +58,10 @@ export const cartDataReducer = (state = initialState, action) => {
     }
     case ADD_TO_CART_WITH_PRINT: {
       const clonedOrderFirst = state.order;
-      const clonedOrder = clonedOrderFirst.map((element) => (element.cart_item_id === action.payload.cart_item_id ? action.payload : element));
+      const clonedOrder =
+        clonedOrderFirst.map((element) => (element.cart_item_id === action.payload.cart_item_id
+          ? action.payload
+          : element));
 
       sessionStorage.setItem('cart', JSON.stringify(clonedOrder));
 
@@ -273,3 +276,5 @@ export const cartDataReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+export default cartDataReducer;

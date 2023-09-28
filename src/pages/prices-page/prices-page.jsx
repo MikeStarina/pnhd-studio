@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { CLOSE_MODAL_MENU } from '../../services/actions/utility-actions.jsx';
+import { CLOSE_MODAL_MENU } from '../../services/actions/utility-actions';
 // import styles from './prices-page.module.css';
 
 function PricesPage() {

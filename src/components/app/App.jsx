@@ -8,22 +8,20 @@ import {
   closePopupHeader,
   openPopupHeader,
 } from '../../services/actions/utility-actions';
-import { getShopData } from '../../services/actions/shop-data-actions.jsx';
-import { methodsData } from '../../data/printing-methods/methods-data';
-import { typeOfPrintData } from '../../data/type-of-print-data/data';
+import { getShopData } from '../../services/actions/shop-data-actions';
+import methodsData from '../../data/printing-methods/methods-data';
+import typeOfPrintData from '../../data/type-of-print-data/data';
 
 import PopupModel from '../popupModel/popupModel';
-import MainPage from '../../pages/main-page/main-page.jsx';
-import BurgerIcon from '../main-menu/burger-icon.jsx';
-import MainMenu from '../main-menu/main-menu.jsx';
-import Footer from '../footer/footer.jsx';
-import ShopPage from '../../pages/shop-page/shop-page.jsx';
-import Constructor from '../../pages/constructor-page/constructor-page.jsx';
-import CartIcon from '../cart/cart-icon.jsx';
-import ItemPage from '../../pages/item-page/item-page.jsx';
-import CartPage from '../../pages/cart-page/cart-page.jsx';
-import Cart from '../../pages/cartPage/cartPage.jsx';
-import Checkout from '../../pages/checkout/checkout.jsx';
+import MainPage from '../../pages/main-page/main-page';
+import BurgerIcon from '../main-menu/burger-icon';
+import MainMenu from '../main-menu/main-menu';
+import Footer from '../footer/footer';
+import ShopPage from '../../pages/shop-page/shop-page';
+import Constructor from '../../pages/constructor-page/constructor-page';
+import CartIcon from '../cart/cart-icon';
+import Cart from '../../pages/cartPage/cartPage';
+import Checkout from '../../pages/checkout/checkout';
 import { RESTORE_CART_FROM_SSTORAGE, RESTORE_PRICE_FROM_SSTORAGE } from '../../services/actions/cart-actions';
 import Oferta from '../../pages/oferta-page/oferta-page';
 import Page404 from '../../pages/page-404/page-404';

@@ -8,52 +8,48 @@ export const GET_SDEK_SHIPPIG_TARIF = 'GET_SDEK_SHIPPIG_TARIF';
 export const SET_SDEK_DEFAULT_STATE = 'GET_SDEK_DEFAULT_STATE';
 export const SET_SDEK_RESET_POINTS = 'SET_SDEK_RESET_POINTS';
 
-export const getSdekCities = () => {
-  return function (dispatch) {
-    fetch(`${apiBaseUrl}/api/shipping/cities`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(checkResponse)
-      .then((res) => {
-        dispatch({
-          type: GET_SDEK_CITIES,
-          payload: res,
-        });
-      })
-      .catch((err) => {
-        dispatch(
-          openPopup([
-            'Не удалось загрузить список пунктов выдачи. Попробуйте обновить страницу.',
-          ]),
-        );
+export const getSdekCities = () => function (dispatch) {
+  fetch(`${apiBaseUrl}/api/shipping/cities`, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(checkResponse)
+    .then((res) => {
+      dispatch({
+        type: GET_SDEK_CITIES,
+        payload: res,
       });
-  };
+    })
+    .catch((err) => {
+      dispatch(
+        openPopup([
+          'Не удалось загрузить список пунктов выдачи. Попробуйте обновить страницу.',
+        ]),
+      );
+    });
 };
 
-export const getSdekPoints = (citiesCode) => {
-  return function (dispatch) {
-    fetch(`${apiBaseUrl}/api/shipping/points?city_code=${citiesCode}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(checkResponse)
-      .then((res) => {
-        dispatch({
-          type: GET_SDEK_POINTS,
-          payload: res,
-        });
-      })
-      .catch((err) => {
-        dispatch(
-          openPopup([
-            'Не удалось загрузить список городов. Попробуйте обновить страницу.',
-          ]),
-        );
+export const getSdekPoints = (citiesCode) => function (dispatch) {
+  fetch(`${apiBaseUrl}/api/shipping/points?city_code=${citiesCode}`, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(checkResponse)
+    .then((res) => {
+      dispatch({
+        type: GET_SDEK_POINTS,
+        payload: res,
       });
-  };
+    })
+    .catch((err) => {
+      dispatch(
+        openPopup([
+          'Не удалось загрузить список городов. Попробуйте обновить страницу.',
+        ]),
+      );
+    });
 };
 
 export const getSdekShippingTarif = (citiesCode, orderWeight) => {

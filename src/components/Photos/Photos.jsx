@@ -6,8 +6,8 @@ function Photos(item) {
 
   return (
     <div className={styles.photo_box}>
-      {item.galleryPhotos && item.galleryPhotos.map((el, index) => (
-        <img className={styles.photo} src={`${apiBaseUrl}${el}`} alt={item.name} key={index} />
+      {item.galleryPhotos && item.galleryPhotos.map((el) => (
+        <img className={styles.photo} src={`${apiBaseUrl}${el}`} alt={item.name} key={el} />
       ))}
     </div>
   );

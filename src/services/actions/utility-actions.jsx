@@ -19,10 +19,8 @@ export const closePopup = () => ({
   type: CLOSE_POPUP,
 });
 
-export const openPopup = (arr) => {
-  return function (dispatch) {
-    dispatch({ type: OPEN_POPUP, arr });
-  };
+export const openPopup = (arr) => function (dispatch) {
+  dispatch({ type: OPEN_POPUP, arr });
 };
 
 export const closePopupHeader = () => ({
@@ -43,9 +41,7 @@ export const sendLeadFormData = (name, phone) => {
     if (res.ok || res.created) {
       return res.json();
     }
-    return res.json().then((err) => {
-      return Promise.reject(err);
-    });
+    return res.json().then((err) => Promise.reject(err));
   };
 
   return function (dispatch) {

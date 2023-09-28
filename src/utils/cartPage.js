@@ -9,15 +9,32 @@ export function getAllPrice(arr) {
       (accumulator, currentValue) => accumulator + currentValue.qty,
       initialValue,
     );
-    allProductPrice += (element.attributes.price * count);
-    const frontPrintPrice = element.print && (element.print.front.file || element.print.front.text) ? element.print.front.cartParams.price : 0;
-    const backPrintPrice = element.print && (element.print.back.file || element.print.back.text) ? element.print.back.cartParams.price : 0;
-    const lsleevePrintPrice = element.print && (element.print.lsleeve.file || element.print.lsleeve.text) ? element.print.lsleeve.cartParams.price : 0;
-    const rsleevePrintPrice = element.print && (element.print.rsleeve.file || element.print.rsleeve.text) ? element.print.rsleeve.cartParams.price : 0;
+    allProductPrice += element.attributes.price * count;
+    const frontPrintPrice =
+      element.print && element.print.front.file
+        ? element.print.front.cartParams.price
+        : 0;
+    const backPrintPrice =
+      element.print && element.print.back.file
+        ? element.print.back.cartParams.price
+        : 0;
+    const lsleevePrintPrice =
+      element.print && element.print.lsleeve.file
+        ? element.print.lsleeve.cartParams.price
+        : 0;
+    const rsleevePrintPrice =
+      element.print && element.print.rsleeve.file
+        ? element.print.rsleeve.cartParams.price
+        : 0;
 
-    allPrintPrice += (frontPrintPrice + backPrintPrice + lsleevePrintPrice + rsleevePrintPrice) * count;
+    allPrintPrice +=
+      (frontPrintPrice +
+        backPrintPrice +
+        lsleevePrintPrice +
+        rsleevePrintPrice) *
+      count;
   });
-  allPrice += (allProductPrice + allPrintPrice);
+  allPrice += allProductPrice + allPrintPrice;
   return { product: allProductPrice, print: allPrintPrice, price: allPrice };
 }
 

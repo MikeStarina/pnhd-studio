@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export const useViewOnClick = ({ initialOpen = false } = {}) => {
+const useViewOnClick = ({ initialOpen = false } = {}) => {
   const [isOpen, setIsOpen] = useState(initialOpen);
 
   const open = () => {
@@ -22,3 +22,5 @@ export const useViewOnClick = ({ initialOpen = false } = {}) => {
     toggle,
   };
 };
+
+export default useViewOnClick;

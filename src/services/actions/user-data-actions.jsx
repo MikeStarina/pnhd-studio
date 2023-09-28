@@ -42,28 +42,26 @@ export const loginFunc = (userLoginData) => {
   };
 };
 
-export const updateAuth = (token) => {
-  return function (dispatch) {
-    fetch(`${apiBaseUrl}/api/users/me`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        // console.log(res);
-        if (!res.error) {
-          dispatch({
-            type: UPDATE_USER_AUTH,
-            id: res.id,
-            username: res.username,
-            email: res.email,
-            token,
-          });
-        }
-      });
-  };
+export const updateAuth = (token) => function (dispatch) {
+  fetch(`${apiBaseUrl}/api/users/me`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      // console.log(res);
+      if (!res.error) {
+        dispatch({
+          type: UPDATE_USER_AUTH,
+          id: res.id,
+          username: res.username,
+          email: res.email,
+          token,
+        });
+      }
+    });
 };
 
 export const createNewUser = (registerFormData) => {
@@ -97,20 +95,16 @@ export const createNewUser = (registerFormData) => {
   };
 };
 
-export const forgotPasswordRequest = (forgotPasswordData) => {
-  // console.log(forgotPasswordData);
-
-  return function (dispatch) {
-    fetch(`${apiBaseUrl}/api/auth/forgot-password`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': '',
-        Host: 'pnhdstudioapi.ru',
-      },
-      body: JSON.stringify({ email: forgotPasswordData }),
-    })
-      .then((res) => res.json())
-      .then((res) => console.log(res));
-  };
+export const forgotPasswordRequest = (forgotPasswordData) => function (dispatch) {
+  fetch(`${apiBaseUrl}/api/auth/forgot-password`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': '',
+      Host: 'pnhdstudioapi.ru',
+    },
+    body: JSON.stringify({ email: forgotPasswordData }),
+  })
+    .then((res) => res.json())
+    .then((res) => console.log(res));
 };

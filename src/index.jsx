@@ -6,8 +6,8 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import reportWebVitals from './reportWebVitals';
-import App from './components/app/App.jsx';
-import { rootReducer } from './services/store/roor-reducer.jsx';
+import App from './components/app/App';
+import rootReducer from './services/store/roor-reducer';
 
 const composeEnhancers = typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ && process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}) : compose;
 

@@ -30,7 +30,7 @@ const initialState = {
   activeView: 'front',
 };
 
-export const editorReducer = (state = initialState, action) => {
+const editorReducer = (state = initialState, action) => {
   switch (action.type) {
     case IMAGE_SELECT: {
       return {
@@ -321,3 +321,5 @@ export const editorReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+export default editorReducer;
