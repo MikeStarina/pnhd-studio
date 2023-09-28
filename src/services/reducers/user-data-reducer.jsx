@@ -50,7 +50,7 @@ const initialState = {
   },
 };
 
-export const userDataReducer = (state = initialState, action) => {
+const userDataReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_USER_LOGIN_DATA: {
       return {
@@ -189,3 +189,5 @@ export const userDataReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+export default userDataReducer;

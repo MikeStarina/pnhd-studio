@@ -1,8 +1,7 @@
 import React from 'react';
-// import styles from './contacts-page.module.css';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { CLOSE_MODAL_MENU } from '../../services/actions/utility-actions.jsx';
+import { CLOSE_MODAL_MENU } from '../../services/actions/utility-actions';
 
 function ContactsPage() {
   const dispatch = useDispatch();

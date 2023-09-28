@@ -6,7 +6,7 @@ import {
   openPopupHeader,
   SET_ACTIVE_PRICE_TABLE,
 } from '../../services/actions/utility-actions';
-import PriceTable from './price-screen-components/price-table.jsx';
+import PriceTable from './price-screen-components/price-table';
 
 const price = {
   dtg: {

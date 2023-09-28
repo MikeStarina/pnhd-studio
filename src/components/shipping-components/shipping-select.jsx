@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-
-import { useViewOnClick } from '../../hooks/useViewOnClick';
+import useViewOnClick from '../../hooks/useViewOnClick';
 import styles from './shipping-select.module.css';
 
-export function ShippingSelect(props) {
+function ShippingSelect(props) {
   const {
     defaultValue,
     options,

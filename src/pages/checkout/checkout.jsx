@@ -27,7 +27,7 @@ import {
 import { openPopup, closePopup } from '../../services/actions/utility-actions';
 import { checkPromoCodeValidity } from '../../services/actions/cart-actions';
 import { ShippingMap } from '../../components/shipping-components/shipping-map';
-import { ShippingSelect } from '../../components/shipping-components/shipping-select';
+import ShippingSelect from '../../components/shipping-components/shipping-select';
 import useDebounce from '../../hooks/useDebounce';
 import styles from './checkout.module.css';
 import PopupModel from '../../components/popupModel/popupModel';
@@ -70,9 +70,14 @@ function Checkout() {
   const [checkSelect, setChekSelect] = useState(true);
   const [shippingPrice, setShippingPrice] = useState(0);
   const debouncedSearchTerm = useDebounce(listCities, 500);
-  const shipping_price = validPromoCode.discount_ratio ? orderPrice.price * validPromoCode.discount_ratio + (shippingPrice || 0) : orderPrice.price + (shippingPrice || 0);
-  const shipping_free = validPromoCode.discount_ratio ? orderPrice.price * validPromoCode.discount_ratio : orderPrice.price;
-  const discounted_price = validPromoCode.mechanic === 'freeShipping' ? shipping_free : shipping_price;
+  const shipping_price = validPromoCode.discount_ratio
+    ? orderPrice.price * validPromoCode.discount_ratio + (shippingPrice || 0)
+    : orderPrice.price + (shippingPrice || 0);
+  const shipping_free = validPromoCode.discount_ratio
+    ? orderPrice.price * validPromoCode.discount_ratio
+    : orderPrice.price;
+  const discounted_price =
+    validPromoCode.mechanic === 'freeShipping' ? shipping_free : shipping_price;
   const orderWeight = order.map((el) => {
     const sizes = el.attributes.shippingParams;
     return {
@@ -130,13 +135,11 @@ function Checkout() {
   };
 
   const getShippingPoints = () => {
-    const arr = shippingPoints.map((item) => {
-      return {
-        name: item.name,
-        coordinates: [item.location.latitude, item.location.longitude],
-        color: '#1E98FF',
-      };
-    });
+    const arr = shippingPoints.map((item) => ({
+      name: item.name,
+      coordinates: [item.location.latitude, item.location.longitude],
+      color: '#1E98FF',
+    }));
     setMapPoints(arr);
   };
 
@@ -206,7 +209,8 @@ function Checkout() {
     }
     shippingPoints.forEach((item) => {
       if (
-        item.location.latitude === el.coordinates[0] && item.location.longitude === el.coordinates[1]
+        item.location.latitude === el.coordinates[0] &&
+        item.location.longitude === el.coordinates[1]
       ) {
         dispatch({
           type: SET_SHIPPING_PVZ,
@@ -225,7 +229,13 @@ function Checkout() {
       });
     }
   };
-  const isUserFormValid = userCartData.isNameValid && userCartData.isPhoneValid && userCartData.isEmailValid && userCartData.isSurnameValid && userShippingData.isCityValid && userShippingData.isPvzValid;
+  const isUserFormValid =
+    userCartData.isNameValid &&
+    userCartData.isPhoneValid &&
+    userCartData.isEmailValid &&
+    userCartData.isSurnameValid &&
+    userShippingData.isCityValid &&
+    userShippingData.isPvzValid;
   const validationMessage = `${!userCartData.isNameValid ? 'Имя' : ''} ${
     !userCartData.isSurnameValid ? 'Фамилия' : ''
   } ${!userCartData.isPhoneValid ? 'Телефон' : ''} ${
@@ -249,9 +259,10 @@ function Checkout() {
     let accTotal = 0;
     order.map((el) => {
       if (el.cart_item_id === id) {
-        return el.attributes.size.reduce((total, element) => {
-          return (accTotal = total + element.qty);
-        }, 0);
+        return el.attributes.size.reduce(
+          (total, element) => (accTotal = total + element.qty),
+          0,
+        );
       }
       return accTotal;
     });
@@ -293,17 +304,35 @@ function Checkout() {
     } else {
       const metrikaProducts = [];
       order.forEach((item) => {
-        const frontPrintPrice = item.print && item.print.front.file ? item.print.front.cartParams.price : 0;
-        const backPrintPrice = item.print && item.print.back.file ? item.print.back.cartParams.price : 0;
-        const lsleevePrintPrice = item.print && item.print.lsleeve.file ? item.print.lsleeve.cartParams.price : 0;
-        const rsleevePrintPrice = item.print && item.print.rsleeve.file ? item.print.rsleeve.cartParams.price : 0;
+        const frontPrintPrice =
+          item.print && item.print.front.file
+            ? item.print.front.cartParams.price
+            : 0;
+        const backPrintPrice =
+          item.print && item.print.back.file
+            ? item.print.back.cartParams.price
+            : 0;
+        const lsleevePrintPrice =
+          item.print && item.print.lsleeve.file
+            ? item.print.lsleeve.cartParams.price
+            : 0;
+        const rsleevePrintPrice =
+          item.print && item.print.rsleeve.file
+            ? item.print.rsleeve.cartParams.price
+            : 0;
 
-        const printTotalprice = frontPrintPrice + backPrintPrice + lsleevePrintPrice + rsleevePrintPrice;
+        const printTotalprice =
+          frontPrintPrice +
+          backPrintPrice +
+          lsleevePrintPrice +
+          rsleevePrintPrice;
 
         metrikaProducts.push({
           id: item.attributes._id,
           name:
-            printTotalprice > 0 ? `${item.attributes.name} с печатью` : item.attributes.name,
+            printTotalprice > 0
+              ? `${item.attributes.name} с печатью`
+              : item.attributes.name,
           price: item.attributes.price + printTotalprice,
           category: item.attributes.category,
           variant: item.print ? 'с печатью' : 'без печати',
@@ -341,14 +370,22 @@ function Checkout() {
   useEffect(() => {
     getShippingPoints();
     setShippingPrice(
-      shippingTarif.total_sum ? Math.ceil(deliveryTotalCalc(orderPrice.price, shippingTarif.total_sum)) : 0,
+      shippingTarif.total_sum
+        ? Math.ceil(
+          deliveryTotalCalc(orderPrice.price, shippingTarif.total_sum),
+        )
+        : 0,
     );
   }, [shippingPoints]);
 
   // подтсраховка от "зажевывания" стоимости доставки
   useEffect(() => {
     setShippingPrice(
-      shippingTarif.total_sum ? Math.ceil(deliveryTotalCalc(orderPrice.price, shippingTarif.total_sum)) : 0,
+      shippingTarif.total_sum
+        ? Math.ceil(
+          deliveryTotalCalc(orderPrice.price, shippingTarif.total_sum),
+        )
+        : 0,
     );
   }, [shippingTarif]);
 
@@ -406,7 +443,9 @@ function Checkout() {
               id="name"
               name="name"
               className={
-                firstLoadInput.name && !userCartData.isNameValid ? `${styles.user_form_input} ${styles.user_form_inputError}` : styles.user_form_input
+                firstLoadInput.name && !userCartData.isNameValid
+                  ? `${styles.user_form_input} ${styles.user_form_inputError}`
+                  : styles.user_form_input
               }
               required
               onChange={inputChangeHandler}
@@ -422,7 +461,9 @@ function Checkout() {
               id="surname"
               name="surname"
               className={
-                firstLoadInput.surname && !userCartData.isSurnameValid ? `${styles.user_form_input} ${styles.user_form_inputError}` : styles.user_form_input
+                firstLoadInput.surname && !userCartData.isSurnameValid
+                  ? `${styles.user_form_input} ${styles.user_form_inputError}`
+                  : styles.user_form_input
               }
               required
               onChange={inputChangeHandler}
@@ -440,7 +481,9 @@ function Checkout() {
               id="phone"
               name="phone"
               className={
-                firstLoadInput.phone && !userCartData.isPhoneValid ? `${styles.user_form_input} ${styles.user_form_inputError}` : styles.user_form_input
+                firstLoadInput.phone && !userCartData.isPhoneValid
+                  ? `${styles.user_form_input} ${styles.user_form_inputError}`
+                  : styles.user_form_input
               }
               required
               onChange={inputChangeHandler}
@@ -455,7 +498,9 @@ function Checkout() {
               id="email"
               name="email"
               className={
-                firstLoadInput.email && !userCartData.isEmailValid ? `${styles.user_form_input} ${styles.user_form_inputError}` : styles.user_form_input
+                firstLoadInput.email && !userCartData.isEmailValid
+                  ? `${styles.user_form_input} ${styles.user_form_inputError}`
+                  : styles.user_form_input
               }
               required
               onChange={inputChangeHandler}
@@ -514,7 +559,9 @@ function Checkout() {
                     type="text"
                     id="cityInput"
                     className={
-                      checkInput ? styles.user_form_input : `${styles.user_form_input} ${styles.user_form_inputError}`
+                      checkInput
+                        ? styles.user_form_input
+                        : `${styles.user_form_input} ${styles.user_form_inputError}`
                     }
                     required
                     placeholder="Город"
@@ -534,40 +581,38 @@ function Checkout() {
                   debounceCities.length > 0 && (
                     <div className={styles.cities_wrap}>
                       <ul className={styles.cities_list}>
-                        {debounceCities.map((item, index) => {
-                          return (
-                            <li
-                              key={index}
-                              onClick={() => {
-                                if (item.latitude) {
-                                  setCenterMap([item.latitude, item.longitude]);
-                                }
-                                dispatch(getSdekPoints(item.code));
-                                setListCities(item);
-                                setTypeList(true);
-                                dispatch({
-                                  type: SET_SHIPPING_CITIES,
-                                  payload: {
-                                    item: {
-                                      ...item,
-                                    },
-                                    isCityValid: true,
+                        {debounceCities.map((item) => (
+                          <li
+                            key={item.code}
+                            onClick={() => {
+                              if (item.latitude) {
+                                setCenterMap([item.latitude, item.longitude]);
+                              }
+                              dispatch(getSdekPoints(item.code));
+                              setListCities(item);
+                              setTypeList(true);
+                              dispatch({
+                                type: SET_SHIPPING_CITIES,
+                                payload: {
+                                  item: {
+                                    ...item,
                                   },
-                                });
-                                setChekInput(true);
-                                dispatch(
-                                  getSdekShippingTarif(
-                                    item.code,
-                                    (item.orderWeight = orderWeight),
-                                  ),
-                                );
-                              }}
-                              className={styles.cities_listItem}
-                            >
-                              {item.city},{item.region}
-                            </li>
-                          );
-                        })}
+                                  isCityValid: true,
+                                },
+                              });
+                              setChekInput(true);
+                              dispatch(
+                                getSdekShippingTarif(
+                                  item.code,
+                                  (item.orderWeight = orderWeight),
+                                ),
+                              );
+                            }}
+                            className={styles.cities_listItem}
+                          >
+                            {item.city},{item.region}
+                          </li>
+                        ))}
                       </ul>
                     </div>
                   )
@@ -575,7 +620,9 @@ function Checkout() {
                   <>
                     <p className={styles.shippingPrice}>
                       Доставка до пункта выдачи:{' '}
-                      {validPromoCode.mechanic === 'freeShipping' ? 'Бесплатная доставка' : `${shippingPrice} Р`}
+                      {validPromoCode.mechanic === 'freeShipping'
+                        ? 'Бесплатная доставка'
+                        : `${shippingPrice} Р`}
                     </p>
                     <div className={styles.shippingSelectWrap}>
                       <p>Выберите ПВЗ*: </p>
@@ -610,7 +657,9 @@ function Checkout() {
             className={`${styles.button_wrapper__text} ${styles.button_wrapper__textShip}`}
           >
             Стоимость доставки:{' '}
-            {validPromoCode.mechanic === 'freeShipping' ? 'Бесплатная доставка' : `${shippingPrice} Р.`}
+            {validPromoCode.mechanic === 'freeShipping'
+              ? 'Бесплатная доставка'
+              : `${shippingPrice} Р.`}
           </p>
           <p
             className={`${styles.button_wrapper__text} ${styles.button_wrapper__textPrePrice}`}
@@ -681,10 +730,10 @@ function Checkout() {
                 {!isUserFormValid && (
                   <p className={styles.validation_message}>Заполните поля:</p>
                 )}
-                {isOtherPopupVisible.map((el, index) => (
+                {isOtherPopupVisible.map((el) => (
                   <p
                     className={`${styles.validation_message} ${styles.popupBlock_message}`}
-                    key={index}
+                    key={el}
                   >
                     {el}
                   </p>
