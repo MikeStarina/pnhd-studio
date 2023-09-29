@@ -220,7 +220,7 @@ function ItemPage() {
               {item.isSale &&
                 descriptionArray &&
                 descriptionArray.map((item, index) => (
-                  <p className={styles.item_description} key={index}>
+                  <p className={styles.item_description} key={[index]}>
                     {item}
                   </p>
                 ))}
@@ -322,7 +322,7 @@ function ItemPage() {
               {isOtherPopupVisible && (
                 <PopupModel onClose={closePopupConstructor}>
                   {isOtherPopupVisible.map((el, index) => (
-                    <p className={styles.instruction} key={index}>
+                    <p className={styles.instruction} key={[index]}>
                       {el}
                     </p>
                   ))}

@@ -13,7 +13,6 @@ import { apiBaseUrl } from '../../utils/constants';
 import styles from './PhotosMobile.module.css';
 
 function PhotosMobile(item) {
-  console.log(item);
   return (
     <>
       <Swiper
