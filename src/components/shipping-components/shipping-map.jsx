@@ -26,7 +26,6 @@ export function ShippingMap(props) {
   const placemark = useRef(null);
   const { points, updatePointInput, setCenter } = props;
   const [a, b] = useState([59.972621, 30.306432]);
-
   if (a[0] != setCenter[0]) {
     b(setCenter);
 
@@ -59,14 +58,14 @@ export function ShippingMap(props) {
                 groupByCoordinates: false,
               }}
             >
-              {points.map((point, index) => (
+              {points.map((point) => (
                 <Placemark
                   className={styles.placemark}
                   geometry={point.coordinates}
                   onClick={(e) => {
                     handleClick(point, e);
                   }}
-                  key={index}
+                  key={point.name}
                   options={{
                     iconColor: `${point.color}`,
                   }}

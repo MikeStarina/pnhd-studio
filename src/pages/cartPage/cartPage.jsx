@@ -249,7 +249,7 @@ function Cart() {
                         className={`${styles.link} ${styles.link__name}`}
                         key={item.cart_item_id}
                       >
-                        <button className={styles.productsPrint_button}>
+                        <button className={styles.productsPrint_button} type="button">
                           Изменить
                         </button>
                       </Link>
@@ -276,6 +276,7 @@ function Cart() {
                       <button
                         className={styles.addPrintButton_wrap_text}
                         disabled={!item.attributes.isForPrinting}
+                        type="button"
                       >
                         Добавить принт &gt;
                       </button>
@@ -374,6 +375,7 @@ function Cart() {
                   payload: allOrderPrice,
                 });
               }}
+              type="button"
             >
               К оформлению &gt;&gt;
             </button>

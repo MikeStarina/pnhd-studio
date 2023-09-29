@@ -5,7 +5,7 @@ function PrintingGallery(data) {
   const { gallery } = data;
   return (
     <section className={styles.fourth_screen}>
-      {gallery.map((item, index) => (
+      {gallery.map((item) => (
         <img
             className={styles.gallery_img}
             alt="print sample"

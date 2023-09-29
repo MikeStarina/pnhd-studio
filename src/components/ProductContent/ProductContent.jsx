@@ -15,13 +15,14 @@ import { ADD_TO_CART } from '../../services/actions/cart-actions';
 import addToMemory from '../../utils/addToMemory';
 
 function ProductContent(items) {
+  const { slug, sizes, _id, name, price, category, description, isForPrinting, isSale } = items;
   const dispatch = useDispatch();
   // order - список всех размеров тут
   const { order } = useSelector((store) => store.itemReducer);
   const history = useHistory();
   const [size, setSize] = useState('');
 
-  const linkSlug = items.slug;
+  const linkSlug = slug;
 
   const {
     isBlockButton,
@@ -39,12 +40,12 @@ function ProductContent(items) {
   } = useSelector((store) => store.editorState);
 
   useEffect(() => {
-    items.sizes?.map((el, i) => {
+    sizes?.map((el, i) => {
       dispatch(
         addItemSize({
           name: el.name,
           qty: 0,
-          _id: items._id + i,
+          _id: _id + i,
         }),
       );
     });
@@ -62,16 +63,17 @@ function ProductContent(items) {
           detail: {
             products: [
               {
-                id: items._id,
-                name: items.name,
-                price: items.price,
-                category: items.category,
+                id: _id,
+                name,
+                price,
+                category,
               },
             ],
           },
         },
       });
     }
+    console.log(window.dataLayer);
   }, [items]);
 
   const addToConstructor = () => {
@@ -109,14 +111,15 @@ function ProductContent(items) {
       dispatch(openPopup(['Нужно выбрать размер']));
     }
   };
+  console.log('lll');
   return (
     <div className={styles.product_box}>
       <div className={styles.description}>
         <div className={styles.title_box}>
-          <h1 className={styles.title}>{items.name}</h1>
-          <p className={styles.text}>&#8213; {items.price} P.</p>
+          <h1 className={styles.title}>{name}</h1>
+          <p className={styles.text}>&#8213; {price} P.</p>
         </div>
-        <p className={styles.text}>{items.description}</p>
+        <p className={styles.text}>{description}</p>
         <ul className={styles.box_link}>
           <li className={styles.menu_elem}>
             <Link to="/size_chart" className={styles.menu_link} target="blank">
@@ -130,7 +133,7 @@ function ProductContent(items) {
             </Link>
           </li>
         </ul>
-        <label className={styles.select_label} htmfor="sizeSelect">
+        <label className={styles.select_label} htmlFor="sizeSelect">
           Выберите размер:
         </label>
         {order.length > 0 ? (
@@ -142,15 +145,15 @@ function ProductContent(items) {
               size={size}
               id={item._id}
               key={item._id}
-              remain={items.sizes[index].qty}
+              remain={sizes[index].qty}
             />
           ))
         ) : (
           <option>Нет в наличии</option>
         )}
-        {items.isForPrinting &&
-          !items.isSale &&
-          items.sizes.length > 0 &&
+        {isForPrinting &&
+          !isSale &&
+          sizes.length > 0 &&
           (isSizeFunction(order) ? (
             <Link
               to={{
@@ -170,7 +173,7 @@ function ProductContent(items) {
         <Button
           onClickTo={addToCart}
           className={
-            items.isForPrinting
+            isForPrinting
               ? `${styles.button_down}`
               : `${styles.button_up}`
           }

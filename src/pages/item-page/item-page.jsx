@@ -220,6 +220,8 @@ function ItemPage() {
               {item.isSale &&
                 descriptionArray &&
                 descriptionArray.map((item, index) => (
+                  // эта страница не используется
+                  // eslint-disable-next-line react/no-array-index-key
                   <p className={styles.item_description} key={index}>
                     {item}
                   </p>
@@ -243,12 +245,12 @@ function ItemPage() {
                   </span>
                 )}
                 {!item.isSale && (
-                  <label className={styles.select_label} htmfor="sizeSelect">
+                  <label className={styles.select_label} htmlFor="sizeSelect">
                     Выберите размер:
                   </label>
                 )}
                 {item.isSale && (
-                  <label className={styles.select_label} htmfor="sizeSelect">
+                  <label className={styles.select_label} htmlFor="sizeSelect">
                     Выберите код:
                   </label>
                 )}
@@ -322,6 +324,8 @@ function ItemPage() {
               {isOtherPopupVisible && (
                 <PopupModel onClose={closePopupConstructor}>
                   {isOtherPopupVisible.map((el, index) => (
+                    // эта страница не используется
+                    // eslint-disable-next-line react/no-array-index-key
                     <p className={styles.instruction} key={index}>
                       {el}
                     </p>

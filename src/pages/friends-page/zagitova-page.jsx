@@ -264,7 +264,7 @@ function ZagitovaPage() {
                 </Link>
               </li>
             </ul>
-            <label className={styles.select_label} htmfor="sizeSelect">
+            <label className={styles.select_label} htmlFor="sizeSelect">
               Выберите размер:
             </label>
             {order.length > 0 ? (

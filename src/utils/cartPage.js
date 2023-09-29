@@ -92,7 +92,9 @@ export const getPreviewArr = (obj) => {
       id: cart_item_id,
     });
   }
-
+  // это исключение лучше оставить. чтобы линтер не ругался, надо убрать первую проверку на (!print)
+  // что в процессе работы приведет к лишним вызовам
+  // eslint-disable-next-line consistent-return
   return zzz;
 };
 
@@ -126,5 +128,8 @@ export const getPrintPrice = (obj) => {
     totalPrintSum += print.rsleeve.cartParams.price * productPriece;
   }
 
+  // это исключение лучше оставить. чтобы линтер не ругался, надо убрать первую проверку на (!print)
+  // что в процессе работы приведет к лишним вызовам
+  // eslint-disable-next-line consistent-return
   return totalPrintSum;
 };

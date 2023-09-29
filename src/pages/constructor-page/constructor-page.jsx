@@ -398,6 +398,7 @@ function Constructor() {
                     ? `${styles.item_button_quest} ${styles.item_button_quest_active}`
                     : `${styles.item_button_quest}`
                 }
+                type="button"
               >
                 <Square className={styles.btn_svg} />
               </button>
@@ -406,6 +407,7 @@ function Constructor() {
                 className={styles.item_button_quest}
                 onMouseEnter={() => setSquareCircleComponentColor(true)}
                 onMouseLeave={() => setSquareCircleComponentColor(false)}
+                type="button"
               >
                 <SquareCircle
                   className={styles.btn_svg}
@@ -417,6 +419,7 @@ function Constructor() {
               <button
                 onClick={openPopupInfo}
                 className={styles.item_button_quest}
+                type="button"
               >
                 <WordT className={styles.btn_svg} />
               </button>
@@ -424,6 +427,7 @@ function Constructor() {
             <button
               onClick={openPopupConstructor}
               className={styles.item_button_quest}
+              type="button"
             >
               ?
             </button>

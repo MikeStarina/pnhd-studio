@@ -10,7 +10,7 @@ function Accordion() {
     if (isActive === index) {
       return setIsActive(null);
     }
-    setIsActive(index);
+    return setIsActive(index);
   };
 
   return (

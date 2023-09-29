@@ -21,6 +21,8 @@ export const fileSelect = (
   if (activeView === 'badge' && badge_file.file) {
     return { file: badge_file, name: badge_file.file.name };
   }
+
+  return false;
 };
 
 // Задает координаты появления привью изображения, вызывается в файле editor-action (redux)

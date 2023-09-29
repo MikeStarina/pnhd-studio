@@ -57,15 +57,15 @@
     "react/jsx-no-bind": "off",
     "eqeqeq": "off",
     "react/react-in-jsx-scope": "off",
-    "react/button-has-type": "off",
-    "no-param-reassign": 0,
-    "no-shadow": "off",
-    "no-unused-expressions": "off",
-    "import/no-unresolved": "off",
-    "no-nested-ternary": "off",
-    "react/no-unknown-property": "off",
-    "react/destructuring-assignment": "off",
-    "consistent-return": "off",
+    // "react/button-has-type": "off",
+    "no-param-reassign": 0,// leave it off. Prohibits mutating function arguments. This is necessary in some places of the code
+    "no-shadow": "off", //it is better to leave it turned off. Prohibits creating not only variables with the same names, but also arguments for calling a function, as well as nested array method items
+    "no-unused-expressions": "off", // leave it off, prohibits the appearance of simple expressions inside the function
+    "import/no-unresolved": "off", // пути к получению модулей, вернуться позже, лечение проблемное
+    "no-nested-ternary": "off", // https://eslint.org/docs/latest/rules/no-nested-ternary , I think it's better to leave it off
+    // "react/no-unknown-property": "off",
+    // "react/destructuring-assignment": "off",
+    // "consistent-return": "off",
     // "react/no-array-index-key": "off",
     "func-names": "off", // From here and below is correct rules !!!
     "react/jsx-props-no-spreading": "off",

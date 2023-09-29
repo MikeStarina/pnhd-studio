@@ -1,3 +1,5 @@
+/* eslint-disable no-shadow */
+// линтер ругается на импорт ЯКарт
 import React, { lazy, Suspense } from 'react';
 import styles from './map-screen.module.css';
 // import { YMaps, Map, Placemark, ZoomControl } from '@pbe/react-yandex-maps';

@@ -12,8 +12,8 @@ import { Pagination, Navigation } from 'swiper/modules';
 import { apiBaseUrl } from '../../utils/constants';
 import styles from './PhotosMobile.module.css';
 
-function PhotosMobile(item) {
-  console.log(item);
+function PhotosMobile({ galleryPhotos, name }) {
+  // console.log(name);
   return (
     <>
       <Swiper
@@ -25,9 +25,9 @@ function PhotosMobile(item) {
         modules={[Pagination, Navigation]}
         className={styles.swiper}
       >
-        {item.galleryPhotos && item.galleryPhotos.map((el, index) => (
+        {galleryPhotos && galleryPhotos.map((el, index) => (
           <SwiperSlide key={el} className={styles.swiper_slide}>
-            <img src={`${apiBaseUrl}${el}`} alt={item.name} />
+            <img src={`${apiBaseUrl}${el}`} alt={name} />
           </SwiperSlide>
         ))}
       </Swiper>

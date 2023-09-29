@@ -433,7 +433,7 @@ function Checkout() {
       <div className={styles.body}>
         <div className={styles.form_wrapper}>
           <form className={styles.user_form} id="checkout_form">
-            <label htmfor="name" className={styles.input_label}>
+            <label htmlFor="name" className={styles.input_label}>
               Имя*:
             </label>
             <input
@@ -451,7 +451,7 @@ function Checkout() {
               onChange={inputChangeHandler}
               value={userCartData.name}
             />
-            <label htmfor="surname" className={styles.input_label}>
+            <label htmlFor="surname" className={styles.input_label}>
               Фамилия*:
             </label>
             <input
@@ -469,7 +469,7 @@ function Checkout() {
               onChange={inputChangeHandler}
               value={userCartData.surname}
             />
-            <label htmfor="phone" className={styles.input_label}>
+            <label htmlFor="phone" className={styles.input_label}>
               Телефон*:
             </label>
             <InputMask
@@ -489,7 +489,7 @@ function Checkout() {
               onChange={inputChangeHandler}
               value={userCartData.phone}
             />
-            <label htmfor="email" className={styles.input_label}>
+            <label htmlFor="email" className={styles.input_label}>
               Email*:
             </label>
             <input

@@ -1,13 +1,13 @@
 import { apiBaseUrl } from '../../utils/constants';
 import styles from './Photos.module.css';
 
-function Photos(item) {
+function Photos({ galleryPhotos, name }) {
   // console.log(item);
 
   return (
     <div className={styles.photo_box}>
-      {item.galleryPhotos && item.galleryPhotos.map((el) => (
-        <img className={styles.photo} src={`${apiBaseUrl}${el}`} alt={item.name} key={el} />
+      {galleryPhotos && galleryPhotos.map((el) => (
+        <img className={styles.photo} src={`${apiBaseUrl}${el}`} alt={name} key={el} />
       ))}
     </div>
   );
