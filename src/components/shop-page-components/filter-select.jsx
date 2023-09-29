@@ -29,12 +29,11 @@ function FilterSelect(props) {
   };
 
   useEffect(() => {}, [options, dropdownVisible]);
-
   return (
     <div className={styles.wrap}>
       <div
         className={
-          count != 0 ? `${styles.dropdown_container} ${styles.dropdown_container_selected}` : `${styles.dropdown_container}`
+          count !== 0 ? `${styles.dropdown_container} ${styles.dropdown_container_selected}` : `${styles.dropdown_container}`
         }
       >
         <div onClick={toggle} className={styles.dropdown_input}>

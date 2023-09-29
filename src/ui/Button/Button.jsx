@@ -1,3 +1,4 @@
+import React from 'react';
 import styles from './Button.module.css';
 
 function Button({ children, className = '', onClickTo, type = 'empty' }) {
@@ -5,18 +6,18 @@ function Button({ children, className = '', onClickTo, type = 'empty' }) {
   return (
     <>
       {type === 'empty' && (
-      <button className={`${styles.button} ${extClassName}`} onClick={onClickTo}>
+      <button className={`${styles.button} ${extClassName}`} onClick={onClickTo} type="button">
         {children}
       </button>
       )}
       {type === 'callback' && (
-      <button className={`${styles.button_callback} ${extClassName}`} onClick={onClickTo}>
+      <button className={`${styles.button_callback} ${extClassName}`} onClick={onClickTo} type="button">
         {children}
       </button>
       )}
       {
         type === 'transparent' && (
-          <button className={`${styles.button_transparent} ${extClassName}`} onClick={onClickTo}>
+          <button className={`${styles.button_transparent} ${extClassName}`} onClick={onClickTo} type="button">
             {children}
           </button>
         )

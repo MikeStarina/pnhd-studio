@@ -1,3 +1,4 @@
+import React from 'react';
 import { apiBaseUrl } from '../../utils/constants';
 import styles from './Photos.module.css';
 

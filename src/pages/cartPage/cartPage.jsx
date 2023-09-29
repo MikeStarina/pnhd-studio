@@ -31,7 +31,7 @@ function Cart() {
   // console.log(order);
   const dispatch = useDispatch();
   const allOrderPrice = getAllPrice(order);
-
+  console.log('ooo');
   const deletePrintFromCart = (e) => {
     dispatch({
       type: DELETE_PRINT_FROM_CART,
@@ -150,7 +150,7 @@ function Cart() {
               </p>
               <div
                 className={
-                  !modalSizeActive || modalSizeId != item.cart_item_id
+                  !modalSizeActive || modalSizeId !== item.cart_item_id
                     ? styles.modalWrap
                     : `${styles.modal} ${styles.active}`
                 }
@@ -189,7 +189,7 @@ function Cart() {
                   <div
                     key={elem.name}
                     className={
-                      index != 4
+                      index !== 4
                         ? `${styles.productsPrint_prewiev} ${styles.productsPrint_prewiev_border}`
                         : `${styles.productsPrint_prewiev}`
                     }

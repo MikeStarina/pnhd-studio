@@ -38,7 +38,7 @@ function CardsBlock() {
     let resultString;
     const arrFilter = string.split('&');
     arrFilter.forEach((item) => {
-      if (item.indexOf(filter) != -1) {
+      if (item.indexOf(filter) !== -1) {
         resultString = item.slice(num).split(',');
       }
     });
@@ -57,7 +57,7 @@ function CardsBlock() {
   let count3 = [];
 
   if (
-    addressString != '' && firstFilterSelectedItem.length === 0 && secondFilterSelectedItem.length === 0 && thirdFilterSelectedItem.length === 0
+    addressString !== '' && firstFilterSelectedItem.length === 0 && secondFilterSelectedItem.length === 0 && thirdFilterSelectedItem.length === 0
   ) {
     frstFilter = getAdressFilter(addressString, 'category', 10);
     secondFilter = getAdressFilter(addressString, 'type', 5);
@@ -102,7 +102,7 @@ function CardsBlock() {
 
   useEffect(() => {
     if (
-      addressString === '' && (firstFilterSelectedItem.length != 0 || secondFilterSelectedItem.length != 0 || thirdFilterSelectedItem.length != 0)
+      addressString === '' && (firstFilterSelectedItem.length !== 0 || secondFilterSelectedItem.length !== 0 || thirdFilterSelectedItem.length !== 0)
     ) {
       history.push('/shop');
       filtr1 = [];
@@ -142,7 +142,7 @@ function CardsBlock() {
     resultArr = data;
   }
 
-  if (firstFilterSelectedItem.length != 0) {
+  if (firstFilterSelectedItem.length !== 0) {
     resultArr = [];
     firstFilterSelectedItem.forEach((item) => {
       data.forEach((elem) => {
@@ -153,7 +153,7 @@ function CardsBlock() {
       });
     });
   }
-  if (secondFilterSelectedItem.length != 0) {
+  if (secondFilterSelectedItem.length !== 0) {
     const a = [...resultArr];
     resultArr = [];
     secondFilterSelectedItem.forEach((item) => {
@@ -164,7 +164,7 @@ function CardsBlock() {
       });
     });
   }
-  if (thirdFilterSelectedItem != 0) {
+  if (thirdFilterSelectedItem.length !== 0) {
     const a = [...resultArr];
     resultArr = [];
     thirdFilterSelectedItem.forEach((item) => {
@@ -179,7 +179,7 @@ function CardsBlock() {
 
   const visibleArr = [];
   const renderQueue = ['Футболка', 'Лонгслив', 'Свитшот', 'Худи', 'Шоппер', 'Кепка'];
-  if (renderQueue.length != secondFilterSelect.length) {
+  if (renderQueue.length !== secondFilterSelect.length) {
     secondFilterSelect.forEach((item) => {
       if (!renderQueue.includes(item.category)) {
         renderQueue.push(item.category);

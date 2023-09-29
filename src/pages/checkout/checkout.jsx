@@ -122,8 +122,8 @@ function Checkout() {
     const list = [];
     if (elem.length >= 3) {
       shippingCities.forEach((item) => {
-        if (list.length != 5) {
-          if (item.city.toLowerCase().indexOf(elem.toLowerCase()) != -1) {
+        if (list.length !== 5) {
+          if (item.city.toLowerCase().indexOf(elem.toLowerCase()) !== -1) {
             list.push(item);
           }
         }
@@ -191,7 +191,7 @@ function Checkout() {
   };
   const onChangeSelect = (elem) => {
     shippingPoints.forEach((item) => {
-      if (item.name.toLowerCase().indexOf(elem.name.toLowerCase()) != -1) {
+      if (item.name.toLowerCase().indexOf(elem.name.toLowerCase()) !== -1) {
         dispatch({
           type: SET_SHIPPING_PVZ,
           payload: { item: { ...item }, isPvzValid: true },
@@ -410,7 +410,7 @@ function Checkout() {
 
   useEffect(() => {
     if (typeList) {
-      if (listCities.city != userShippingData.city.city) {
+      if (listCities.city !== userShippingData.city.city) {
         setUserShippingDataReset();
         setTypeList(false);
         setCenterMap([59.972621, 30.306432]);

@@ -34,7 +34,7 @@ function Accordion() {
                 &#32;
                 {item.title_italicLast ? <i>{item.title_italicLast}</i> : ''}
               </h2>
-              {isActive != item.id && (
+              {isActive !== item.id && (
                 <span className={styles.accordion_gt}>
                   &#62;
                   <span className={styles.accordion_gtRight}>&#62;</span>
