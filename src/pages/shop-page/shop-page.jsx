@@ -11,7 +11,7 @@ import {
 import {
   CLOSE_MODAL_MENU,
   closePopup,
-} from '../../services/actions/utility-actions.jsx';
+} from '../../services/actions/utility-actions';
 import styles from './shop-page.module.css';
 import CardsBlock from '../../components/shop-page-components/cards-block';
 import PopupModel from '../../components/popupModel/popupModel';
@@ -105,7 +105,6 @@ function ShopPage() {
     dispatch({ type: SET_DEFAULTFILTER });
     setFilterVisible('close');
   };
-
   return (
     <main className={styles.main_screen}>
       <Helmet
@@ -188,8 +187,8 @@ function ShopPage() {
       <CardsBlock />
       {isOtherPopupVisible && (
         <PopupModel onClose={handelClosePopup}>
-          {isOtherPopupVisible.map((el, index) => (
-            <p className={styles.validation_message} key={index}>
+          {isOtherPopupVisible.map((el) => (
+            <p className={styles.validation_message} key={el}>
               {el}
             </p>
           ))}

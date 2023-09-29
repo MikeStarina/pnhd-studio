@@ -5,5 +5,5 @@ export const apiBaseUrl = 'https://pnhdstudioapi.ru';
 
 export const contactPhone = '+7-(812)-904-61-56';
 export const staticCalltrackingPhone = '+7 (812) 704-81-92';
-export const telegram = 'https://t.me/pnhd_studio';
+export const telegram = 'https://t.me/pnhd_studio_bot';
 export const vkontakte = 'https://vk.com/pinheadspb';

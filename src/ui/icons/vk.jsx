@@ -1,4 +1,4 @@
-export function Vk({ ...props }) {
+function Vk({ ...props }) {
   return (
     <svg
       width="30"
@@ -15,3 +15,5 @@ export function Vk({ ...props }) {
     </svg>
   );
 }
+
+export default Vk;

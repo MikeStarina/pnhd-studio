@@ -1,6 +1,20 @@
 import { v4 as uuidv4 } from 'uuid';
 
-const addToMemory = (variant, order, item, uuId, front_file, front_file_preview, back_file, back_file_preview, lsleeve_file, lsleeve_file_preview, rsleeve_file, rsleeve_file_preview, badge_file) => {
+const addToMemory = (
+  variant,
+  order,
+  item,
+  uuId,
+  front_file,
+  front_file_preview,
+  back_file,
+  back_file_preview,
+  lsleeve_file,
+  lsleeve_file_preview,
+  rsleeve_file,
+  rsleeve_file_preview,
+  badge_file,
+) => {
   window.dataLayer.push({
     ecommerce: {
       currencyCode: 'RUB',

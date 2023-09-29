@@ -47,7 +47,7 @@ const softHyphen = '\u{00AD}';
 // возврат каретки, перенос без тире
 const carriageReturn = '\u{000D}';
 
-export const methodsData = {
+const methodsData = {
   termo: {
     metaTitle:
       'Термотрансферная печать на футболках в Санкт-Петербурге заказать в Studio Pinhead',
@@ -294,3 +294,5 @@ export const methodsData = {
     },
   },
 };
+
+export default methodsData;

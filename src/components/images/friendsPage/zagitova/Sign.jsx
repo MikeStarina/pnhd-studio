@@ -1,4 +1,4 @@
-export function Sign({ ...props }) {
+export default function Sign({ ...props }) {
   return (
     <svg
       width="508"
