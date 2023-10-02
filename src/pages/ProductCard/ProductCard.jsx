@@ -92,7 +92,7 @@ function ProductCard() {
         <ProductContent {...item} />
 
         {isOtherPopupVisible && (
-          <PopupModel onClose={closePopupConstructor}>          
+          <PopupModel onClose={closePopupConstructor}>
             {isOtherPopupVisible.map((el) => (
               <p className={styles.instruction} key={el}>
                 {el}
