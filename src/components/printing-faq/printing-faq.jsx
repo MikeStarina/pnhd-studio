@@ -4,7 +4,6 @@ import circle50px from '../images/circle50px.png';
 
 function PrintingFaq(data) {
   const { title, description, variants } = data;
-  console.log('kek');
   return (
     <section className={styles.screen}>
       <h3 className={styles.heading}>{title}</h3>

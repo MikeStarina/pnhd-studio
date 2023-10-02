@@ -41,7 +41,7 @@ function ItemPage() {
   const item =
     data && data.length > 0 && data.filter((elem) => elem._id === id)[0];
   const [size, setSize] = useState('');
-  console.log(order);
+  // console.log(order);
   useEffect(() => {
     item.sizes?.map((el, i) => {
       dispatch(
