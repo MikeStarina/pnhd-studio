@@ -51,10 +51,10 @@
     "jsx-a11y/label-has-associated-control": "off",
     "jsx-a11y/control-has-associated-label": "off",
     "jsx-a11y/no-noninteractive-element-interactions": "off",
-    "jsx-a11y/no-static-element-interactions": "off",
-    "jsx-a11y/media-has-caption": "off",
-    "jsx-a11y/click-events-have-key-events": "off", // this is last rule that we need fix! it's line STOP !!!!!
-    "react/jsx-no-bind": "off", // Жень, это правило ругается на передачу в пропс компонента Print функции, в остальном вроде все норм. Глянь пожалуйста
+    // "jsx-a11y/no-static-element-interactions": "off",
+    "jsx-a11y/media-has-caption": "off", // leave it off. Swears that the video tag has no subtitles
+    //"jsx-a11y/click-events-have-key-events": "off", // this is last rule that we need fix! it's line STOP !!!!!
+    "react/jsx-no-bind": "off", 
     // "eqeqeq": "off",
     // "react/react-in-jsx-scope": "off",
     // "react/button-has-type": "off",

@@ -33,36 +33,50 @@ function FilterSelect(props) {
     <div className={styles.wrap}>
       <div
         className={
-          count !== 0 ? `${styles.dropdown_container} ${styles.dropdown_container_selected}` : `${styles.dropdown_container}`
+          count !== 0
+            ? `${styles.dropdown_container} ${styles.dropdown_container_selected}`
+            : `${styles.dropdown_container}`
         }
       >
-        <div onClick={toggle} className={styles.dropdown_input}>
+        <div
+          onClick={toggle}
+          onKeyDown={toggle}
+          className={styles.dropdown_input}
+          role="button"
+          tabIndex="0"
+        >
           <div className={styles.dropdown_item_wrapper}>
             <div className={styles.dropdown_selected_value}>{defaultValue}</div>
             <div className={styles.dropdown_tools} />
           </div>
           {dropdownVisible && (
             <div className={styles.dropdown_menu}>
-              {options.length > 0 && options.map((option) => (
-                <div
-                  className={styles.dropdown_item}
-                  onClick={() => {
-                    handleItemSelectClick(option);
-                  }}
-                  key={option.category}
-                >
-                  {option.selected ? (
-                    <>
-                      <img src={filterCircle} alt="выбранный_элемент" />
-                      <span>{option.category}</span>
-                    </>
-                  ) : (
-                    <span className={styles.dropdown_item_space}>
-                      {option.category}
-                    </span>
-                  )}
-                </div>
-              ))}
+              {options.length > 0 &&
+                options.map((option) => (
+                  <div
+                    className={styles.dropdown_item}
+                    onClick={() => {
+                      handleItemSelectClick(option);
+                    }}
+                    onKeyDown={() => {
+                      handleItemSelectClick(option);
+                    }}
+                    key={option.category}
+                    role="button"
+                    tabIndex="0"
+                  >
+                    {option.selected ? (
+                      <>
+                        <img src={filterCircle} alt="выбранный_элемент" />
+                        <span>{option.category}</span>
+                      </>
+                    ) : (
+                      <span className={styles.dropdown_item_space}>
+                        {option.category}
+                      </span>
+                    )}
+                  </div>
+                ))}
             </div>
           )}
         </div>

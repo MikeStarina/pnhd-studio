@@ -425,6 +425,32 @@ function Checkout() {
       payload: orderPrice,
     });
   }, [order]);
+
+  const getDebounceCities = (item) => {
+    if (item.latitude) {
+      setCenterMap([item.latitude, item.longitude]);
+    }
+    dispatch(getSdekPoints(item.code));
+    setListCities(item);
+    setTypeList(true);
+    dispatch({
+      type: SET_SHIPPING_CITIES,
+      payload: {
+        item: {
+          ...item,
+        },
+        isCityValid: true,
+      },
+    });
+    setChekInput(true);
+    dispatch(
+      getSdekShippingTarif(
+        item.code,
+        (item.orderWeight = orderWeight),
+      ),
+    );
+  };
+
   return (
     <div className={styles.wrap}>
       <h1 className={styles.wrap_title}>
@@ -585,28 +611,10 @@ function Checkout() {
                           <li
                             key={item.code}
                             onClick={() => {
-                              if (item.latitude) {
-                                setCenterMap([item.latitude, item.longitude]);
-                              }
-                              dispatch(getSdekPoints(item.code));
-                              setListCities(item);
-                              setTypeList(true);
-                              dispatch({
-                                type: SET_SHIPPING_CITIES,
-                                payload: {
-                                  item: {
-                                    ...item,
-                                  },
-                                  isCityValid: true,
-                                },
-                              });
-                              setChekInput(true);
-                              dispatch(
-                                getSdekShippingTarif(
-                                  item.code,
-                                  (item.orderWeight = orderWeight),
-                                ),
-                              );
+                              getDebounceCities(item);
+                            }}
+                            onKeyDown={() => {
+                              getDebounceCities(item);
                             }}
                             className={styles.cities_listItem}
                           >

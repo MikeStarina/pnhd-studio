@@ -30,10 +30,18 @@ function ShippingSelect(props) {
     <div className={styles.test}>
       <div
         className={
-                    !errBorder ? `${styles.dropdown_container} ${styles.dropdown_container_error}` : styles.dropdown_container
-                }
+          !errBorder
+            ? `${styles.dropdown_container} ${styles.dropdown_container_error}`
+            : styles.dropdown_container
+        }
       >
-        <div onClick={toggle} className={styles.dropdown_input}>
+        <div
+          onClick={toggle}
+          onKeyDown={toggle}
+          className={styles.dropdown_input}
+          role="button"
+          tabIndex="0"
+        >
           <div className={styles.dropdown_item_wrapper}>
             <div className={styles.dropdown_selected_value}>
               {getSelectValue()}
@@ -43,24 +51,30 @@ function ShippingSelect(props) {
           {isOpen && (
             <div className={styles.dropdown_menu}>
               {options.length === 0 && (
-              <div className={styles.dropdown_item}>
-                <p>Пункты выдачи не найдены</p>
-              </div>
+                <div className={styles.dropdown_item}>
+                  <p>Пункты выдачи не найдены</p>
+                </div>
               )}
 
-              {options.length > 0 && options.map((option) => (
-                <div
-                  className={`${styles.dropdown_item} ${
-                    selectedValue === option.name ? 'selected' : ''
-                  }`}
-                  onClick={() => {
-                    handleItemSelectClick(option);
-                  }}
-                  key={option.name}
-                >
-                  {option.name}
-                </div>
-              ))}
+              {options.length > 0 &&
+                options.map((option) => (
+                  <div
+                    className={`${styles.dropdown_item} ${
+                      selectedValue === option.name ? 'selected' : ''
+                    }`}
+                    onClick={() => {
+                      handleItemSelectClick(option);
+                    }}
+                    onKeyDown={() => {
+                      handleItemSelectClick(option);
+                    }}
+                    key={option.name}
+                    role="button"
+                    tabIndex="0"
+                  >
+                    {option.name}
+                  </div>
+                ))}
             </div>
           )}
         </div>

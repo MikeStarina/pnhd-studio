@@ -31,7 +31,6 @@ function Cart() {
   // console.log(order);
   const dispatch = useDispatch();
   const allOrderPrice = getAllPrice(order);
-  console.log('ooo');
   const deletePrintFromCart = (e) => {
     dispatch({
       type: DELETE_PRINT_FROM_CART,
@@ -157,6 +156,11 @@ function Cart() {
                 onClick={() => {
                   setModalSizeActive(false);
                 }}
+                onKeyDown={() => {
+                  setModalSizeActive(false);
+                }}
+                role="button"
+                tabIndex="0"
               >
                 <div
                   className={
@@ -167,6 +171,11 @@ function Cart() {
                   onClick={(e) => {
                     e.stopPropagation();
                   }}
+                  onKeyDown={(e) => {
+                    e.stopPropagation();
+                  }}
+                  role="button"
+                  tabIndex="0"
                 >
                   {item.attributes.size.length > 0 &&
                     item.attributes.size.map((elem, index) => (
@@ -199,6 +208,10 @@ function Cart() {
                       src={elem.preview}
                       alt="Превью принта"
                       onClick={() => {
+                        setPrewievImg(elem.preview);
+                        setModalActive(true);
+                      }}
+                      onKeyDown={() => {
                         setPrewievImg(elem.preview);
                         setModalActive(true);
                       }}
@@ -249,7 +262,10 @@ function Cart() {
                         className={`${styles.link} ${styles.link__name}`}
                         key={item.cart_item_id}
                       >
-                        <button className={styles.productsPrint_button} type="button">
+                        <button
+                          className={styles.productsPrint_button}
+                          type="button"
+                        >
                           Изменить
                         </button>
                       </Link>

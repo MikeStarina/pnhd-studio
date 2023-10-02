@@ -28,6 +28,7 @@ function BurgerIcon({ openMenu, openPopup }) {
         alt="main menu"
         className={styles.burger_icon}
         onClick={openMenu}
+        onKeyDown={openMenu}
       />
     </div>
   );

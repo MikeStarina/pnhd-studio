@@ -73,7 +73,6 @@ function ProductContent(items) {
         },
       });
     }
-    console.log(window.dataLayer);
   }, [items]);
 
   const addToConstructor = () => {
@@ -111,7 +110,6 @@ function ProductContent(items) {
       dispatch(openPopup(['Нужно выбрать размер']));
     }
   };
-  console.log('lll');
   return (
     <div className={styles.product_box}>
       <div className={styles.description}>

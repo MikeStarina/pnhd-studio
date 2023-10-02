@@ -184,6 +184,7 @@ function ItemPage() {
             src={closeicon}
             alt="close icon"
             onClick={onClick}
+            onKeyDown={onClick}
             className={styles.close_icon}
           />
         </div>

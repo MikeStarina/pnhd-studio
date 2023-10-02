@@ -22,6 +22,8 @@ function PopupModel({ onClose, children }) {
       className={styles.popup_container}
       onMouseDown={closeByBGClick}
       id="container"
+      role="button"
+      tabIndex="0"
     >
       <div className={styles.lead}>
         <button
