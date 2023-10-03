@@ -6,19 +6,23 @@ import man from '../images/man.webp';
 import wman from '../images/wman.webp';
 import acc from '../images/acc.webp';
 
-function ShopGallery() {
+function ShopGallery({ printingProduct }) {
   return (
     <section className={styles.screen}>
-      <h4 className={styles.heading}>
-        А НА
-        <span className={styles.textStyle_italic}>ЧЁМ</span>
-        {' '}
-        ПЕЧАТАЕТЕ?
-      </h4>
-      <p className={styles.description}>
-        Текстиль, который мы сделали сами вот этими вот руками на нашей
-        фабрике в Санкт-Петербурге, так что качество 11/10, гарантируем!
-      </p>
+      {printingProduct != 'true' ? (
+        <>
+          <h4 className={styles.heading}>
+            А НА
+            <span className={styles.textStyle_italic}>ЧЁМ</span>
+            {' '}
+            ПЕЧАТАЕТЕ?
+          </h4>
+          <p className={styles.description}>
+            Текстиль, который мы сделали сами вот этими вот руками на нашей
+            фабрике в Санкт-Петербурге, так что качество 11/10, гарантируем!
+          </p>
+        </>
+      ) : ''}
       <div className={styles.wrapper}>
         <div className={styles.card}>
           <img

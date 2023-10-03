@@ -24,7 +24,7 @@ function PrintingProduct(data) {
         description={methodFaq.description}
         variants={methodFaq.variants}
       />
-      <ShopGallery />
+      <ShopGallery printingProduct="true" />
       <FeedbackScreen />
       <MapScreen />
     </>
