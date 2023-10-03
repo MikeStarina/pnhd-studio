@@ -108,27 +108,27 @@ const footerData = [
       {
         id: '0',
         type: 'Печать на футболках',
-        link: '/',
+        link: '/pechat-na-futbolkah',
       },
       {
         id: '1',
         type: 'Печать на худи',
-        link: '/',
+        link: '/pechat-na-hudi',
       },
       {
         id: '2',
         type: 'Печать на свитшотах',
-        link: '/',
+        link: '/pechat-na-svitshotah',
       },
       {
         id: '3',
         type: 'Печать на шопперах',
-        link: '/',
+        link: '/pechat-na-shopperah',
       },
       {
         id: '4',
         type: 'Печать кепках',
-        link: '/',
+        link: '/pechat-na-kepkah',
       },
     ],
   },
