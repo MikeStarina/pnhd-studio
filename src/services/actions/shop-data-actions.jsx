@@ -17,9 +17,7 @@ export const getShopData = () => {
     if (res.ok || res.created) {
       return res.json();
     }
-    return res.json().then((err) => {
-      return Promise.reject(err);
-    });
+    return res.json().then((err) => Promise.reject(err));
   };
 
   return function (dispatch) {

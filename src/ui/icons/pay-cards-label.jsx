@@ -1,4 +1,4 @@
-export function PayCardsLabel({ ...props }) {
+function PayCardsLabel({ ...props }) {
   return (
     <svg
     width="282"
@@ -148,3 +148,5 @@ export function PayCardsLabel({ ...props }) {
     </svg>
   );
 }
+
+export default PayCardsLabel;

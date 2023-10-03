@@ -15,9 +15,12 @@ import {
   loadPrintFromState,
   getSize,
   uploadPreview,
-} from '../../services/actions/editor-actions.jsx';
-import { ADD_TO_CART, ADD_TO_CART_WITH_PRINT } from '../../services/actions/cart-actions';
-import Print from './print.jsx';
+} from '../../services/actions/editor-actions';
+import {
+  ADD_TO_CART,
+  ADD_TO_CART_WITH_PRINT,
+} from '../../services/actions/cart-actions';
+import Print from './print';
 import Mockup from './mockup';
 import { fileSelect } from '../../utils/utils';
 import PopupModel from '../../components/popupModel/popupModel';
@@ -26,16 +29,16 @@ import {
   openPopup,
   SET_POPUP_VISIBILITY,
 } from '../../services/actions/utility-actions';
-import { instructionForPopup } from '../../data/instructionForPopup/instructionForPopup';
-import { photoProcessing } from '../../data/photo-processing/photo-processing';
+import instructionForPopup from '../../data/instructionForPopup/instructionForPopup';
+import photoProcessing from '../../data/photo-processing/photo-processing';
 import { clearItemOrder } from '../../services/actions/item-action';
 // sideItemForPrint - задает окно видимости (его размеры) где отобразится привью картинки
 import sideItemForPrint from '../../utils/sideItemForPrint';
 import totalPrintPrice from '../../utils/totalPrintPrice';
 import addToMemory from '../../utils/addToMemory';
-import { Square } from '../../ui/icons/square';
-import { SquareCircle } from '../../ui/icons/squareCircle';
-import { WordT } from '../../ui/icons/wordT';
+import Square from '../../ui/icons/square';
+import SquareCircle from '../../ui/icons/squareCircle';
+import WordT from '../../ui/icons/wordT';
 
 function Constructor() {
   const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
@@ -63,20 +66,32 @@ function Constructor() {
   const location = useLocation();
   const imgRef = useRef(null);
   const stageRef = useRef();
-  const [squareCircleComponentColor, setSquareCircleComponentColor] = useState(false);
+  const [squareCircleComponentColor, setSquareCircleComponentColor] =
+    useState(false);
   const [dash, setDash] = useState(false);
 
   const { order } = useSelector((store) => store.cartData);
-  const element = location.state.from.includes('cart') ? data && data.length > 0 && order && order.find((elem) => elem.cart_item_id === location.state.state) : data && data.length > 0 && data.find((elem) => elem.slug === slug);
+  const element = location.state.from.includes('cart')
+    ? data &&
+      data.length > 0 &&
+      order &&
+      order.find((elem) => elem.cart_item_id === location.state.state)
+    : data && data.length > 0 && data.find((elem) => elem.slug === slug);
 
-  const item = location.state.from.includes('cart') ? element.attributes : element;
+  const item = location.state.from.includes('cart')
+    ? element.attributes
+    : element;
 
-  const itemSize = location.state.from.includes('cart') ? item.size : location.state.size;
+  const itemSize = location.state.from.includes('cart')
+    ? item.size
+    : location.state.size;
 
-  const volumeSize = itemSize && itemSize.reduce((total, element) => {
-    let accTotal;
-    return (accTotal = total + element.qty);
-  }, 0);
+  const volumeSize =
+    itemSize &&
+    itemSize.reduce((total, element) => {
+      let accTotal;
+      return (accTotal = total + element.qty);
+    }, 0);
 
   useEffect(() => {
     if (location.state.from.includes('cart')) {
@@ -165,7 +180,21 @@ function Constructor() {
   const addToCart = () => {
     const variant = 'с принтом';
     // Создает обьект заказа, для сохранения в сесионой памяти
-    const data = addToMemory(variant, item.size, item, element.cart_item_id, front_file, front_file_preview, back_file, back_file_preview, lsleeve_file, lsleeve_file_preview, rsleeve_file, rsleeve_file_preview, badge_file);
+    const data = addToMemory(
+      variant,
+      item.size,
+      item,
+      element.cart_item_id,
+      front_file,
+      front_file_preview,
+      back_file,
+      back_file_preview,
+      lsleeve_file,
+      lsleeve_file_preview,
+      rsleeve_file,
+      rsleeve_file_preview,
+      badge_file,
+    );
 
     dispatch({
       type: ADD_TO_CART_WITH_PRINT,
@@ -185,7 +214,21 @@ function Constructor() {
   const addToPrint = () => {
     const variant = 'с принтом';
     // Создает обьект заказа, для сохранения в сесионой памяти
-    const data = addToMemory(variant, location.state.size, item, uuId, front_file, front_file_preview, back_file, back_file_preview, lsleeve_file, lsleeve_file_preview, rsleeve_file, rsleeve_file_preview, badge_file);
+    const data = addToMemory(
+      variant,
+      location.state.size,
+      item,
+      uuId,
+      front_file,
+      front_file_preview,
+      back_file,
+      back_file_preview,
+      lsleeve_file,
+      lsleeve_file_preview,
+      rsleeve_file,
+      rsleeve_file_preview,
+      badge_file,
+    );
 
     dispatch({
       type: ADD_TO_CART,
@@ -206,7 +249,9 @@ function Constructor() {
   };
 
   const openPopupInfo = () => {
-    dispatch(openPopup(['Привет! Сейчас эта функция находится в разработке :)']));
+    dispatch(
+      openPopup(['Привет! Сейчас эта функция находится в разработке :)']),
+    );
   };
 
   const closePopupConstructor = () => {
@@ -348,7 +393,11 @@ function Constructor() {
             <div className={styles.btn_img_control}>
               <button
                 onClick={() => setDash((dash) => !dash)}
-                className={dash ? `${styles.item_button_quest} ${styles.item_button_quest_active}` : `${styles.item_button_quest}`}
+                className={
+                  dash
+                    ? `${styles.item_button_quest} ${styles.item_button_quest_active}`
+                    : `${styles.item_button_quest}`
+                }
               >
                 <Square className={styles.btn_svg} />
               </button>
@@ -358,7 +407,12 @@ function Constructor() {
                 onMouseEnter={() => setSquareCircleComponentColor(true)}
                 onMouseLeave={() => setSquareCircleComponentColor(false)}
               >
-                <SquareCircle className={styles.btn_svg} style={{ color: squareCircleComponentColor ? '#00ff00' : '#ffffff' }} />
+                <SquareCircle
+                  className={styles.btn_svg}
+                  style={{
+                    color: squareCircleComponentColor ? '#00ff00' : '#ffffff',
+                  }}
+                />
               </button>
               <button
                 onClick={openPopupInfo}
@@ -377,23 +431,100 @@ function Constructor() {
           <div className={styles.order_info}>
             <p className={styles.order_info_title}>{item.name}</p>
             <p className={styles.order_info_subtitle}>
-              <span className={styles.order_info_line_span}>{`${item.price} Р. X ${volumeSize} шт.`}<span className={styles.order_info_line_span_end}>{` - ${item.price * volumeSize} Р.`}</span></span>
+              <span className={styles.order_info_line_span}>
+                {`${item.price} Р. X ${volumeSize} шт.`}
+                <span className={styles.order_info_line_span_end}>{` - ${
+                  item.price * volumeSize
+                } Р.`}
+                </span>
+              </span>
             </p>
             <p className={styles.order_info_line}>
-              <span className={styles.order_info_line_span_title}>Печать на груди:{front_file && front_file.cartParams ? ' ' : ' -'}</span>
-              <span className={front_file && front_file.cartParams && `${styles.order_info_line_span}`}>{front_file && front_file.cartParams && `${front_file.cartParams.format}, ${front_file.cartParams.size}, ${front_file.cartParams.price} Р. X ${volumeSize} шт.`}<span className={styles.order_info_line_span_end}>{front_file && front_file.cartParams && ` - ${front_file.cartParams.price * volumeSize} Р.`}</span></span>
+              <span className={styles.order_info_line_span_title}>
+                Печать на груди:
+                {front_file && front_file.cartParams ? ' ' : ' -'}
+              </span>
+              <span
+                className={
+                  front_file &&
+                  front_file.cartParams &&
+                  `${styles.order_info_line_span}`
+                }
+              >
+                {front_file &&
+                  front_file.cartParams &&
+                  `${front_file.cartParams.format}, ${front_file.cartParams.size}, ${front_file.cartParams.price} Р. X ${volumeSize} шт.`}
+                <span className={styles.order_info_line_span_end}>
+                  {front_file &&
+                    front_file.cartParams &&
+                    ` - ${front_file.cartParams.price * volumeSize} Р.`}
+                </span>
+              </span>
             </p>
             <p className={styles.order_info_line}>
-              <span className={styles.order_info_line_span_title}>Печать на спине:{back_file && back_file.cartParams ? ' ' : ' -'}</span>
-              <span className={back_file && back_file.cartParams && `${styles.order_info_line_span}`}>{back_file && back_file.cartParams && `${back_file.cartParams.format}, ${back_file.cartParams.size}, ${back_file.cartParams.price} Р. X ${volumeSize} шт.`}<span className={styles.order_info_line_span_end}>{back_file && back_file.cartParams && ` - ${back_file.cartParams.price * volumeSize} Р.`}</span></span>
+              <span className={styles.order_info_line_span_title}>
+                Печать на спине:{back_file && back_file.cartParams ? ' ' : ' -'}
+              </span>
+              <span
+                className={
+                  back_file &&
+                  back_file.cartParams &&
+                  `${styles.order_info_line_span}`
+                }
+              >
+                {back_file &&
+                  back_file.cartParams &&
+                  `${back_file.cartParams.format}, ${back_file.cartParams.size}, ${back_file.cartParams.price} Р. X ${volumeSize} шт.`}
+                <span className={styles.order_info_line_span_end}>
+                  {back_file &&
+                    back_file.cartParams &&
+                    ` - ${back_file.cartParams.price * volumeSize} Р.`}
+                </span>
+              </span>
             </p>
             <p className={styles.order_info_line}>
-              <span className={styles.order_info_line_span_title}>Печать на левом рукаве:{lsleeve_file && lsleeve_file.cartParams ? ' ' : ' -'}</span>
-              <span className={lsleeve_file && lsleeve_file.cartParams && `${styles.order_info_line_span}`}>{lsleeve_file && lsleeve_file.cartParams && `${lsleeve_file.cartParams.format}, ${lsleeve_file.cartParams.size}, ${lsleeve_file.cartParams.price} Р. X ${volumeSize} шт.`}<span className={styles.order_info_line_span_end}>{lsleeve_file && lsleeve_file.cartParams && ` - ${lsleeve_file.cartParams.price * volumeSize} Р.`}</span></span>
+              <span className={styles.order_info_line_span_title}>
+                Печать на левом рукаве:
+                {lsleeve_file && lsleeve_file.cartParams ? ' ' : ' -'}
+              </span>
+              <span
+                className={
+                  lsleeve_file &&
+                  lsleeve_file.cartParams &&
+                  `${styles.order_info_line_span}`
+                }
+              >
+                {lsleeve_file &&
+                  lsleeve_file.cartParams &&
+                  `${lsleeve_file.cartParams.format}, ${lsleeve_file.cartParams.size}, ${lsleeve_file.cartParams.price} Р. X ${volumeSize} шт.`}
+                <span className={styles.order_info_line_span_end}>
+                  {lsleeve_file &&
+                    lsleeve_file.cartParams &&
+                    ` - ${lsleeve_file.cartParams.price * volumeSize} Р.`}
+                </span>
+              </span>
             </p>
             <p className={styles.order_info_line}>
-              <span className={styles.order_info_line_span_title}>Печать на правом рукаве:{rsleeve_file && rsleeve_file.cartParams ? ' ' : ' -'}</span>
-              <span className={rsleeve_file && rsleeve_file.cartParams && `${styles.order_info_line_span}`}>{rsleeve_file && rsleeve_file.cartParams && `${rsleeve_file.cartParams.format}, ${rsleeve_file.cartParams.size}, ${rsleeve_file.cartParams.price} Р. X ${volumeSize} шт.`}<span className={styles.order_info_line_span_end}>{rsleeve_file && rsleeve_file.cartParams && ` - ${rsleeve_file.cartParams.price * volumeSize} Р.`}</span></span>
+              <span className={styles.order_info_line_span_title}>
+                Печать на правом рукаве:
+                {rsleeve_file && rsleeve_file.cartParams ? ' ' : ' -'}
+              </span>
+              <span
+                className={
+                  rsleeve_file &&
+                  rsleeve_file.cartParams &&
+                  `${styles.order_info_line_span}`
+                }
+              >
+                {rsleeve_file &&
+                  rsleeve_file.cartParams &&
+                  `${rsleeve_file.cartParams.format}, ${rsleeve_file.cartParams.size}, ${rsleeve_file.cartParams.price} Р. X ${volumeSize} шт.`}
+                <span className={styles.order_info_line_span_end}>
+                  {rsleeve_file &&
+                    rsleeve_file.cartParams &&
+                    ` - ${rsleeve_file.cartParams.price * volumeSize} Р.`}
+                </span>
+              </span>
             </p>
 
             <p className={styles.order_info_title}>
@@ -404,19 +535,23 @@ function Constructor() {
             <button
               type="button"
               className={styles.item_button}
-              onClick={location.state.from.includes('cart') ? addToCart : addToPrint}
+              onClick={
+                location.state.from.includes('cart') ? addToCart : addToPrint
+              }
               disabled={isBlockButton}
             />
           </div>
         </div>
         {isOtherPopupVisible && (
           <PopupModel onClose={closePopupConstructor}>
-            {isOtherPopupVisible.map((el, index) => (
+            {isOtherPopupVisible.map((el) => (
               <p
                 className={
-                  isOtherPopupVisible.length > 1 ? styles.instruction : styles.error
+                  isOtherPopupVisible.length > 1
+                    ? styles.instruction
+                    : styles.error
                 }
-                key={index}
+                key={el}
               >
                 {el}
               </p>

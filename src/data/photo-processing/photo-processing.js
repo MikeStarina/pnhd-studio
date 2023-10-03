@@ -1,4 +1,4 @@
-export const photoProcessing = (file) => {
+const photoProcessing = (file) => {
   // Размер ф-ла, нужен для отображения загрузчика
   // const size = file.size ? file.size : 'NOT SUPPORTED';
 
@@ -7,3 +7,5 @@ export const photoProcessing = (file) => {
     return file;
   }
 };
+
+export default photoProcessing;

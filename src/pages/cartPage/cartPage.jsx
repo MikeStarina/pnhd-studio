@@ -15,7 +15,11 @@ import Visa from '../../components/images/cartPageVisa.svg';
 import MasterCard from '../../components/images/cartPageMastercard.svg';
 import Ukassa from '../../components/images/cartPageUkassa.svg';
 import { apiBaseUrl } from '../../utils/constants';
-import { getAllPrice, getPreviewArr, getPrintPrice } from '../../utils/cartPage';
+import {
+  getAllPrice,
+  getPreviewArr,
+  getPrintPrice,
+} from '../../utils/cartPage';
 
 function Cart() {
   const [size, setSize] = useState('');
@@ -49,6 +53,7 @@ function Cart() {
         setModalSizeActive(false);
       }
     }
+
     document.addEventListener('keydown', handleEscapeKey);
     return () => document.removeEventListener('keydown', handleEscapeKey);
   }, []);
@@ -76,13 +81,12 @@ function Cart() {
       dispatch({ type: SET_CART_VISIBILITY, payload: true });
     };
   }, []);
-
   return (
     <>
       <h1 className={styles.pageTitle}>
         КОРЗИНА / <i>CART</i>
       </h1>
-      {order.map((item, index) => {
+      {order.map((item) => {
         const url = `${apiBaseUrl}${item.attributes.image_url}`;
         const initialValue = 0;
         const productPriece = item.attributes.size.reduce(
@@ -92,12 +96,16 @@ function Cart() {
         const arr = getPreviewArr(item);
         const printPrice = getPrintPrice(item);
         return (
-          <div className={styles.products} key={index}>
+          <div className={styles.products} key={item.cart_item_id}>
             <div className={styles.productsImage}>
               <Link
-                to={item.attributes.name.includes('#Безызбежно') ? { pathname: '/zagitova' } : { pathname: `/shop/${item.attributes.slug}` }}
+                to={
+                  item.attributes.name.includes('#Безызбежно')
+                    ? { pathname: '/zagitova' }
+                    : { pathname: `/shop/${item.attributes.slug}` }
+                }
                 className={styles.link}
-                key={index}
+                key={item.attributes.slug}
               >
                 <img
                   className={styles.productsImage_img}
@@ -108,9 +116,13 @@ function Cart() {
             </div>
             <div className={styles.productsInfo}>
               <Link
-                to={item.attributes.name.includes('#Безызбежно') ? { pathname: '/zagitova' } : { pathname: `/shop/${item.attributes.slug}` }}
+                to={
+                  item.attributes.name.includes('#Безызбежно')
+                    ? { pathname: '/zagitova' }
+                    : { pathname: `/shop/${item.attributes.slug}` }
+                }
                 className={`${styles.link} ${styles.link__name}`}
-                key={index}
+                key={item.attributes.slug}
               >
                 <h2 className={styles.productsInfo_name}>
                   {item.attributes.name}
@@ -138,7 +150,9 @@ function Cart() {
               </p>
               <div
                 className={
-                  !modalSizeActive || modalSizeId != item.cart_item_id ? styles.modalWrap : `${styles.modal} ${styles.active}`
+                  !modalSizeActive || modalSizeId != item.cart_item_id
+                    ? styles.modalWrap
+                    : `${styles.modal} ${styles.active}`
                 }
                 onClick={() => {
                   setModalSizeActive(false);
@@ -146,14 +160,17 @@ function Cart() {
               >
                 <div
                   className={
-                    !modalSizeActive ? '' : `${styles.modal__content} ${styles.active}`
+                    !modalSizeActive
+                      ? ''
+                      : `${styles.modal__content} ${styles.active}`
                   }
                   onClick={(e) => {
                     e.stopPropagation();
                   }}
                 >
-                  {item.attributes.size.length > 0 && item.attributes.size.map((elem, index) => (
-                    <SizeSelection
+                  {item.attributes.size.length > 0 &&
+                    item.attributes.size.map((elem, index) => (
+                      <SizeSelection
                         type="cart"
                         name={elem.name}
                         qty={elem.qty}
@@ -161,85 +178,92 @@ function Cart() {
                         id={item.cart_item_id}
                         key={elem._id}
                         remain={item.attributes.sizes[index].qty}
-                    />
-                  ))}
+                      />
+                    ))}
                 </div>
               </div>
             </div>
             <div className={styles.productsPrint}>
-              {arr.length > 0 && (
-                arr.map((elem, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className={
-                        index != 4 ? `${styles.productsPrint_prewiev} ${styles.productsPrint_prewiev_border}` : `${styles.productsPrint_prewiev}`
-                      }
-                    >
-                      <img
-                        className={styles.productsPrint_prewievImg}
-                        src={elem.preview}
-                        alt="Превью принта"
-                        onClick={() => {
-                          setPrewievImg(elem.preview);
-                          setModalActive(true);
-                        }}
-                      />
-                      <div className={styles.productsPrint_prewievPrice}>
-                        <p className={styles.productsPrint_prewievPrice_place}>
-                          <span
-                            className={styles.productsPrint_prewievPrice_format}
-                          >
-                            {elem.place}
-                          </span>
-                          <span
-                            className={styles.productsPrint_prewievPrice_size}
-                          >
-                            {elem.size}
-                          </span>
-                        </p>
-                        <p
-                          className={`${styles.productsPrint_prewievPrice_right} ${styles.productsPrint_prewievPrice_right__top}`}
+              {arr.length > 0 &&
+                arr.map((elem, index) => (
+                  <div
+                    key={elem.name}
+                    className={
+                      index != 4
+                        ? `${styles.productsPrint_prewiev} ${styles.productsPrint_prewiev_border}`
+                        : `${styles.productsPrint_prewiev}`
+                    }
+                  >
+                    <img
+                      className={styles.productsPrint_prewievImg}
+                      src={elem.preview}
+                      alt="Превью принта"
+                      onClick={() => {
+                        setPrewievImg(elem.preview);
+                        setModalActive(true);
+                      }}
+                    />
+                    <div className={styles.productsPrint_prewievPrice}>
+                      <p className={styles.productsPrint_prewievPrice_place}>
+                        <span
+                          className={styles.productsPrint_prewievPrice_format}
                         >
-                          — формат {elem.format}
-                        </p>
-                        <p className={styles.productsPrint_prewievPrice_down}>
-                          {elem.price} Р. х {productPriece} шт
-                        </p>
-                        <p
-                          className={`${styles.productsPrint_prewievPrice_right} ${styles.productsPrint_prewievPrice_right_down}`}
+                          {elem.place}
+                        </span>
+                        <span
+                          className={styles.productsPrint_prewievPrice_size}
                         >
-                          — {elem.price * productPriece} Р.
-                        </p>
-                      </div>
-                      <div className={styles.productsPrint_buttons}>
-                        <button
-                          type="button"
-                          className={styles.productsPrint_button}
-                          name={elem.name}
-                          id={elem.id}
-                          onClick={deletePrintFromCart}
-                        >
-                          Удалить
-                        </button>
-                        &nbsp;/&nbsp;
-                        <Link
-                          to={{
-                            pathname: `/shop/${item.attributes.slug}/constructor`,
-                            state: { state: item.cart_item_id, from: 'cart' },
-                          }}
-                          className={`${styles.link} ${styles.link__name}`}
-                          key={index}
-                        >
-                          <button className={styles.productsPrint_button}>Изменить</button>
-                        </Link>
-                      </div>
+                          {elem.size}
+                        </span>
+                      </p>
+                      <p
+                        className={`${styles.productsPrint_prewievPrice_right} ${styles.productsPrint_prewievPrice_right__top}`}
+                      >
+                        — формат {elem.format}
+                      </p>
+                      <p className={styles.productsPrint_prewievPrice_down}>
+                        {elem.price} Р. х {productPriece} шт
+                      </p>
+                      <p
+                        className={`${styles.productsPrint_prewievPrice_right} ${styles.productsPrint_prewievPrice_right_down}`}
+                      >
+                        — {elem.price * productPriece} Р.
+                      </p>
                     </div>
-                  );
-                })
-              )}
+                    <div className={styles.productsPrint_buttons}>
+                      <button
+                        type="button"
+                        className={styles.productsPrint_button}
+                        name={elem.name}
+                        id={elem.id}
+                        onClick={deletePrintFromCart}
+                      >
+                        Удалить
+                      </button>
+                      &nbsp;/&nbsp;
+                      <Link
+                        to={{
+                          pathname: `/shop/${item.attributes.slug}/constructor`,
+                          state: { state: item.cart_item_id, from: 'cart' },
+                        }}
+                        className={`${styles.link} ${styles.link__name}`}
+                        key={item.cart_item_id}
+                      >
+                        <button className={styles.productsPrint_button}>
+                          Изменить
+                        </button>
+                      </Link>
+                    </div>
+                  </div>
+                ))}
               {arr.length < 4 && (
-                <div className={arr.length === 0 ? `${styles.addPrintButton_wrap} ${styles.addPrintButton_wrapBottom}` : `${styles.addPrintButton_wrap}`}>
+                <div
+                  className={
+                    arr.length === 0
+                      ? `${styles.addPrintButton_wrap} ${styles.addPrintButton_wrapBottom}`
+                      : `${styles.addPrintButton_wrap}`
+                  }
+                >
                   {item.attributes.isForPrinting && (
                     <Link
                       to={{
@@ -247,9 +271,14 @@ function Cart() {
                         state: { state: item.cart_item_id, from: 'cart' },
                       }}
                       className={`${styles.link} ${styles.link__name}`}
-                      key={index}
+                      key={item.cart_item_id}
                     >
-                      <button className={styles.addPrintButton_wrap_text} disabled={!item.attributes.isForPrinting}>Добавить принт &gt;</button>
+                      <button
+                        className={styles.addPrintButton_wrap_text}
+                        disabled={!item.attributes.isForPrinting}
+                      >
+                        Добавить принт &gt;
+                      </button>
                     </Link>
                   )}
                 </div>
@@ -272,8 +301,7 @@ function Cart() {
                   Печать: {printPrice}&nbsp;Р.
                 </p>
                 <p className={styles.productsBottom_priceAll}>
-                  Подытог:{' '}
-                  {printPrice + item.attributes.price * productPriece}{' '}
+                  Подытог: {printPrice + item.attributes.price * productPriece}{' '}
                   &nbsp;Р.
                 </p>
               </div>
@@ -288,11 +316,17 @@ function Cart() {
           <img src={Mir} alt="Mir" />
           <img src={Ukassa} alt="Ukassa" />
           <div className={styles.payment_buttons}>
-            <Link to={{ pathname: '/oferta' }} className={`${styles.link} ${styles.link__name}`}>
+            <Link
+              to={{ pathname: '/oferta' }}
+              className={`${styles.link} ${styles.link__name}`}
+            >
               <span className={styles.payment_button}>Оферта </span>
             </Link>
             &nbsp;/
-            <Link to={{ pathname: '/size_chart' }} className={`${styles.link} ${styles.link__name}`}>
+            <Link
+              to={{ pathname: '/size_chart' }}
+              className={`${styles.link} ${styles.link__name}`}
+            >
               <span className={styles.payment_button}>Гид по размерам</span>
             </Link>
             &nbsp;/
@@ -328,7 +362,10 @@ function Cart() {
           </p>
         </div>
         <div className={styles.addPrintButton_wrap}>
-          <Link to={{ pathname: '/checkout' }} className={`${styles.link} ${styles.link__name}`}>
+          <Link
+            to={{ pathname: '/checkout' }}
+            className={`${styles.link} ${styles.link__name}`}
+          >
             <button
               className={styles.addPrintButton_wrap_text}
               onClick={() => {
@@ -337,7 +374,8 @@ function Cart() {
                   payload: allOrderPrice,
                 });
               }}
-            >К оформлению &gt;&gt;
+            >
+              К оформлению &gt;&gt;
             </button>
           </Link>
         </div>

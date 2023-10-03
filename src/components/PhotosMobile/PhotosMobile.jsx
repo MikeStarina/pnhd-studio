@@ -25,7 +25,7 @@ function PhotosMobile(item) {
         className={styles.swiper}
       >
         {item.galleryPhotos && item.galleryPhotos.map((el, index) => (
-          <SwiperSlide key={index} className={styles.swiper_slide}>
+          <SwiperSlide key={el} className={styles.swiper_slide}>
             <img src={`${apiBaseUrl}${el}`} alt={item.name} />
           </SwiperSlide>
         ))}

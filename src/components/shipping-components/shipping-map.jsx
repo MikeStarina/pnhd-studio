@@ -66,7 +66,7 @@ export function ShippingMap(props) {
                   onClick={(e) => {
                     handleClick(point, e);
                   }}
-                  key={index}
+                  key={[index]}
                   options={{
                     iconColor: `${point.color}`,
                   }}

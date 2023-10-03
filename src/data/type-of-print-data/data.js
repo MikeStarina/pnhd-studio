@@ -47,7 +47,7 @@ const softHyphen = '\u{00AD}';
 // возврат каретки, перенос без тире
 const carriageReturn = '\u{000D}';
 
-export const typeOfPrintData = {
+const typeOfPrintData = {
   numberAndSurname: {
     metaTitle:
       'Печать имен фамилий на футболках в Санкт-Петербурге от 1 штуки цена в Studio Pinhead',
@@ -204,3 +204,5 @@ export const typeOfPrintData = {
     },
   },
 };
+
+export default typeOfPrintData;

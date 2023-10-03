@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './cart-icon.module.css';
-// import cartIcon from '../images/cartIcon.svg';
-// import { useSelector } from "react-redux";
 
 function CartIcon({ qty }) {
   return (
@@ -17,5 +15,3 @@ function CartIcon({ qty }) {
 }
 
 export default CartIcon;
-
-// <img src={cartIcon} alt='cart icon' className={styles.cart_icon}></img>

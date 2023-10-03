@@ -1,4 +1,4 @@
-export function Square({ ...props }) {
+function Square({ ...props }) {
   return (
     <svg
       width="18"
@@ -19,3 +19,5 @@ export function Square({ ...props }) {
     </svg>
   );
 }
+
+export default Square;

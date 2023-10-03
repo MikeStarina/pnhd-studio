@@ -25,14 +25,16 @@
   },
   "plugins": ["react", "prettier"],
   "rules": {
-    "react/jsx-filename-extension": [0], // this first rele we need fix before enebled rules line 28
-    "import/extensions": "off", // this second rule we need fix before enebled rules line down (28)
-    //"react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }], // Enebled when will fix rules 27 and 26 line up!!!!
-    "max-len": "off", // we need fix all disebled rules from here and below... for line STOP
-    "import/prefer-default-export": "off",
+    //"react/jsx-filename-extension": [0], // this first rule we need fix before enebled rules line 30
+    //"import/extensions": "off", // this second rule we need fix before enebled rules line down (30)
+    //"react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }], // Enebled when will fix rules 29 and 28 line up!!!!
+    //"max-len": "off", // we need fix all disebled rules from here and below... for line STOP
+    //"import/prefer-default-export": "off",
     "camelcase": "off",
     "react/jsx-one-expression-per-line": "off",
-    "operator-linebreak": ["error", "none"],
+    "operator-linebreak": ["error", "after", { "overrides": { "?": "before", ":": "before" } }],
+//    "operator-linebreak": ["error", "after", { "overrides": { "||": "before" } }],
+    "no-confusing-arrow": ["error", {"allowParens": true}],
     "react/jsx-boolean-value": "off",
     "object-curly-newline": "off",
     "default-param-last": 0,
@@ -64,11 +66,11 @@
     "react/no-unknown-property": "off",
     "react/destructuring-assignment": "off",
     "consistent-return": "off",
-    "react/no-array-index-key": "off",
+    // "react/no-array-index-key": "off",
     "func-names": "off", // From here and below is correct rules !!!
     "react/jsx-props-no-spreading": "off",
     "prettier/prettier": "off",
-    "arrow-body-style": "off",
+    "arrow-body-style": ["error", "as-needed"], //в работе
     "prefer-arrow-callback": "off",
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
   }

@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux';
-import { utilityReducer } from '../reducers/utility-reducer.jsx';
-import { editorReducer } from '../reducers/editor-reducer.jsx';
-import { shopDataReducer } from '../reducers/shop-data-reducer.jsx';
-import { cartDataReducer } from '../reducers/cart-data-reducer.jsx';
-import { userDataReducer } from '../reducers/user-data-reducer.jsx';
-import { shippingReducer } from '../reducers/shipping-reducer.jsx';
-import { itemReducer } from '../reducers/item-reducer.js';
-import { friendReducer } from '../reducers/friends-reducer.jsx';
+import utilityReducer from '../reducers/utility-reducer';
+import editorReducer from '../reducers/editor-reducer';
+import shopDataReducer from '../reducers/shop-data-reducer';
+import cartDataReducer from '../reducers/cart-data-reducer';
+import userDataReducer from '../reducers/user-data-reducer';
+import shippingReducer from '../reducers/shipping-reducer';
+import itemReducer from '../reducers/item-reducer';
+import friendReducer from '../reducers/friends-reducer';
 
-export const rootReducer = combineReducers({
+const rootReducer = combineReducers({
   utilityState: utilityReducer,
   editorState: editorReducer,
   shopData: shopDataReducer,
@@ -18,3 +18,5 @@ export const rootReducer = combineReducers({
   friendData: friendReducer,
   itemReducer,
 });
+
+export default rootReducer;

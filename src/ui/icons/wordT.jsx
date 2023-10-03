@@ -1,4 +1,4 @@
-export function WordT({ ...props }) {
+function WordT({ ...props }) {
   return (
     <svg
       width="15"
@@ -15,3 +15,5 @@ export function WordT({ ...props }) {
     </svg>
   );
 }
+
+export default WordT;

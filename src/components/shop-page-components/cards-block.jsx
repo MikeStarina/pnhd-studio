@@ -3,7 +3,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styles from './cards-block.module.css';
-import CardItem from './card-item.jsx';
+import CardItem from './card-item';
 import { apiBaseUrl } from '../../utils/constants';
 import {
   SET_DEFAULTFILTER,
@@ -135,7 +135,9 @@ function CardsBlock() {
   let resultArr = [];
 
   if (
-    firstFilterSelectedItem.length === 0 || secondFilterSelectedItem.length === 0 || thirdFilterSelectedItem.length === 0
+    firstFilterSelectedItem.length === 0 ||
+    secondFilterSelectedItem.length === 0 ||
+    thirdFilterSelectedItem.length === 0
   ) {
     resultArr = data;
   }
@@ -207,7 +209,7 @@ function CardsBlock() {
               <Link
                   to={{ pathname: `/shop/${item.slug}` }}
                   className={styles.link}
-                  key={index}
+                  key={item.slug}
               >
                 <CardItem
                     title={item.name}

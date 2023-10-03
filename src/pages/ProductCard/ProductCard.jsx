@@ -45,6 +45,11 @@ function ProductCard() {
         title={`PINHEAD STUDIO | ${item.name}`}
         meta={[
           {
+            name: 'description',
+            content:
+              `${item.name} для печати в Санкт-Петербурге в PINHEAD STUDIO`,
+          },
+          {
             property: 'og:image',
             content:
               'https://sun9-77.userapi.com/impg/r3SRF7rtra4wl-3EmEgVqIRaaGNbjeO6q9ufUw/-yeDgKpu2CQ.jpg?size=500x500&quality=95&sign=d7fc90ef8c432358c10c8b1e16b4945f&type=album',
@@ -90,7 +95,7 @@ function ProductCard() {
         {isOtherPopupVisible && (
           <PopupModel onClose={closePopupConstructor}>
             {isOtherPopupVisible.map((el, index) => (
-              <p className={styles.instruction} key={index}>
+              <p className={styles.instruction} key={[index]}>
                 {el}
               </p>
             ))}

@@ -7,10 +7,14 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper';
 import styles from './item-page.module.css';
 import closeicon from '../../components/images/closeIcon.svg';
-import { ADD_TO_CART } from '../../services/actions/cart-actions.jsx';
+import { ADD_TO_CART } from '../../services/actions/cart-actions';
 import { apiBaseUrl } from '../../utils/constants';
 import SizeSelection from '../../components/size-selection/size-selection';
-import { addItemSize, deleteItemOrder, getSizeFlag } from '../../services/actions/item-action';
+import {
+  addItemSize,
+  deleteItemOrder,
+  getSizeFlag,
+} from '../../services/actions/item-action';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -18,7 +22,7 @@ import 'swiper/css/pagination';
 import isSizeFunction from '../../utils/isSizeFunction';
 import PopupModel from '../../components/popupModel/popupModel';
 import { closePopup, openPopup } from '../../services/actions/utility-actions';
-import { instructionForPopup } from '../../data/instructionForPopup/instructionForPopup';
+import instructionForPopup from '../../data/instructionForPopup/instructionForPopup';
 
 function ItemPage() {
   const { id } = useParams();
@@ -34,7 +38,8 @@ function ItemPage() {
     history.goBack();
   };
 
-  const item = data && data.length > 0 && data.filter((elem) => elem._id === id)[0];
+  const item =
+    data && data.length > 0 && data.filter((elem) => elem._id === id)[0];
   const [size, setSize] = useState('');
   console.log(order);
   useEffect(() => {
@@ -130,7 +135,8 @@ function ItemPage() {
   const descriptionArray = item ? item.description.split('=') : [];
 
   return (
-    data.length > 0 && item && (
+    data.length > 0 &&
+    item && (
       <section className={styles.screen}>
         <Helmet
           title={`PINHEAD STUDIO | ${item.name}`}
@@ -174,7 +180,12 @@ function ItemPage() {
         />
 
         <div className={styles.close_icon_wrapper}>
-          <img src={closeicon} alt="close icon" onClick={onClick} className={styles.close_icon} />
+          <img
+            src={closeicon}
+            alt="close icon"
+            onClick={onClick}
+            className={styles.close_icon}
+          />
         </div>
 
         <div className={styles.shop_item_wrapper}>
@@ -203,12 +214,16 @@ function ItemPage() {
           <div className={styles.item_info_wrapper}>
             <div className={styles.item_info_block}>
               <h1 className={styles.item_title}>{item.name}</h1>
-              {!item.isSale && <p className={styles.item_description}>{item.description}</p>}
-              {item.isSale && descriptionArray && descriptionArray.map((item, index) => (
-                <p className={styles.item_description} key={index}>
-                  {item}
-                </p>
-              ))}
+              {!item.isSale && (
+                <p className={styles.item_description}>{item.description}</p>
+              )}
+              {item.isSale &&
+                descriptionArray &&
+                descriptionArray.map((item, index) => (
+                  <p className={styles.item_description} key={[index]}>
+                    {item}
+                  </p>
+                ))}
               <br />
               {item.isSale && (
                 <a href="https://instagram.com/easyvisa_inc" target="blank">
@@ -223,7 +238,8 @@ function ItemPage() {
               <form className={styles.item_form}>
                 {item.stock === 'supplier' && (
                   <span className={styles.stock_type}>
-                    В наличии на удаленном складе. Срок изготовления заказа 2-4 дня!
+                    В наличии на удаленном складе. Срок изготовления заказа 2-4
+                    дня!
                   </span>
                 )}
                 {!item.isSale && (
@@ -237,7 +253,11 @@ function ItemPage() {
                   </label>
                 )}
 
-                <div className={styles.form_select} id="sizeSelect" name="sizeSelect">
+                <div
+                  className={styles.form_select}
+                  id="sizeSelect"
+                  name="sizeSelect"
+                >
                   {order.length > 0 ? (
                     order.map((item) => (
                       <SizeSelection
@@ -254,7 +274,11 @@ function ItemPage() {
                   )}
                 </div>
                 {!item.sale && (
-                  <Link to="/size_chart" className={styles.size_chart_link} target="blank">
+                  <Link
+                    to="/size_chart"
+                    className={styles.size_chart_link}
+                    target="blank"
+                  >
                     (Гид по размерам)
                   </Link>
                 )}
@@ -263,31 +287,42 @@ function ItemPage() {
             </div>
 
             <div className={styles.item_button_wrapper}>
-              {item.isForPrinting && !item.isSale && item.sizes.length > 0 && (isSizeFunction(order) ? (
-                <Link
-                  to={{
-                    pathname: `/shop/${id}/constructor`,
-                    state: { size: order },
-                  }}
-                >
-                  <button type="button" className={styles.item_button}>
+              {item.isForPrinting &&
+                !item.isSale &&
+                item.sizes.length > 0 &&
+                (isSizeFunction(order) ? (
+                  <Link
+                    to={{
+                      pathname: `/shop/${id}/constructor`,
+                      state: { size: order },
+                    }}
+                  >
+                    <button type="button" className={styles.item_button}>
+                      Добавить принт
+                    </button>
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    className={styles.item_button}
+                    onClick={addToConstructor}
+                  >
                     Добавить принт
                   </button>
-                </Link>
-              ) : (
-                <button type="button" className={styles.item_button} onClick={addToConstructor}>
-                  Добавить принт
-                </button>
-              ))}
+                ))}
               {item.sizes.length > 0 && (
-                <button type="button" className={styles.item_button} onClick={addToCart}>
+                <button
+                  type="button"
+                  className={styles.item_button}
+                  onClick={addToCart}
+                >
                   Добавить в корзину
                 </button>
               )}
               {isOtherPopupVisible && (
                 <PopupModel onClose={closePopupConstructor}>
                   {isOtherPopupVisible.map((el, index) => (
-                    <p className={styles.instruction} key={index}>
+                    <p className={styles.instruction} key={[index]}>
                       {el}
                     </p>
                   ))}
