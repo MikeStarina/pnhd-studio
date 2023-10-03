@@ -1,11 +1,11 @@
 /* termo */
-import termoMain from '../../components/images/printingMethods/termo/main.webp';
-import termo1 from '../../components/images/printingMethods/termo/1.webp';
-import termo2 from '../../components/images/printingMethods/termo/2.webp';
-import termo3 from '../../components/images/printingMethods/termo/3.webp';
-import termo4 from '../../components/images/printingMethods/termo/4.webp';
-import termo5 from '../../components/images/printingMethods/termo/5.webp';
-import termo6 from '../../components/images/printingMethods/termo/6.webp';
+import mainImg from '../../components/images/printingTypes.png';
+import gallery1 from '../../components/images/IMG_0404.webp';
+import gallery2 from '../../components/images/sample1.webp';
+import gallery3 from '../../components/images/sample2.webp';
+import gallery4 from '../../components/images/sample3.webp';
+import gallery5 from '../../components/images/sample4.webp';
+import gallery6 from '../../components/images/sample5.webp';
 // точка, имитация пункта списка
 const point = '\u{22C5}';
 // неразрывный пробел
@@ -14,15 +14,11 @@ const nbsp = '\u{00A0}';
 const softHyphen = '\u{00AD}';
 // возврат каретки, перенос без тире
 const carriageReturn = '\u{000D}';
-
-export const productsData = {
+const productsData = {
   futbolki: {
-    metaTitle:
-      '',
-    metaKeywords:
-      '',
-    metaDescription:
-      '',
+    metaTitle: 'Печать на футболках в Санкт-Петербурге на заказ от 1 штуки цены в Studio Pinhead',
+    metaKeywords: 'печать на футболках, санкт-петербург, на заказ, цена, недорого, срочно, от 1 шт, заказать, стоимость, хороший, сделать, быстрый, оверсайз, черный, белый, спортивный, онлайн, дизайн, нанесение, услуга, а4, а3, студия',
+    metaDescription: 'Заказать печать на футболках в Санкт-Петербурге по выгодной цене в Studio Pinhead. Любые методы печати на футболках на заказ от 1 штуки.',
     main_heading: 'ПЕЧАТЬ НА ФУТБОЛКАХ',
     brief_subtitle:
       'PINHEAD STUDIO — студия в Санкт-Петербурге, где вы можете заказать печать на футболках от 1 штуки.Мы предлагаем полный спектр услуг: от разработки дизайна до нанесения на текстиль любым методом печати.',
@@ -64,17 +60,14 @@ export const productsData = {
     },
     price_type: 'Футболки',
     images: {
-      main: termoMain,
-      gallery: [termo1, termo2, termo3, termo4, termo5, termo6],
+      main: mainImg,
+      gallery: [gallery1, gallery2, gallery3, gallery4, gallery5, gallery6],
     },
   },
   hudi: {
-    metaTitle:
-      '',
-    metaKeywords:
-      '',
-    metaDescription:
-      '',
+    metaTitle: 'Печать на худи в Санкт-Петербурге на заказ от 1 штуки в Studio Pinhead',
+    metaKeywords: 'печать на худи, санкт-петербург, на заказ',
+    metaDescription: 'Заказать печать на худи в Санкт-Петербурге в Studio Pinhead. Качественное нанесение принтов на худи на заказ от 1 штуки.',
     main_heading: 'ПЕЧАТЬ НА ХУДИ',
     brief_subtitle:
       'PINHEAD STUDIO — студия в Санкт-Петербурге, где вы можете заказать печать на худи с оригинальными дизайнами.Качественное нанесение вашего принта на текстиль по выгодной цене. Услуги дизайнера бесплатно!',
@@ -111,17 +104,14 @@ export const productsData = {
     },
     price_type: 'Худи',
     images: {
-      main: termoMain,
-      gallery: [termo1, termo2, termo3, termo4, termo5, termo6],
+      main: mainImg,
+      gallery: [gallery1, gallery2, gallery3, gallery4, gallery5, gallery6],
     },
   },
   sweatshirt: {
-    metaTitle:
-      '',
-    metaKeywords:
-      '',
-    metaDescription:
-      '',
+    metaTitle: 'Печать на свитшотах в Санкт-Петербурге цены в Studio Pinhead',
+    metaKeywords: 'печать на свитшотах, санкт-петербург, на заказ',
+    metaDescription: 'Закажите печать на свитшотах по выгодной цене в Studio Pinhead. Уникальный дизайн свитшотов на заказ от 1 штуки.',
     main_heading: 'ПЕЧАТЬ НА СВИТШОТАХ',
     brief_subtitle:
       'PINHEAD STUDIO — студия в Санкт-Петербурге, где вы можете заказать печать на свитшотах любым методом.Мы предлагаем широкий спектр услуг: от консультаций по дизайну до качественной печати на текстиле.',
@@ -159,21 +149,19 @@ export const productsData = {
             'Мы осуществляем доставку по всей России транспортной компанией “СДЭК”. Также вы можете получить готовые свитшоты с печатью в нашей студии в Санкт-Петербурге.',
         },
       ],
-      description: 'Если у вас возникли еще вопросы, обращайтесь к нашим менеджерам. Мы с радостью поможем вам создать стильные и уникальные свитшоты с печатью, которые подчеркнут вашу индивидуальность.',
+      description:
+        'Если у вас возникли еще вопросы, обращайтесь к нашим менеджерам. Мы с радостью поможем вам создать стильные и уникальные свитшоты с печатью, которые подчеркнут вашу индивидуальность.',
     },
     price_type: 'Свитшот',
     images: {
-      main: termoMain,
-      gallery: [termo1, termo2, termo3, termo4, termo5, termo6],
+      main: mainImg,
+      gallery: [gallery1, gallery2, gallery3, gallery4, gallery5, gallery6],
     },
   },
   shopper: {
-    metaTitle:
-      '',
-    metaKeywords:
-      '',
-    metaDescription:
-      '',
+    metaTitle: 'Печать на шопперах в Санкт-Петербурге цены в Studio Pinhead',
+    metaKeywords: 'печать на шопперах, санкт-петербург, на заказ',
+    metaDescription: 'Заказать печать на шопперах в Санкт-Петербурге по выгодной цене в Studio Pinhead. Индивидуальные шопперы с печатью от 1 штуки.',
     main_heading: 'ПЕЧАТЬ НА ШОППЕРАХ',
     brief_subtitle:
       'В PINHEAD STUDIO в Санкт-Петербурге вы можете заказать печать уникальных дизайнов на шопперах.Мы предоставляем комплексные услуги: от разработки дизайна до нанесения высококачественной печати.',
@@ -215,17 +203,14 @@ export const productsData = {
     },
     price_type: 'Шоппер',
     images: {
-      main: termoMain,
-      gallery: [termo1, termo2, termo3, termo4, termo5, termo6],
+      main: mainImg,
+      gallery: [gallery1, gallery2, gallery3, gallery4, gallery5, gallery6],
     },
   },
   cap: {
-    metaTitle:
-      '',
-    metaKeywords:
-      '',
-    metaDescription:
-      '',
+    metaTitle: 'Печать на кепках в Санкт-Петербурге цены в Studio Pinhead',
+    metaKeywords: 'печать на кепках, санкт-петербург, на заказ',
+    metaDescription: 'Заказать печать на кепках в Санкт-Петербурге от 1 штуки можно у нас! Уникальные кепки с печатью на заказ от Studio Pinhead.',
     main_heading: 'ПЕЧАТЬ НА КЕПКАХ',
     brief_subtitle:
       'Печать на кепках в Санкт-Петербурге можно заказать в PINHEAD STUDIO.Мы предлагаем полный спектр услуг: от создания дизайна до нанесения уникальной печати',
@@ -263,12 +248,15 @@ export const productsData = {
             'Вы можете забрать свой заказ в нашей студии в Санкт-Петербурге или в пункте выдачи в любом другом городе России.',
         },
       ],
-      description: 'Если у вас возникли еще вопросы или вы хотите сделать заказ на печать уникальных и стильных кепок, свяжитесь с нами. PINHEAD STUDIO всегда готов воплотить ваши идеи в реальность.',
+      description:
+        'Если у вас возникли еще вопросы или вы хотите сделать заказ на печать уникальных и стильных кепок, свяжитесь с нами. PINHEAD STUDIO всегда готов воплотить ваши идеи в реальность.',
     },
     price_type: 'Кепка',
     images: {
-      main: termoMain,
-      gallery: [termo1, termo2, termo3, termo4, termo5, termo6],
+      main: mainImg,
+      gallery: [gallery1, gallery2, gallery3, gallery4, gallery5, gallery6],
     },
   },
 };
+
+export default productsData;

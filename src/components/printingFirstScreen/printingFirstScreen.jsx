@@ -65,7 +65,7 @@ function PrintingFirstScreen({ data, typePage }) {
       {typePage === 'product' && (
         <div
           className={
-                        info.price_type === 'Футболки' ? `${styles.main_wrap} ${styles.main_wrap_futbolki}` : info.price_type === 'Худи' ? `${styles.main_wrap} ${styles.main_wrap_hudi}` : info.price_type === 'Свитшот' ? `${styles.main_wrap} ${styles.main_wrap_sweatshirt}` : info.price_type === 'Кепка' ? `${styles.main_wrap} ${styles.main_wrap_cap}` : styles.main_wrap
+                        info.price_type === 'Футболки' ? `${styles.main_wrap} ${styles.main_wrap_futbolki}` : info.price_type === 'Худи' ? `${styles.main_wrap} ${styles.main_wrap_hudi}` : info.price_type === 'Свитшот' ? `${styles.main_wrap} ${styles.main_wrap_sweatshirt}` : info.price_type === 'Кепка' ? `${styles.main_wrap} ${styles.main_wrap_shopper}` : info.price_type === 'Шоппер' ? `${styles.main_wrap} ${styles.main_wrap_cap}` : styles.main_wrap
                     }
         />
       )}

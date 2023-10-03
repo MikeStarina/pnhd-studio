@@ -13,7 +13,7 @@ import { getShopData } from '../../services/actions/shop-data-actions';
 import methodsData from '../../data/printing-methods/methods-data';
 // eslint-disable-next-line import/extensions
 import typeOfPrintData from '../../data/type-of-print-data/data';
-import { productsData } from '../../data/printing-products/products-data';
+import productsData from '../../data/printing-products/products-data';
 import PopupModel from '../popupModel/popupModel';
 import MainPage from '../../pages/main-page/main-page';
 import BurgerIcon from '../main-menu/burger-icon';
