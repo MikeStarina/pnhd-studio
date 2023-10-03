@@ -4,14 +4,12 @@ import circle50px from '../images/circle50px.png';
 
 function PrintingFaq(data) {
   const { title, description, variants } = data;
-  console.log(description);
   return (
     <section className={styles.screen}>
-      {title != 'null' ? <h3 className={styles.heading}>{title}</h3> : ''}
-      {variants.map((item, index) => {
-        return (
-          <div className={styles.block_wrapper} key={index}>
-            <img
+      <h3 className={styles.heading}>{title}</h3>
+      {variants.map((item) => (
+        <div className={styles.block_wrapper} key={item.screen_heading}>
+          <img
               src={circle50px}
               className={styles.screen_circle}
               alt="circle"
@@ -19,13 +17,12 @@ function PrintingFaq(data) {
           <div className={styles.text_wrapper}>
             <h4 className={styles.screen_heading}>{item.screen_heading}</h4>
             {Array.isArray(item.screen_description) ? (
-              item.screen_description.map((item, index) => (
+              item.screen_description.map((elem) => (
                 <p
                       className={`${styles.screen_description} ${styles.screen_description_bottom}`}
-                      // eslint-disable-next-line react/no-array-index-key
-                      key={index}
+                      key={elem}
                 >
-                  {item}
+                  {elem}
                 </p>
               ))
             ) : (
@@ -38,9 +35,8 @@ function PrintingFaq(data) {
       ))}
       {Array.isArray(description) && (
         <>
-          {description.map((item, index) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <div className={styles.block_wrapper} key={index}>
+          {description.map((item) => (
+            <div className={styles.block_wrapper} key={item}>
               <p className={styles.bottom_description}>{item}</p>
             </div>
           ))}
@@ -54,5 +50,4 @@ function PrintingFaq(data) {
     </section>
   );
 }
-
 export default PrintingFaq;

@@ -8,9 +8,11 @@ import {
   closePopupHeader,
   openPopupHeader,
 } from '../../services/actions/utility-actions';
-import { getShopData } from '../../services/actions/shop-data-actions.jsx';
-import { methodsData } from '../../data/printing-methods/methods-data';
-import { typeOfPrintData } from '../../data/type-of-print-data/data';
+import { getShopData } from '../../services/actions/shop-data-actions';
+// eslint-disable-next-line import/extensions
+import methodsData from '../../data/printing-methods/methods-data';
+// eslint-disable-next-line import/extensions
+import typeOfPrintData from '../../data/type-of-print-data/data';
 import { productsData } from '../../data/printing-products/products-data';
 import PopupModel from '../popupModel/popupModel';
 import MainPage from '../../pages/main-page/main-page';
