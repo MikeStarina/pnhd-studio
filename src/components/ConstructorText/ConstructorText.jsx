@@ -20,9 +20,7 @@ function ConstructorText(props) {
   } = props;
   const [mainSquareCircleComponentColor, setMainSquareCircleComponentColor] = useState(false);
   const dispatch = useDispatch();
-
   const [imageTwo] = useImage(file, 'Anonymous');
-
   const toggle = (e) => {
     e.stopPropagation();
     if (!dropdownVisibleText && !initialText) {
@@ -52,21 +50,21 @@ function ConstructorText(props) {
       onOpenText(initialImageCoords, activeView, initialFilterCoords);
     }
   };
-
   const handleItemSelectClick = (e) => {
     e.stopPropagation();
     // console.log('  Croissant One , Dela Gothic One  ');
   };
-
-  useEffect(() => {}, [dropdownVisibleText]);
-
+  useEffect(() => {
+  }, [dropdownVisibleText]);
   return (
     <div className={styles.wrap}>
       <div
         onMouseEnter={() => setMainSquareCircleComponentColor(true)}
         onMouseLeave={() => setMainSquareCircleComponentColor(false)}
         className={
-          dropdownVisibleText || (initialText && initialText.openText) ? `${styles.dropdown_container} ${styles.dropdown_container_selected}` : `${styles.dropdown_container}`
+          dropdownVisibleText || (initialText && initialText.openText)
+            ? `${styles.dropdown_container} ${styles.dropdown_container_selected}`
+            : `${styles.dropdown_container}`
         }
       >
         <div onClick={(e) => toggle(e)} className={styles.dropdown_input}>
@@ -161,17 +159,17 @@ function ConstructorText(props) {
               {/* <div */}
               {/*  className={styles.dropdown_item} */}
               {/* > */}
-                {/* <button */}
-                {/*    onClick={(e) => { */}
-                {/*      handleItemSelectClick(e); */}
-                {/*      dispatch(changeTextState({ */}
-                {/*        ...initialText, */}
-                {/*        downText: !initialText.downText, */}
-                {/*      }, activeView)); */}
-                {/*    }} */}
-                {/* > */}
-                {/*  под */}
-                {/* </button> */}
+              {/* <button */}
+              {/*    onClick={(e) => { */}
+              {/*      handleItemSelectClick(e); */}
+              {/*      dispatch(changeTextState({ */}
+              {/*        ...initialText, */}
+              {/*        downText: !initialText.downText, */}
+              {/*      }, activeView)); */}
+              {/*    }} */}
+              {/* > */}
+              {/*  под */}
+              {/* </button> */}
               {/* </div> */}
             </div>
           )}

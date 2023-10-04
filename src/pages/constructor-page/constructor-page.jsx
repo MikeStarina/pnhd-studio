@@ -49,7 +49,6 @@ function Constructor() {
   const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
   const { id } = useParams();
   const slug = id;
-
   const dispatch = useDispatch();
   const {
     isBlockButton,
@@ -78,30 +77,25 @@ function Constructor() {
   const [openSquare, setOpenSquare] = useState(false);
   const [dropdownVisibleFilter, setDropdownVisibleFilter] = useState(false);
   const [dropdownVisibleText, setDropdownVisibleText] = useState(false);
-
   const { order } = useSelector((store) => store.cartData);
   const element = location.state.from.includes('cart')
     ? data &&
-      data.length > 0 &&
-      order &&
-      order.find((elem) => elem.cart_item_id === location.state.state)
+    data.length > 0 &&
+    order &&
+    order.find((elem) => elem.cart_item_id === location.state.state)
     : data && data.length > 0 && data.find((elem) => elem.slug === slug);
-
   const item = location.state.from.includes('cart')
     ? element.attributes
     : element;
-
   const itemSize = location.state.from.includes('cart')
     ? item.size
     : location.state.size;
-
   const volumeSize =
     itemSize &&
     itemSize.reduce((total, element) => {
       let accTotal;
       return (accTotal = total + element.qty);
     }, 0);
-
   useEffect(() => {
     if (location.state.from.includes('cart')) {
       dispatch(loadPrintFromState(element.print));
@@ -113,29 +107,24 @@ function Constructor() {
       });
     };
   }, []);
-
   useEffect(() => {
     setFilterCoords(activeView);
   }, [activeView]);
-
   const setActiveTab = (e) => {
     dispatch({
       type: SET_ACTIVE_VIEW,
       payload: e.currentTarget.id,
     });
   };
-
   const onSelect = () => {
     dispatch({ type: IMAGE_SELECT });
   };
-
   const checkDeselect = (e) => {
     const clickedOnEmpty = e.currentTarget === e.currentTarget.getStage();
     if (clickedOnEmpty) {
       dispatch({ type: IMAGE_DESELECT });
     }
   };
-
   const file = fileSelect(
     activeView,
     front_file,
@@ -144,7 +133,6 @@ function Constructor() {
     rsleeve_file,
     badge_file,
   );
-
   const textFile = textFileSelect(
     activeView,
     front_file,
@@ -153,24 +141,20 @@ function Constructor() {
     rsleeve_file,
     badge_file,
   );
-
   const onChange = (e) => {
     e.preventDefault();
-
     const data = new FormData();
     const print = photoProcessing(e.target.files[0]);
     if (print === undefined) {
       dispatch(openPopup(['Не тот формат файла']));
     } else {
       data.append('files', print, `${uuidv4()}_${print.name}`);
-
       /* printUploadFunc - так-же вызывает ф-цию setCoords
       - которая задает позицию появления привью изображения */
       dispatch(printUploadFunc(data, activeView, item.type, item.color));
     }
     e.currentTarget.reset();
   };
-
   const deletePrint = () => {
     setCircleMask(false);
     setSquareMask(false);
@@ -185,10 +169,8 @@ function Constructor() {
     return async function (dispatch) {
       // const preview = await stageRef.current.toDataURL();
       const scene = await stageRef.current?.toBlob();
-
       const data = new FormData();
       data.append('files', scene, `${activeView}_preview_${uuidv4()}.jpg`);
-
       dispatch(uploadPreview(data, activeView));
     };
   }
@@ -201,7 +183,6 @@ function Constructor() {
     rsleeve_file,
     badge_file,
   );
-
   const addToCart = () => {
     const variant = 'с принтом';
     // Создает обьект заказа, для сохранения в сесионой памяти
@@ -220,21 +201,16 @@ function Constructor() {
       rsleeve_file_preview,
       badge_file,
     );
-
     dispatch({
       type: ADD_TO_CART_WITH_PRINT,
       payload: { ...data },
     });
-
     dispatch({
       type: CLEAR_ALL_PRINTS,
     });
-
     dispatch(clearItemOrder());
-
     history.goBack();
   };
-
   const uuId = uuidv4();
   const addToPrint = () => {
     const variant = 'с принтом';
@@ -254,53 +230,41 @@ function Constructor() {
       rsleeve_file_preview,
       badge_file,
     );
-
     dispatch({
       type: ADD_TO_CART,
       payload: { ...data },
     });
-
     dispatch({
       type: CLEAR_ALL_PRINTS,
     });
-
     dispatch(clearItemOrder());
-
     history.go(-2);
   };
-
   const openPopupConstructor = () => {
     dispatch(openPopup(instructionForPopup));
   };
-
   const openPopupInfo = () => {
     dispatch(
       openPopup(['Привет! Сейчас эта функция находится в разработке :)']),
     );
   };
-
   const closePopupConstructor = () => {
     dispatch(closePopup());
   };
-
   const getButtonVisibilitySquare = () => {
     setSquareMask(true);
   };
-
   const getButtonVisibilityCircle = () => {
     setCircleMask(true);
   };
-
   const closeButtonVisibilityCircleSquare = () => {
     setCircleMask(false);
     setSquareMask(false);
   };
-
   const closeButtonVisibilityOpenCircleSquare = () => {
     setOpenCircle(false);
     setOpenSquare(false);
   };
-
   const acceptCloseCircleMaskOpenCircle = () => {
     setCircleMask((circleMask) => !circleMask);
     dispatch({
@@ -312,7 +276,6 @@ function Constructor() {
       view: activeView,
     });
   };
-
   const acceptCloseSquareMaskOpenSquare = () => {
     setSquareMask((squareMask) => !squareMask);
     dispatch({
@@ -324,7 +287,6 @@ function Constructor() {
       view: activeView,
     });
   };
-
   return (
     item && (
       <section className={styles.screen}>
