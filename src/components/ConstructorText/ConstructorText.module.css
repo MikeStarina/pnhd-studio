@@ -132,14 +132,6 @@
     align-self: center;
 }
 
-.px {
-    font-size: 10px;
-    font-weight: 400;
-    position: absolute;
-    bottom: 51px;
-    left: 115px;
-}
-
 .input_text {
     width: 170px;
 }

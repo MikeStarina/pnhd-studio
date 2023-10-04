@@ -135,7 +135,6 @@ function ConstructorText(props) {
                       dispatch(getSize(initialText, activeView, itemColor));
                     }}
                   />
-                  <span className={styles.px}>px</span>
                 </form>
               </div>
               <div
