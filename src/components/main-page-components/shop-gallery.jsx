@@ -1,12 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './shop-gallery.module.css';
-import all from '../images/all.webp';
-import man from '../images/man.webp';
-import wman from '../images/wman.webp';
-import acc from '../images/acc.webp';
+import ShopGalleryItem from './shop-gallery-item';
 
-function ShopGallery({ printingProduct }) {
+function ShopGallery({ printingProduct, data }) {
   return (
     <section className={styles.screen}>
       {printingProduct != 'true' ? (
@@ -24,7 +21,7 @@ function ShopGallery({ printingProduct }) {
         </>
       ) : ''}
       <div className={styles.wrapper}>
-        <div className={styles.card}>
+        {/* <div className={styles.card}>
           <img
             className={styles.card_img}
             src={all}
@@ -43,9 +40,10 @@ function ShopGallery({ printingProduct }) {
               СМОТРЕТЬ
             </Link>
           </div>
-        </div>
+        </div> */}
 
-        <div className={styles.card}>
+        {data.map((item) => (<ShopGalleryItem data={item} key={item.id} />))}
+        {/* <div className={styles.card}>
           <img
             className={styles.card_img}
             src={man}
@@ -108,7 +106,7 @@ function ShopGallery({ printingProduct }) {
               СМОТРЕТЬ
             </Link>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );
