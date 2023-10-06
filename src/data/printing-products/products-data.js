@@ -1,11 +1,44 @@
-/* termo */
+/* futbolki */
 import mainImg from '../../components/images/printingTypes.png';
-import gallery1 from '../../components/images/IMG_0404.webp';
-import gallery2 from '../../components/images/sample1.webp';
-import gallery3 from '../../components/images/sample2.webp';
-import gallery4 from '../../components/images/sample3.webp';
-import gallery5 from '../../components/images/sample4.webp';
-import gallery6 from '../../components/images/sample5.webp';
+import futbolki1 from '../../components/images/printingProduct/futbolki/futbolki1.jpg';
+import futbolki2 from '../../components/images/printingProduct/futbolki/futbolki2.jpg';
+import futbolki3 from '../../components/images/printingProduct/futbolki/futbolki3.jpg';
+import futbolki4 from '../../components/images/printingProduct/futbolki/futbolki4.jpg';
+import futbolki5 from '../../components/images/printingProduct/futbolki/futbolki5.jpg';
+import futbolki6 from '../../components/images/printingProduct/futbolki/futbolki6.jpg';
+
+/* hudi */
+import hudi1 from '../../components/images/printingProduct/hudi/hudi1.jpg';
+import hudi2 from '../../components/images/printingProduct/hudi/hudi2.jpg';
+import hudi3 from '../../components/images/printingProduct/hudi/hudi3.jpg';
+import hudi4 from '../../components/images/printingProduct/hudi/hudi4.jpg';
+import hudi5 from '../../components/images/printingProduct/hudi/hudi5.jpg';
+import hudi6 from '../../components/images/printingProduct/hudi/hudi6.jpg';
+
+/* sweatshirt */
+import sweatshirt1 from '../../components/images/printingProduct/sweatshirt/sweatshirt1.jpg';
+import sweatshirt2 from '../../components/images/printingProduct/sweatshirt/sweatshirt2.jpg';
+import sweatshirt3 from '../../components/images/printingProduct/sweatshirt/sweatshirt3.jpg';
+import sweatshirt4 from '../../components/images/printingProduct/sweatshirt/sweatshirt4.jpg';
+import sweatshirt5 from '../../components/images/printingProduct/sweatshirt/sweatshirt5.jpg';
+import sweatshirt6 from '../../components/images/printingProduct/sweatshirt/sweatshirt6.jpg';
+
+/* shopper */
+import shopper1 from '../../components/images/printingProduct/shopper/shopper1.jpg';
+import shopper2 from '../../components/images/printingProduct/shopper/shopper2.jpg';
+import shopper3 from '../../components/images/printingProduct/shopper/shopper3.jpg';
+import shopper4 from '../../components/images/printingProduct/shopper/shopper4.jpg';
+import shopper5 from '../../components/images/printingProduct/shopper/shopper5.jpg';
+import shopper6 from '../../components/images/printingProduct/shopper/shopper6.jpg';
+
+/* cap */
+import cap1 from '../../components/images/printingProduct/cap/cap1.jpg';
+import cap2 from '../../components/images/printingProduct/cap/cap2.jpg';
+import cap3 from '../../components/images/printingProduct/cap/cap3.jpg';
+import cap4 from '../../components/images/printingProduct/cap/cap4.jpg';
+import cap5 from '../../components/images/printingProduct/cap/cap5.jpg';
+import cap6 from '../../components/images/printingProduct/cap/cap6.jpg';
+
 // точка, имитация пункта списка
 const point = '\u{22C5}';
 // неразрывный пробел
@@ -61,7 +94,7 @@ const productsData = {
     price_type: 'Футболки',
     images: {
       main: mainImg,
-      gallery: [gallery1, gallery2, gallery3, gallery4, gallery5, gallery6],
+      gallery: [futbolki1, futbolki2, futbolki3, futbolki4, futbolki5, futbolki6],
     },
   },
   hudi: {
@@ -105,7 +138,7 @@ const productsData = {
     price_type: 'Худи',
     images: {
       main: mainImg,
-      gallery: [gallery1, gallery2, gallery3, gallery4, gallery5, gallery6],
+      gallery: [hudi1, hudi2, hudi3, hudi4, hudi5, hudi6],
     },
   },
   sweatshirt: {
@@ -155,7 +188,7 @@ const productsData = {
     price_type: 'Свитшот',
     images: {
       main: mainImg,
-      gallery: [gallery1, gallery2, gallery3, gallery4, gallery5, gallery6],
+      gallery: [sweatshirt1, sweatshirt2, sweatshirt3, sweatshirt4, sweatshirt5, sweatshirt6],
     },
   },
   shopper: {
@@ -204,7 +237,7 @@ const productsData = {
     price_type: 'Шоппер',
     images: {
       main: mainImg,
-      gallery: [gallery1, gallery2, gallery3, gallery4, gallery5, gallery6],
+      gallery: [shopper1, shopper2, shopper3, shopper4, shopper5, shopper6],
     },
   },
   cap: {
@@ -254,7 +287,7 @@ const productsData = {
     price_type: 'Кепка',
     images: {
       main: mainImg,
-      gallery: [gallery1, gallery2, gallery3, gallery4, gallery5, gallery6],
+      gallery: [cap1, cap2, cap3, cap4, cap5, cap6],
     },
   },
 };
