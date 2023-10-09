@@ -255,7 +255,7 @@
 .item_button {
     width: 200px;
     height: 40px;
-    : flex-end;
+    justify-content: flex-end;
     box-sizing: border-box;
     border: 1px #000000 solid;
     border-radius: 5px;

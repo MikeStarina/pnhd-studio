@@ -5,14 +5,12 @@ import {
   closePopupHeader,
   GET_ORDER_FORM_DATA,
   sendLeadFormData,
-  SET_POPUP_VISIBILITY,
+  // SET_POPUP_VISIBILITY,
 } from '../../services/actions/utility-actions';
 
 function PopupCallBack() {
   const dispatch = useDispatch();
-  const { orderFormData, message } = useSelector(
-    (store) => store.utilityState,
-  );
+  const { orderFormData, message } = useSelector((store) => store.utilityState);
   const [isMessageSent, setIsMessageSent] = useState(false);
 
   const formSubmitHandler = async (e) => {
@@ -20,11 +18,11 @@ function PopupCallBack() {
     dispatch(sendLeadFormData(orderFormData.name, orderFormData.phone));
   };
 
-  const openPopup = () => {
-    dispatch({
-      type: SET_POPUP_VISIBILITY,
-    });
-  };
+  // const openPopup = () => {
+  //   dispatch({
+  //     type: SET_POPUP_VISIBILITY,
+  //   });
+  // };
 
   useEffect(() => {
     let timer;
@@ -55,31 +53,36 @@ function PopupCallBack() {
         <>
           <h1 className={styles.title}>ПЕРЕЗВОНИТЬ?</h1>
           <p className={styles.description}>
-            Мы с радостью! Проконсультируем уже через 10 минут,
-            просто оставь номер телефона!
+            Мы с радостью! Проконсультируем уже через 10 минут, просто оставь
+            номер телефона!
           </p>
-          <label className={styles.input_label}>Ваше имя:</label>
-          <input
-            className={styles.input}
-            type="text"
-            name="name"
-            id="name"
-            value={orderFormData.name}
-            onChange={formOnchangeHandler}
-          />
-          <label className={styles.input_label}>Ваше телефон:</label>
-          <input
-            className={styles.input}
-            type="text"
-            name="phone"
-            id="phone"
-            value={orderFormData.phone}
-            onChange={formOnchangeHandler}
-          />
+          <label className={styles.input_label} htmlFor="name">
+            Ваше имя:
+            <input
+              className={styles.input}
+              type="text"
+              name="name"
+              id="name"
+              value={orderFormData.name}
+              onChange={formOnchangeHandler}
+            />
+          </label>
+          <label className={styles.input_label} htmlFor="phone">
+            Ваше телефон:
+            <input
+              className={styles.input}
+              type="text"
+              name="phone"
+              id="phone"
+              value={orderFormData.phone}
+              onChange={formOnchangeHandler}
+            />
+          </label>
         </>
       )}
       <label
         className={`${styles.input_label} ${styles.input_label_center} ${visual}`}
+        htmlFor="message"
       >
         {message}
       </label>

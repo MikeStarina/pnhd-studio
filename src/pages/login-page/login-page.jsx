@@ -14,8 +14,10 @@ function LoginPage() {
   const onChange = (e) => {
     e.preventDefault();
 
-    const login = e.target.name === 'email' ? e.target.value : userLoginData.login;
-    const password = e.target.name === 'password' ? e.target.value : userLoginData.password;
+    const login =
+      e.target.name === 'email' ? e.target.value : userLoginData.login;
+    const password =
+      e.target.name === 'password' ? e.target.value : userLoginData.password;
 
     dispatch({
       type: GET_USER_LOGIN_DATA,
@@ -35,33 +37,34 @@ function LoginPage() {
       <h1 className={styles.title}>LOGIN @PNHD</h1>
 
       <form className={styles.form} onSubmit={onSubmit}>
+        {/* инпут был перенесен в лейбл, возможно поехала верстка */}
         <label className={styles.input_label} htmlFor="email">
           Имя пользователя:
+          <input
+            type="email"
+            className={styles.input}
+            id="email"
+            name="email"
+            placeholder="name@pnhd.ru"
+            value={userLoginData.login}
+            onChange={onChange}
+            required
+          />
         </label>
-        <input
-          type="email"
-          className={styles.input}
-          id="email"
-          name="email"
-          placeholder="name@pnhd.ru"
-          value={userLoginData.login}
-          onChange={onChange}
-          required
-        />
+        {/* инпут был перенесен в лейбл, возможно поехала верстка */}
         <label className={styles.input_label} htmlFor="password">
           Пароль:
+          <input
+            type="password"
+            className={styles.input}
+            id="password"
+            name="password"
+            placeholder="**********"
+            value={userLoginData.password}
+            onChange={onChange}
+            required
+          />
         </label>
-        <input
-          type="password"
-          className={styles.input}
-          id="password"
-          name="password"
-          placeholder="**********"
-          value={userLoginData.password}
-          onChange={onChange}
-          required
-        />
-
         <button type="submit" className={styles.submit_button}>
           ВОЙТИ
         </button>

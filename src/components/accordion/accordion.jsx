@@ -10,7 +10,7 @@ function Accordion() {
     if (isActive === index) {
       return setIsActive(null);
     }
-    setIsActive(index);
+    return setIsActive(index);
   };
 
   return (
@@ -19,8 +19,16 @@ function Accordion() {
         <p className={styles.accordion_mainText}>{mainText}</p>
         {data.map((item) => (
           <div className={styles.accordion_item} key={item.id}>
-            <div className={styles.accordion_title} onClick={() => toggle(item.id)}>
-              <span className={styles.accordion_gt}>{isActive === item.id ? '-' : gt}</span>
+            <div
+              className={styles.accordion_title}
+              onClick={() => toggle(item.id)}
+              onKeyDown={() => toggle(item.id)}
+              role="button"
+              tabIndex="0"
+            >
+              <span className={styles.accordion_gt}>
+                {isActive === item.id ? '-' : gt}
+              </span>
               <h2 className={styles.accordion_text}>
                 {item.title_italicFirst ? (
                   <i>
@@ -34,17 +42,21 @@ function Accordion() {
                 &#32;
                 {item.title_italicLast ? <i>{item.title_italicLast}</i> : ''}
               </h2>
-              {isActive != item.id && (
+              {isActive !== item.id && (
                 <span className={styles.accordion_gt}>
                   &#62;
                   <span className={styles.accordion_gtRight}>&#62;</span>
                 </span>
               )}
-              {isActive === item.id && <span className={styles.accordion_gt}> </span>}
+              {isActive === item.id && (
+                <span className={styles.accordion_gt}> </span>
+              )}
             </div>
             <div
               className={
-                isActive === item.id ? `${styles.accordion_content} ${styles.accordion_content_show}` : `${styles.accordion_content}`
+                isActive === item.id
+                  ? `${styles.accordion_content} ${styles.accordion_content_show}`
+                  : `${styles.accordion_content}`
               }
             >
               {Array.isArray(item.content) ? (

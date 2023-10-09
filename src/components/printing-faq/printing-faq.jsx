@@ -6,21 +6,18 @@ function PrintingFaq(data) {
   const { title, description, variants } = data;
   return (
     <section className={styles.screen}>
-      {title != 'null' ? <h3 className={styles.heading}>{title}</h3> : ''}
+      {title !== 'null' ? <h3 className={styles.heading}>{title}</h3> : ''}
       {variants.map((item) => (
         <div className={styles.block_wrapper} key={item.screen_heading}>
-          <img
-              src={circle50px}
-              className={styles.screen_circle}
-              alt="circle"
-          />
+          <img src={circle50px} className={styles.screen_circle} alt="circle" />
           <div className={styles.text_wrapper}>
             <h4 className={styles.screen_heading}>{item.screen_heading}</h4>
             {Array.isArray(item.screen_description) ? (
               item.screen_description.map((elem) => (
                 <p
-                      className={`${styles.screen_description} ${styles.screen_description_bottom}`}
-                      key={elem}
+                  className={`${styles.screen_description} 
+                ${styles.screen_description_bottom}`}
+                  key={elem}
                 >
                   {elem}
                 </p>

@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import InputMask from 'react-input-mask';
 import { v4 as uuidv4 } from 'uuid';
-import { createOrder } from '../../services/actions/cart-actions';
 import {
+  createOrder,
   SET_CART_VISIBILITY,
   GET_USER_PROMOCODE,
   DELETE_ACTIVE_PROMOCODE,
   ADD_ORDER_PRICE,
   CLEAR_CART,
+  checkPromoCodeValidity,
 } from '../../services/actions/cart-actions';
 import {
   SET_USER_DATA,
@@ -25,7 +26,6 @@ import {
   SET_SDEK_RESET_POINTS,
 } from '../../services/actions/shipping-actions';
 import { openPopup, closePopup } from '../../services/actions/utility-actions';
-import { checkPromoCodeValidity } from '../../services/actions/cart-actions';
 import { ShippingMap } from '../../components/shipping-components/shipping-map';
 import ShippingSelect from '../../components/shipping-components/shipping-select';
 import useDebounce from '../../hooks/useDebounce';
@@ -122,8 +122,8 @@ function Checkout() {
     const list = [];
     if (elem.length >= 3) {
       shippingCities.forEach((item) => {
-        if (list.length != 5) {
-          if (item.city.toLowerCase().indexOf(elem.toLowerCase()) != -1) {
+        if (list.length !== 5) {
+          if (item.city.toLowerCase().indexOf(elem.toLowerCase()) !== -1) {
             list.push(item);
           }
         }
@@ -191,7 +191,7 @@ function Checkout() {
   };
   const onChangeSelect = (elem) => {
     shippingPoints.forEach((item) => {
-      if (item.name.toLowerCase().indexOf(elem.name.toLowerCase()) != -1) {
+      if (item.name.toLowerCase().indexOf(elem.name.toLowerCase()) !== -1) {
         dispatch({
           type: SET_SHIPPING_PVZ,
           payload: { item: { ...item }, isPvzValid: true },
@@ -410,7 +410,7 @@ function Checkout() {
 
   useEffect(() => {
     if (typeList) {
-      if (listCities.city != userShippingData.city.city) {
+      if (listCities.city !== userShippingData.city.city) {
         setUserShippingDataReset();
         setTypeList(false);
         setCenterMap([59.972621, 30.306432]);
@@ -425,87 +425,116 @@ function Checkout() {
       payload: orderPrice,
     });
   }, [order]);
+
+  const getDebounceCities = (item) => {
+    if (item.latitude) {
+      setCenterMap([item.latitude, item.longitude]);
+    }
+    dispatch(getSdekPoints(item.code));
+    setListCities(item);
+    setTypeList(true);
+    dispatch({
+      type: SET_SHIPPING_CITIES,
+      payload: {
+        item: {
+          ...item,
+        },
+        isCityValid: true,
+      },
+    });
+    setChekInput(true);
+    dispatch(
+      getSdekShippingTarif(
+        item.code,
+        (item.orderWeight = orderWeight),
+      ),
+    );
+  };
+
   return (
     <div className={styles.wrap}>
       <h1 className={styles.wrap_title}>
-        ВАШИ ДАННЫЕ / <span className={styles.wrap_subTitle}>CHEСKOUT</span>
+        ВАШИ ДАННЫЕ /
+        {' '}
+        <span className={styles.wrap_subTitle}>CHEСKOUT</span>
       </h1>
       <div className={styles.body}>
         <div className={styles.form_wrapper}>
           <form className={styles.user_form} id="checkout_form">
-            <label htmfor="name" className={styles.input_label}>
+            <label htmlFor="name" className={styles.input_label}>
               Имя*:
-            </label>
-            <input
-              type="text"
-              minLength="2"
-              placeholder="Ваше имя"
-              id="name"
-              name="name"
-              className={
+              <input
+                type="text"
+                minLength="2"
+                placeholder="Ваше имя"
+                id="name"
+                name="name"
+                className={
                 firstLoadInput.name && !userCartData.isNameValid
                   ? `${styles.user_form_input} ${styles.user_form_inputError}`
                   : styles.user_form_input
               }
-              required
-              onChange={inputChangeHandler}
-              value={userCartData.name}
-            />
-            <label htmfor="surname" className={styles.input_label}>
-              Фамилия*:
+                required
+                onChange={inputChangeHandler}
+                value={userCartData.name}
+              />
             </label>
-            <input
-              type="text"
-              minLength="2"
-              placeholder="Ваша фамилия"
-              id="surname"
-              name="surname"
-              className={
+            <label htmlFor="surname" className={styles.input_label}>
+              Фамилия*:
+              <input
+                type="text"
+                minLength="2"
+                placeholder="Ваша фамилия"
+                id="surname"
+                name="surname"
+                className={
                 firstLoadInput.surname && !userCartData.isSurnameValid
                   ? `${styles.user_form_input} ${styles.user_form_inputError}`
                   : styles.user_form_input
               }
-              required
-              onChange={inputChangeHandler}
-              value={userCartData.surname}
-            />
-            <label htmfor="phone" className={styles.input_label}>
-              Телефон*:
+                required
+                onChange={inputChangeHandler}
+                value={userCartData.surname}
+              />
             </label>
-            <InputMask
-              mask="+7 (999) 999-9999"
-              maskChar="_"
-              type="tel"
-              minLength="11"
-              placeholder="Ваш телефон"
-              id="phone"
-              name="phone"
-              className={
+            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+            <label htmlFor="phone" className={styles.input_label}>
+              Телефон*:
+              <InputMask
+                mask="+7 (999) 999-9999"
+                maskChar="_"
+                type="tel"
+                minLength="11"
+                placeholder="Ваш телефон"
+                id="phone"
+                name="phone"
+                className={
                 firstLoadInput.phone && !userCartData.isPhoneValid
                   ? `${styles.user_form_input} ${styles.user_form_inputError}`
                   : styles.user_form_input
               }
-              required
-              onChange={inputChangeHandler}
-              value={userCartData.phone}
-            />
-            <label htmfor="email" className={styles.input_label}>
-              Email*:
+                required
+                onChange={inputChangeHandler}
+                value={userCartData.phone}
+              />
             </label>
-            <input
-              type="email"
-              placeholder="Ваш email"
-              id="email"
-              name="email"
-              className={
+            <label htmlFor="email" className={styles.input_label}>
+              Email*:
+              <input
+                type="email"
+                placeholder="Ваш email"
+                id="email"
+                name="email"
+                className={
                 firstLoadInput.email && !userCartData.isEmailValid
                   ? `${styles.user_form_input} ${styles.user_form_inputError}`
                   : styles.user_form_input
               }
-              required
-              onChange={inputChangeHandler}
-              value={userCartData.email}
-            />
+                required
+                onChange={inputChangeHandler}
+                value={userCartData.email}
+              />
+            </label>
           </form>
           <form
             className={`${styles.user_form} ${styles.user_deliveryForm}`}
@@ -513,113 +542,113 @@ function Checkout() {
           >
             <div className={styles.user_radioWrap}>
               <div className={styles.user_radioWrapper}>
-                <input
-                  type="radio"
-                  id="radioPickup"
-                  name="radio"
-                  value="1"
-                  onClick={() => {
-                    setRadioDelivery('самовывоз');
-                    setDefoultShippingState();
-                    setTypeList(false);
-                    dispatch({
-                      type: SET_DEFAULT_USERSHIPPINGDATA,
-                    });
-                    dispatch({
-                      type: SET_SDEK_DEFAULT_STATE,
-                    });
-                    setChekInput(true);
-                    setChekSelect(true);
-                  }}
-                  defaultChecked
-                />
-                <label htmlFor="radioPickup">Самовывоз из студии</label>
+                <label htmlFor="radioPickup">
+                  <input
+                    type="radio"
+                    id="radioPickup"
+                    name="radio"
+                    value="1"
+                    onClick={() => {
+                      setRadioDelivery('самовывоз');
+                      setDefoultShippingState();
+                      setTypeList(false);
+                      dispatch({
+                        type: SET_DEFAULT_USERSHIPPINGDATA,
+                      });
+                      dispatch({
+                        type: SET_SDEK_DEFAULT_STATE,
+                      });
+                      setChekInput(true);
+                      setChekSelect(true);
+                    }}
+                    defaultChecked
+                  />
+                  Самовывоз из студии
+                </label>
               </div>
               <div className={styles.user_radioWrapper}>
-                <input
-                  type="radio"
-                  id="radioSdek"
-                  name="radio"
-                  value="2"
-                  onClick={() => {
-                    setDefoultShippingState();
-                    dispatch(getSdekCities());
-                    setRadioDelivery('сдэк');
-                    setUserShippingDataReset();
-                  }}
-                />
-                <label htmlFor="radioSdek">Доставка</label>
+                <label htmlFor="radioSdek">
+                  <input
+                    type="radio"
+                    id="radioSdek"
+                    name="radio"
+                    value="2"
+                    onClick={() => {
+                      setDefoultShippingState();
+                      dispatch(getSdekCities());
+                      setRadioDelivery('сдэк');
+                      setUserShippingDataReset();
+                    }}
+                  />
+                  Доставка
+                </label>
               </div>
             </div>
             {typeDelivery.sdek && (
               <>
                 <div className={styles.inputShippingWrap}>
-                  <label htmlFor="cityInput">Выберите город*:</label>
-                  <input
-                    type="text"
-                    id="cityInput"
-                    className={
+                  <label htmlFor="cityInput" className={styles.inputShippingWrap_label}>
+                    Выберите город*:
+                    <input
+                      type="text"
+                      id="cityInput"
+                      className={
                       checkInput
                         ? styles.user_form_input
                         : `${styles.user_form_input} ${styles.user_form_inputError}`
                     }
-                    required
-                    placeholder="Город"
-                    value={listCities.city || listCities}
-                    onChange={(e) => {
-                      setListCities(e.target.value);
-                      setTypeList(false);
-                      dispatch({
-                        type: SET_SDEK_RESET_POINTS,
-                      });
-                      setUserShippingDataReset();
-                      setListPoints(null);
-                    }}
-                  />
+                      required
+                      placeholder="Город"
+                      value={listCities.city || listCities}
+                      onChange={(e) => {
+                        setListCities(e.target.value);
+                        setTypeList(false);
+                        dispatch({
+                          type: SET_SDEK_RESET_POINTS,
+                        });
+                        setUserShippingDataReset();
+                        setListPoints(null);
+                      }}
+                    />
+                  </label>
                 </div>
                 {!typeList ? (
                   debounceCities.length > 0 && (
-                    <div className={styles.cities_wrap}>
-                      <ul className={styles.cities_list}>
-                        {debounceCities.map((item) => (
-                          <li
-                            key={item.code}
-                            onClick={() => {
-                              if (item.latitude) {
-                                setCenterMap([item.latitude, item.longitude]);
-                              }
-                              dispatch(getSdekPoints(item.code));
-                              setListCities(item);
-                              setTypeList(true);
-                              dispatch({
-                                type: SET_SHIPPING_CITIES,
-                                payload: {
-                                  item: {
-                                    ...item,
-                                  },
-                                  isCityValid: true,
-                                },
-                              });
-                              setChekInput(true);
-                              dispatch(
-                                getSdekShippingTarif(
-                                  item.code,
-                                  (item.orderWeight = orderWeight),
-                                ),
-                              );
-                            }}
-                            className={styles.cities_listItem}
-                          >
-                            {item.city},{item.region}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                    <>
+                      {/* добавил своеобразный костыль, чтобы селект для
+                      инпута не отличался по размерам от самого инпута */}
+                      <span className={styles.inputShippingWrap_label}>
+                        <span className={styles.inputShippingWrap_label_notVisible}>
+                          Выберите&nbsp;город*:
+                        </span>
+                        <div className={styles.cities_wrap}>
+                          <ul className={styles.cities_list}>
+                            {debounceCities.map((item) => (
+                              <li
+                                key={item.code}
+                                onClick={() => {
+                                  getDebounceCities(item);
+                                }}
+                                onKeyDown={() => {
+                                  getDebounceCities(item);
+                                }}
+                                className={styles.cities_listItem}
+                              >
+                                {item.city}
+                                ,
+                                {item.region}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </span>
+                    </>
                   )
                 ) : (
                   <>
                     <p className={styles.shippingPrice}>
-                      Доставка до пункта выдачи:{' '}
+                      Доставка до пункта выдачи:
+                      {' '}
                       {validPromoCode.mechanic === 'freeShipping'
                         ? 'Бесплатная доставка'
                         : `${shippingPrice} Р`}
@@ -651,12 +680,17 @@ function Checkout() {
           <p
             className={`${styles.button_wrapper__text} ${styles.button_wrapper__textPrice}`}
           >
-            Стоимость заказа: {orderPrice.price} Р.
+            Стоимость заказа:
+            {' '}
+            {orderPrice.price}
+            {' '}
+            Р.
           </p>
           <p
             className={`${styles.button_wrapper__text} ${styles.button_wrapper__textShip}`}
           >
-            Стоимость доставки:{' '}
+            Стоимость доставки:
+            {' '}
             {validPromoCode.mechanic === 'freeShipping'
               ? 'Бесплатная доставка'
               : `${shippingPrice} Р.`}
@@ -664,7 +698,11 @@ function Checkout() {
           <p
             className={`${styles.button_wrapper__text} ${styles.button_wrapper__textPrePrice}`}
           >
-            Подытог: {discounted_price} Р.
+            Подытог:
+            {' '}
+            {discounted_price}
+            {' '}
+            Р.
           </p>
           <div className={styles.button_wrapperPromo}>
             {!validPromoCode.message && !promocodeFail ? (
@@ -699,7 +737,9 @@ function Checkout() {
             ) : (
               <div className={styles.promocode_wrapper}>
                 <p className={styles.promocode_message}>
-                  Промокод: {validPromoCode.name}
+                  Промокод:
+                  {' '}
+                  {validPromoCode.name}
                 </p>
                 <p className={styles.promocode_message}>
                   {validPromoCode.message}
@@ -717,10 +757,15 @@ function Checkout() {
           <p
             className={`${styles.button_wrapper__text} ${styles.button_wrapper__textPrePrice}`}
           >
-            Итог: {discounted_price} Р.
+            Итог:
+            {' '}
+            {discounted_price}
+            {' '}
+            Р.
           </p>
           <button
             type="button"
+            aria-label="button"
             className={styles.control_button}
             onClick={createOrderHandler}
           />

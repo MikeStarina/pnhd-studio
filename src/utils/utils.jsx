@@ -21,6 +21,8 @@ export const fileSelect = (
   if (activeView === 'badge' && badge_file.file) {
     return { file: badge_file, name: badge_file.file.name };
   }
+
+  return false;
 };
 
 export const textFileSelect = (
@@ -288,17 +290,17 @@ export const checkResponse = (res) => {
 
 export const getString = (separator, arr) => {
   let string = '';
-  if (arr.length != 0) {
+  if (arr.length !== 0) {
     string += separator;
     arr.forEach((elem, index) => {
       if (arr.length - 1 === 0) {
         string += `${elem}&`;
         return;
       }
-      if (index === 0 && arr.length - 1 != 0) {
+      if (index === 0 && arr.length - 1 !== 0) {
         string += elem;
       }
-      if (index > 0 && index != arr.length - 1) {
+      if (index > 0 && index !== arr.length - 1) {
         string += `,${elem}`;
       }
       if (index === arr.length - 1) {

@@ -62,6 +62,7 @@ export const sendLeadFormData = (name, phone) => {
           });
         }
       })
+      // eslint-disable-next-line no-unused-vars
       .catch((err) => {
         dispatch({
           type: ORDER_ERROR,

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { HashLink } from 'react-router-hash-link';
 import styles from './first-screen.module.css';
 import bgvideo from '../../bgvideo.webm';
 import videoposter from '../../videoposter.jpg';

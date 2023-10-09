@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import useImage from 'use-image';
 import { IS_IMAGE_LOADING, openPopup } from './utility-actions';
 import { apiBaseUrl } from '../../utils/constants';
@@ -214,6 +215,7 @@ export const printUploadFunc = (data, activeView, itemType, itemColor) => {
           view: activeView,
         });
       })
+      // eslint-disable-next-line no-unused-vars
       .catch((err) => {
         dispatch(openPopup(['Что-то пошло не так :(']));
       });

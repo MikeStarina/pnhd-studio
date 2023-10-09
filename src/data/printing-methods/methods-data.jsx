@@ -43,7 +43,7 @@ const point = '\u{22C5}';
 // неразрывный пробел
 const nbsp = '\u{00A0}';
 // мягкий перенос, через тире
-const softHyphen = '\u{00AD}';
+// const softHyphen = '\u{00AD}';
 // возврат каретки, перенос без тире
 const carriageReturn = '\u{000D}';
 

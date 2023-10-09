@@ -13,8 +13,34 @@ function Modal({ active, setActive, children }) {
     return () => document.removeEventListener('keydown', handleEscapeKey);
   }, []);
   return (
-    <div className={active ? `${styles.modal} ${styles.active}` : `${styles.modal}`} onClick={() => { setActive(false); }}>
-      <div className={active ? `${styles.modal__content} ${styles.active}` : `${styles.modal__content}`} onClick={(e) => { e.stopPropagation(); }}>
+    <div
+      className={
+        active ? `${styles.modal} ${styles.active}` : `${styles.modal}`
+      }
+      onClick={() => {
+        setActive(false);
+      }}
+      onKeyDown={() => {
+        setActive(false);
+      }}
+      role="button"
+      tabIndex="0"
+    >
+      <div
+        className={
+          active
+            ? `${styles.modal__content} ${styles.active}`
+            : `${styles.modal__content}`
+        }
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+        onKeyDown={(e) => {
+          e.stopPropagation();
+        }}
+        role="button"
+        tabIndex="0"
+      >
         {children}
       </div>
     </div>

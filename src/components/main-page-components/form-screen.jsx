@@ -26,6 +26,7 @@ function FormScreen() {
   };
 
   return (
+    // инпут был перенесен внутрь label, возможно поедет верстка
     <section className={styles.screen}>
       <h4 className={styles.heading} id="order_form_heading">
         ЗАКАЗАТЬ
@@ -33,47 +34,46 @@ function FormScreen() {
       <form className={styles.form} onSubmit={onSubmit}>
         <label htmlFor="email" className={styles.form_input_label}>
           MAIL
+          <input
+            type="email"
+            name="email"
+            id="email"
+            placeholder="666@whitehouse.gov"
+            className={styles.form_input}
+            required
+          />
         </label>
-        <input
-          type="email"
-          name="email"
-          id="email"
-          placeholder="666@whitehouse.gov"
-          className={styles.form_input}
-          required
-        />
         <label htmlFor="name" className={styles.form_input_label}>
           ИМЯ
+          <input
+            type="text"
+            name="name"
+            id="name"
+            placeholder="MAD IVAN"
+            className={styles.form_input}
+            required
+          />
         </label>
-        <input
-          type="text"
-          name="name"
-          id="name"
-          placeholder="MAD IVAN"
-          className={styles.form_input}
-          required
-        />
         <label htmlFor="phone" className={styles.form_input_label}>
           PHONE
+          <input
+            type="text"
+            name="phone"
+            id="phone"
+            placeholder="+7 (666) 666-66-66"
+            className={styles.form_input}
+            required
+          />
         </label>
-        <input
-          type="text"
-          name="phone"
-          id="phone"
-          placeholder="+7 (666) 666-66-66"
-          className={styles.form_input}
-          required
-        />
         <label htmlFor="comment" className={styles.form_input_label}>
           СООБЩЕНИЕ
+          <textarea
+            rows="5"
+            name="comment"
+            id="comment"
+            className={styles.form_input_textarea}
+          />
         </label>
-        <textarea
-          rows="5"
-          name="comment"
-          id="comment"
-          className={styles.form_input_textarea}
-        />
-
         <button type="submit" className={styles.form_submit_button}>
           ЗАКАЗАТЬ
         </button>

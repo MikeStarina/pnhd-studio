@@ -43,6 +43,8 @@
 }
 
 .input_label {
+  display: flex;
+  flex-direction: column;
   padding-bottom: 7px;
   font-size: 16px;
   font-weight: 400;
@@ -51,17 +53,31 @@
   text-align: left;
 }
 
+
 .user_form_input {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 10px;
+  letter-spacing: 0em;
+  text-align: left;
+  margin-top: 7px;
   margin-bottom: 15px;
   border: 1px solid #000000;
   padding: 8px;
   border-radius: 5px;
+  /* width: 73%; */
 }
 
 .user_form_input:last-child {
   margin-bottom: 0;
 }
 
+.user_form_label{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
 .button_wrapper {
   margin-left: 20px;
   text-align: right;
@@ -173,13 +189,21 @@
 .cities_wrap {
   background-color: #fff;
   margin-top: 5px;
-  width: 75.5%;
+  width: 75%;
   border-radius: 5px;
   min-height: 53px;
   border: 1px solid black;
   align-self: flex-end;
 }
+.inputShippingWrap_label2{
+  display: flex;
+  flex-direction: row;  
+  justify-content: space-between;  
+}
 
+.inputShippingWrap_label_notVisible{
+  visibility: hidden;
+}
 .cities_list {
   list-style: none;
   padding-left: 5px;
@@ -237,8 +261,10 @@ label {
   text-align: left;
 }
 
-.inputShippingWrap>input {
+.inputShippingWrap>label>input {
   flex: 3;
+  /* margin-left: 20px; */
+  max-width: 73%;
 }
 
 .shippingSelectWrap {
@@ -250,6 +276,13 @@ label {
   margin: 0;
   min-height: 44px;
   width: 33%
+}
+
+.inputShippingWrap_label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between
 }
 
 .user_form_inputError {
@@ -317,6 +350,7 @@ label {
   .inputShippingWrap {
     margin-top: 25px;
     border-radius: 0;
+    width: 100%;
   }
 
   .form_wrapper {
@@ -355,7 +389,6 @@ label {
     line-height: 12px;
     letter-spacing: 0em;
     text-align: left;
-
   }
 
   .shippingPrice {
@@ -385,13 +418,6 @@ label {
     letter-spacing: 0em;
   }
 
-  .user_form_input {
-    font-size: 10px;
-    font-weight: 400;
-    line-height: 10px;
-    letter-spacing: 0em;
-    text-align: left;
-  }
 
   .user_radioWrapper>label {
     font-size: 12px;
@@ -428,6 +454,23 @@ label {
     line-height: 16px;
     letter-spacing: 0em;
     text-align: left;
+    }
+
+    .inputShippingWrap_label {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: space-between;
+      width:100%;
+    }
+
+    .inputShippingWrap>label>input {
+      margin-left: 0;
+      max-width:100%;
+    }
+
+    .inputShippingWrap_label_notVisible{
+      display: none;
     }
 }
 
