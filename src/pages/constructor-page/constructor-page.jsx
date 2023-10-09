@@ -19,7 +19,6 @@ import {
   loadFilterCoordinates,
   setText,
   changeTextState,
-  printFilterTextCost,
 } from '../../services/actions/editor-actions';
 import {
   ADD_TO_CART,
@@ -245,11 +244,6 @@ function Constructor() {
   const openPopupConstructor = () => {
     dispatch(openPopup(instructionForPopup));
   };
-  const openPopupInfo = () => {
-    dispatch(
-      openPopup(['Привет! Сейчас эта функция находится в разработке :)']),
-    );
-  };
   const closePopupConstructor = () => {
     dispatch(closePopup());
   };
@@ -375,6 +369,7 @@ function Constructor() {
               </Layer>
             </Stage>
             <button
+              type="button"
               style={{ top: positionButton.y, left: positionButton.x }}
               className={
                 circleMask || squareMask

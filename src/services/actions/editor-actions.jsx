@@ -64,7 +64,12 @@ export const getPriceCalc = (newAttrs, color) => {
   const displayWidth = Math.round(width) > 35 ? 35 : Math.round(width);
   const displayHeight = Math.round(height) > 42 ? 42 : Math.round(height);
 
-  return { priceCounter, screenSize, displayWidth, displayHeight };
+  return {
+    priceCounter,
+    screenSize,
+    displayWidth,
+    displayHeight,
+  };
 };
 
 export const printFilterTextCost = (
@@ -73,15 +78,15 @@ export const printFilterTextCost = (
   itemColor,
   filterCoordinates,
 ) => {
-  console.log(
-    stageParams,
-    '<stageParams',
-    textCoordinates,
-    '<<textCoordinates',
-    itemColor,
-    'filterCoordinates>>>',
-    filterCoordinates,
-  );
+  // console.log(
+  //   stageParams,
+  //   '<stageParams',
+  //   textCoordinates,
+  //   '<<textCoordinates',
+  //   itemColor,
+  //   'filterCoordinates>>>',
+  //   filterCoordinates,
+  // );
   let totalHeight = 0;
   let totalWidth = 0;
   const text = textCoordinates;
@@ -248,8 +253,6 @@ export const loadPrintFromState = (payload) => function (dispatch) {
 export const loadFilterCoordinates = (
   initialImageCoords,
   activeView,
-  itemColor,
-  initialText,
 ) => {
   const filterCoordinates = setFilterCoords(activeView);
   return function (dispatch) {

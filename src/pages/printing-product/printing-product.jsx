@@ -8,21 +8,21 @@ import ShopGallery from '../../components/main-page-components/shop-gallery';
 import MapScreen from '../../components/main-page-components/map-screen';
 
 function PrintingProduct(data) {
-  const info = data.method;
-  const methodFaq = info.faq;
+  const { method } = data;
+  const { faq } = method;
   return (
     <>
-      <PrintingFirstScreen data={info} typePage="product" />
+      <PrintingFirstScreen data={method} typePage="product" />
       <section className={styles.brief}>
         <h2 className={styles.brief_title}>КРАТКО</h2>
-        <p className={styles.brief_subtitle}>{info.brief_subtitle}</p>
+        <p className={styles.brief_subtitle}>{method.brief_subtitle}</p>
       </section>
-      <PrintingGallery gallery={data.method.images.gallery} />
+      <PrintingGallery gallery={method.images.gallery} />
       <PrintingFaq
-        faq={methodFaq}
-        title={methodFaq.title}
-        description={methodFaq.description}
-        variants={methodFaq.variants}
+        faq={faq}
+        title={faq.title}
+        description={faq.description}
+        variants={faq.variants}
       />
       <ShopGallery />
       <FeedbackScreen />

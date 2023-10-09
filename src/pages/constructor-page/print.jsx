@@ -1,6 +1,13 @@
 import React, { useRef, useEffect, useState } from 'react';
 import WebFontLoader from 'webfontloader';
-import { Image, Group, Transformer, Rect, Circle, Text } from 'react-konva';
+import {
+  Image,
+  Group,
+  Transformer,
+  Rect,
+  Circle,
+  Text,
+} from 'react-konva';
 import { useSelector, useDispatch } from 'react-redux';
 import useImage from 'use-image';
 import styles from './constructor-page.module.css';
@@ -195,10 +202,7 @@ function Print({
                 initialText,
               );
             }}
-            onTransform={(e) => {
-              const node = imgRef.current;
-            }}
-            onTransformEnd={(e) => {
+            onTransformEnd={() => {
               const node = imgRef.current;
               const scaleX = node.scaleX();
               const scaleY = node.scaleY();
@@ -245,9 +249,6 @@ function Print({
                 circleX: e.target.x(),
                 circleY: e.target.y(),
               });
-            }}
-            onTransform={(e) => {
-              const node = circleRef.current;
             }}
             onTransformEnd={onTransformCircle}
           />
@@ -318,9 +319,6 @@ function Print({
                 circleX: e.target.x(),
                 circleY: e.target.y(),
               });
-            }}
-            onTransform={(e) => {
-              const node = circleRef.current;
             }}
             onTransformEnd={onTransformCircle}
           />
@@ -413,7 +411,6 @@ function Print({
                 },
                 initialFilterCoords,
               );
-              // dispatch(getSize(initialText, activeView, itemColor));
             }}
             onTransform={onTransformText}
           />

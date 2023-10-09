@@ -1,3 +1,5 @@
+import React from 'react';
+
 function SquareDash({ ...props }) {
   return (
     <svg

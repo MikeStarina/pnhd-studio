@@ -31,7 +31,6 @@ export const textFileSelect = (
   back_file,
   lsleeve_file,
   rsleeve_file,
-  badge_file,
 ) => {
   if (activeView.includes('front') && front_file.text) {
     return front_file;
@@ -45,6 +44,7 @@ export const textFileSelect = (
   if (activeView.includes('rsleeve') && rsleeve_file.text) {
     return rsleeve_file;
   }
+  return 'something wrong';
 };
 
 export const setTextCoordinates = (activeView) => {
@@ -114,6 +114,7 @@ export const setTextCoordinates = (activeView) => {
       rotation: 0,
     };
   }
+  return 'something wrong';
 };
 
 // Задает координаты появления ФИЛЬТРА для привью изображения,
@@ -183,6 +184,7 @@ export const setFilterCoords = (activeView) => {
       openMask: false,
     };
   }
+  return 'something wrong';
 };
 
 // Задает координаты появления привью изображения, вызывается в файле editor-action (redux)

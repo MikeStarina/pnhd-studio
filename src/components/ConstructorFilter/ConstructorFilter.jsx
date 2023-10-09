@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styles from './ConstructorFilter.module.css';
 import SquareCircle from '../../ui/icons/squareCircle';
 import Circle from '../../ui/icons/circle';
@@ -88,7 +88,12 @@ function ConstructorFilter(props) {
           dropdownVisibleFilter || circleMask || openCircle || openSquare || squareMask ? `${styles.dropdown_container} ${styles.dropdown_container_selected}` : `${styles.dropdown_container}`
         }
       >
-        <div onClick={() => toggle()} className={styles.dropdown_input}>
+        <div
+          onClick={() => toggle()}
+          onKeyDown={toggle}
+          role="button"
+          tabIndex="0"
+        >
           <div className={styles.dropdown_item_wrapper}>
             <div className={styles.dropdown_selected_value}>
               <SquareCircle className={styles.btn_svg} style={{ color: dropdownVisibleFilter || openCircle || circleMask || openSquare || squareMask || mainSquareCircleComponentColor ? '#00ff00' : '#ffffff' }} />
@@ -100,12 +105,18 @@ function ConstructorFilter(props) {
               <div
                 className={styles.dropdown_item}
                 onClick={(e) => handleItemSelectClick(e, 'circle')}
+                onKeyDown={() => {}}
+                role="button"
+                tabIndex="0"
               >
                 <Circle className={styles.btn_svg} />
               </div>
               <div
                 className={styles.dropdown_item}
                 onClick={(e) => handleItemSelectClick(e, 'square')}
+                onKeyDown={() => {}}
+                role="button"
+                tabIndex="0"
               >
                 <Square className={styles.btn_svg} />
               </div>
