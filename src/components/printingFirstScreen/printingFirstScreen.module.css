@@ -44,6 +44,26 @@
     background-image: url(../../components/images/printingMethods/DTF/main.webp);
 }
 
+.main_wrap_futbolki {
+    background-image: url(../../components/images/printingTypes.png);
+}
+
+.main_wrap_hudi {
+    background-image: url(../../components/images/printingTypes.png);
+}
+
+.main_wrap_sweatshirt {
+    background-image: url(../../components/images/printingTypes.png);
+}
+
+.main_wrap_shopper {
+    background-image: url(../../components/images/printingTypes.png);
+}
+
+.main_wrap_cap {
+    background-image: url(../../components/images/printingTypes.png);
+}
+
 .main_heading {
     position: absolute;
     padding-left: 140px;
@@ -55,6 +75,9 @@
     text-align: left;
     max-width: 80%;
     width: 746px;
+}
+.main_headingProduct{
+    width: 1054px;    
 }
 
 @media (max-width: 1023px) {

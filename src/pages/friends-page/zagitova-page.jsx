@@ -276,33 +276,7 @@ function ZagitovaPage() {
                 </Link>
               </li>
             </ul>
-            {/* здесь нечего контролировать */}
-            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-            <label className={styles.select_label} htmlFor="sizeSelect">
-              Выберите размер:
-            </label>
-            {order.length > 0 ? (
-              order.map((item, index) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <span className={styles.selectionTest} key={index}>
-                  <SizeSelection
-                    name={item.name}
-                    type="shop"
-                    qty={item.qty}
-                    size={size}
-                    id={item._id}
-                    // eslint-disable-next-line react/no-array-index-key
-                    key={index}
-                    remain={products.sizes[index].qty}
-                  />
-                </span>
-              ))
-            ) : (
-              <p>Нет в наличии</p>
-            )}
-            <Button className={styles.button_down} onClickTo={addToCart}>
-              В корзину &gt;
-            </Button>
+            <p>Похоже что все футболки проданы. <br /> Безызбежно спасибо!</p>
           </div>
         </div>
       </section>

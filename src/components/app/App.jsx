@@ -10,9 +10,11 @@ import {
   openPopupHeader,
 } from '../../services/actions/utility-actions';
 import { getShopData } from '../../services/actions/shop-data-actions';
+// eslint-disable-next-line import/extensions
 import methodsData from '../../data/printing-methods/methods-data';
+// eslint-disable-next-line import/extensions
 import typeOfPrintData from '../../data/type-of-print-data/data';
-
+import productsData from '../../data/printing-products/products-data';
 import PopupModel from '../popupModel/popupModel';
 import MainPage from '../../pages/main-page/main-page';
 import BurgerIcon from '../main-menu/burger-icon';
@@ -33,6 +35,7 @@ import TypeOfPrint from '../../pages/type-of-print/type-of-print';
 import PopupCallBack from '../popupCallBack/popupCallBack';
 import ProductCard from '../../pages/ProductCard/ProductCard';
 import ZagitovaPage from '../../pages/friends-page/zagitova-page';
+import PrintingProduct from '../../pages/printing-product/printing-product';
 import { getFriendProduct } from '../../services/actions/friends-actions';
 
 function App() {
@@ -188,6 +191,26 @@ function App() {
 
         <Route exact path="/pechat-nadpisej">
           <TypeOfPrint method={typeOfPrintData.inscriptions} />
+        </Route>
+
+        <Route exact path="/pechat-na-futbolkah">
+          <PrintingProduct method={productsData.futbolki} />
+        </Route>
+
+        <Route exact path="/pechat-na-hudi">
+          <PrintingProduct method={productsData.hudi} />
+        </Route>
+
+        <Route exact path="/pechat-na-svitshotah">
+          <PrintingProduct method={productsData.sweatshirt} />
+        </Route>
+
+        <Route exact path="/pechat-na-shopperah">
+          <PrintingProduct method={productsData.shopper} />
+        </Route>
+
+        <Route exact path="/pechat-na-kepkah">
+          <PrintingProduct method={productsData.cap} />
         </Route>
 
         <Route exact path="/zagitova">
