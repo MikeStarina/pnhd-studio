@@ -6,6 +6,7 @@ const photoProcessing = (file) => {
   if (type === 'image/png' || type === 'image/jpeg') {
     return file;
   }
+  return false;
 };
 
 export default photoProcessing;

@@ -3,7 +3,7 @@ import styles from './burger-icon.module.css';
 import burger from '../images/burger.svg';
 import { contactPhone } from '../../utils/constants';
 
-function BurgerIcon({ openMenu, openPopup }) {
+function BurgerIcon({ openMenu }) {
   return (
     <div className={styles.burger}>
       <a href="tel:+78129046156" className={styles.link} id="calltracking">
@@ -28,6 +28,7 @@ function BurgerIcon({ openMenu, openPopup }) {
         alt="main menu"
         className={styles.burger_icon}
         onClick={openMenu}
+        onKeyDown={openMenu}
       />
     </div>
   );

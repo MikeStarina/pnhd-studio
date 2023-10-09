@@ -6,8 +6,8 @@ import PrintingMethodPrice from '../../components/printing-methods-components/pr
 import MapScreen from '../../components/main-page-components/map-screen';
 import PrintingFirstScreen from '../../components/printingFirstScreen/printingFirstScreen';
 
-function PrintingMethod(data) {
-  const info = data.method;
+function PrintingMethod({ method }) {
+  const info = method;
   const methodFaq = info.faq;
   return (
     <>
@@ -16,7 +16,7 @@ function PrintingMethod(data) {
         <h2 className={styles.brief_title}>КРАТКО</h2>
         <p className={styles.brief_subtitle}>{info.brief_subtitle}</p>
       </section>
-      <PrintingGallery gallery={data.method.images.gallery} />
+      <PrintingGallery gallery={method.images.gallery} />
       <PrintingFaq
         faq={methodFaq}
         title={methodFaq.title}

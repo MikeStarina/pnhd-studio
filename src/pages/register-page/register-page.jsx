@@ -37,47 +37,50 @@ function RegisterPage() {
       <h1 className={styles.title}>РЕГИСТРАЦИЯ @PNHD</h1>
 
       <form className={styles.form} onSubmit={onSubmit}>
+        {/* инпут был перенесен в лейбл, возможно поехала верстка */}
         <label className={styles.input_label} htmlFor="email">
           Ваше имя:
+          <input
+            type="text"
+            className={styles.input}
+            id="name"
+            name="name"
+            placeholder="Boris"
+            value={registerFormData.name}
+            onChange={onChange}
+            required
+            minLength={3}
+          />
         </label>
-        <input
-          type="text"
-          className={styles.input}
-          id="name"
-          name="name"
-          placeholder="Boris"
-          value={registerFormData.name}
-          onChange={onChange}
-          required
-          minLength={3}
-        />
+        {/* инпут был перенесен в лейбл, возможно поехала верстка */}
         <label className={styles.input_label} htmlFor="email">
           email:
+          <input
+            type="email"
+            className={styles.input}
+            id="email"
+            name="email"
+            placeholder="boris@pnhd.ru"
+            value={registerFormData.email}
+            onChange={onChange}
+            required
+          />
         </label>
-        <input
-          type="email"
-          className={styles.input}
-          id="email"
-          name="email"
-          placeholder="boris@pnhd.ru"
-          value={registerFormData.email}
-          onChange={onChange}
-          required
-        />
         <label className={styles.input_label} htmlFor="password">
+          {/* инпут был перенесен в лейбл, возможно поехала верстка */}
           Пароль:
+          <input
+            type="password"
+            className={styles.input}
+            id="password"
+            name="password"
+            placeholder="**********"
+            value={registerFormData.password}
+            onChange={onChange}
+            required
+            minLength={6}
+          />
         </label>
-        <input
-          type="password"
-          className={styles.input}
-          id="password"
-          name="password"
-          placeholder="**********"
-          value={registerFormData.password}
-          onChange={onChange}
-          required
-          minLength={6}
-        />
 
         <button type="submit" className={styles.submit_button}>
           РЕГИСТРАЦИЯ

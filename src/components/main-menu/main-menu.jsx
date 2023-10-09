@@ -4,7 +4,7 @@ import { HashLink } from 'react-router-hash-link';
 import styles from './main-menu.module.css';
 import closeIcon from '../images/closeIcon.svg';
 
-function MainMenu({ closeMenu, openPopup }) {
+function MainMenu({ closeMenu }) {
   const clickOnEmptyHandler = (e) => {
     if (e.target.id === 'background') {
       closeMenu();
@@ -15,7 +15,10 @@ function MainMenu({ closeMenu, openPopup }) {
     <div
       className={styles.menu_screen}
       onClick={clickOnEmptyHandler}
+      onKeyDown={clickOnEmptyHandler}
       id="background"
+      role="button"
+      tabIndex="0"
     >
       <div className={styles.menu_box}>
         <div className={styles.wrapper}>
@@ -31,25 +34,13 @@ function MainMenu({ closeMenu, openPopup }) {
               className={styles.close_icon}
             />
           </button>
-          <Link
-            className={styles.menu_link}
-            to="/"
-            onClick={closeMenu}
-          >
+          <Link className={styles.menu_link} to="/" onClick={closeMenu}>
             ГЛАВНАЯ
           </Link>
-          <Link
-            className={styles.menu_link}
-            to="/shop"
-            onClick={closeMenu}
-          >
+          <Link className={styles.menu_link} to="/shop" onClick={closeMenu}>
             КАТАЛОГ
           </Link>
-          <a
-            className={styles.menu_link}
-            href="https://pnhd.ru"
-            target="blank"
-          >
+          <a className={styles.menu_link} href="https://pnhd.ru" target="blank">
             ОПТОВЫЙ ОТДЕЛ
           </a>
           <a

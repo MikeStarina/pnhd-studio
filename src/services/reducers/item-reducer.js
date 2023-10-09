@@ -4,7 +4,6 @@ import {
   UPDATE_ITEM_ORDER,
   DELETE_ITEM_ORDER,
   FLAG_SIZE_IS,
-  FLAG_SIZE_IS_NOT,
 } from '../actions/item-action';
 
 const initialState = {

@@ -3,8 +3,6 @@ import React, {
   Suspense,
   useRef,
   useState,
-  useMemo,
-  useEffect,
 } from 'react';
 import styles from './shipping-map.module.css';
 
@@ -23,11 +21,9 @@ const Clusterer = lazy(() => import('@pbe/react-yandex-maps').then(({ Clusterer 
 
 export function ShippingMap(props) {
   const map = useRef(null);
-  const placemark = useRef(null);
   const { points, updatePointInput, setCenter } = props;
   const [a, b] = useState([59.972621, 30.306432]);
-
-  if (a[0] != setCenter[0]) {
+  if (a[0] !== setCenter[0]) {
     b(setCenter);
 
     if (map.current) {
@@ -36,7 +32,7 @@ export function ShippingMap(props) {
     }
   }
 
-  const handleClick = (point, e) => {
+  const handleClick = (point) => {
     updatePointInput(point, '#00FF00');
   };
   return (
@@ -59,14 +55,14 @@ export function ShippingMap(props) {
                 groupByCoordinates: false,
               }}
             >
-              {points.map((point, index) => (
+              {points.map((point) => (
                 <Placemark
                   className={styles.placemark}
                   geometry={point.coordinates}
                   onClick={(e) => {
                     handleClick(point, e);
                   }}
-                  key={[index]}
+                  key={point.name}
                   options={{
                     iconColor: `${point.color}`,
                   }}

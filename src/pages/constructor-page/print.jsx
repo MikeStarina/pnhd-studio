@@ -1,5 +1,7 @@
 import React, { useRef, useEffect } from 'react';
-import { Image, Group, Transformer, Rect } from 'react-konva';
+import {
+  Image, Group, Transformer, Rect,
+} from 'react-konva';
 import { useSelector, useDispatch } from 'react-redux';
 import useImage from 'use-image';
 import styles from './constructor-page.module.css';
@@ -58,9 +60,12 @@ function Print({
               y: e.target.y(),
             });
           }}
+          // eslint-disable-next-line no-unused-vars
           onTransform={(e) => {
+            // eslint-disable-next-line no-unused-vars
             const node = imgRef.current;
           }}
+          // eslint-disable-next-line no-unused-vars
           onTransformEnd={(e) => {
             const node = imgRef.current;
             const scaleX = node.scaleX();

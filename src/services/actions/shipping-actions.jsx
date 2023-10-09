@@ -1,6 +1,6 @@
 import { apiBaseUrl } from '../../utils/constants';
 import { checkResponse } from '../../utils/utils';
-import { openPopup, ORDER_ERROR } from './utility-actions';
+import { openPopup } from './utility-actions';
 
 export const GET_SDEK_CITIES = 'GET_SDEK_CITIES';
 export const GET_SDEK_POINTS = 'GET_SDEK_POINTS';
@@ -21,6 +21,7 @@ export const getSdekCities = () => function (dispatch) {
         payload: res,
       });
     })
+    // eslint-disable-next-line no-unused-vars
     .catch((err) => {
       dispatch(
         openPopup([
@@ -43,6 +44,7 @@ export const getSdekPoints = (citiesCode) => function (dispatch) {
         payload: res,
       });
     })
+    // eslint-disable-next-line no-unused-vars
     .catch((err) => {
       dispatch(
         openPopup([
@@ -85,6 +87,7 @@ export const getSdekShippingTarif = (citiesCode, orderWeight) => {
           payload: res,
         });
       })
+      // eslint-disable-next-line no-unused-vars
       .catch((err) => {
         dispatch(
           openPopup([

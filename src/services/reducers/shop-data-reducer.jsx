@@ -40,7 +40,7 @@ const shopDataReducer = (state = initialState, action) => {
         (i) => i.category === action.payload.category,
       );
       let cnt = 0;
-      if (indexItem != -1) {
+      if (indexItem !== -1) {
         cnt = state.firstCount - 1;
         selected.splice(indexItem, 1);
         selectItems[findIndex].selected = false;
@@ -66,7 +66,7 @@ const shopDataReducer = (state = initialState, action) => {
         (i) => i.category === action.payload.category,
       );
       let cnt = 0;
-      if (indexItem != -1) {
+      if (indexItem !== -1) {
         cnt = state.secondCount - 1;
         selected.splice(indexItem, 1);
         selectItems[findIndex].selected = false;
@@ -92,7 +92,7 @@ const shopDataReducer = (state = initialState, action) => {
         (i) => i.category === action.payload.category,
       );
       let cnt = 0;
-      if (indexItem != -1) {
+      if (indexItem !== -1) {
         cnt = state.thirdCount - 1;
         selected.splice(indexItem, 1);
         selectItems[findIndex].selected = false;
