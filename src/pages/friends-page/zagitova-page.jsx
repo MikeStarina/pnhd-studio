@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { v4 as uuidv4 } from 'uuid';
-import Button from '../../ui/Button/Button';
-import SizeSelection from '../../components/size-selection/size-selection';
+// import { v4 as uuidv4 } from 'uuid';
+// import Button from '../../ui/Button/Button';
+// import SizeSelection from '../../components/size-selection/size-selection';
 import styles from './zagitova-page.module.css';
 import zgGallery from '../../components/images/friendsPage/zagitova/zagitova_gallery.png';
 import minSize from '../../components/images/friendsPage/zagitova/minSize.png';
 import zgRecomendCircle from '../../components/images/friendsPage/zagitova/zagitova_recomendation.svg';
-import isSizeFunction from '../../utils/isSizeFunction';
-import addToMemory from '../../utils/addToMemory';
-import { ADD_TO_CART } from '../../services/actions/cart-actions';
-import { openPopup, closePopup } from '../../services/actions/utility-actions';
+// import isSizeFunction from '../../utils/isSizeFunction';
+// import addToMemory from '../../utils/addToMemory';
+// import { ADD_TO_CART } from '../../services/actions/cart-actions';
+import { closePopup } from '../../services/actions/utility-actions';
 import PopupModel from '../../components/popupModel/popupModel';
 import {
   addItemSize,
@@ -24,25 +24,25 @@ import zagitova from '../../components/images/friendsPage/zagitova/zagitova_logo
 
 function ZagitovaPage() {
   const dispatch = useDispatch();
-  const history = useHistory();
+  // const history = useHistory();
   // eslint-disable-next-line no-unused-vars
   const [size, setSize] = useState('');
   const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
-  const { order } = useSelector((store) => store.itemReducer);
-  const {
-    front_file,
-    front_file_preview,
-    back_file,
-    back_file_preview,
-    lsleeve_file,
-    lsleeve_file_preview,
-    rsleeve_file,
-    rsleeve_file_preview,
-    badge_file,
-  } = useSelector((store) => store.editorState);
+  // const { order } = useSelector((store) => store.itemReducer);
+  // const {
+  //   front_file,
+  //   front_file_preview,
+  //   back_file,
+  //   back_file_preview,
+  //   lsleeve_file,
+  //   lsleeve_file_preview,
+  //   rsleeve_file,
+  //   rsleeve_file_preview,
+  //   badge_file,
+  // } = useSelector((store) => store.editorState);
   const { products } = useSelector((store) => store.friendData);
   // console.log(products);
-  const uuId = uuidv4();
+  // const uuId = uuidv4();
   const closePopupConstructor = () => {
     dispatch(closePopup());
   };
@@ -64,35 +64,35 @@ function ZagitovaPage() {
     };
   }, [screenWidth]);
 
-  const addToCart = () => {
-    if (isSizeFunction(order)) {
-      const variant = 'безызбежно';
-      // Создает обьект заказа, для сохранения в сесионой памяти
-      const data = addToMemory(
-        variant,
-        order,
-        products,
-        uuId,
-        front_file,
-        front_file_preview,
-        back_file,
-        back_file_preview,
-        lsleeve_file,
-        lsleeve_file_preview,
-        rsleeve_file,
-        rsleeve_file_preview,
-        badge_file,
-      );
-      dispatch({
-        type: ADD_TO_CART,
-        payload: { ...data },
-      });
+  // const addToCart = () => {
+  //   if (isSizeFunction(order)) {
+  //     const variant = 'безызбежно';
+  //     // Создает обьект заказа, для сохранения в сесионой памяти
+  //     const data = addToMemory(
+  //       variant,
+  //       order,
+  //       products,
+  //       uuId,
+  //       front_file,
+  //       front_file_preview,
+  //       back_file,
+  //       back_file_preview,
+  //       lsleeve_file,
+  //       lsleeve_file_preview,
+  //       rsleeve_file,
+  //       rsleeve_file_preview,
+  //       badge_file,
+  //     );
+  //     dispatch({
+  //       type: ADD_TO_CART,
+  //       payload: { ...data },
+  //     });
 
-      history.push('/cart');
-    } else {
-      dispatch(openPopup(['Нужно выбрать размер']));
-    }
-  };
+  //     history.push('/cart');
+  //   } else {
+  //     dispatch(openPopup(['Нужно выбрать размер']));
+  //   }
+  // };
 
   useEffect(() => {
     products?.sizes?.forEach((el, i) => {
@@ -276,7 +276,11 @@ function ZagitovaPage() {
                 </Link>
               </li>
             </ul>
-            <p>Похоже что все футболки проданы. <br /> Безызбежно спасибо!</p>
+            <p>
+              Похоже что все футболки проданы.
+              <br />
+              Безызбежно спасибо!
+            </p>
           </div>
         </div>
       </section>
