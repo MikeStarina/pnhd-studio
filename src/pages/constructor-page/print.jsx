@@ -160,7 +160,6 @@ function Print({
       rotation: node.attrs.rotation,
     });
   };
-  console.log(initialFilterCoords, '<<');
 
   return (
     <>

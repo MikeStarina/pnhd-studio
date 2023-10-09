@@ -377,7 +377,7 @@ function Constructor() {
               style={{ top: positionButton.y, left: positionButton.x }}
               className={
                 circleMask || squareMask
-                  ? `${styles.item_button_quest} ${styles.item_button_quest_accept}`
+                  ? `${styles.item_button_quest_accept}`
                   : styles.item_button_quest_none
               }
               onClick={
@@ -386,7 +386,7 @@ function Constructor() {
                   : acceptCloseSquareMaskOpenSquare
               }
             >
-              acc
+              ок
             </button>
           </div>
         </div>
