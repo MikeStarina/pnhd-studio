@@ -6,13 +6,16 @@ function FaqScreen() {
   return (
     <section className={styles.screen}>
       <h4 className={styles.heading}>
-        A<span className={styles.textStyle_italic}>КАК</span> ЭТО РАБОТАЕТ?
+        A
+        <span className={styles.textStyle_italic}>КАК</span>
+        ЭТО РАБОТАЕТ?
       </h4>
       <div className={styles.block_wrapper}>
         <img src={circle50px} className={styles.screen_circle} alt="circle" />
         <div className={styles.text_wrapper}>
           <h5 className={styles.screen_heading}>
-            ТЕКСТИЛЬ /<span className={styles.textStyle_italic}>GARMENT</span>
+            ТЕКСТИЛЬ /
+            <span className={styles.textStyle_italic}>GARMENT</span>
           </h5>
           <p className={styles.screen_description}>
             Выбери нужный текстиль в нашем каталоге, размер и нажми
@@ -27,7 +30,8 @@ function FaqScreen() {
         <img src={circle50px} className={styles.screen_circle} alt="circle" />
         <div className={styles.text_wrapper}>
           <h5 className={styles.screen_heading}>
-            ДИЗАЙН /<span className={styles.textStyle_italic}>DESIGN</span>
+            ДИЗАЙН /
+            <span className={styles.textStyle_italic}>DESIGN</span>
           </h5>
           <p className={styles.screen_description}>
             Выбери место для принта и загрузи изображение для печати - онлайн
@@ -44,7 +48,8 @@ function FaqScreen() {
         <img src={circle50px} className={styles.screen_circle} alt="circle" />
         <div className={styles.text_wrapper}>
           <h5 className={styles.screen_heading}>
-            ПЕЧАТЬ /<span className={styles.textStyle_italic}>SOME MAGIC</span>
+            ПЕЧАТЬ /
+            <span className={styles.textStyle_italic}>SOME MAGIC</span>
           </h5>
           <p className={styles.screen_description}>
             Введи свои контактные данные в корзине и нажми &quot;оформить
