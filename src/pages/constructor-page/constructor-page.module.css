@@ -279,6 +279,10 @@
     background-color: #00FF00;
 }
 
+.stage_container {
+    position: relative;
+}
+
 .item_button_quest {
     width: 40px;
     height: 40px;
@@ -299,6 +303,10 @@
 
 .item_button_quest_none {
     display: none;
+}
+
+.item_button_quest_accept {
+    position: absolute;
 }
 
 .btn_svg {

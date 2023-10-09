@@ -99,7 +99,7 @@ function ConstructorText(props) {
               >
                 <form onClick={(e) => handleItemSelectClick(e)}>
                   <label className={styles.dropdown_item_label}>Шрифт:</label>
-                  <input
+                  {/* <input
                     className={styles.input_text}
                     type="text"
                     value={initialText.fontFamily}
@@ -110,7 +110,17 @@ function ConstructorText(props) {
                         fontFamily: e.target.value,
                       }, activeView));
                     }}
-                  />
+                  /> */}
+                  <select
+                    className={styles.input_font_style}
+                    value="Mous10"
+                    onChange={() => console.log('1')}
+                  >
+                    <option>Mous1</option>
+                    <option>Mous2</option>
+                    <option>Mous3</option>
+                    <option>Mous4</option>
+                  </select>
                 </form>
               </div>
               <div

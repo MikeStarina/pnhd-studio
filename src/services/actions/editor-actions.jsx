@@ -72,6 +72,15 @@ export const printFilterTextCost = (
   itemColor,
   filterCoordinates,
 ) => {
+  console.log(
+    stageParams,
+    '<stageParams',
+    textCoordinates,
+    '<<textCoordinates',
+    itemColor,
+    'filterCoordinates>>>',
+    filterCoordinates,
+  );
   let totalHeight = 0;
   let totalWidth = 0;
   const text = textCoordinates;
@@ -108,7 +117,9 @@ export const printFilterTextCost = (
     totalWidth = secondElementX.width + (secondElementX.x - firstElementX.x);
   }
   if (widthFirst < secondElementX.x) {
-    totalWidth = firstElementX.width + secondElementX.width;
+    // Закоментирован код для вычесления обьема по каждому елемнту отдельно
+    // totalWidth = firstElementX.width + secondElementX.width;
+    totalWidth = secondElementX.width + (secondElementX.x - firstElementX.x);
   }
 
   if (heightFirst >= heightSecond) {
@@ -118,7 +129,9 @@ export const printFilterTextCost = (
     totalHeight = secondElementY.height + (secondElementY.y - firstElementY.y);
   }
   if (heightFirst < secondElementY.y) {
-    totalHeight = firstElementY.height + secondElementY.height;
+    // Закоментирован код для вычесления обьема по каждому елемнту отдельно
+    // totalHeight = firstElementY.height + secondElementY.height;
+    totalHeight = heightSecond - firstElementY.y;
   }
 
   return getPriceCalc({ width: totalWidth, height: totalHeight }, itemColor);

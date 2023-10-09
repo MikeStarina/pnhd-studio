@@ -77,6 +77,7 @@ function Constructor() {
   const [openSquare, setOpenSquare] = useState(false);
   const [dropdownVisibleFilter, setDropdownVisibleFilter] = useState(false);
   const [dropdownVisibleText, setDropdownVisibleText] = useState(false);
+  const [positionButton, setPositionButton] = useState({ x: 230, y: 20 });
   const { order } = useSelector((store) => store.cartData);
   const element = location.state.from.includes('cart')
     ? data &&
@@ -287,6 +288,7 @@ function Constructor() {
       view: activeView,
     });
   };
+
   return (
     item && (
       <section className={styles.screen}>
@@ -320,6 +322,8 @@ function Constructor() {
                   initialFilterCoords={
                     file && file.file.stageParamsFilterCircle
                   }
+                  positionButton={positionButton}
+                  setPositionButton={setPositionButton}
                   imgRef={imgRef}
                   scene={getScene}
                   onChange={(newAttrs, second) => {
@@ -369,6 +373,21 @@ function Constructor() {
                 />
               </Layer>
             </Stage>
+            <button
+              style={{ top: positionButton.y, left: positionButton.x }}
+              className={
+                circleMask || squareMask
+                  ? `${styles.item_button_quest} ${styles.item_button_quest_accept}`
+                  : styles.item_button_quest_none
+              }
+              onClick={
+                circleMask
+                  ? acceptCloseCircleMaskOpenCircle
+                  : acceptCloseSquareMaskOpenSquare
+              }
+            >
+              acc
+            </button>
           </div>
         </div>
         <div className={styles.controls_container}>
@@ -479,6 +498,8 @@ function Constructor() {
                 <SquareDash className={styles.btn_svg} />
               </button>
               <ConstructorFilter
+                positionButton={positionButton}
+                setPositionButton={setPositionButton}
                 dropdownVisibleFilter={dropdownVisibleFilter}
                 setDropdownVisibleFilter={setDropdownVisibleFilter}
                 file={file && file.file.file.url}
@@ -573,20 +594,6 @@ function Constructor() {
                 getButtonVisibilitySquare={getButtonVisibilitySquare}
               />
             </div>
-            <button
-              className={
-                circleMask || squareMask
-                  ? styles.item_button_quest
-                  : styles.item_button_quest_none
-              }
-              onClick={
-                circleMask
-                  ? acceptCloseCircleMaskOpenCircle
-                  : acceptCloseSquareMaskOpenSquare
-              }
-            >
-              acc
-            </button>
             <button
               onClick={openPopupConstructor}
               className={styles.item_button_quest}

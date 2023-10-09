@@ -24,6 +24,8 @@ function ConstructorFilter(props) {
     closeButtonVisibilityOpenCircleSquare,
     getButtonVisibilityCircle,
     getButtonVisibilitySquare,
+    positionButton,
+    setPositionButton,
   } = props;
   const dispatch = useDispatch();
   const [mainSquareCircleComponentColor, setMainSquareCircleComponentColor] = useState(false);
@@ -42,6 +44,11 @@ function ConstructorFilter(props) {
         openSquare: false,
         openCircle: false,
         openMask: false,
+      });
+      setPositionButton({
+        ...positionButton,
+        x: 230,
+        y: 20,
       });
     } else {
       setDropdownVisibleFilter((dropdownVisibleFilter) => !dropdownVisibleFilter);
