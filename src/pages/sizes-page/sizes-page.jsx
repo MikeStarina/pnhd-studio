@@ -1,3 +1,5 @@
+/* eslint-disable import/no-duplicates */
+// нужно чтобы 2 одинаковые картинки имели разные имена при импорте, 7 и 8 строки
 import React from 'react';
 import styles from './sizes-page.module.css';
 import tee_classic_sizes from '../../tee_classic_sizes.png';

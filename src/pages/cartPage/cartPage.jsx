@@ -22,6 +22,7 @@ import {
 } from '../../utils/cartPage';
 
 function Cart() {
+  // eslint-disable-next-line no-unused-vars
   const [size, setSize] = useState('');
   const [prewievImg, setPrewievImg] = useState('');
   const [modalSizeId, setModalSizeId] = useState({ id: '' });
@@ -83,7 +84,9 @@ function Cart() {
   return (
     <>
       <h1 className={styles.pageTitle}>
-        КОРЗИНА / <i>CART</i>
+        КОРЗИНА /
+        {' '}
+        <i>CART</i>
       </h1>
       {order.map((item) => {
         const url = `${apiBaseUrl}${item.attributes.image_url}`;
@@ -128,10 +131,19 @@ function Cart() {
                 </h2>
               </Link>
               <p className={styles.productsInfo_count}>
-                {item.attributes.price} Р. Х {productPriece} шт.
+                {item.attributes.price}
+                {' '}
+                Р. Х
+                {productPriece}
+                {' '}
+                шт.
               </p>
               <p className={styles.productsInfo_sum}>
-                — {item.attributes.price * productPriece} Р.
+                —
+                {' '}
+                {item.attributes.price * productPriece}
+                {' '}
+                Р.
               </p>
               <button
                 type="button"
@@ -232,15 +244,26 @@ function Cart() {
                       <p
                         className={`${styles.productsPrint_prewievPrice_right} ${styles.productsPrint_prewievPrice_right__top}`}
                       >
-                        — формат {elem.format}
+                        — формат
+                        {' '}
+                        {elem.format}
                       </p>
                       <p className={styles.productsPrint_prewievPrice_down}>
-                        {elem.price} Р. х {productPriece} шт
+                        {elem.price}
+                        {' '}
+                        Р. х
+                        {productPriece}
+                        {' '}
+                        шт
                       </p>
                       <p
                         className={`${styles.productsPrint_prewievPrice_right} ${styles.productsPrint_prewievPrice_right_down}`}
                       >
-                        — {elem.price * productPriece} Р.
+                        —
+                        {' '}
+                        {elem.price * productPriece}
+                        {' '}
+                        Р.
                       </p>
                     </div>
                     <div className={styles.productsPrint_buttons}>
@@ -313,12 +336,22 @@ function Cart() {
                 </button>
               </div>
               <div className={styles.productsBottom_price}>
-                <p>Текстиль: {item.attributes.price * productPriece}&nbsp;Р.</p>
+                <p>
+                  Текстиль:
+                  {item.attributes.price * productPriece}
+&nbsp;Р.
+                </p>
                 <p className={styles.productsBottom_pricePrint}>
-                  Печать: {printPrice}&nbsp;Р.
+                  Печать:
+                  {' '}
+                  {printPrice}
+&nbsp;Р.
                 </p>
                 <p className={styles.productsBottom_priceAll}>
-                  Подытог: {printPrice + item.attributes.price * productPriece}{' '}
+                  Подытог:
+                  {' '}
+                  {printPrice + item.attributes.price * productPriece}
+                  {' '}
                   &nbsp;Р.
                 </p>
               </div>
@@ -353,7 +386,11 @@ function Cart() {
           </div>
         </div>
         <p className={styles.paymentPrice}>
-          Итого на сумму: {allOrderPrice.price} Р.
+          Итого на сумму:
+          {' '}
+          {allOrderPrice.price}
+          {' '}
+          Р.
         </p>
       </div>
       <div className={styles.makeOrder}>
@@ -398,15 +435,13 @@ function Cart() {
           </Link>
         </div>
       </div>
-      <>
-        <Modal active={modalActive} setActive={setModalActive}>
-          <img
-            src={prewievImg}
-            alt="Превью принта"
-            className={styles.modalImg}
-          />
-        </Modal>
-      </>
+      <Modal active={modalActive} setActive={setModalActive}>
+        <img
+          src={prewievImg}
+          alt="Превью принта"
+          className={styles.modalImg}
+        />
+      </Modal>
     </>
   );
 }

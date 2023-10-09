@@ -23,6 +23,7 @@ export const getFriendProduct = (friendName) => function (dispatch) {
     .then((res) => {
       getFriendProduct(res);
     })
+    // eslint-disable-next-line no-unused-vars
     .catch((err) => {
       dispatch(
         openPopup([

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useHistory, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import styles from './cards-block.module.css';
 import CardItem from './card-item';
 import { apiBaseUrl } from '../../utils/constants';
@@ -203,19 +202,19 @@ function CardsBlock() {
 
       {visibleArr.length > 0 && (
         <section className={styles.screen}>
-          {visibleArr && visibleArr.map((item, index) => {
+          {visibleArr && visibleArr.map((item) => {
             const url = `${apiBaseUrl}${item.image_url}`;
             return (
               <Link
-                  to={{ pathname: `/shop/${item.slug}` }}
-                  className={styles.link}
-                  key={item.slug}
+                to={{ pathname: `/shop/${item.slug}` }}
+                className={styles.link}
+                key={item.slug}
               >
                 <CardItem
-                    title={item.name}
-                    price={item.price}
-                    img={url}
-                    sizes={item.sizes}
+                  title={item.name}
+                  price={item.price}
+                  img={url}
+                  sizes={item.sizes}
                 />
               </Link>
             );

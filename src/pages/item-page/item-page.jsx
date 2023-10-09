@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { useParams, useHistory, useLocation, Link } from 'react-router-dom';
+import { useParams, useHistory, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper';
 import styles from './item-page.module.css';
 import closeicon from '../../components/images/closeIcon.svg';
 import { ADD_TO_CART } from '../../services/actions/cart-actions';
@@ -13,7 +11,6 @@ import SizeSelection from '../../components/size-selection/size-selection';
 import {
   addItemSize,
   deleteItemOrder,
-  getSizeFlag,
 } from '../../services/actions/item-action';
 
 import 'swiper/css';
@@ -22,7 +19,6 @@ import 'swiper/css/pagination';
 import isSizeFunction from '../../utils/isSizeFunction';
 import PopupModel from '../../components/popupModel/popupModel';
 import { closePopup, openPopup } from '../../services/actions/utility-actions';
-import instructionForPopup from '../../data/instructionForPopup/instructionForPopup';
 
 function ItemPage() {
   const { id } = useParams();
@@ -43,6 +39,8 @@ function ItemPage() {
   const [size, setSize] = useState('');
   // console.log(order);
   useEffect(() => {
+    // страница не используется
+    // eslint-disable-next-line array-callback-return
     item.sizes?.map((el, i) => {
       dispatch(
         addItemSize({
@@ -82,9 +80,9 @@ function ItemPage() {
     }
   }, [item]);
 
-  const onChange = (e) => {
-    setSize(e.target.value);
-  };
+  // const onChange = (e) => {
+  //   setSize(e.target.value);
+  // };
 
   const closePopupConstructor = () => {
     dispatch(closePopup());
@@ -246,11 +244,15 @@ function ItemPage() {
                   </span>
                 )}
                 {!item.isSale && (
+                  // эта страница не используется
+                  // eslint-disable-next-line jsx-a11y/label-has-associated-control
                   <label className={styles.select_label} htmlFor="sizeSelect">
                     Выберите размер:
                   </label>
                 )}
                 {item.isSale && (
+                  // эта страница не используется
+                  // eslint-disable-next-line jsx-a11y/label-has-associated-control
                   <label className={styles.select_label} htmlFor="sizeSelect">
                     Выберите код:
                   </label>
@@ -286,7 +288,11 @@ function ItemPage() {
                   </Link>
                 )}
               </form>
-              <p className={styles.item_price}>{item.price} Р.</p>
+              <p className={styles.item_price}>
+                {item.price}
+                {' '}
+                Р.
+              </p>
             </div>
 
             <div className={styles.item_button_wrapper}>

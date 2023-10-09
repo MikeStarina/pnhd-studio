@@ -4,7 +4,7 @@ import { HashLink } from 'react-router-hash-link';
 import styles from './main-menu.module.css';
 import closeIcon from '../images/closeIcon.svg';
 
-function MainMenu({ closeMenu, openPopup }) {
+function MainMenu({ closeMenu }) {
   const clickOnEmptyHandler = (e) => {
     if (e.target.id === 'background') {
       closeMenu();

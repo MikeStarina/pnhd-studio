@@ -27,7 +27,6 @@ import PopupModel from '../../components/popupModel/popupModel';
 import {
   closePopup,
   openPopup,
-  SET_POPUP_VISIBILITY,
 } from '../../services/actions/utility-actions';
 import instructionForPopup from '../../data/instructionForPopup/instructionForPopup';
 import photoProcessing from '../../data/photo-processing/photo-processing';
@@ -90,6 +89,8 @@ function Constructor() {
     itemSize &&
     itemSize.reduce((total, element) => {
       let accTotal;
+      // что линтеру тут не нравится мне сложно понять =)
+      // eslint-disable-next-line no-unused-vars
       return (accTotal = total + element.qty);
     }, 0);
 
@@ -437,9 +438,10 @@ function Constructor() {
             <p className={styles.order_info_subtitle}>
               <span className={styles.order_info_line_span}>
                 {`${item.price} Р. X ${volumeSize} шт.`}
-                <span className={styles.order_info_line_span_end}>{` - ${
-                  item.price * volumeSize
-                } Р.`}
+                <span className={styles.order_info_line_span_end}>
+                  {` - ${
+                    item.price * volumeSize
+                  } Р.`}
                 </span>
               </span>
             </p>
@@ -467,7 +469,8 @@ function Constructor() {
             </p>
             <p className={styles.order_info_line}>
               <span className={styles.order_info_line_span_title}>
-                Печать на спине:{back_file && back_file.cartParams ? ' ' : ' -'}
+                Печать на спине:
+                {back_file && back_file.cartParams ? ' ' : ' -'}
               </span>
               <span
                 className={
@@ -532,12 +535,17 @@ function Constructor() {
             </p>
 
             <p className={styles.order_info_title}>
-              Итого: {(item.price + totalPricePrint) * volumeSize} Р.
+              Итого:
+              {' '}
+              {(item.price + totalPricePrint) * volumeSize}
+              {' '}
+              Р.
             </p>
           </div>
           <div className={styles.button_container_cart}>
             <button
               type="button"
+              aria-label="button"
               className={styles.item_button}
               onClick={
                 location.state.from.includes('cart') ? addToCart : addToPrint

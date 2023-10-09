@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
+import {
+  Route, Switch, Redirect, useLocation,
+} from 'react-router-dom';
 import {
   OPEN_MODAL_MENU,
   CLOSE_MODAL_MENU,
-  SET_POPUP_VISIBILITY,
   closePopupHeader,
   openPopupHeader,
 } from '../../services/actions/utility-actions';
@@ -104,7 +105,7 @@ function App() {
     dispatch(openPopupHeader());
   };
 
-  const closeMenu = (e) => {
+  const closeMenu = () => {
     dispatch({
       type: CLOSE_MODAL_MENU,
     });

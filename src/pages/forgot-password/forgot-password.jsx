@@ -33,20 +33,20 @@ function ForgotPassword() {
       <h1 className={styles.title}>RESET PSWD / 1</h1>
 
       <form className={styles.form} onSubmit={onSubmit}>
+        {/* инпут был перенесен в лейбл, возможно поехала верстка */}
         <label className={styles.input_label} htmlFor="email">
           Имя пользователя:
+          <input
+            type="email"
+            className={styles.input}
+            id="email"
+            name="email"
+            placeholder="name@pnhd.ru"
+            value={forgotPasswordData}
+            onChange={onChange}
+            required
+          />
         </label>
-        <input
-          type="email"
-          className={styles.input}
-          id="email"
-          name="email"
-          placeholder="name@pnhd.ru"
-          value={forgotPasswordData}
-          onChange={onChange}
-          required
-        />
-
         <button type="submit" className={styles.submit_button}>
           ВОССТАНОВИТЬ
         </button>

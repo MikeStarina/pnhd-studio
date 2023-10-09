@@ -7,12 +7,12 @@ function PrintingGallery(data) {
     <section className={styles.fourth_screen}>
       {gallery.map((item) => (
         <img
-            className={styles.gallery_img}
-            alt="print sample"
-            src={item}
-            loading="lazy"
-            decoding="async"
-            key={item}
+          className={styles.gallery_img}
+          alt="print sample"
+          src={item}
+          loading="lazy"
+          decoding="async"
+          key={item}
         />
       ))}
     </section>

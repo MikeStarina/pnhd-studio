@@ -3,8 +3,7 @@
 import React, { lazy, Suspense } from 'react';
 import styles from './map-screen.module.css';
 // import { YMaps, Map, Placemark, ZoomControl } from '@pbe/react-yandex-maps';
-import { contactPhone } from '../../utils/constants';
-import { telegram, vkontakte } from '../../utils/constants';
+import { telegram, vkontakte, contactPhone } from '../../utils/constants';
 
 const YMaps = lazy(() => import('@pbe/react-yandex-maps').then(({ YMaps }) => ({ default: YMaps })));
 const Map = lazy(() => import('@pbe/react-yandex-maps').then(({ Map }) => ({ default: Map })));

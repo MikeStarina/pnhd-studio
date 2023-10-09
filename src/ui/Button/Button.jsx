@@ -1,7 +1,9 @@
 import React from 'react';
 import styles from './Button.module.css';
 
-function Button({ children, className = '', onClickTo, type = 'empty' }) {
+function Button({
+  children, className = '', onClickTo, type = 'empty',
+}) {
   const extClassName = className || '';
   return (
     <>

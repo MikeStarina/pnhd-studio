@@ -7,7 +7,6 @@ function ShippingSelect(props) {
     defaultValue,
     options,
     onChange,
-    extraClass = '',
     editValue,
     errBorder,
   } = props;

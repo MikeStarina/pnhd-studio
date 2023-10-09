@@ -1,6 +1,5 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import styles from './type-of-print.module.css';
 import PrintingFirstScreen from '../../components/printingFirstScreen/printingFirstScreen';
 import FeedbackScreen from '../../components/main-page-components/feedback-screen';
 import MapScreen from '../../components/main-page-components/map-screen';

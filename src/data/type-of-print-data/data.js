@@ -39,13 +39,13 @@ import photo5 from '../../components/images/typeOfPrint/photos/5.webp';
 import photo6 from '../../components/images/typeOfPrint/photos/6.webp';
 
 // точка, имитация пункта списка
-const point = '\u{22C5}';
+// const point = '\u{22C5}';
 // неразрывный пробел
 const nbsp = '\u{00A0}';
 // мягкий перенос, через тире
-const softHyphen = '\u{00AD}';
+// const softHyphen = '\u{00AD}';
 // возврат каретки, перенос без тире
-const carriageReturn = '\u{000D}';
+// const carriageReturn = '\u{000D}';
 
 const typeOfPrintData = {
   numberAndSurname: {

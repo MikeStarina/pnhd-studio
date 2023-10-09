@@ -30,7 +30,6 @@ function ShopPage() {
     thirdFilterSelect,
     thirdCount,
     thirdFilterSelectedItem,
-    data,
   } = useSelector((store) => store.shopData);
   const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
   const history = useHistory();

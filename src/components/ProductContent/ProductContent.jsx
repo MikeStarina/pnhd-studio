@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './ProductContent.module.css';
@@ -15,18 +15,19 @@ import { ADD_TO_CART } from '../../services/actions/cart-actions';
 import addToMemory from '../../utils/addToMemory';
 
 function ProductContent(items) {
-  const { slug, sizes, _id, name, price, category, description, isForPrinting, isSale } = items;
+  const {
+    slug, sizes, _id, name, price, category, description, isForPrinting, isSale,
+  } = items;
   const dispatch = useDispatch();
   // order - список всех размеров тут
   const { order } = useSelector((store) => store.itemReducer);
   const history = useHistory();
+  // eslint-disable-next-line no-unused-vars
   const [size, setSize] = useState('');
 
   const linkSlug = slug;
 
   const {
-    isBlockButton,
-    isSelected,
     front_file,
     front_file_preview,
     back_file,
@@ -36,11 +37,10 @@ function ProductContent(items) {
     rsleeve_file,
     rsleeve_file_preview,
     badge_file,
-    activeView,
   } = useSelector((store) => store.editorState);
 
   useEffect(() => {
-    sizes?.map((el, i) => {
+    sizes?.forEach((el, i) => {
       dispatch(
         addItemSize({
           name: el.name,
@@ -115,7 +115,12 @@ function ProductContent(items) {
       <div className={styles.description}>
         <div className={styles.title_box}>
           <h1 className={styles.title}>{name}</h1>
-          <p className={styles.text}>&#8213; {price} P.</p>
+          <p className={styles.text}>
+            &#8213;
+            {price}
+            {' '}
+            P.
+          </p>
         </div>
         <p className={styles.text}>{description}</p>
         <ul className={styles.box_link}>
@@ -131,6 +136,8 @@ function ProductContent(items) {
             </Link>
           </li>
         </ul>
+        {/* контролировать здесь ничего не нужно */}
+        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label className={styles.select_label} htmlFor="sizeSelect">
           Выберите размер:
         </label>
