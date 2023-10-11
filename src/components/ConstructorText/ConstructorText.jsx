@@ -56,7 +56,6 @@ function ConstructorText(props) {
   };
   const handleItemSelectClick = (e) => {
     e.stopPropagation();
-    // console.log('  Croissant One , Dela Gothic One  ');
   };
   useEffect(() => {
   }, [dropdownVisibleText]);
@@ -71,7 +70,7 @@ function ConstructorText(props) {
       >
         <div
           onClick={(e) => toggle(e)}
-          onKeyDown={(e) => toggle(e)}
+          onKeyDown={() => {}}
           role="button"
           tabIndex="0"
           className={styles.dropdown_input}

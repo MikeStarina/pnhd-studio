@@ -157,6 +157,7 @@ function Constructor() {
     e.currentTarget.reset();
   };
   const deletePrint = () => {
+    setDropdownVisibleText(false);
     setCircleMask(false);
     setSquareMask(false);
     setOpenCircle(false);
