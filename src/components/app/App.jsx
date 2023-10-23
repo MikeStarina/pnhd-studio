@@ -34,6 +34,7 @@ import PrintingMethod from '../../pages/printing-method/printing-method';
 import TypeOfPrint from '../../pages/type-of-print/type-of-print';
 import PopupCallBack from '../popupCallBack/popupCallBack';
 import ProductCard from '../../pages/ProductCard/ProductCard';
+import Blogs from '../../pages/blogs/blogs';
 import ZagitovaPage from '../../pages/friends-page/zagitova-page';
 import PrintingProduct from '../../pages/printing-product/printing-product';
 import { getFriendProduct } from '../../services/actions/friends-actions';
@@ -211,6 +212,10 @@ function App() {
 
         <Route exact path="/pechat-na-kepkah">
           <PrintingProduct method={productsData.cap} />
+        </Route>
+
+        <Route exact path="/blogs">
+          <Blogs />
         </Route>
 
         <Route exact path="/zagitova">

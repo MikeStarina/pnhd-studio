@@ -1,0 +1,8 @@
+.section {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 10vh;
+    border: 3px red solid;
+    padding: 100px 30px;
+;
+}

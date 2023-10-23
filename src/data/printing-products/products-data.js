@@ -7,13 +7,13 @@ import gallery4 from '../../components/images/sample3.webp';
 import gallery5 from '../../components/images/sample4.webp';
 import gallery6 from '../../components/images/sample5.webp';
 // точка, имитация пункта списка
-const point = '\u{22C5}';
+// const point = '\u{22C5}';
 // неразрывный пробел
-const nbsp = '\u{00A0}';
+// const nbsp = '\u{00A0}';
 // мягкий перенос, через тире
-const softHyphen = '\u{00AD}';
+// const softHyphen = '\u{00AD}';
 // возврат каретки, перенос без тире
-const carriageReturn = '\u{000D}';
+// const carriageReturn = '\u{000D}';
 const productsData = {
   futbolki: {
     metaTitle: 'Печать на футболках в Санкт-Петербурге на заказ от 1 штуки цены в Studio Pinhead',
