@@ -14,6 +14,7 @@ import PriceScreen from '../../components/main-page-components/price-screen';
 import FeedbackScreen from '../../components/main-page-components/feedback-screen';
 import MapScreen from '../../components/main-page-components/map-screen';
 import Accordion from '../../components/accordion/accordion';
+import BlogGallery from '../../components/main-page-components/blogGallery';
 
 function MainPage() {
   const dispatch = useDispatch();
@@ -88,6 +89,7 @@ function MainPage() {
       <ConstructorScreen />
       <MethodsGallery />
       <ShopGallery />
+      <BlogGallery />
       <PriceScreen />
       <FeedbackScreen />
       <Accordion />

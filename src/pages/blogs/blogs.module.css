@@ -1,8 +1,51 @@
 .section {
-    box-sizing: border-box;
-    width: 100%;
-    min-height: 10vh;
-    border: 3px red solid;
-    padding: 100px 30px;
-;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 100px 40px;
+}
+
+.box {
+  min-width: calc(100% / 4);
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+  transition: 0.4s all;
+}
+
+.box:hover {
+  transform: scale(1.05);
+}
+
+.space {
+  width: 10%;
+  min-height: 100%;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.less {
+  display: none;
+}
+
+@media (max-width: 1200px) {
+  .box {
+    min-width: calc(100% / 3);
+  }
+}
+
+@media (max-width: 960px) {
+  .box {
+    min-width: calc(100% / 2);
+  }
+}
+
+@media (max-width: 650px) {
+  .box {
+    min-width: 100%;
+  }
 }

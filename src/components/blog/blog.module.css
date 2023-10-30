@@ -1,8 +1,29 @@
 .container {
-    width: 300px;
-    height: 400px;
-    box-sizing: border-box;
-    border-radius: 15px;
-    background-color: #00CCCC;
-    box-shadow: 5px 3px 10px 0 #00FF00;
+  height: 350px;
+  box-sizing: border-box;
+}
+
+.block {
+  height: 350px;
+  width: 250px;
+  box-sizing: border-box;
+  border-radius: 15px;
+  background-color: #00cccc;
+  box-shadow: 3px -3px 10px 0 rgba(0, 0, 0, 0.2);
+  flex-basis: 250px;
+  cursor: pointer;
+}
+
+.container:hover {
+  transform: scale(1.05);
+}
+
+.title {
+  margin: 0;
+  padding: 20px 20px;
+  width: 70%;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 25px;
+  color: #ffffff;
 }

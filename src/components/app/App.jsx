@@ -35,9 +35,11 @@ import TypeOfPrint from '../../pages/type-of-print/type-of-print';
 import PopupCallBack from '../popupCallBack/popupCallBack';
 import ProductCard from '../../pages/ProductCard/ProductCard';
 import Blogs from '../../pages/blogs/blogs';
+import BlogCard from '../../pages/blogCard/blogCard';
 import ZagitovaPage from '../../pages/friends-page/zagitova-page';
 import PrintingProduct from '../../pages/printing-product/printing-product';
 import { getFriendProduct } from '../../services/actions/friends-actions';
+import { getBlogs } from '../../services/actions/blogs-actions';
 
 function App() {
   const dispatch = useDispatch();
@@ -85,6 +87,7 @@ function App() {
 
   useEffect(() => {
     dispatch(getShopData());
+    dispatch(getBlogs());
   }, []);
   useEffect(() => {
     dispatch(getFriendProduct('zagitova'));
@@ -216,6 +219,10 @@ function App() {
 
         <Route exact path="/blogs">
           <Blogs />
+        </Route>
+
+        <Route exact path="/blogs/:slug">
+          <BlogCard />
         </Route>
 
         <Route exact path="/zagitova">
