@@ -1,0 +1,36 @@
+.container {
+  height: 350px;
+  box-sizing: border-box;
+}
+
+.block {
+  height: 350px;
+  width: 250px;
+  box-sizing: border-box;
+  border-radius: 15px;
+  background-color: #00cccc;
+  box-shadow: 3px -3px 10px 0 rgba(0, 0, 0, 0.2);
+  flex-basis: 250px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.container:hover {
+  transform: scale(1.05);
+}
+
+.title {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 20px 20px;
+  /*width: 70%;*/
+  width: 100%;
+  height: 100%;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 25px;
+  color: #00ff00;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}

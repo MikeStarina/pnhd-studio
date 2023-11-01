@@ -14,6 +14,7 @@ import PriceScreen from '../../components/main-page-components/price-screen';
 import FeedbackScreen from '../../components/main-page-components/feedback-screen';
 import MapScreen from '../../components/main-page-components/map-screen';
 import Accordion from '../../components/accordion/accordion';
+import BlogGallery from '../../components/main-page-components/blogGallery';
 import shopGalleryData from '../../data/shop-gallery-data/shop-gallery-data';
 
 function MainPage() {
@@ -87,6 +88,7 @@ function MainPage() {
       <CaseGallery />
       <ConstructorScreen />
       <MethodsGallery />
+      <BlogGallery />
       <ShopGallery data={shopGalleryData.mainPage} />
       <PriceScreen />
       <FeedbackScreen />

@@ -9,14 +9,14 @@ import MapScreen from '../../components/main-page-components/map-screen';
 
 
 function PrintingProduct(data) {
-  const { method } = data;
+  const { method, shopGalleryData } = data;
   const { faq } = method;
   return (
     <>
-      <PrintingFirstScreen data={method} typePage="product" />
+      <PrintingFirstScreen data={faq} typePage="product" />
       <section className={styles.brief}>
         <h2 className={styles.brief_title}>КРАТКО</h2>
-        <p className={styles.brief_subtitle}>{method.brief_subtitle}</p>
+        <p className={styles.brief_subtitle}>{faq.brief_subtitle}</p>
       </section>
       <PrintingGallery gallery={method.images.gallery} />
       <PrintingFaq
