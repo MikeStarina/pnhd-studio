@@ -14,10 +14,10 @@ import PriceScreen from '../../components/main-page-components/price-screen';
 import FeedbackScreen from '../../components/main-page-components/feedback-screen';
 import MapScreen from '../../components/main-page-components/map-screen';
 import Accordion from '../../components/accordion/accordion';
+import shopGalleryData from '../../data/shop-gallery-data/shop-gallery-data';
 
 function MainPage() {
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch({
       type: CLOSE_MODAL_MENU,
@@ -87,7 +87,7 @@ function MainPage() {
       <CaseGallery />
       <ConstructorScreen />
       <MethodsGallery />
-      <ShopGallery />
+      <ShopGallery data={shopGalleryData.mainPage} />
       <PriceScreen />
       <FeedbackScreen />
       <Accordion />

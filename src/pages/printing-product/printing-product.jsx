@@ -7,6 +7,7 @@ import FeedbackScreen from '../../components/main-page-components/feedback-scree
 import ShopGallery from '../../components/main-page-components/shop-gallery';
 import MapScreen from '../../components/main-page-components/map-screen';
 
+
 function PrintingProduct(data) {
   const { method } = data;
   const { faq } = method;
@@ -24,7 +25,7 @@ function PrintingProduct(data) {
         description={faq.description}
         variants={faq.variants}
       />
-      <ShopGallery />
+      <ShopGallery printingProduct="true" data={shopGalleryData} />
       <FeedbackScreen />
       <MapScreen />
     </>
