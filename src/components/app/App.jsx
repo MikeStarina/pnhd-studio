@@ -207,29 +207,29 @@ function App() {
 
         <Route exact path="/pechat-na-hudi">
           <PrintingProduct
-          method={productsData.hudi}
-          shopGalleryData={shopGalleryData.hudi}
+            method={productsData.hudi}
+            shopGalleryData={shopGalleryData.hudi}
           />
         </Route>
 
         <Route exact path="/pechat-na-svitshotah">
           <PrintingProduct
-          method={productsData.sweatshirt}
-          shopGalleryData={shopGalleryData.sweatshirt}
+            method={productsData.sweatshirt}
+            shopGalleryData={shopGalleryData.sweatshirt}
           />
         </Route>
 
         <Route exact path="/pechat-na-shopperah">
           <PrintingProduct
-          method={productsData.shopper}
-          shopGalleryData={shopGalleryData.shopper}
+            method={productsData.shopper}
+            shopGalleryData={shopGalleryData.shopper}
           />
         </Route>
 
         <Route exact path="/pechat-na-kepkah">
           <PrintingProduct
-           method={productsData.cap}
-           shopGalleryData={shopGalleryData.cap}
+            method={productsData.cap}
+            shopGalleryData={shopGalleryData.cap}
           />
         </Route>
 
