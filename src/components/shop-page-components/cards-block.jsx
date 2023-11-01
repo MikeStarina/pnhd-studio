@@ -33,6 +33,7 @@ function CardsBlock() {
   }, []);
 
   const addressString = decodeURI(search);
+
   const getAdressFilter = (string, filter, num) => {
     let resultString;
     const arrFilter = string.split('&');
@@ -59,8 +60,8 @@ function CardsBlock() {
     addressString !== '' && firstFilterSelectedItem.length === 0 && secondFilterSelectedItem.length === 0 && thirdFilterSelectedItem.length === 0
   ) {
     frstFilter = getAdressFilter(addressString, 'category', 10);
-    secondFilter = getAdressFilter(addressString, 'type', 5);
-    thirdFilter = getAdressFilter(addressString, 'color', 6);
+    secondFilter = getAdressFilter(addressString, 'type', (frstFilter ? 5 : 6));
+    thirdFilter = getAdressFilter(addressString, 'color', (frstFilter || secondFilter ? 6 : 7));
     if (frstFilter) {
       filtr1 = firstFilterSelect;
       count1 = firstCount;
