@@ -1,6 +1,7 @@
 import {
   GET_SDEK_CITIES,
   GET_SDEK_POINTS,
+  GET_SDEK_CITIES_ALL,
   GET_SDEK_SHIPPIG_TARIF,
   SET_SDEK_DEFAULT_STATE,
   SET_SDEK_RESET_POINTS,
@@ -24,6 +25,21 @@ const shippingReducer = (state = initialState, action) => {
           ...state.shippingData,
           isShipping: true,
           shippingCities: action.payload,
+        },
+      };
+    }
+
+    case GET_SDEK_CITIES_ALL: {
+      const list = action.payload.filter((el) => el.country.includes('Россия'));
+      const city = list
+        .filter((x) => !state.shippingData.shippingCities
+          .map((el) => el.code).includes(x.code));
+      return {
+        state,
+        shippingData: {
+          ...state.shippingData,
+          isShipping: true,
+          shippingCities: state.shippingData.shippingCities.concat(city),
         },
       };
     }

@@ -7,8 +7,10 @@ import FeedbackScreen from '../../components/main-page-components/feedback-scree
 import ShopGallery from '../../components/main-page-components/shop-gallery';
 import MapScreen from '../../components/main-page-components/map-screen';
 
-function PrintingProduct({ method, shopGalleryData }) {
-  const methodFaq = method.faq;
+
+function PrintingProduct(data) {
+  const { method } = data;
+  const { faq } = method;
   return (
     <>
       <PrintingFirstScreen data={method} typePage="product" />
@@ -18,10 +20,10 @@ function PrintingProduct({ method, shopGalleryData }) {
       </section>
       <PrintingGallery gallery={method.images.gallery} />
       <PrintingFaq
-        faq={methodFaq}
-        title={methodFaq.title}
-        description={methodFaq.description}
-        variants={methodFaq.variants}
+        faq={faq}
+        title={faq.title}
+        description={faq.description}
+        variants={faq.variants}
       />
       <ShopGallery printingProduct="true" data={shopGalleryData} />
       <FeedbackScreen />
