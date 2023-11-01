@@ -7,13 +7,12 @@ import FeedbackScreen from '../../components/main-page-components/feedback-scree
 import ShopGallery from '../../components/main-page-components/shop-gallery';
 import MapScreen from '../../components/main-page-components/map-screen';
 
-
 function PrintingProduct(data) {
   const { method, shopGalleryData } = data;
   const { faq } = method;
   return (
     <>
-      <PrintingFirstScreen data={faq} typePage="product" />
+      <PrintingFirstScreen data={method} typePage="product" />
       <section className={styles.brief}>
         <h2 className={styles.brief_title}>КРАТКО</h2>
         <p className={styles.brief_subtitle}>{faq.brief_subtitle}</p>

@@ -1,12 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styles from './shop-gallery.module.css';
 import ShopGalleryItem from './shop-gallery-item';
 
 function ShopGallery({ printingProduct, data }) {
   return (
     <section className={styles.screen}>
-      {printingProduct != 'true' ? (
+      {printingProduct !== 'true' ? (
         <>
           <h4 className={styles.heading}>
             А НА
