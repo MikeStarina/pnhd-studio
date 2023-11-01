@@ -6,11 +6,11 @@ function ShopGalleryItem({ data }) {
   return (
     <div className={styles.card}>
       <img
-            className={styles.card_img}
-            src={data.img}
-            alt="shop"
-            loading="lazy"
-            decoding="async"
+        className={styles.card_img}
+        src={data.img}
+        alt="shop"
+        loading="lazy"
+        decoding="async"
       />
       <div className={styles.card_title}>
         <h5 className={styles.card_heading}>
