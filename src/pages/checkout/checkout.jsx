@@ -19,7 +19,7 @@ import {
   SET_DEFAULT_USERSHIPPINGDATA,
 } from '../../services/actions/user-data-actions';
 import {
-  getSdekCities,
+  getSdekCities, getSdekCitiesAll,
   getSdekPoints,
   getSdekShippingTarif,
   SET_SDEK_DEFAULT_STATE,
@@ -603,12 +603,14 @@ function Checkout() {
                       onChange={(e) => {
                         setListCities(e.target.value);
                         setTypeList(false);
+                        dispatch(getSdekCitiesAll(e.target.value));
                         dispatch({
                           type: SET_SDEK_RESET_POINTS,
                         });
                         setUserShippingDataReset();
                         setListPoints(null);
                       }}
+
                     />
                   </label>
                 </div>

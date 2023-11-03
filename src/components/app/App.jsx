@@ -34,9 +34,13 @@ import PrintingMethod from '../../pages/printing-method/printing-method';
 import TypeOfPrint from '../../pages/type-of-print/type-of-print';
 import PopupCallBack from '../popupCallBack/popupCallBack';
 import ProductCard from '../../pages/ProductCard/ProductCard';
+import Blogs from '../../pages/blogs/blogs';
+import BlogCard from '../../pages/blogCard/blogCard';
 import ZagitovaPage from '../../pages/friends-page/zagitova-page';
 import PrintingProduct from '../../pages/printing-product/printing-product';
 import { getFriendProduct } from '../../services/actions/friends-actions';
+import { getBlogs } from '../../services/actions/blogs-actions';
+import shopGalleryData from '../../data/shop-gallery-data/shop-gallery-data';
 
 function App() {
   const dispatch = useDispatch();
@@ -84,6 +88,7 @@ function App() {
 
   useEffect(() => {
     dispatch(getShopData());
+    dispatch(getBlogs());
   }, []);
   useEffect(() => {
     dispatch(getFriendProduct('zagitova'));
@@ -194,23 +199,46 @@ function App() {
         </Route>
 
         <Route exact path="/pechat-na-futbolkah">
-          <PrintingProduct method={productsData.futbolki} />
+          <PrintingProduct
+            method={productsData.futbolki}
+            shopGalleryData={shopGalleryData.futbolki}
+          />
         </Route>
 
         <Route exact path="/pechat-na-hudi">
-          <PrintingProduct method={productsData.hudi} />
+          <PrintingProduct
+            method={productsData.hudi}
+            shopGalleryData={shopGalleryData.hudi}
+          />
         </Route>
 
         <Route exact path="/pechat-na-svitshotah">
-          <PrintingProduct method={productsData.sweatshirt} />
+          <PrintingProduct
+            method={productsData.sweatshirt}
+            shopGalleryData={shopGalleryData.sweatshirt}
+          />
         </Route>
 
         <Route exact path="/pechat-na-shopperah">
-          <PrintingProduct method={productsData.shopper} />
+          <PrintingProduct
+            method={productsData.shopper}
+            shopGalleryData={shopGalleryData.shopper}
+          />
         </Route>
 
         <Route exact path="/pechat-na-kepkah">
-          <PrintingProduct method={productsData.cap} />
+          <PrintingProduct
+            method={productsData.cap}
+            shopGalleryData={shopGalleryData.cap}
+          />
+        </Route>
+
+        <Route exact path="/blogs">
+          <Blogs />
+        </Route>
+
+        <Route exact path="/blogs/:slug">
+          <BlogCard />
         </Route>
 
         <Route exact path="/zagitova">

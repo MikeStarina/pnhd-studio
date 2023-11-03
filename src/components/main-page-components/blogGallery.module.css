@@ -1,0 +1,17 @@
+.section {
+    padding: 0;
+    margin: 0;
+}
+
+.link {
+    text-decoration: none;
+    cursor: inherit;
+    /*display: flex;*/
+    /*flex-direction: row;*/
+    /*flex-wrap: wrap;*/
+    /*justify-content: space-around;*/
+    /*gap: 30px 60px;*/
+    /*box-sizing: border-box;*/
+    /*width: 100%;*/
+    /*z-index: 1;*/
+}

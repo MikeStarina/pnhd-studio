@@ -1,0 +1,41 @@
+.container {
+    box-sizing: border-box;
+    /*border: 1px red solid;*/
+    padding: 100px calc(100% /6);
+    width: 100%;
+}
+
+.title {
+    margin: 0;
+    padding: 0;
+    font-weight: 700;
+    font-size: 60px;
+    line-height: 60px;
+    letter-spacing: 1px;
+    /*text-align: center;*/
+}
+
+.dataTime {
+    margin: 40px 0 0;
+    padding: 0;
+}
+
+.subtitle {
+    font-size: 20px;
+    line-height: 40px;
+    font-weight: 600;
+    margin: 40px 0 0;
+    padding: 0;
+}
+
+.text {
+    margin: 20px 0;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 500;
+}
+
+.image {
+    max-width: 100%;
+    max-height: 400px;
+}
