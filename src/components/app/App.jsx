@@ -233,11 +233,11 @@ function App() {
           />
         </Route>
 
-        <Route exact path="/blogs">
+        <Route exact path="/blog">
           <Blogs />
         </Route>
 
-        <Route exact path="/blogs/:slug">
+        <Route exact path="/blog/:slug">
           <BlogCard />
         </Route>
 
