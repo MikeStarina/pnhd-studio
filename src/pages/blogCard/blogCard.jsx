@@ -17,7 +17,7 @@ function BlogCard() {
   return (
     <div className={styles.container}>
       <h4 className={styles.title}>{item && item.title && item.title.toUpperCase()}</h4>
-      <p className={styles.dataTime}>{item && item.createdAt}</p>
+      <p className={styles.dataTime}>{item && item.created}</p>
       {item && item.blog && item.blog.map((el, i) => (
         el.subtitle ? <h5 key={[i]} className={styles.subtitle}>{el.subtitle}</h5>
           : el.text ? el.text.map((art, index) => (
