@@ -1,5 +1,5 @@
 import { apiBaseUrl } from '../../utils/constants';
-import { openPopup, ORDER_ERROR } from './utility-actions';
+import { openPopup } from './utility-actions';
 
 export const GET_DATA = 'GET_DATA';
 export const SET_FILTERS = 'SET_FILTERS';
@@ -44,6 +44,7 @@ export const getShopData = () => {
         });
         getData(res.data);
       })
+      // eslint-disable-next-line no-unused-vars
       .catch((err) => {
         dispatch(
           openPopup([

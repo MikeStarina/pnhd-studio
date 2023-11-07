@@ -1,12 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
-import { contactPhone } from '../../utils/constants';
+import { contactPhone, telegram, vkontakte } from '../../utils/constants';
 import styles from './fullscreen-menu.module.css';
-import Button from '../../ui/Button/Button';
-import { telegram, vkontakte } from '../../utils/constants';
 
-const fullscreenMenu = ({ openPopup }) => (
+const fullscreenMenu = () => (
   <header className={styles.menu_container}>
     <ul className={styles.main_menu}>
       <li className={styles.menu_elem}>

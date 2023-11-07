@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useHistory, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import styles from './cards-block.module.css';
 import CardItem from './card-item';
 import { apiBaseUrl } from '../../utils/constants';
@@ -34,11 +33,12 @@ function CardsBlock() {
   }, []);
 
   const addressString = decodeURI(search);
+
   const getAdressFilter = (string, filter, num) => {
     let resultString;
     const arrFilter = string.split('&');
     arrFilter.forEach((item) => {
-      if (item.indexOf(filter) != -1) {
+      if (item.indexOf(filter) !== -1) {
         resultString = item.slice(num).split(',');
       }
     });
@@ -57,11 +57,11 @@ function CardsBlock() {
   let count3 = [];
 
   if (
-    addressString != '' && firstFilterSelectedItem.length === 0 && secondFilterSelectedItem.length === 0 && thirdFilterSelectedItem.length === 0
+    addressString !== '' && firstFilterSelectedItem.length === 0 && secondFilterSelectedItem.length === 0 && thirdFilterSelectedItem.length === 0
   ) {
     frstFilter = getAdressFilter(addressString, 'category', 10);
-    secondFilter = getAdressFilter(addressString, 'type', 5);
-    thirdFilter = getAdressFilter(addressString, 'color', 6);
+    secondFilter = getAdressFilter(addressString, 'type', (frstFilter ? 5 : 6));
+    thirdFilter = getAdressFilter(addressString, 'color', (frstFilter || secondFilter ? 6 : 7));
     if (frstFilter) {
       filtr1 = firstFilterSelect;
       count1 = firstCount;
@@ -102,7 +102,7 @@ function CardsBlock() {
 
   useEffect(() => {
     if (
-      addressString === '' && (firstFilterSelectedItem.length != 0 || secondFilterSelectedItem.length != 0 || thirdFilterSelectedItem.length != 0)
+      addressString === '' && (firstFilterSelectedItem.length !== 0 || secondFilterSelectedItem.length !== 0 || thirdFilterSelectedItem.length !== 0)
     ) {
       history.push('/shop');
       filtr1 = [];
@@ -142,7 +142,7 @@ function CardsBlock() {
     resultArr = data;
   }
 
-  if (firstFilterSelectedItem.length != 0) {
+  if (firstFilterSelectedItem.length !== 0) {
     resultArr = [];
     firstFilterSelectedItem.forEach((item) => {
       data.forEach((elem) => {
@@ -153,7 +153,7 @@ function CardsBlock() {
       });
     });
   }
-  if (secondFilterSelectedItem.length != 0) {
+  if (secondFilterSelectedItem.length !== 0) {
     const a = [...resultArr];
     resultArr = [];
     secondFilterSelectedItem.forEach((item) => {
@@ -164,7 +164,7 @@ function CardsBlock() {
       });
     });
   }
-  if (thirdFilterSelectedItem != 0) {
+  if (thirdFilterSelectedItem.length !== 0) {
     const a = [...resultArr];
     resultArr = [];
     thirdFilterSelectedItem.forEach((item) => {
@@ -179,7 +179,7 @@ function CardsBlock() {
 
   const visibleArr = [];
   const renderQueue = ['Футболка', 'Лонгслив', 'Свитшот', 'Худи', 'Шоппер', 'Кепка'];
-  if (renderQueue.length != secondFilterSelect.length) {
+  if (renderQueue.length !== secondFilterSelect.length) {
     secondFilterSelect.forEach((item) => {
       if (!renderQueue.includes(item.category)) {
         renderQueue.push(item.category);
@@ -203,19 +203,19 @@ function CardsBlock() {
 
       {visibleArr.length > 0 && (
         <section className={styles.screen}>
-          {visibleArr && visibleArr.map((item, index) => {
+          {visibleArr && visibleArr.map((item) => {
             const url = `${apiBaseUrl}${item.image_url}`;
             return (
               <Link
-                  to={{ pathname: `/shop/${item.slug}` }}
-                  className={styles.link}
-                  key={item.slug}
+                to={{ pathname: `/shop/${item.slug}` }}
+                className={styles.link}
+                key={item.slug}
               >
                 <CardItem
-                    title={item.name}
-                    price={item.price}
-                    img={url}
-                    sizes={item.sizes}
+                  title={item.name}
+                  price={item.price}
+                  img={url}
+                  sizes={item.sizes}
                 />
               </Link>
             );

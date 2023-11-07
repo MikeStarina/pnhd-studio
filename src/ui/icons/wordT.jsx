@@ -1,3 +1,5 @@
+import React from 'react';
+
 function WordT({ ...props }) {
   return (
     <svg

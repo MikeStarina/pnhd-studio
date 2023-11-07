@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { v4 as uuid } from 'uuid';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import styles from './footer.module.css';

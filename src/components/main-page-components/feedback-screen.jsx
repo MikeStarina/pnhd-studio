@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styles from './feedback-screen.module.css';
 import circle50px from '../images/circle50px.png';
 

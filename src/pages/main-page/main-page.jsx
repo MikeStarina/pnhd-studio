@@ -14,10 +14,11 @@ import PriceScreen from '../../components/main-page-components/price-screen';
 import FeedbackScreen from '../../components/main-page-components/feedback-screen';
 import MapScreen from '../../components/main-page-components/map-screen';
 import Accordion from '../../components/accordion/accordion';
+import BlogGallery from '../../components/main-page-components/blogGallery';
+import shopGalleryData from '../../data/shop-gallery-data/shop-gallery-data';
 
 function MainPage() {
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch({
       type: CLOSE_MODAL_MENU,
@@ -27,7 +28,7 @@ function MainPage() {
   return (
     <main className={styles.main_page}>
       <Helmet
-        title="Печать на футболках заказать в Санкт-Петербурге цена от 1 штуки в Studio Pinhead"
+        title="Печать на одежде в Санкт-Петербурге на заказ от 1 штуки цена в Pinhead Studio"
         meta={[
           {
             name: 'yandex-verification',
@@ -36,7 +37,7 @@ function MainPage() {
           {
             name: 'description',
             content:
-              'Заказать печать на футболке в Санкт-Петербурге онлайн с доставкой можно по выгодной цене в нашей студии. Печать на футболках на заказ от 1 штуки недорого от Studio Pinhead.',
+              'Печать на одежде на заказ от 1 штуки в Санкт-Петербурге по выгодной цене в Pinhead Studio. Сколько стоит печать на одежде смотрите онлайн на нашем сайте.',
           },
           {
             name: 'keywords',
@@ -51,7 +52,7 @@ function MainPage() {
           {
             property: 'og:title',
             content:
-              'Печать на футболках заказать в Санкт-Петербурге цена от 1 штуки в Studio Pinhead',
+              'Печать на одежде в Санкт-Петербурге на заказ от 1 штуки цена в Pinhead Studio',
           },
           {
             property: 'og:url',
@@ -87,7 +88,8 @@ function MainPage() {
       <CaseGallery />
       <ConstructorScreen />
       <MethodsGallery />
-      <ShopGallery />
+      <BlogGallery />
+      <ShopGallery data={shopGalleryData.mainPage} />
       <PriceScreen />
       <FeedbackScreen />
       <Accordion />

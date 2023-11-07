@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { CLOSE_MODAL_MENU } from '../../services/actions/utility-actions';
 

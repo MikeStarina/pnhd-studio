@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styles from './size-selection.module.css';
 import { updateItemOrder } from '../../services/actions/item-action';
 import { CHANGE_ITEM_QTY, CHANGE_ITEM_SIZES } from '../../services/actions/cart-actions';
 
-function SizeSelection({ name, qty, id, type, remain }) {
-  const { order } = useSelector((store) => store.itemReducer);
+function SizeSelection({
+  name, qty, id, type, remain,
+}) {
   const dispatch = useDispatch();
   const [state, setState] = useState(qty);
 
@@ -71,10 +72,10 @@ function SizeSelection({ name, qty, id, type, remain }) {
         <p className={styles.text_size}>{type === 'shop' ? state : qty}</p>
 
         <button
-        className={`${styles.button_size}  ${remain <= 0 ? `${styles.block_disable}` : ''}`}
-        onClick={() => onChangeMinus(name)}
-        type="button"
-        disabled={state === 0}
+          className={`${styles.button_size}  ${remain <= 0 ? `${styles.block_disable}` : ''}`}
+          onClick={() => onChangeMinus(name)}
+          type="button"
+          disabled={state === 0}
         >
           &lt;
         </button>
@@ -83,7 +84,12 @@ function SizeSelection({ name, qty, id, type, remain }) {
         </button>
       </div>
       <div className={`${styles.product_remain} ${remain > 5 ? `${styles.product_remain_many}` : (remain <= 5 && remain > 0) ? `${styles.product_remain_litle}` : `${styles.product_remain_nope}`}`}>
-        <p>&bull; {remain < 0 ? 0 : remain} шт</p>
+        <p>
+          &bull;
+          {remain < 0 ? 0 : remain}
+          {' '}
+          шт
+        </p>
       </div>
     </div>
   );

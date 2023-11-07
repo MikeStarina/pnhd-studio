@@ -17,7 +17,6 @@ function ProductCard() {
   const dispatch = useDispatch();
   const ref = useRef();
   const item = data && data.length > 0 && data.find((elem) => elem.slug === slug);
-
   function getCurrentDimension() {
     return {
       width: window.innerWidth,
@@ -94,8 +93,8 @@ function ProductCard() {
 
         {isOtherPopupVisible && (
           <PopupModel onClose={closePopupConstructor}>
-            {isOtherPopupVisible.map((el, index) => (
-              <p className={styles.instruction} key={[index]}>
+            {isOtherPopupVisible.map((el) => (
+              <p className={styles.instruction} key={el}>
                 {el}
               </p>
             ))}

@@ -1,3 +1,5 @@
+import React from 'react';
+
 function Vk({ ...props }) {
   return (
     <svg

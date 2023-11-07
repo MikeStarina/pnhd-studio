@@ -1,15 +1,16 @@
 import { apiBaseUrl } from '../../utils/constants';
 import { checkResponse } from '../../utils/utils';
-import { openPopup, ORDER_ERROR } from './utility-actions';
+import { openPopup } from './utility-actions';
 
 export const GET_SDEK_CITIES = 'GET_SDEK_CITIES';
+export const GET_SDEK_CITIES_ALL = 'GET_SDEK_CITIES_ALL';
 export const GET_SDEK_POINTS = 'GET_SDEK_POINTS';
 export const GET_SDEK_SHIPPIG_TARIF = 'GET_SDEK_SHIPPIG_TARIF';
 export const SET_SDEK_DEFAULT_STATE = 'GET_SDEK_DEFAULT_STATE';
 export const SET_SDEK_RESET_POINTS = 'SET_SDEK_RESET_POINTS';
 
 export const getSdekCities = () => function (dispatch) {
-  fetch(`${apiBaseUrl}/api/shipping/cities`, {
+  fetch(`${apiBaseUrl}/api/shipping/cities?`, {
     headers: {
       'Content-Type': 'application/json',
     },
@@ -21,6 +22,30 @@ export const getSdekCities = () => function (dispatch) {
         payload: res,
       });
     })
+    // eslint-disable-next-line no-unused-vars
+    .catch((err) => {
+      dispatch(
+        openPopup([
+          'Не удалось загрузить список пунктов выдачи. Попробуйте обновить страницу.',
+        ]),
+      );
+    });
+};
+
+export const getSdekCitiesAll = (data) => function (dispatch) {
+  fetch(`${apiBaseUrl}/api/shipping/cities?city=${data}`, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(checkResponse)
+    .then((res) => {
+      dispatch({
+        type: GET_SDEK_CITIES_ALL,
+        payload: res,
+      });
+    })
+    // eslint-disable-next-line no-unused-vars
     .catch((err) => {
       dispatch(
         openPopup([
@@ -43,6 +68,7 @@ export const getSdekPoints = (citiesCode) => function (dispatch) {
         payload: res,
       });
     })
+    // eslint-disable-next-line no-unused-vars
     .catch((err) => {
       dispatch(
         openPopup([
@@ -85,6 +111,7 @@ export const getSdekShippingTarif = (citiesCode, orderWeight) => {
           payload: res,
         });
       })
+      // eslint-disable-next-line no-unused-vars
       .catch((err) => {
         dispatch(
           openPopup([

@@ -76,7 +76,7 @@ const cartDataReducer = (state = initialState, action) => {
 
       newOrder.map((item) => {
         if (item.cart_item_id === action.id) {
-          item.attributes.size.map((el) => {
+          item.attributes.size.forEach((el) => {
             if (el.name === action.name) {
               el.qty = action.qty;
             }
@@ -99,7 +99,7 @@ const cartDataReducer = (state = initialState, action) => {
 
       newOrder.map((item) => {
         if (item.cart_item_id === action.id) {
-          item.attributes.size.map((el) => {
+          item.attributes.size.forEach((el) => {
             if (el.name === action.name) {
               el.qty = action.qty;
             }
@@ -157,7 +157,7 @@ const cartDataReducer = (state = initialState, action) => {
 
       const newOrderList = [];
 
-      clonedOrder.map((item) => {
+      clonedOrder.forEach((item) => {
         if (item.cart_item_id !== action.payload) {
           newOrderList.push(item);
         }
@@ -174,7 +174,7 @@ const cartDataReducer = (state = initialState, action) => {
     case DELETE_PRINT_FROM_CART: {
       const clonedOrder = state.order;
 
-      clonedOrder.map((item) => {
+      clonedOrder.forEach((item) => {
         if (item.cart_item_id === action.item_id) {
           if (action.print_id === 'front_print') {
             item.print.front = {

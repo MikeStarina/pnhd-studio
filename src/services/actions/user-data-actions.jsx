@@ -95,7 +95,7 @@ export const createNewUser = (registerFormData) => {
   };
 };
 
-export const forgotPasswordRequest = (forgotPasswordData) => function (dispatch) {
+export const forgotPasswordRequest = (forgotPasswordData) => function () {
   fetch(`${apiBaseUrl}/api/auth/forgot-password`, {
     method: 'POST',
     headers: {
@@ -105,6 +105,6 @@ export const forgotPasswordRequest = (forgotPasswordData) => function (dispatch)
     },
     body: JSON.stringify({ email: forgotPasswordData }),
   })
-    .then((res) => res.json())
-    .then((res) => console.log(res));
+    .then((res) => res.json());
+  // .then((res) => console.log(res));
 };
