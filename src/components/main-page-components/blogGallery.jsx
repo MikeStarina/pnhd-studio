@@ -10,17 +10,19 @@ function BlogGallery() {
 
   return (
     <section className={styles.section}>
-      <h4 className={styles.heading}>
-        БЛОГ /
-        {' '}
-        <span className={styles.textStyle_italic}>BLOG</span>
-      </h4>
-      {blogs && blogs.length > 5 && (
-        <Link className={styles.link} to={{ pathname: 'blog/' }}>
-          {blogs && blogs.slice(0, 6).map((el, index) => (
-            <Blog {...el} type="main" key={[index + 20]} />
-          ))}
-        </Link>
+      {blogs && blogs.length > 6 && (
+        <>
+          <h4 className={styles.heading}>
+            БЛОГ /
+            {' '}
+            <span className={styles.textStyle_italic}>BLOG</span>
+          </h4>
+          <Link className={styles.link} to={{ pathname: 'blog/' }}>
+            {blogs && blogs.slice(0, 6).map((el, index) => (
+              <Blog {...el} type="main" key={[index + 20]} />
+            ))}
+          </Link>
+        </>
       )}
     </section>
   );
