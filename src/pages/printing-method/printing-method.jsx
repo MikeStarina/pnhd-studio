@@ -1,14 +1,17 @@
 import React from 'react';
+// import { useLocation } from 'react-router-dom';
 import styles from './printing-method.module.css';
 import PrintingGallery from '../../components/printing-gallery/printing-gallery';
 import PrintingFaq from '../../components/printing-faq/printing-faq';
 import PrintingMethodPrice from '../../components/printing-methods-components/printing-method-price';
 import MapScreen from '../../components/main-page-components/map-screen';
 import PrintingFirstScreen from '../../components/printingFirstScreen/printingFirstScreen';
+import DtfCalculator from '../../components/dtfCalculator/dtf-calc';
 
 function PrintingMethod({ method }) {
   const info = method;
   const methodFaq = info.faq;
+
   return (
     <>
       <PrintingFirstScreen data={info} typePage="method" />
@@ -28,6 +31,7 @@ function PrintingMethod({ method }) {
         priceType={info.price_type}
         priceVar={info.price_var}
       />
+      {info.price_type === 'DTF' && <DtfCalculator />}
       <MapScreen />
     </>
   );

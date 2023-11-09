@@ -55,6 +55,12 @@ function App() {
   }, [location]);
 
   useEffect(() => {
+    const elem = document.getElementById('dtfcalc');
+    if (!location.hash || !elem) return;
+    elem.scrollIntoView();
+  }, [location.hash]);
+
+  useEffect(() => {
     const oldScript = document.querySelector('#calltr');
     document.body.removeChild(oldScript);
     const script = document.createElement('script');
