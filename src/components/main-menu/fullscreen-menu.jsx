@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
-import { contactPhone, telegram, vkontakte } from '../../utils/constants';
+import { contactPhone } from '../../utils/constants';
 import styles from './fullscreen-menu.module.css';
 
 const fullscreenMenu = () => (
@@ -37,6 +37,7 @@ const fullscreenMenu = () => (
       >
         {contactPhone}
       </a>
+      {/*
       <a href={telegram} className={styles.social_link} target="blank">
         / TG
       </a>
@@ -50,6 +51,7 @@ const fullscreenMenu = () => (
       >
         / INST
       </a>
+      */}
     </div>
   </header>
 );

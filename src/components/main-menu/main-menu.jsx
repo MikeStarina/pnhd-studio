@@ -43,6 +43,7 @@ function MainMenu({ closeMenu }) {
           <a className={styles.menu_link} href="https://pnhd.ru" target="blank">
             ОПТОВЫЙ ОТДЕЛ
           </a>
+          {/*
           <a
             className={styles.menu_link}
             href="https://instagram.com/pnhd.studio"
@@ -64,6 +65,7 @@ function MainMenu({ closeMenu }) {
           >
             ТЕЛЕГРАМ
           </a>
+          */}
         </div>
 
         <div className={styles.wrapper}>
