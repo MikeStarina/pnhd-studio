@@ -6,7 +6,9 @@ function CartIcon({ qty }) {
   return (
     <div className={styles.cart_wrapper}>
       <Link to="/cart" className={styles.link}>
+        КОРЗИНА
         <div className={styles.counter_wrapper}>
+
           <p className={styles.counter}>{qty}</p>
         </div>
       </Link>
