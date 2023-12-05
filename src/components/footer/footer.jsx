@@ -30,10 +30,12 @@ function Footer() {
         <p className={styles.label_info}>ООО “ПИНХЭД СТУДИО”</p>
         <p className={styles.label_info}>ИНН: 7810463916</p>
         <p className={styles.label_info}>ОГРН: 1137847215440</p>
+        {/*
         <div>
           <Link to={{ pathname: vkontakte }} className={styles.social_link} target="blank"><Vk className={styles.social} /></Link>
           <Link to={{ pathname: telegram }} className={styles.social_link} target="blank"><Telegram className={styles.social} /></Link>
         </div>
+            */}
       </div>
       <div className={styles.block_sign}>
         <p className={styles.sign_text}>MERCH AGAINST THE MACHINES!</p>
