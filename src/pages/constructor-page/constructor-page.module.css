@@ -255,6 +255,15 @@
     background-color: #00FF00;
 }
 
+.item_button_quest:disabled {
+    background-color: #7a7a7a;
+}
+
+.item_button_quest:disabled:hover {
+    background-color: #7a7a7a;
+    cursor: auto;
+}
+
 .form_ai_close {
     display: none;
 }

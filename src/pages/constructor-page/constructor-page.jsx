@@ -14,7 +14,8 @@ import {
   printUploadFunc,
   loadPrintFromState,
   getSize,
-  uploadPreview, loadPrintFromAI,
+  uploadPreview,
+  loadPrintFromAI,
 } from '../../services/actions/editor-actions';
 import {
   ADD_TO_CART,
@@ -70,6 +71,13 @@ function Constructor() {
   const [dash, setDash] = useState(false);
   const [popupAI, setPopupAI] = useState(false);
   const [imageAI, setImageAI] = useState('');
+
+  // Create sessionStorage with value of click open AI
+  const storedClickCount = sessionStorage.getItem('clickCount');
+  const clickCountFromStorage = storedClickCount ? parseInt(storedClickCount, 10) : 0;
+
+  // Install value to useState from sessionStorage
+  const [clickCountAI, setClickCountAI] = useState(clickCountFromStorage);
 
   const { order } = useSelector((store) => store.cartData);
   const element = location.state.from.includes('cart')
@@ -184,11 +192,18 @@ function Constructor() {
     setPopupAI(true);
   };
 
+  // Get photo from open AI fn
   const getPhoto = async (e) => {
     e.preventDefault();
     setPopupAI(false);
     if (imageAI) {
+      // Request photo from AI
       dispatch(loadPrintFromAI(imageAI, activeView, item.type, item.color));
+      setClickCountAI((prevCount) => {
+        const newCount = prevCount + 1;
+        sessionStorage.setItem('clickCount', newCount.toString());
+        return newCount;
+      });
     }
     setImageAI('');
   };
@@ -444,6 +459,7 @@ function Constructor() {
               onClick={openPopupAI}
               className={styles.item_button_quest}
               type="button"
+              disabled={clickCountAI >= 5}
             >
               AI
             </button>
