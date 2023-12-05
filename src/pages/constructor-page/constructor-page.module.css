@@ -235,9 +235,28 @@
 }
 
 .button_container {
+    position: relative;
     width: 100%;
     display: flex;
     justify-content: space-between;
+}
+
+.form_ai {
+    position: absolute;
+    top: 40%;
+    left: 30%;
+}
+
+.form_input {
+    background-color: #00FF00;
+}
+
+.form_button {
+    background-color: #00FF00;
+}
+
+.form_ai_close {
+    display: none;
 }
 
 .btn_img_control {

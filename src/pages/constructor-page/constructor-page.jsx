@@ -14,7 +14,7 @@ import {
   printUploadFunc,
   loadPrintFromState,
   getSize,
-  uploadPreview,
+  uploadPreview, loadPrintFromAI,
 } from '../../services/actions/editor-actions';
 import {
   ADD_TO_CART,
@@ -68,6 +68,8 @@ function Constructor() {
   const [squareCircleComponentColor, setSquareCircleComponentColor] =
     useState(false);
   const [dash, setDash] = useState(false);
+  const [popupAI, setPopupAI] = useState(false);
+  const [imageAI, setImageAI] = useState('');
 
   const { order } = useSelector((store) => store.cartData);
   const element = location.state.from.includes('cart')
@@ -177,6 +179,19 @@ function Constructor() {
     rsleeve_file,
     badge_file,
   );
+
+  const openPopupAI = () => {
+    setPopupAI(true);
+  };
+
+  const getPhoto = async (e) => {
+    e.preventDefault();
+    setPopupAI(false);
+    if (imageAI) {
+      dispatch(loadPrintFromAI(imageAI, activeView, item.type, item.color));
+    }
+    setImageAI('');
+  };
 
   const addToCart = () => {
     const variant = 'с принтом';
@@ -426,12 +441,36 @@ function Constructor() {
               </button>
             </div>
             <button
+              onClick={openPopupAI}
+              className={styles.item_button_quest}
+              type="button"
+            >
+              AI
+            </button>
+            <button
               onClick={openPopupConstructor}
               className={styles.item_button_quest}
               type="button"
             >
               ?
             </button>
+            <form className={popupAI ? styles.form_ai : styles.form_ai_close}>
+              <input
+                className={styles.form_input}
+                type="text"
+                value={imageAI}
+                onChange={(e) => {
+                  setImageAI(e.target.value);
+                }}
+              />
+              <button
+                className={styles.form_button}
+                type="submit"
+                onClick={(e) => getPhoto(e)}
+              >
+                ok
+              </button>
+            </form>
           </div>
           <div className={styles.order_info}>
             <p className={styles.order_info_title}>{item.name}</p>
