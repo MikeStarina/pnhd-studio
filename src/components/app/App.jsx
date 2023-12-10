@@ -41,6 +41,7 @@ import PrintingProduct from '../../pages/printing-product/printing-product';
 import { getFriendProduct } from '../../services/actions/friends-actions';
 import { getBlogs } from '../../services/actions/blogs-actions';
 import shopGalleryData from '../../data/shop-gallery-data/shop-gallery-data';
+import Game from '../game/game';
 
 function App() {
   const dispatch = useDispatch();
@@ -249,6 +250,9 @@ function App() {
 
         <Route exact path="/zagitova">
           <ZagitovaPage />
+        </Route>
+        <Route exact path="/game">
+          <Game />
         </Route>
 
         <Route exact path="/shop/:id/constructor">
