@@ -301,6 +301,24 @@ const Game = () => {
             }
             //up.destroy();
         }}
+        onTap={() => {
+             //console.log(stage.current);
+             const playerChild = stage.current.children[1].children[1];
+             //console.log(playerChild.attrs.y);
+             if (playerChild.attrs.y === 430) {
+                 const up = new Konva.Tween({
+                     node: playerChild,
+                     duration: 0.4,
+                     easing: Konva.Easings.EaseOut,
+                     y: 200,
+                     onFinish: () => {up.reverse()}
+                 })
+                 playJumpSound();
+                 speed > 0 && up.play();
+                    
+             }
+             //up.destroy();
+        }}
         
       >
         <Layer>
