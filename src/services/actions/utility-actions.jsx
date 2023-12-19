@@ -14,6 +14,7 @@ export const CLOSE_POPUP_HEADER = 'CLOSE_POPUP_HEADER';
 export const OPEN_POPUP_HEADER = 'OPEN_POPUP_HEADER';
 export const CLOSE_POPUP = 'CLOSE_POPUP';
 export const OPEN_POPUP = 'OPEN_POPUP';
+export const OPEN_POPUP_AI = 'OPEN_POPUP_AI';
 
 export const closePopup = () => ({
   type: CLOSE_POPUP,
@@ -21,6 +22,10 @@ export const closePopup = () => ({
 
 export const openPopup = (arr) => function (dispatch) {
   dispatch({ type: OPEN_POPUP, arr });
+};
+
+export const openPopupAi = () => function (dispatch) {
+  dispatch({ type: OPEN_POPUP_AI });
 };
 
 export const closePopupHeader = () => ({

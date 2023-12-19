@@ -9,6 +9,7 @@ import {
   CLOSE_POPUP_HEADER,
   OPEN_POPUP_HEADER,
   OPEN_POPUP,
+  OPEN_POPUP_AI,
   CLOSE_POPUP,
 } from '../actions/utility-actions';
 
@@ -18,6 +19,7 @@ const initialState = {
   },
   isPopupVisible: false,
   isOtherPopupVisible: null,
+  isOpenPopupAi: false,
   mainMenuPriceTable: {
     activeTab: 'DTG',
   },
@@ -62,10 +64,18 @@ const utilityReducer = (state = initialState, action) => {
       };
     }
 
+    case OPEN_POPUP_AI: {
+      return {
+        ...state,
+        isOpenPopupAi: true,
+      };
+    }
+
     case CLOSE_POPUP: {
       return {
         ...state,
         isOtherPopupVisible: null,
+        isOpenPopupAi: false,
       };
     }
 

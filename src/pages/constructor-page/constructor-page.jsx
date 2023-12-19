@@ -28,6 +28,7 @@ import PopupModel from '../../components/popupModel/popupModel';
 import {
   closePopup,
   openPopup,
+  openPopupAi,
 } from '../../services/actions/utility-actions';
 import instructionForPopup from '../../data/instructionForPopup/instructionForPopup';
 import photoProcessing from '../../data/photo-processing/photo-processing';
@@ -38,10 +39,9 @@ import totalPrintPrice from '../../utils/totalPrintPrice';
 import addToMemory from '../../utils/addToMemory';
 import Square from '../../ui/icons/square';
 import SquareCircle from '../../ui/icons/squareCircle';
-import WordT from '../../ui/icons/wordT';
 
 function Constructor() {
-  const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
+  const { isOtherPopupVisible, isOpenPopupAi } = useSelector((store) => store.utilityState);
   const { id } = useParams();
   const slug = id;
 
@@ -69,7 +69,6 @@ function Constructor() {
   const [squareCircleComponentColor, setSquareCircleComponentColor] =
     useState(false);
   const [dash, setDash] = useState(false);
-  const [popupAI, setPopupAI] = useState(false);
   const [imageAI, setImageAI] = useState('');
 
   // Create sessionStorage with value of click open AI
@@ -188,14 +187,11 @@ function Constructor() {
     badge_file,
   );
 
-  const openPopupAI = () => {
-    setPopupAI(true);
-  };
-
   // Get photo from open AI fn
   const getPhoto = async (e) => {
     e.preventDefault();
-    setPopupAI(false);
+    dispatch(closePopup());
+    // setPopupAI(false);
     if (imageAI) {
       // Request photo from AI
       dispatch(loadPrintFromAI(imageAI, activeView, item.type, item.color));
@@ -283,6 +279,10 @@ function Constructor() {
     dispatch(
       openPopup(['Привет! Сейчас эта функция находится в разработке :)']),
     );
+  };
+
+  const openAiPopup = () => {
+    dispatch(openPopupAi());
   };
 
   const closePopupConstructor = () => {
@@ -449,20 +449,21 @@ function Constructor() {
               </button>
               <button
                 onClick={openPopupInfo}
-                className={styles.item_button_quest}
+                className={`${styles.item_button_quest} ${styles.item_button_text_size}`}
                 type="button"
               >
-                <WordT className={styles.btn_svg} />
+                {/* <WordT className={styles.btn_svg} /> */}
+                Text
+              </button>
+              <button
+                onClick={openAiPopup}
+                className={`${styles.item_button_quest} ${styles.item_button_text_size}`}
+                type="button"
+                disabled={clickCountAI >= 5}
+              >
+                Ai
               </button>
             </div>
-            <button
-              onClick={openPopupAI}
-              className={styles.item_button_quest}
-              type="button"
-              disabled={clickCountAI >= 5}
-            >
-              AI
-            </button>
             <button
               onClick={openPopupConstructor}
               className={styles.item_button_quest}
@@ -470,23 +471,6 @@ function Constructor() {
             >
               ?
             </button>
-            <form className={popupAI ? styles.form_ai : styles.form_ai_close}>
-              <input
-                className={styles.form_input}
-                type="text"
-                value={imageAI}
-                onChange={(e) => {
-                  setImageAI(e.target.value);
-                }}
-              />
-              <button
-                className={styles.form_button}
-                type="submit"
-                onClick={(e) => getPhoto(e)}
-              >
-                ok
-              </button>
-            </form>
           </div>
           <div className={styles.order_info}>
             <p className={styles.order_info_title}>{item.name}</p>
@@ -623,6 +607,28 @@ function Constructor() {
                 {el}
               </p>
             ))}
+          </PopupModel>
+        )}
+        {isOpenPopupAi && (
+          <PopupModel onClose={closePopupConstructor} type="noInfo">
+            <form className={styles.form_ai}>
+              <p className={styles.form_text}>Введите промт:</p>
+              <input
+                className={styles.form_input}
+                type="text"
+                value={imageAI}
+                onChange={(e) => {
+                  setImageAI(e.target.value);
+                }}
+              />
+              <button
+                className={styles.form_button}
+                type="submit"
+                onClick={(e) => getPhoto(e)}
+              >
+                Сгенерировать!
+              </button>
+            </form>
           </PopupModel>
         )}
       </section>

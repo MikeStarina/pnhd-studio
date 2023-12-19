@@ -30,7 +30,6 @@
     position: relative;
 }
 
-
 .loader {
     display: none;
 }
@@ -242,17 +241,57 @@
 }
 
 .form_ai {
-    position: absolute;
-    top: 40%;
-    left: 30%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    background-color: transparent;
+    box-sizing: border-box;
+}
+
+.form_text {
+    margin: 0 auto 25px;
+    line-height: 14px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #00FF00;
 }
 
 .form_input {
-    background-color: #00FF00;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 500px;
+    height: 40px;
+    position: relative;
+    background-color: transparent;
+    border: 1px solid rgb(0, 255, 0);
+    border-radius: 10px;
+    box-sizing: border-box;
+    line-height: 20px;
+    font-size: 20px;
+    font-weight: 400;
+    padding-left: 20px;
+    color: #00FF00;
+}
+
+.form_input:focus-visible {
+    outline: none;
+    cursor: text;
 }
 
 .form_button {
-    background-color: #00FF00;
+    margin: 35px auto;
+    height: 40px;
+    padding: 0 25px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, .0);
+    border: 1px solid rgb(0, 255, 0);
+    line-height: 14px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #00FF00;
+    cursor: pointer;
 }
 
 .item_button_quest:disabled {
@@ -269,7 +308,7 @@
 }
 
 .btn_img_control {
-    width: 145px;
+    width: 200px;
     display: flex;
     justify-content: space-between;
 }
@@ -323,6 +362,12 @@
     padding: 0;
     margin: 30px 0 0 0;
     align-self: flex-end;
+}
+
+.item_button_text_size {
+    font-size: 12px;
+    line-height: 12px;
+    font-weight: 400;
 }
 
 .btn_svg {
@@ -455,6 +500,11 @@
         line-height: 15px;
     }
 
+    .item_button_text_size {
+        font-size: 10px;
+        line-height: 10px;
+    }
+
     .instruction {
         font-size: 15px;
         line-height: 15px;
@@ -463,6 +513,10 @@
     .error {
         font-size: 15px;
         line-height: 15px;
+    }
+
+    .form_input {
+        width: 80%;
     }
 
     .order_info {
@@ -500,7 +554,7 @@
     }
 
     .btn_img_control {
-        width: 110px;
+        width: 150px;
     }
 
     .file_input_button_text {

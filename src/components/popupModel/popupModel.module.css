@@ -23,6 +23,10 @@
     padding: 40px;
 }
 
+.no_lead {
+    display: none;
+}
+
 .close_button {
     position: absolute;
     top: 20px;
