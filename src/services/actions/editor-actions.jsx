@@ -180,5 +180,13 @@ export const loadPrintFromAI = (words, activeView, itemType, itemColor) => funct
         type: IS_IMAGE_LOADING,
         payload: false,
       });
+    })
+    // eslint-disable-next-line no-unused-vars
+    .catch((err) => {
+      dispatch(
+        openPopup([
+          'Не удалось создать картинку. Попробуйте обновить страницу.',
+        ]),
+      );
     });
 };
