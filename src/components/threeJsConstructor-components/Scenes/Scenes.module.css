@@ -1,0 +1,52 @@
+.sections2 {
+  display: flex;
+  flex-direction: column;
+	position: absolute;
+	/* top: -300px; */
+	/* left: -500px;  */
+  left: 0;
+    right: 0;
+  z-index: 99999;
+}
+
+.img {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  z-index:110 ;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100%;
+  width: 100%;
+}
+.fileUploader__uploadButton {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+.fileIploader__customButton {
+  cursor: pointer;
+  /* background-color: #1A1A1A; */
+  border: 1px solid black;
+  border-radius: 12px;
+  /* padding: 20px; */
+}
+
+.fileUploader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.fileUploader_wrapper{
+  /* position: absolute;
+  top:-100px;
+  left: -500px; */
+}
+
+.buttons_wrap{
+  display: flex;
+  flex-direction: row;
+}

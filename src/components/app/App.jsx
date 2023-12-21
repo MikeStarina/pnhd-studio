@@ -41,6 +41,7 @@ import PrintingProduct from '../../pages/printing-product/printing-product';
 import { getFriendProduct } from '../../services/actions/friends-actions';
 import { getBlogs } from '../../services/actions/blogs-actions';
 import shopGalleryData from '../../data/shop-gallery-data/shop-gallery-data';
+import ThreeJsConstructor from '../../pages/threeJsConstructor/threeJsConstructor-page';
 
 function App() {
   const dispatch = useDispatch();
@@ -156,6 +157,10 @@ function App() {
 
         <Route exact path="/size_chart">
           <SizesPage />
+        </Route>
+
+        <Route exact path="/threeJsConstructor">
+          <ThreeJsConstructor />
         </Route>
 
         <Route exact path="/termotransfernaya-pechat">
