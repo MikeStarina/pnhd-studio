@@ -13,6 +13,8 @@ import UploadedImage from '../../components/threeJsConstructor-components/Upload
 function ThreeJsConstructor() {
   const canvRef = useRef();
   const [applyImage, setApplyImage] = useState(false);
+  const [price, setPrice] = useState('');
+  const [format, setFormat] = useState('');
   const [cords, setCords] = useState();
   const [imgSize, setImgSize] = useState({ w: 100, h: 100 });
   const [xyzRotation, setXyzRotation] = useState([0, 0, 120]);
@@ -96,6 +98,21 @@ function ThreeJsConstructor() {
               Выберите файл
             </span>
           </label>
+          <p>
+            Цена и формат:
+            {price}
+            ,
+            {' '}
+            {format}
+          </p>
+          <p>
+            Высота:
+            {' '}
+            {imgSize.h}
+            Ширина:
+            {' '}
+            {imgSize.w}
+          </p>
           <button
             type="button"
             onClick={() => {
@@ -118,7 +135,6 @@ function ThreeJsConstructor() {
             />
           ) : ''}
         </div>
-
       </div>
       <div className={styles.canvas}>
 
@@ -153,7 +169,8 @@ function ThreeJsConstructor() {
             clientWidth={canvRef.current?.clientWidth}
             offsetTop={canvRef.current?.offsetTop}
             clientHeight={canvRef.current?.clientHeight}
-
+            setPrice={setPrice}
+            setFormat={setFormat}
           />
         </Canvas>
       </div>

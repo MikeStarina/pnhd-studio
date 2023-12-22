@@ -25,11 +25,9 @@ function Model({
   offsetLeft,
   clientWidth,
   offsetTop,
-  clientHeight,
+  clientHeight, setFormat, setPrice,
 }) {
-  const {
-    scene, camera, raycaster,
-  } = useThree();
+  const { scene, camera, raycaster } = useThree();
   let userImage = true;
   const geometry = new THREE.BufferGeometry();
   // еще одни кординаты но  вдругих цифрах...???
@@ -59,6 +57,8 @@ function Model({
     // добавление модели в сцену и установка материала для сетки
     mesh = gltf.scene.children[0];
     mesh.scale.set(160, 160, 160);
+    console.log(mesh);
+    mesh.material.color.set(0x00ff00);
     scene.add(mesh);
     // увеличение размеров сетки
   });
@@ -93,6 +93,39 @@ function Model({
     // textureHeight = (h - 100) / 10;
     // console.log(w, h);
   }
+  function getPrice() {
+    const { w, h } = imgSize;
+    const width = w * 0.16;
+    const height = h * 0.14;
+    const printSqr = width * height;
+    const color = 'белый';
+
+    let screenSize = '';
+    let priceCounter = 0;
+
+    if (printSqr <= 150) {
+      screenSize = 'А6';
+      priceCounter = color && color === 'белый' ? 300 : 400;
+    } else if (printSqr > 150 && printSqr <= 315) {
+      screenSize = 'А5';
+      priceCounter = color && color === 'белый' ? 400 : 500;
+    } else if (printSqr > 315 && printSqr <= 609) {
+      screenSize = 'А4';
+      priceCounter = color && color === 'белый' ? 500 : 650;
+    } else if (printSqr > 609 && printSqr <= 1218) {
+      screenSize = 'А3';
+      priceCounter = color && color === 'белый' ? 650 : 750;
+    } else if (printSqr > 1218 && printSqr <= 1420) {
+      screenSize = 'А3+';
+      priceCounter = color && color === 'белый' ? 750 : 900;
+    } else {
+      screenSize = 'А3+';
+      priceCounter = color && color === 'белый' ? 750 : 900;
+    }
+    setPrice(priceCounter);
+    setFormat(screenSize);
+    console.log(w, h, screenSize, priceCounter);
+  }
   const pointer = new THREE.Vector2();
 
   function shootUsersImage(setCordss, imgTextures) {
@@ -100,6 +133,7 @@ function Model({
     if (!setCordss) return;
     if (mesh === undefined) return;
     getTextureSize();
+    getPrice();
     // On image load, update texture
     const image = new Image(); // or document.createElement('img' );
     // Create texture
@@ -128,11 +162,13 @@ function Model({
     // pointer.y = -(setCordss[1] / window.innerHeight) * 2 + 1;
     pointer.x = (setCordss[0] / width) * 2 - 1;
     pointer.y = -(setCordss[1] / height) * 2 + 1;
-    let correctWidth = window.innerWidth <= 1560 ? (1590 - window.innerWidth) : ((window.innerWidth - 1560));
+    let correctWidth =
+      window.innerWidth <= 1560
+        ? 1590 - window.innerWidth
+        : window.innerWidth - 1560;
     pointer.x =
       ((setCordss[0] - (offsetLeft + correctWidth)) / clientWidth) * 2 - 1;
-    pointer.y =
-      -((setCordss[1] - offsetTop) / clientHeight) * 2 + 1;
+    pointer.y = -((setCordss[1] - offsetTop) / clientHeight) * 2 + 1;
     raycaster.setFromCamera(pointer, camera);
 
     // calculate objects intersecting the picking ray
@@ -180,7 +216,7 @@ function Model({
   return (
     <Html>
       <button
-        style={{ position: 'absolute', top: '-300px' }}
+        style={{ position: 'absolute', top: '-350px' }}
         onClick={() => {
           shootUsersImage(setCords, imgTexture);
         }}
@@ -188,14 +224,13 @@ function Model({
         нанести, епта
       </button>
       <button
-        style={{ position: 'absolute', left: '300px', top: '50px' }}
+        style={{ position: 'absolute', top: '-350px', left: '100px' }}
         onClick={() => {
           removeDecals();
         }}
       >
         очистить, епта
       </button>
-
     </Html>
   );
 }
