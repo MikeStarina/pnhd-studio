@@ -459,7 +459,7 @@ function Constructor() {
                 onClick={openAiPopup}
                 className={`${styles.item_button_quest} ${styles.item_button_text_size}`}
                 type="button"
-                disabled={clickCountAI >= 5}
+                disabled={clickCountAI >= 55}
               >
                 Ai
               </button>

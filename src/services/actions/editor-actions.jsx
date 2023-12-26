@@ -17,6 +17,13 @@ export const SET_EDITOR_VIEW = 'SET_EDITOR_VIEW';
 export const LOAD_PRINT_FROM_STATE = 'LOAD_PRINT_FROM_STATE';
 export const LOAD_PRINT_FROM_AI = 'LOAD_PRINT_FROM_AI';
 
+const checkResponse = (res) => {
+  if (res.ok || res.created) {
+    return res.json();
+  }
+  return res.json().then((err) => Promise.reject(err));
+};
+
 export const getSize = (newAttrs, activeView, color) => function (dispatch) {
   const width = newAttrs.width * 0.16;
   const height = newAttrs.height * 0.14;
@@ -59,60 +66,51 @@ export const getSize = (newAttrs, activeView, color) => function (dispatch) {
     view: activeView,
   });
 };
-export const printUploadFunc = (data, activeView, itemType, itemColor) => {
-  const checkResponse = (res) => {
-    if (res.ok || res.created) {
-      return res.json();
-    }
-    return res.json().then((err) => Promise.reject(err));
-  };
+export const printUploadFunc = (data, activeView, itemType, itemColor) => function (dispatch) {
+  dispatch({
+    type: IS_IMAGE_LOADING,
+    payload: true,
+  });
 
-  return function (dispatch) {
-    dispatch({
-      type: IS_IMAGE_LOADING,
-      payload: true,
-    });
-
-    fetch(`${apiBaseUrl}/api/uploads/`, {
-      method: 'POST',
-      body: data,
-    })
-      .then(checkResponse)
-      .then((res) => {
-        dispatch({
-          type: ADD_FILE,
-          payload: {
-            url: `${apiBaseUrl}${res.url}`,
-            name: res.name,
-          },
-          view: activeView,
-        });
-
-        dispatch({
-          type: IS_IMAGE_LOADING,
-          payload: false,
-        });
-
-        const currentImage = res;
-        // setCoords - Задает координаты появления привью изображения,
-        const imageCoords = setCoords(
-          currentImage,
-          activeView,
-          itemType,
-        );
-
-        dispatch(getSize(imageCoords, activeView, itemColor));
-        dispatch({
-          type: SET_FILE_STAGE_PARAMS,
-          payload: imageCoords,
-          view: activeView,
-        });
-      })
-      // eslint-disable-next-line no-unused-vars
-      .catch((err) => {
-        dispatch(openPopup(['Что-то пошло не так :(']));
+  fetch(`${apiBaseUrl}/api/uploads/`, {
+    method: 'POST',
+    body: data,
+  })
+    .then((res) => checkResponse(res))
+    .then((res) => {
+      dispatch({
+        type: ADD_FILE,
+        payload: {
+          url: `${apiBaseUrl}${res.url}`,
+          name: res.name,
+        },
+        view: activeView,
       });
-  };
+
+      dispatch({
+        type: IS_IMAGE_LOADING,
+        payload: false,
+      });
+
+      const currentImage = res;
+      // setCoords - Задает координаты появления привью изображения,
+      const imageCoords = setCoords(
+        currentImage,
+        activeView,
+        itemType,
+      );
+
+      dispatch(getSize(imageCoords, activeView, itemColor));
+      dispatch({
+        type: SET_FILE_STAGE_PARAMS,
+        payload: imageCoords,
+        view: activeView,
+      });
+    })
+    // eslint-disable-next-line no-unused-vars
+    .catch((err) => {
+      dispatch(openPopup(['Что-то пошло не так :(']));
+    });
 };
 
 export const uploadPreview = (data, activeView) => function (dispatch) {
@@ -152,7 +150,7 @@ export const loadPrintFromAI = (words, activeView, itemType, itemColor) => funct
       'Content-type': 'application/json; charset=UTF-8',
     },
   })
-    .then((res) => res.json())
+    .then((res) => checkResponse(res))
     .then((res) => {
       dispatch({
         type: ADD_FILE,
@@ -183,10 +181,18 @@ export const loadPrintFromAI = (words, activeView, itemType, itemColor) => funct
     })
     // eslint-disable-next-line no-unused-vars
     .catch((err) => {
-      dispatch(
-        openPopup([
+      if (err.error === 403) {
+        dispatch(openPopup([
+          'Не удалось. Нет доступа.',
+        ]));
+      } else if (err.error === 429) {
+        dispatch(openPopup([
+          'Не удалось. Превышен лимит, подождите 2 минуты.',
+        ]));
+      } else {
+        dispatch(openPopup([
           'Не удалось создать картинку. Попробуйте обновить страницу.',
-        ]),
-      );
+        ]));
+      }
     });
 };
