@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styles from './popupModel.module.css';
 
-function PopupModel({ onClose, children }) {
+function PopupModel({ onClose, children, type = 'infoPopup' }) {
   const closeByBGClick = (e) => {
     if (e.target.id === 'container') onClose();
   };
@@ -25,7 +25,7 @@ function PopupModel({ onClose, children }) {
       role="button"
       tabIndex="0"
     >
-      <div className={styles.lead}>
+      <div className={type === 'infoPopup' ? styles.lead : styles.no_lead}>
         <button
           type="button"
           className={styles.close_button}
@@ -33,8 +33,9 @@ function PopupModel({ onClose, children }) {
         >
           X
         </button>
-        {children}
+        {type === 'infoPopup' && children }
       </div>
+      {type === 'noInfo' && children }
     </div>
   );
 }

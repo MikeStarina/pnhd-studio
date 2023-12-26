@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import useImage from 'use-image';
+import { v4 as uuidv4 } from 'uuid';
 import { IS_IMAGE_LOADING, openPopup } from './utility-actions';
 import { apiBaseUrl } from '../../utils/constants';
 import { setCoords } from '../../utils/utils';
@@ -15,6 +15,14 @@ export const SET_FILE_CART_PARAMS = 'SET_FILE_CART_PARAMS';
 export const ADD_PRINT_PREVIEW = 'ADD_PRINT_PREVIEW';
 export const SET_EDITOR_VIEW = 'SET_EDITOR_VIEW';
 export const LOAD_PRINT_FROM_STATE = 'LOAD_PRINT_FROM_STATE';
+export const LOAD_PRINT_FROM_AI = 'LOAD_PRINT_FROM_AI';
+
+const checkResponse = (res) => {
+  if (res.ok || res.created) {
+    return res.json();
+  }
+  return res.json().then((err) => Promise.reject(err));
+};
 
 export const getSize = (newAttrs, activeView, color) => function (dispatch) {
   const width = newAttrs.width * 0.16;
@@ -58,60 +66,51 @@ export const getSize = (newAttrs, activeView, color) => function (dispatch) {
     view: activeView,
   });
 };
-export const printUploadFunc = (data, activeView, itemType, itemColor) => {
-  const checkResponse = (res) => {
-    if (res.ok || res.created) {
-      return res.json();
-    }
-    return res.json().then((err) => Promise.reject(err));
-  };
+export const printUploadFunc = (data, activeView, itemType, itemColor) => function (dispatch) {
+  dispatch({
+    type: IS_IMAGE_LOADING,
+    payload: true,
+  });
 
-  return function (dispatch) {
-    dispatch({
-      type: IS_IMAGE_LOADING,
-      payload: true,
-    });
-
-    fetch(`${apiBaseUrl}/api/uploads/`, {
-      method: 'POST',
-      body: data,
-    })
-      .then(checkResponse)
-      .then((res) => {
-        dispatch({
-          type: ADD_FILE,
-          payload: {
-            url: `${apiBaseUrl}${res.url}`,
-            name: res.name,
-          },
-          view: activeView,
-        });
-
-        dispatch({
-          type: IS_IMAGE_LOADING,
-          payload: false,
-        });
-
-        const currentImage = res;
-        // setCoords - Задает координаты появления привью изображения,
-        const imageCoords = setCoords(
-          currentImage,
-          activeView,
-          itemType,
-        );
-
-        dispatch(getSize(imageCoords, activeView, itemColor));
-        dispatch({
-          type: SET_FILE_STAGE_PARAMS,
-          payload: imageCoords,
-          view: activeView,
-        });
-      })
-      // eslint-disable-next-line no-unused-vars
-      .catch((err) => {
-        dispatch(openPopup(['Что-то пошло не так :(']));
+  fetch(`${apiBaseUrl}/api/uploads/`, {
+    method: 'POST',
+    body: data,
+  })
+    .then((res) => checkResponse(res))
+    .then((res) => {
+      dispatch({
+        type: ADD_FILE,
+        payload: {
+          url: `${apiBaseUrl}${res.url}`,
+          name: res.name,
+        },
+        view: activeView,
       });
-  };
+
+      dispatch({
+        type: IS_IMAGE_LOADING,
+        payload: false,
+      });
+
+      const currentImage = res;
+      // setCoords - Задает координаты появления привью изображения,
+      const imageCoords = setCoords(
+        currentImage,
+        activeView,
+        itemType,
+      );
+
+      dispatch(getSize(imageCoords, activeView, itemColor));
+      dispatch({
+        type: SET_FILE_STAGE_PARAMS,
+        payload: imageCoords,
+        view: activeView,
+      });
+    })
+    // eslint-disable-next-line no-unused-vars
+    .catch((err) => {
+      dispatch(openPopup(['Что-то пошло не так :(']));
+    });
 };
 
 export const uploadPreview = (data, activeView) => function (dispatch) {
@@ -136,4 +135,64 @@ export const loadPrintFromState = (payload) => function (dispatch) {
     type: LOAD_PRINT_FROM_STATE,
     payload,
   });
+};
+
+export const loadPrintFromAI = (words, activeView, itemType, itemColor) => function (dispatch) {
+  dispatch({
+    type: IS_IMAGE_LOADING,
+    payload: true,
+  });
+
+  fetch(`${apiBaseUrl}/api/aiChat/`, {
+    method: 'POST',
+    body: JSON.stringify({ words }),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+  })
+    .then((res) => checkResponse(res))
+    .then((res) => {
+      dispatch({
+        type: ADD_FILE,
+        payload: {
+          url: `${apiBaseUrl}${res.url}`,
+          name: res.name,
+        },
+        view: activeView,
+      });
+      const currentImage = res;
+      // setCoords - Задает координаты появления привью изображения,
+      const imageCoords = setCoords(
+        currentImage,
+        activeView,
+        itemType,
+      );
+
+      dispatch(getSize(imageCoords, activeView, itemColor));
+      dispatch({
+        type: SET_FILE_STAGE_PARAMS,
+        payload: imageCoords,
+        view: activeView,
+      });
+      dispatch({
+        type: IS_IMAGE_LOADING,
+        payload: false,
+      });
+    })
+    // eslint-disable-next-line no-unused-vars
+    .catch((err) => {
+      if (err.error === 403) {
+        dispatch(openPopup([
+          'Не удалось. Нет доступа.',
+        ]));
+      } else if (err.error === 429) {
+        dispatch(openPopup([
+          'Не удалось. Превышен лимит, подождите 2 минуты.',
+        ]));
+      } else {
+        dispatch(openPopup([
+          'Не удалось создать картинку. Попробуйте обновить страницу.',
+        ]));
+      }
+    });
 };
