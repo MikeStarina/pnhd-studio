@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -250,8 +251,11 @@ function App() {
           <ZagitovaPage />
         </Route>
 
-        <Route exact path="/shop/:id/constructor">
+        {/* <Route exact path="/shop/:id/constructor">
           {useLocation().state ? <Constructor /> : <Redirect to="/shop" />}
+        </Route> */}
+        <Route exact path="/shop/:id/threeJsConstructor">
+          {useLocation().state ? <ThreeJsConstructor /> : <Redirect to="/shop" />}
         </Route>
         <Route exact path="/cart">
           {order.length > 0 ? <Cart /> : <Redirect to="/shop" />}

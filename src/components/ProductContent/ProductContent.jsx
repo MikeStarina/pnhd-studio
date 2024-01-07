@@ -162,7 +162,8 @@ function ProductContent(items) {
           (isSizeFunction(order) ? (
             <Link
               to={{
-                pathname: `/shop/${linkSlug}/constructor`,
+                // pathname: `/shop/${linkSlug}/constructor`,
+                pathname: `/shop/${linkSlug}/threeJsConstructor`,
                 // state: { state: uuId, from: 'product' },
                 state: { size: order, from: 'product' },
               }}

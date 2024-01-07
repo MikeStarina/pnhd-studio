@@ -300,9 +300,15 @@ function ItemPage() {
                 !item.isSale &&
                 item.sizes.length > 0 &&
                 (isSizeFunction(order) ? (
+                  // <Link
+                  //   to={{
+                  //     pathname: `/shop/${id}/constructor`,
+                  //     state: { size: order },
+                  //   }}
+                  // >
                   <Link
                     to={{
-                      pathname: `/shop/${id}/constructor`,
+                      pathname: `/shop/${id}/threeJsConstructor`,
                       state: { size: order },
                     }}
                   >

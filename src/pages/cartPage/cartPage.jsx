@@ -306,7 +306,8 @@ function Cart() {
                   {item.attributes.isForPrinting && (
                     <Link
                       to={{
-                        pathname: `/shop/${item.attributes.slug}/constructor`,
+                        // pathname: `/shop/${item.attributes.slug}/constructor`,
+                        pathname: `/shop/${item.attributes.slug}/threeJsConstructor`,
                         state: { state: item.cart_item_id, from: 'cart' },
                       }}
                       className={`${styles.link} ${styles.link__name}`}

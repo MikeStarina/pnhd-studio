@@ -25,8 +25,9 @@ function Model({
   offsetLeft,
   clientWidth,
   offsetTop,
-  clientHeight, setFormat, setPrice,
+  clientHeight, setFormat, setPrice, modelColor,
 }) {
+  // console.log(modelColor);
   const { scene, camera, raycaster } = useThree();
   let userImage = true;
   const geometry = new THREE.BufferGeometry();
@@ -53,12 +54,12 @@ function Model({
 
   const loader = new GLTFLoader();
   // загрузка самой модели
-  loader.load('models/gltf/shirt_baked_collapsed.glb', function (gltf) {
+  loader.load('/models/gltf/shirt_baked_collapsed.glb', function (gltf) {
     // добавление модели в сцену и установка материала для сетки
     mesh = gltf.scene.children[0];
     mesh.scale.set(160, 160, 160);
-    console.log(mesh);
-    mesh.material.color.set(0x00ff00);
+    mesh.material.color.set(modelColor);
+
     scene.add(mesh);
     // увеличение размеров сетки
   });
@@ -235,5 +236,5 @@ function Model({
   );
 }
 
-useGLTF.preload('./models/shirt_baked_collapsed.glb');
+useGLTF.preload('/models/gltf/shirt_baked_collapsed.glb');
 export default Model;

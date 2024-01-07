@@ -68,7 +68,7 @@ function Constructor() {
   const [squareCircleComponentColor, setSquareCircleComponentColor] =
     useState(false);
   const [dash, setDash] = useState(false);
-
+  console.log(location);
   const { order } = useSelector((store) => store.cartData);
   const element = location.state.from.includes('cart')
     ? data &&
