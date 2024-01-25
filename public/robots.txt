@@ -5,6 +5,7 @@ Disallow: /size_chart
 Disallow: /oferta
 Disallow:
 Crawl-delay: 2.0
+Clean-param: etext
 
 
 

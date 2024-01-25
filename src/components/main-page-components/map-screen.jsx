@@ -3,7 +3,7 @@
 import React, { lazy, Suspense } from 'react';
 import styles from './map-screen.module.css';
 // import { YMaps, Map, Placemark, ZoomControl } from '@pbe/react-yandex-maps';
-import { telegram, vkontakte, contactPhone } from '../../utils/constants';
+import { contactPhone } from '../../utils/constants';
 
 const YMaps = lazy(() => import('@pbe/react-yandex-maps').then(({ YMaps }) => ({ default: YMaps })));
 const Map = lazy(() => import('@pbe/react-yandex-maps').then(({ Map }) => ({ default: Map })));
@@ -47,6 +47,7 @@ function MapScreen() {
           197022, Санкт-Петербург, ул. Чапыгина 1 /м. Петроградская/
         </p>
         <p className={styles.description}>Каждый день с 11:00 до 20:00</p>
+        {/*
         <div className={styles.socials_container}>
           <a
             href={telegram}
@@ -70,6 +71,7 @@ function MapScreen() {
             / INST
           </a>
         </div>
+          */}
       </div>
     </section>
   );

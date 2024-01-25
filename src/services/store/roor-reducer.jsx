@@ -7,6 +7,7 @@ import userDataReducer from '../reducers/user-data-reducer';
 import shippingReducer from '../reducers/shipping-reducer';
 import itemReducer from '../reducers/item-reducer';
 import friendReducer from '../reducers/friends-reducer';
+import blogsReducer from '../reducers/blogs-reducer';
 
 const rootReducer = combineReducers({
   utilityState: utilityReducer,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   shippingData: shippingReducer,
   friendData: friendReducer,
   itemReducer,
+  blogsReducer,
 });
 
 export default rootReducer;

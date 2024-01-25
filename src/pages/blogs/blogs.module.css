@@ -1,0 +1,74 @@
+.pageTitle {
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 41px;
+  letter-spacing: 0em;
+  text-align: left;
+  margin: 100px 0 100px 30px;
+}
+
+.section {
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  text-decoration: none;
+  padding: 0 0 100px;
+  margin: 0;
+}
+
+.box {
+  /*min-width: calc(100% / 3);*/
+  /* display: flex; */
+  /* justify-content: center; */
+  /* margin-bottom: 40px; */
+  /* transition: 0.4s all; */
+  /*box-sizing: border-box;*/
+  /*width: 100%;*/
+  /*margin: 0;*/
+  /*padding: 0;*/
+  /*box-sizing: border-box;*/
+  /*overflow: hidden;*/
+  /*display: flex;*/
+  /*flex-direction: row;*/
+  /*justify-content: flex-start;*/
+  /*align-items: flex-start;*/
+  /*flex-wrap: wrap;*/
+  /*text-decoration: none;*/
+}
+
+.link {
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+  transition: 0.4s all;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  width: calc(100% / 3);
+  object-fit: cover;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.link:hover {
+  transform: scale(1.05);
+}
+
+@media (max-width: 760px) {
+  .link {
+    min-width: calc(100% / 2);
+  }
+}
+
+@media (max-width: 650px) {
+  .pageTitle {
+    font-size: 20px;
+    margin: 50px 0 50px 30px;
+  }
+}
