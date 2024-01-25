@@ -47,6 +47,7 @@ import cap6 from '../../components/images/printingProduct/cap/cap6.jpg';
 // const softHyphen = '\u{00AD}';
 // возврат каретки, перенос без тире
 // const carriageReturn = '\u{000D}';
+
 const productsData = {
   futbolki: {
     metaTitle: 'Печать на футболках в Санкт-Петербурге на заказ от 1 штуки цены в Studio Pinhead',

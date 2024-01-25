@@ -15,6 +15,10 @@ import {
   loadPrintFromState,
   getSize,
   uploadPreview,
+  SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
+  loadFilterCoordinates,
+  setText,
+  changeTextState,
 } from '../../services/actions/editor-actions';
 import {
   ADD_TO_CART,
@@ -22,7 +26,7 @@ import {
 } from '../../services/actions/cart-actions';
 import Print from './print';
 import Mockup from './mockup';
-import { fileSelect } from '../../utils/utils';
+import { fileSelect, setFilterCoords, textFileSelect } from '../../utils/utils';
 import PopupModel from '../../components/popupModel/popupModel';
 import {
   closePopup,
@@ -31,19 +35,18 @@ import {
 import instructionForPopup from '../../data/instructionForPopup/instructionForPopup';
 import photoProcessing from '../../data/photo-processing/photo-processing';
 import { clearItemOrder } from '../../services/actions/item-action';
+import ConstructorFilter from '../../components/ConstructorFilter/ConstructorFilter';
 // sideItemForPrint - задает окно видимости (его размеры) где отобразится привью картинки
 import sideItemForPrint from '../../utils/sideItemForPrint';
 import totalPrintPrice from '../../utils/totalPrintPrice';
 import addToMemory from '../../utils/addToMemory';
-import Square from '../../ui/icons/square';
-import SquareCircle from '../../ui/icons/squareCircle';
-import WordT from '../../ui/icons/wordT';
+import SquareDash from '../../ui/icons/squareDash';
+import ConstructorText from '../../components/ConstructorText/ConstructorText';
 
 function Constructor() {
   const { isOtherPopupVisible } = useSelector((store) => store.utilityState);
   const { id } = useParams();
   const slug = id;
-
   const dispatch = useDispatch();
   const {
     isBlockButton,
@@ -65,26 +68,27 @@ function Constructor() {
   const location = useLocation();
   const imgRef = useRef(null);
   const stageRef = useRef();
-  const [squareCircleComponentColor, setSquareCircleComponentColor] =
-    useState(false);
   const [dash, setDash] = useState(false);
-
+  const [squareMask, setSquareMask] = useState(false);
+  const [circleMask, setCircleMask] = useState(false);
+  const [openCircle, setOpenCircle] = useState(false);
+  const [openSquare, setOpenSquare] = useState(false);
+  const [dropdownVisibleFilter, setDropdownVisibleFilter] = useState(false);
+  const [dropdownVisibleText, setDropdownVisibleText] = useState(false);
+  const [positionButton, setPositionButton] = useState({ x: 230, y: 20 });
   const { order } = useSelector((store) => store.cartData);
   const element = location.state.from.includes('cart')
     ? data &&
-      data.length > 0 &&
-      order &&
-      order.find((elem) => elem.cart_item_id === location.state.state)
+    data.length > 0 &&
+    order &&
+    order.find((elem) => elem.cart_item_id === location.state.state)
     : data && data.length > 0 && data.find((elem) => elem.slug === slug);
-
   const item = location.state.from.includes('cart')
     ? element.attributes
     : element;
-
   const itemSize = location.state.from.includes('cart')
     ? item.size
     : location.state.size;
-
   const volumeSize =
     itemSize &&
     itemSize.reduce((total, element) => {
@@ -93,7 +97,6 @@ function Constructor() {
       // eslint-disable-next-line no-unused-vars
       return (accTotal = total + element.qty);
     }, 0);
-
   useEffect(() => {
     if (location.state.from.includes('cart')) {
       dispatch(loadPrintFromState(element.print));
@@ -105,25 +108,24 @@ function Constructor() {
       });
     };
   }, []);
-
+  useEffect(() => {
+    setFilterCoords(activeView);
+  }, [activeView]);
   const setActiveTab = (e) => {
     dispatch({
       type: SET_ACTIVE_VIEW,
       payload: e.currentTarget.id,
     });
   };
-
   const onSelect = () => {
     dispatch({ type: IMAGE_SELECT });
   };
-
   const checkDeselect = (e) => {
     const clickedOnEmpty = e.currentTarget === e.currentTarget.getStage();
     if (clickedOnEmpty) {
       dispatch({ type: IMAGE_DESELECT });
     }
   };
-
   const file = fileSelect(
     activeView,
     front_file,
@@ -132,25 +134,33 @@ function Constructor() {
     rsleeve_file,
     badge_file,
   );
-
+  const textFile = textFileSelect(
+    activeView,
+    front_file,
+    back_file,
+    lsleeve_file,
+    rsleeve_file,
+    badge_file,
+  );
   const onChange = (e) => {
     e.preventDefault();
-
     const data = new FormData();
     const print = photoProcessing(e.target.files[0]);
     if (print === undefined) {
       dispatch(openPopup(['Не тот формат файла']));
     } else {
       data.append('files', print, `${uuidv4()}_${print.name}`);
-
       /* printUploadFunc - так-же вызывает ф-цию setCoords
       - которая задает позицию появления привью изображения */
       dispatch(printUploadFunc(data, activeView, item.type, item.color));
     }
     e.currentTarget.reset();
   };
-
   const deletePrint = () => {
+    setDropdownVisibleText(false);
+    setCircleMask(false);
+    setSquareMask(false);
+    setOpenCircle(false);
     dispatch({
       type: DELETE_FILE,
       view: activeView,
@@ -160,11 +170,9 @@ function Constructor() {
   function getScene(activeView) {
     return async function (dispatch) {
       // const preview = await stageRef.current.toDataURL();
-      const scene = await stageRef.current.toBlob();
-
+      const scene = await stageRef.current?.toBlob();
       const data = new FormData();
       data.append('files', scene, `${activeView}_preview_${uuidv4()}.jpg`);
-
       dispatch(uploadPreview(data, activeView));
     };
   }
@@ -177,7 +185,6 @@ function Constructor() {
     rsleeve_file,
     badge_file,
   );
-
   const addToCart = () => {
     const variant = 'с принтом';
     // Создает обьект заказа, для сохранения в сесионой памяти
@@ -196,21 +203,16 @@ function Constructor() {
       rsleeve_file_preview,
       badge_file,
     );
-
     dispatch({
       type: ADD_TO_CART_WITH_PRINT,
       payload: { ...data },
     });
-
     dispatch({
       type: CLEAR_ALL_PRINTS,
     });
-
     dispatch(clearItemOrder());
-
     history.goBack();
   };
-
   const uuId = uuidv4();
   const addToPrint = () => {
     const variant = 'с принтом';
@@ -230,33 +232,57 @@ function Constructor() {
       rsleeve_file_preview,
       badge_file,
     );
-
     dispatch({
       type: ADD_TO_CART,
       payload: { ...data },
     });
-
     dispatch({
       type: CLEAR_ALL_PRINTS,
     });
-
     dispatch(clearItemOrder());
-
     history.go(-2);
   };
-
   const openPopupConstructor = () => {
     dispatch(openPopup(instructionForPopup));
   };
-
-  const openPopupInfo = () => {
-    dispatch(
-      openPopup(['Привет! Сейчас эта функция находится в разработке :)']),
-    );
-  };
-
   const closePopupConstructor = () => {
     dispatch(closePopup());
+  };
+  const getButtonVisibilitySquare = () => {
+    setSquareMask(true);
+  };
+  const getButtonVisibilityCircle = () => {
+    setCircleMask(true);
+  };
+  const closeButtonVisibilityCircleSquare = () => {
+    setCircleMask(false);
+    setSquareMask(false);
+  };
+  const closeButtonVisibilityOpenCircleSquare = () => {
+    setOpenCircle(false);
+    setOpenSquare(false);
+  };
+  const acceptCloseCircleMaskOpenCircle = () => {
+    setCircleMask((circleMask) => !circleMask);
+    dispatch({
+      type: SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
+      payload: {
+        ...file.file.stageParamsFilterCircle,
+        openCircle: true,
+      },
+      view: activeView,
+    });
+  };
+  const acceptCloseSquareMaskOpenSquare = () => {
+    setSquareMask((squareMask) => !squareMask);
+    dispatch({
+      type: SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
+      payload: {
+        ...file.file.stageParamsFilterCircle,
+        openSquare: true,
+      },
+      view: activeView,
+    });
   };
 
   return (
@@ -277,26 +303,88 @@ function Constructor() {
               </Layer>
               <Layer className={styles.layer}>
                 <Print
+                  itemColor={item.color}
+                  openSquare={openSquare}
+                  squareMask={squareMask}
+                  openCircle={openCircle}
+                  circleMask={circleMask}
                   dash={dash}
                   initialParams={sideItemForPrint(item, activeView)}
                   isSelected={isSelected}
                   onSelect={onSelect}
                   file={file && file.file.file.url}
+                  initialText={textFile && textFile.text}
                   initialImageCoords={file && file.file.stageParams}
+                  initialFilterCoords={
+                    file && file.file.stageParamsFilterCircle
+                  }
+                  positionButton={positionButton}
+                  setPositionButton={setPositionButton}
                   imgRef={imgRef}
                   scene={getScene}
-                  onChange={(newAttrs) => {
+                  onChange={(newAttrs, second) => {
                     dispatch({
                       type: SET_FILE_STAGE_PARAMS,
                       payload: newAttrs,
                       view: activeView,
                     });
-                    dispatch(getScene(activeView));
-                    dispatch(getSize(newAttrs, activeView, item.color));
+                    dispatch(getSize(newAttrs, activeView, item.color, second));
+                  }}
+                  onChangeFilter={(
+                    initialImageCoords,
+                    initialText,
+                    coordinates,
+                  ) => {
+                    dispatch({
+                      type: SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
+                      payload: coordinates,
+                      view: activeView,
+                    });
+                    dispatch(
+                      getSize(
+                        initialImageCoords,
+                        activeView,
+                        item.color,
+                        initialText,
+                        coordinates,
+                      ),
+                    );
+                  }}
+                  OnChangeText={(
+                    first,
+                    textCoordinates,
+                    initialFilterCoords,
+                  ) => {
+                    dispatch(changeTextState(textCoordinates, activeView));
+                    dispatch(
+                      getSize(
+                        first,
+                        activeView,
+                        item.color,
+                        textCoordinates,
+                        initialFilterCoords,
+                      ),
+                    );
                   }}
                 />
               </Layer>
             </Stage>
+            <button
+              type="button"
+              style={{ top: positionButton.y, left: positionButton.x }}
+              className={
+                circleMask || squareMask
+                  ? `${styles.item_button_quest_accept}`
+                  : styles.item_button_quest_none
+              }
+              onClick={
+                circleMask
+                  ? acceptCloseCircleMaskOpenCircle
+                  : acceptCloseSquareMaskOpenSquare
+              }
+            >
+              ок
+            </button>
           </div>
         </div>
         <div className={styles.controls_container}>
@@ -308,6 +396,7 @@ function Constructor() {
               }
               id="front"
               onClick={setActiveTab}
+              disabled={dropdownVisibleText || circleMask || squareMask}
             >
               Грудь &gt;
             </button>
@@ -316,6 +405,7 @@ function Constructor() {
               className={activeView === 'back' ? styles.active_tab : styles.tab}
               id="back"
               onClick={setActiveTab}
+              disabled={dropdownVisibleText || circleMask || squareMask}
             >
               Спина &gt;
             </button>
@@ -327,6 +417,7 @@ function Constructor() {
                 id="lsleeve"
                 onClick={setActiveTab}
                 type="button"
+                disabled={dropdownVisibleText || circleMask || squareMask}
               >
                 Л.&nbsp;рукав &gt;
               </button>
@@ -339,6 +430,7 @@ function Constructor() {
                 id="rsleeve"
                 onClick={setActiveTab}
                 type="button"
+                disabled={dropdownVisibleText || circleMask || squareMask}
               >
                 П.&nbsp;рукав &gt;
               </button>
@@ -401,29 +493,104 @@ function Constructor() {
                 }
                 type="button"
               >
-                <Square className={styles.btn_svg} />
+                <SquareDash className={styles.btn_svg} />
               </button>
-              <button
-                onClick={openPopupInfo}
-                className={styles.item_button_quest}
-                onMouseEnter={() => setSquareCircleComponentColor(true)}
-                onMouseLeave={() => setSquareCircleComponentColor(false)}
-                type="button"
-              >
-                <SquareCircle
-                  className={styles.btn_svg}
-                  style={{
-                    color: squareCircleComponentColor ? '#00ff00' : '#ffffff',
-                  }}
-                />
-              </button>
-              <button
-                onClick={openPopupInfo}
-                className={styles.item_button_quest}
-                type="button"
-              >
-                <WordT className={styles.btn_svg} />
-              </button>
+              <ConstructorFilter
+                positionButton={positionButton}
+                setPositionButton={setPositionButton}
+                dropdownVisibleFilter={dropdownVisibleFilter}
+                setDropdownVisibleFilter={setDropdownVisibleFilter}
+                file={file && file.file.file.url}
+                itemColor={item.color}
+                initialText={textFile && textFile.text}
+                initialImageCoords={file && file.file.stageParams}
+                initialFilterCoords={file && file.file.stageParamsFilterCircle}
+                onOpenFilter={(initialImageCoords, activeView, initialText) => {
+                  dispatch(
+                    loadFilterCoordinates(
+                      initialImageCoords,
+                      activeView,
+                      item.color,
+                      initialText,
+                    ),
+                  );
+                }}
+                activeView={activeView}
+                onChangeFilter={(
+                  initialImageCoords,
+                  initialText,
+                  coordinates,
+                ) => {
+                  dispatch({
+                    type: SET_FILE_FILTER_SHAPE_STAGE_PARAMS,
+                    payload: coordinates,
+                    view: activeView,
+                  });
+                  dispatch(
+                    getSize(
+                      initialImageCoords,
+                      activeView,
+                      item.color,
+                      initialText,
+                      coordinates,
+                    ),
+                  );
+                }}
+                circleMask={circleMask}
+                squareMask={squareMask}
+                closeButtonVisibilityOpenCircleSquare={
+                  closeButtonVisibilityOpenCircleSquare
+                }
+                closeButtonVisibilityCircleSquare={
+                  closeButtonVisibilityCircleSquare
+                }
+                getButtonVisibilityCircle={getButtonVisibilityCircle}
+                getButtonVisibilitySquare={getButtonVisibilitySquare}
+              />
+              <ConstructorText
+                dropdownVisibleText={dropdownVisibleText}
+                setDropdownVisibleText={setDropdownVisibleText}
+                itemColor={item.color}
+                initialImageCoords={file && file.file.stageParams}
+                initialFilterCoords={file && file.file.stageParamsFilterCircle}
+                initialText={textFile && textFile.text}
+                onCloseText={(initialImageCoords, initialFilterCoords) => {
+                  dispatch(
+                    getSize(
+                      initialImageCoords,
+                      activeView,
+                      item.color,
+                      initialFilterCoords,
+                    ),
+                  );
+                }}
+                onOpenText={(
+                  initialImageCoords,
+                  activeView,
+                  initialFilterCoords,
+                ) => {
+                  dispatch(
+                    setText(
+                      initialImageCoords,
+                      activeView,
+                      item.color,
+                      initialFilterCoords,
+                    ),
+                  );
+                }}
+                file={file && file.file.file.url}
+                activeView={activeView}
+                circleMask={circleMask}
+                squareMask={squareMask}
+                closeButtonVisibilityOpenCircleSquare={
+                  closeButtonVisibilityOpenCircleSquare
+                }
+                closeButtonVisibilityCircleSquare={
+                  closeButtonVisibilityCircleSquare
+                }
+                getButtonVisibilityCircle={getButtonVisibilityCircle}
+                getButtonVisibilitySquare={getButtonVisibilitySquare}
+              />
             </div>
             <button
               onClick={openPopupConstructor}
@@ -550,20 +717,22 @@ function Constructor() {
               onClick={
                 location.state.from.includes('cart') ? addToCart : addToPrint
               }
-              disabled={isBlockButton}
+              disabled={
+                isBlockButton || dropdownVisibleText || circleMask || squareMask
+              }
             />
           </div>
         </div>
         {isOtherPopupVisible && (
           <PopupModel onClose={closePopupConstructor}>
-            {isOtherPopupVisible.map((el) => (
+            {isOtherPopupVisible.map((el, index) => (
               <p
                 className={
                   isOtherPopupVisible.length > 1
                     ? styles.instruction
                     : styles.error
                 }
-                key={el}
+                key={[index]}
               >
                 {el}
               </p>
