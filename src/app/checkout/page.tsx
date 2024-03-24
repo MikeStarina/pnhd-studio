@@ -64,14 +64,13 @@ const CheckoutPage: React.FC = () => {
         e.preventDefault();
         const order = checkoutOrderObjectCreateFunc(cart);
         const response = await createOrder(order);
-        //console.log(response);
+        console.log(response);
         //@ts-ignore
         dispatch(cartActions.setPaymentURL(await response.data.paymentUrl))
         dispatch(cartActions.resetCart());
         sessionStorage.setItem('cart', '');
         //@ts-ignore
-        window.open(await response.data.paymentUrl);
-        //router.push(await response.data.paymentUrl);
+        router.push(await response.data.paymentUrl);
     }
 
     const switchHandler = (e: ChangeEvent<HTMLInputElement>) => {
