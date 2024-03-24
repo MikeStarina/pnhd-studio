@@ -92,10 +92,10 @@ export const checkoutOrderObjectCreateFunc = (cart: TCartState) => {
         const printPriceF = () => {
             let price = 0;
             if (elem.prints) {
-                price = elem.prints.front.cartParams ?  elem.prints.front.cartParams.price : 0;
-                price = elem.prints.back.cartParams ?  elem.prints.back.cartParams.price : 0;
-                price = elem.prints.lsleeve.cartParams ?  elem.prints.lsleeve.cartParams.price : 0;
-                price = elem.prints.rsleeve.cartParams ?  elem.prints.rsleeve.cartParams.price : 0;
+                price = elem.prints?.front?.cartParams ?  elem.prints.front.cartParams.price : 0;
+                price = elem.prints?.back?.cartParams ?  elem.prints.back.cartParams.price : 0;
+                price = elem.prints?.lsleeve?.cartParams ?  elem.prints.lsleeve.cartParams.price : 0;
+                price = elem.prints?.rsleeve?.cartParams ?  elem.prints.rsleeve.cartParams.price : 0;
             }
             return price;
         }

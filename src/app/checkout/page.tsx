@@ -38,6 +38,11 @@ const CheckoutPage: React.FC = () => {
     const cart = useAppSelector(store => store.cart);
     const totalOrderPrice = cartSummaryFunc(order!);
     const [ createOrder ] = useCreateOrderMutation();
+    //console.log(paymentUrl)
+
+    useEffect(() => {
+        paymentUrl && router.push(paymentUrl);
+    }, [paymentUrl])
 
     useEffect(() => {
 
@@ -53,9 +58,7 @@ const CheckoutPage: React.FC = () => {
         !order || order.length === 0 && router.replace('/shop');
     }, [order])
 
-    useEffect(() => {
-        paymentUrl && router.push(paymentUrl);
-    }, [paymentUrl])
+    
 
     const formSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
