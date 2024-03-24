@@ -1,0 +1,33 @@
+.screen {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    margin: 0;
+    height: 120vh;
+    border-bottom: 1px solid black;
+    /*outline: #1fa7ff 1px solid;*/
+  }
+  
+  .instruction {
+    color: rgb(0, 255, 0);
+    font-family: inherit;
+    font-size: 20px;
+    line-height: 20px;
+    text-align: center;
+  }
+  
+  @media (max-width: 1250px) {
+    .screen {
+      flex-direction: column;
+      gap: 20px;
+    }
+  }
+
+  /* @media (max-width: 500px) {
+    .screen {
+      margin: 100px 0 0 0;
+    }
+  } */
+  

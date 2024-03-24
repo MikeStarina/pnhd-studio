@@ -1,0 +1,119 @@
+.cart_productPrintPreviews {
+    display: grid;
+    grid-template-rows: repeat(4, auto);
+    align-items: baseline;
+    justify-items: end;
+    padding-top: 4%;
+    gap: 10px;
+}
+.cart_preview {
+    display: grid;
+    width: 95%;
+    grid-template-columns: minmax(65px, 90px) auto;
+    row-gap: 10px;
+}
+.cart_previewImg {
+    cursor: pointer;
+    width: 65px;
+    transition: 1s;
+}
+  
+.cart_previewImg:hover {
+    transform: scale(1.2);
+}
+.printsInfo_controlButtonsWrapper {
+    font-size: 10px;
+    grid-column: 2/2;
+    justify-self: end;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+    margin: 0 20px 0 0;
+}
+
+.printsInfo_controlButton {
+    margin: 0;
+    padding: 6px 10px;
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: 800;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: white;
+    -webkit-text-fill-color: #000000;
+    color: #000000;
+    cursor: pointer;
+}
+
+.printsInfo_controlButton:hover {
+    background-color: rgb(153,255,0);
+    border-color: rgb(153,255,0);
+}
+
+.prints_info {
+    grid-row-gap: 5px;
+    align-items: start;
+    display: grid;
+    grid-template-columns: auto auto;
+    line-height: 19px;
+    row-gap: 5px;
+}
+
+.prints_info > p {
+    margin: 0;
+    padding: 0;
+    
+}
+  
+.prints_price__right {
+    text-align: right;
+}
+
+.printsInfo_size,
+.printsInfo_format,
+.printsInfo_price,
+.printsInfo_totalPrice {
+    font-family: 'Neue_machina';
+    font-size: 18px;
+    line-height: 18px;
+    font-weight: 400;
+}
+
+
+@media (max-width: 1020px) {
+    .cart_productPrintPreviews {
+        margin-top: 50px;
+        padding: 20px;
+        justify-content: start;
+        align-items: start;
+        grid-template-rows: auto;
+        grid-auto-rows: auto;
+        gap: 20px;
+
+    }
+    .cart_preview {
+        align-self: center;
+        width: 100%;
+    }
+    .printsInfo_size,
+    .printsInfo_format,
+    .printsInfo_price,
+    .printsInfo_totalPrice {
+        font-size: 16px;
+        line-height: 16px;
+    }
+}
+
+@media (max-width: 1020px) {
+    .printsInfo_size,
+    .printsInfo_format,
+    .printsInfo_price,
+    .printsInfo_totalPrice {
+        font-size: 14px;
+        line-height: 14px;
+    }
+}
+
+

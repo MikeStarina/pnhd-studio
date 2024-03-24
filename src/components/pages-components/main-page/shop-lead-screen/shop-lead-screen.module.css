@@ -1,0 +1,229 @@
+.screen {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 120px 0 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.screen_titleWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.screen_title {
+    font-family: 'DrukTextWideCyr-Medium';
+    font-size: 46px;
+    line-height: 48px;
+    margin: 0;
+    padding: 0;
+    max-width: 75%;
+    text-transform: uppercase;
+}
+
+.screen_subtitle {
+    font-family: 'DrukTextWideCyr-Medium';
+    font-size: 46px;
+    line-height: 48px;
+    margin: 0;
+    padding: 0;
+    max-width: 75%;
+    text-transform: uppercase;
+    text-align: right;
+    font-weight: 800;
+}
+
+.screen_box {
+    width: 100%;
+    background-color: rgb(57,57,57);
+    border-radius: 20px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.box_link {
+    text-decoration: none;
+    align-self: flex-end;
+    margin: 0 0 35px 0;
+}
+
+.box_linkButton {
+    background-color: rgb(153,255,0);
+    border: none;
+    border-radius: 5px;
+    color: black;
+    font-family: 'Neue_machina';
+    font-size: 14px;
+    line-height: 14px;
+    text-transform: uppercase;
+    font-weight: 800;
+    padding: 6px 10px;
+    cursor: pointer;   
+    min-width: 220px;
+}
+
+.box_linkButton:hover {
+    color: white;
+    background-color: black;
+}
+
+.box_imageWrapper {
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    top: -60px;
+    left: calc(50% - 100px);
+    overflow: hidden;
+    background-color: transparent;
+    z-index: 99;
+}
+.box_image {
+    width: 100%;
+    object-fit: contain;
+    object-position: 0px top;
+}
+
+.box_shape {
+    height: 100%;
+    object-fit: cover;
+}
+.box_shapeWrapper {
+    display: flex;
+    justify-content: flex-end;
+    height: 100%;
+    overflow: hidden;
+}
+.box_shapeWrapper:first-of-type {
+    justify-content: flex-start;
+}
+
+@media (max-width: 1000px) {
+    .screen_titleWrapper {
+        width: 100%;
+        flex-direction: column;
+        gap: 5px;
+    }
+    .screen_title {
+        max-width: none;
+        font-size: 34px;
+        line-height: 36px;
+    }
+    .screen_subtitle {
+        max-width: none;
+        font-size: 34px;
+        line-height: 36px;
+    }
+
+    .box_imageWrapper {
+        width: 200px;
+        height: 200px;
+        top: -40px;
+        left: calc(50% - 100px);
+    }
+
+    .screen_box {
+        height: 230px;
+    }
+
+    .box_link {
+        margin: 0 0 20px 0;
+    }
+}
+
+
+@media (max-width: 720px) {
+    .screen_subtitle {
+        display: none;
+    }
+
+    .screen_title::after {
+        content: ' ПРИНТАМИ'
+    }
+
+    .screen_box {
+        height: 164px;
+    }
+
+    .box_imageWrapper {
+        top: -60px;
+        width: 170px;
+        height: 170px;
+        top: -40px;
+        left: calc(50% - 85px);
+    }
+
+    .box_image {
+        height: 100%;
+        width: auto;
+        object-position: 50px left;
+    }
+}
+
+
+@media (max-width: 500px) {
+    .screen_title {
+        font-size: 26px;
+        line-height: 28px;
+    }
+    .screen_box {
+        height: 140px;
+        border-radius: 10px;
+    }
+
+  
+
+    .box_imageWrapper {
+        width: 130px;
+        height: 130px;
+        left: calc(50% - 65px);
+        top: -60px;
+    }
+
+
+
+    .screen_box {
+        justify-content: center;
+    }
+
+    .box_shape {
+        height: 50%;
+    }
+
+    .box_shapeWrapper {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 40%;
+        align-items: flex-start;
+        padding: 10px 5px 0 0;
+    }
+
+    .box_shapeWrapper:first-of-type {
+        top: 0;
+        right: auto;
+        left: 0;
+        padding: 10px 0 0 5px;
+    }
+}
+
+@media (max-width: 390px) {
+    .screen {
+        margin: 100px 0 0 0;
+    }
+}
+@media (max-width: 340px) {
+    .screen_title {
+        font-size: 20px;
+        line-height: 22px;
+    }
+}

@@ -1,72 +1,37 @@
 {
-  "name": "pnhd-studio",
+  "name": "studio_next",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@pbe/react-yandex-maps": "^1.1.8",
-    "@reduxjs/toolkit": "^1.8.5",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "ahooks": "^3.7.8",
-    "konva": "^8.3.12",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-helmet": "^6.1.0",
-    "react-input-mask": "^2.0.4",
-    "react-konva": "^18.2.2",
-    "react-redux": "^8.0.4",
-    "react-router-dom": "^5.2.1",
-    "react-router-hash-link": "^2.4.3",
-    "react-scripts": "5.0.1",
-    "redux": "^4.2.0",
-    "redux-thunk": "^2.4.1",
-    "swiper": "^10.1.0",
-    "use-image": "^1.1.0",
-    "use-sound": "^4.0.1",
-    "uuid": "^9.0.0",
-    "web-vitals": "^2.1.4"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "sync": "browser-sync start -p 'http://localhost:3000/'",
-    "test": "react-scripts test",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx src --color --fix",
-    "lint:fix": "npm run lint --fix",
-    "prettier": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,less,md}\"",
-    "prettier:format": "prettier --write \"src/**/*.{ts,tsx,scss,css,json}\"",
-    "eject": "react-scripts eject",
-    "isready": "npm run prettier:format && npm run lint"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.15.11",
+    "@pbe/react-yandex-maps": "^1.2.5",
+    "@reduxjs/toolkit": "^2.2.1",
+    "konva": "^9.3.6",
+    "mui-tel-input": "^5.1.2",
+    "next": "14.1.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-konva": "^18.2.10",
+    "react-redux": "^9.1.0",
+    "sharp": "^0.33.3",
+    "use-image": "^1.1.1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-prettier": "^8.9.0",
-    "eslint-plugin-import": "^2.28.0",
-    "eslint-plugin-jsx-a11y": "^6.7.1",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-react": "^7.33.0",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "prettier": "3.0.0",
-    "prettier-eslint": "^15.0.1",
-    "prettier-eslint-cli": "^7.1.0"
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@types/uuid": "^9.0.8",
+    "eslint": "^8",
+    "eslint-config-next": "14.1.0",
+    "typescript": "^5"
   }
 }

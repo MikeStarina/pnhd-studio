@@ -1,0 +1,173 @@
+.screen_feedbacks {
+    width: 100%;
+    margin: 40px 0 0 0;
+    padding: 40px;
+    border: 1px solid black;
+    border-radius: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    background-color: transparent;
+    z-index: 2;
+}
+
+.feedbacks_wrapper {
+    width: auto;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 60px;
+    overflow: hidden;
+    height: 95px;
+}
+
+.feedback_box {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+    width: 280px;
+}
+
+.feedback_name {
+    font-family: 'Neue_machina';
+    font-size: 18px;
+    line-height: 18px;
+    font-weight: 800;
+    color: black;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+}
+
+.feedback_text {
+    font-family: 'Neue_machina';
+    font-size: 16px;
+    line-height: 18px;
+    font-weight: 400;
+    color: black;
+    margin: 0;
+    padding: 0;
+}
+
+.feddback_controlsWrapper {
+    align-self: flex-end;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    gap: 36px;
+    margin-top: 40px;
+}
+
+.feedback_buttons {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.feedback_controlButton {
+    width: 66px;
+    height: 22px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+    color: black
+}
+
+.feedback_controlButton:hover {
+    border-color: rgb(153,255,0);
+    background-color: rgb(153,255,0);
+}
+
+.feedback_linkButtons {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
+.feedback_linkButton {
+    font-family: 'Neue_machina';
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: 800;
+    color: black;
+    margin: 0;
+    padding: 0;
+    padding: 6px 10px;
+    border: none;
+    background-color: rgb(153,255,0);
+    border-radius: 5px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.feedback_linkButton:hover {
+    color: white;
+    background-color: black;
+}
+
+
+@media (max-width: 1020px) {
+    .feedback_name {
+        font-size: 16px;
+    }
+
+    .feedback_text {
+        font-size: 16px;
+    }
+
+    .feedbacks_wrapper {
+        gap: 40px;
+    }
+}
+
+@media (max-width: 720px) {
+    .screen_feedbacks {
+        padding: 30px 20px;
+    }
+}
+
+@media (max-width: 500px) {
+    .screen_feedbacks {
+        padding: 20px;
+        border-radius: 10px;
+    }
+    .feedback_name {
+        font-size: 14px;
+    }
+
+    .feedback_text {
+        font-size: 14px;
+    }
+
+    .feedback_buttons {
+        flex-direction: column;
+    }
+
+    .feedback_controlButton {
+        height: 26px;
+    }
+
+    .feedback_linkButton {
+        font-size: 14px;
+        line-height: 14px;
+    }
+
+    .feddback_controlsWrapper {
+        gap: 10px;
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 390px) {
+    .feedbacks_wrapper {
+        gap: 25px;
+    }
+}

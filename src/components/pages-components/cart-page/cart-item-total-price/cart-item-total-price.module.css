@@ -1,0 +1,77 @@
+.itemTotalPrice {
+    grid-row: 2/3;
+    grid-column: 2/4;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 20px 20px 20px;
+    margin: 10px 0 0 0;
+    gap: 10px;
+}
+
+.itemTotalPrice_text {
+    font-family: 'Neue_machina';
+    font-size: 18px;
+    line-height: 26px;
+    font-weight: 400;
+    color: black;
+    text-align: right;
+    text-transform: uppercase;
+    margin: 0;
+    padding: 0;
+}
+
+.itemTotalPrice_text::before {
+    content: '/ '
+}
+
+
+.itemTotalPrice_text:last-of-type {
+    font-weight: 800;
+}
+
+.itemTotalPrice_deleteItemButton {
+    font-family: 'Neue_machina';
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 6px 10px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.itemTotalPrice_deleteItemButton:hover {
+    background-color: rgb(153,255,0);
+    border-color: rgb(153,255,0);
+}
+
+@media (max-width: 1020px) {
+    .itemTotalPrice {
+        margin-top: 50px;
+        grid-row: auto;
+        grid-column: auto;
+    }
+    .itemTotalPrice_text {
+        font-size: 16px;
+        line-height: 16px;
+    }
+}
+
+@media (max-width: 500px) {
+    .itemTotalPrice {
+        flex-direction: column;
+        justify-self: start;
+        align-items: flex-start;
+    }
+    .itemTotalPrice_text {
+        font-size: 14px;
+        line-height: 14px;
+    }
+    .itemTotalPrice_deleteItemButton {
+        margin-bottom: 20px;
+    }
+}

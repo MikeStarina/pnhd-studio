@@ -1,0 +1,231 @@
+.screen {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 160px 0 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.screen_title {
+    font-family: 'DrukTextWideCyr-Medium';
+    font-size: 46px;
+    line-height: 48px;
+    margin: 0;
+    padding: 0;
+    max-width: 80%;
+    text-transform: uppercase;
+}
+
+.screen_button {
+    width: 66px;
+    height: 22px;
+    background-color: rgb(153,255,0);
+    border-radius: 5px;
+    border: 1px solid rgb(153,255,0);
+    cursor: pointer;
+}
+.screen_button:hover {
+    background-color: white;
+    border: 1px solid black;
+}
+
+.screen_cards {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+}
+
+.cards_blockWrapper {
+    width: 50%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.cards_textCard {
+    width: 50%;
+    border-radius: 20px;
+    background-color: rgb(57,57,57);
+    margin: 0;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+    box-sizing: border-box;
+    height: auto;
+}
+
+.textCard_title {
+    font-family: 'Neue_machina';
+    font-weight: 800;
+    font-size: 18px;
+    line-height: 18px;
+    color: rgb(153,255,0);
+    text-transform: uppercase;
+    margin: 0;
+    padding: 0;
+}
+
+.textCard_paragraph {
+    font-family: 'Neue_machina';
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 18px;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.cards_photoCard {
+    width: 50%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 10px;
+}
+
+.photoCard_wrapper {
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+
+
+@media (max-width: 1050px) {
+    .screen_title {
+        font-size: 34px;
+        line-height: 36px;
+    }
+
+    .textCard_title {
+        font-size: 16px;
+        line-height: 18px;
+    }
+
+    .textCard_paragraph {
+        font-size: 16px;
+        line-height: 18px;
+    }    
+}
+
+@media (max-width: 900px) {
+    .screen_cards {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .cards_textCard {
+        width: 40%;
+        padding: 30px;
+        border-radius: 10px;
+    }
+
+    .cards_blockWrapper {
+        width: 100%;
+        gap: 10px;
+    }
+
+    .photoCard_wrapper {
+        border-radius: 10px;
+    }
+
+    .cards_blockWrapper:nth-child(2) {
+        flex-direction: row-reverse;
+    }
+    .cards_blockWrapper:nth-child(3) {
+        flex-direction: row-reverse;
+    }
+
+    .cards_photoCard {
+        padding: 0;
+        width: 70%;
+    }
+}
+
+
+
+@media (max-width: 650px) {
+    .screen_title {
+        font-size: 26px;
+        line-height: 28px;
+    }
+
+    .cards_textCard {
+        width: 50%;
+    }
+
+    .cards_photoCard {
+        width: 50%;
+    }
+
+    .textCard_title {
+        font-size: 14px;
+        line-height: 16px;
+    }
+
+    .textCard_paragraph {
+        font-size: 14px;
+        line-height: 16px;
+    }
+}
+
+
+@media (max-width: 450px) {
+    .cards_photoCard {
+        width: 40%;
+    }
+
+    .cards_textCard {
+        width: 60%;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 380px) {
+    .screen_title {
+        font-size: 24px;
+        line-height: 22px;
+    }
+
+    .cards_blockWrapper {
+        flex-direction: column;
+
+    }
+
+    .cards_photoCard {
+        width: 100%;
+    }
+
+    .cards_textCard {
+        width: 100%;
+    }
+    .cards_blockWrapper:nth-child(4) {
+        flex-direction: column-reverse;
+    }
+    .cards_blockWrapper:nth-child(3) {
+        flex-direction: column-reverse;
+    }
+    .cards_blockWrapper:nth-child(2) {
+        flex-direction: column;
+    }
+}

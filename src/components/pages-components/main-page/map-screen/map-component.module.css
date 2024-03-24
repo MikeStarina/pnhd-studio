@@ -1,0 +1,14 @@
+.map_wrapper {
+    width: 50%;
+    border-radius: 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+    height: 350px;
+    filter: grayscale(100%) contrast(80%);
+}
+
+@media (max-width: 550px) {
+    .map_wrapper {
+        width: 100%;
+    }
+}

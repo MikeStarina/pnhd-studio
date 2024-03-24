@@ -1,0 +1,162 @@
+.controls_container {
+    margin: 0 0 0 50px;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: auto;
+    height: 500px;
+}
+
+
+
+.input_container {
+    padding: 0;
+    height: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.input_form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.file_input {
+    display: none;
+    background-color: #00FF00;
+    width: 100%;
+    height: 100%;
+}
+
+.input_wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    margin: 0;
+    text-align: center;
+    cursor: pointer;
+}
+
+.file_input_button_text {
+    max-width: 230px;
+    line-height: 16.4px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #000000;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.file_input_button {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    background-color: #FFFFFF;
+    border: 1px #000000 solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 0 20px;
+    margin: 0 auto;
+}
+
+.file_input_button:hover {
+    background: #00FF00;
+}
+
+.print_delete_button {
+    width: 40px;
+    height: 40px;
+    box-sizing: border-box;
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px #000000 solid;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 0 20px;
+    margin: 0 auto;
+    margin-right: 20px;
+    color: #000000;
+}
+
+.print_delete_button:hover {
+    background-color: #00FF00;
+}
+
+.submit_button {
+    width: 100%;
+    max-width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: 15px;
+    background-color: rgb(0, 255, 0);
+    cursor: pointer;
+    line-height: 16.4px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #000000;
+    text-align: center;
+    margin: 0 0 0 5px;
+    padding: 0;
+}
+
+.button_container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn_img_control {
+    width: 145px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.controls_cartButton {
+    font-family: 'Neue_machina';
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: 800;
+    color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 0;
+    padding: 6px 10px;
+    background-color: white;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.controls_cartButton:hover {
+    background-color: rgb(153,255,0);
+    border-color: rgb(153,255,0);
+}
+
+@media (max-width: 1250px) {
+    .controls_container {
+        margin: 0;
+        width: 579px;
+        align-items: center;
+    }
+}
+@media (max-width: 650px) {
+    .controls_container {
+        width: 100%;
+    }
+}

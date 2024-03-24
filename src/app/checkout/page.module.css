@@ -1,0 +1,106 @@
+.checkout {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 120px 0 0 0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    border: 1px solid black;
+    border-radius: 20px;
+    padding: 50px;
+}
+
+.checkout_form {
+    width: 50%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.checkout_priceWrapper {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.form_submitButton {
+    font-family: 'Neue_machina';
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: 800;
+    border: none;
+    background-color: rgb(153,255,0);
+    border-radius: 5px;
+    margin: 0;
+    margin-top: 30px;
+    padding: 6px 10px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.checkout_priceText {
+    font-family: 'Neue_machina';
+    font-size: 18px;
+    line-height: 20px;
+    font-weight: 800;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+}
+
+.checkout_finalPriceText {
+    font-family: 'DrukTextWideCyr-Medium';
+    font-size: 46px;
+    line-height: 46px;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+}
+
+
+@media (max-width: 1020px) {
+    .checkout_finalPriceText {
+        font-size: 34px;
+        line-height: 34px;
+    }
+    .checkout_priceText {
+        font-size: 16px;
+        line-height: 18px;
+    }
+}
+
+@media (max-width: 720px) {
+    .checkout {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 50px;
+    }
+    .checkout_form {
+        width: 100%;
+    }
+}
+
+@media (max-width: 500px) {
+    .checkout_finalPriceText {
+        font-size: 26px;
+        line-height: 26px;
+    }
+    .checkout_priceText {
+        font-size: 14px;
+        line-height: 16px;
+    }
+    .checkout {
+        border: none;
+        padding: 0;
+    }
+}

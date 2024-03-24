@@ -1,0 +1,214 @@
+.method_mainScreen {
+    width: 100%;
+    max-height: 80vh;
+    box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+    border-radius: 20px;
+    margin: 120px 0 0 0;
+    padding: 0;
+}
+
+.method_titleWrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+}
+
+.method_cover {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: top 0px;
+    filter: grayscale(100%) brightness(75%);
+    
+}
+
+.method_title {
+    font-family: 'DrukTextWideCyr-Medium';
+    font-size: 46px;
+    line-height: 46px;
+    font-weight: 400;
+    color: rgb(153,255,0);
+    max-width: 350px;
+    margin: 0;
+    padding: 0;
+}
+
+
+.method_brief {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0;
+    margin: 120px 0 0 0;
+    gap: 50px;
+}
+
+.brief_title {
+    font-family: 'DrukTextWideCyr-Medium';
+    font-size: 18px;
+    line-height: 18px;
+    font-weight: 400;
+    color: black;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+}
+
+.brief_text {
+    font-family: 'Neue_machina';
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: 400;
+    color: black;
+    margin: 0;
+    padding: 0;
+    max-width: 75%;
+    text-align: justify;
+}
+
+.method_gallery {
+    border-radius: 20px;
+    width: 100%;
+    margin: 120px 0 0 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.gallery_img {
+    width: calc((100% - 20px) / 3);
+    object-fit: cover;
+    height: 50vh;
+    border-radius: 20px;
+}
+
+.method_description {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    margin: 120px 0 0 0;
+    padding: 0; 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 50px;
+}
+
+.description_list {
+    width: 75%;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin: 0;
+    padding: 0;
+    gap: 20px;
+}
+
+.description_listItem {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.listItem_title {
+    font-family: 'Neue_machina';
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: 800;
+    color: black;
+    margin: 0;
+    padding: 0;
+    max-width: 75%;
+    text-align: justify;
+    text-transform: uppercase;
+}
+
+.listItem_text {
+    font-family: 'Neue_machina';
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: 400;
+    color: black;
+    margin: 0;
+    padding: 0;
+    text-align: justify;
+}
+
+@media (max-width: 1020px) {
+    .method_title {
+        font-size: 34px;
+        line-height: 34px;
+    }
+    .listItem_title,
+    .brief_title {
+        font-size: 16px;
+        line-height: 16px;
+    }
+    .listItem_text,
+    .brief_text {
+        font-size: 16px;
+        line-height: 20px;
+    }
+
+}
+
+@media (max-width: 500px) {
+    .method_title {
+        font-size: 26px;
+        line-height: 26px;
+    }
+    .listItem_title,
+    .brief_title {
+        font-size: 14px;
+        line-height: 14px;
+    }
+    .listItem_text,
+    .brief_text {
+        font-size: 14px;
+        line-height: 18px;
+        
+    }
+    .brief_text {
+        max-width: 90%;
+    }
+
+    .description_list {
+        width: 90%;
+    }
+}
+
+
+@media (max-width: 750px) {
+    .gallery_img {
+        width: calc((100% - 20px) / 2);
+        height: 30vh;
+    }
+}

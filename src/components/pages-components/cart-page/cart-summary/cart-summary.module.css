@@ -1,0 +1,33 @@
+.cartSummary {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.cartSummary_text {
+    color: black;
+    text-transform: uppercase;
+    font-family: 'Neue_machina';
+    font-size: 18px;
+    line-height: 18px;
+    font-weight: 800;
+    margin: 0;
+    padding: 0;
+}
+
+@media (max-width: 1020px) {
+    .cartSummary_text {
+        font-size: 16px;
+        line-height: 16px;
+    }
+}
+@media (max-width: 500px) {
+    .cartSummary_text {
+        font-size: 14px;
+        line-height: 14px;
+    }
+}

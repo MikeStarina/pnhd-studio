@@ -1,0 +1,220 @@
+.footer {
+    width: 100%;
+    margin: 120px 0 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    background-color: rgb(57,57,57);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.footer_columnOne {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 40px;
+}
+
+.footer_link {
+    color: white;
+    font-family: 'Neue_machina';
+    font-size: 18px;
+    line-height: 18px;
+    font-weight: 800;
+    text-decoration: none;
+    text-transform: uppercase;
+    border-bottom: 1px solid white;
+    padding: 0;
+    padding-bottom: 8px;
+    margin: 0;
+}
+.footer_text {
+    color: white;
+    font-family: 'Neue_machina';
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: 400;
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer_text:first-of-type {
+    margin-top: 30px;
+}
+
+.footer_columnTwo {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+    overflow: hidden;
+    gap: 60px;
+    box-sizing: border-box;
+}
+
+.columnTwo_formWrapper {
+    width: 100%;
+    height: 350px;
+    border: 10px solid white;
+    border-bottom-left-radius: 20px;
+    border-top-right-radius: 30px;
+    transform: translate(11px, -11px);
+    box-sizing: border-box;
+    background-color: #F3F4F3;
+    background-image: url(../../../../public/footer_form_bg.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    padding: 40px 40px 0 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
+.columnTwo_logoWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    box-sizing: border-box;
+}
+
+.footer_logo {
+    font-family: 'DrukTextWideCyr-Medium';
+    font-weight: 600;
+    font-size: 100px;
+    line-height: 100px;
+    color: rgb(153,255,0);
+    margin: 0;
+    padding: 0;
+    text-align: right;
+}
+
+
+@media (max-width: 1200px) {
+    .columnTwo_formWrapper {
+        position: relative;
+    }
+    .columnTwo_formWrapper::before {
+        position: absolute;
+        top:0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        content: '';
+        backdrop-filter: blur(5px);
+        z-index: 1;
+    }
+    .columnTwo_formWrapper::after {
+        position: absolute;
+        top:0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        content: '';
+        background-color: white;
+        opacity: .65;
+        z-index: 2;
+    }
+
+    .footer_logo {
+        font-size: 60px;
+        line-height: 60px;
+    }
+}
+
+
+
+@media (max-width: 1020px) {
+    .footer_link, 
+    .footer_text {
+        font-size: 16px;
+        line-height: 16px;
+    }
+
+    .columnTwo_formWrapper {
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+    }
+    .footer_columnOne {
+        height: 100%;
+        min-height: 100%;
+    }
+
+    .footer_columnOne > img {
+        display: none;
+    }
+
+    .footer {
+        align-items: stretch;
+    }
+    .footer_logo {
+        font-size: 40px;
+        line-height: 40px;
+    }
+    .columnTwo_logoWrapper {
+        padding: 0;
+    }
+    .columnTwo_formWrapper {
+        background-size: cover;
+        background-position: bottom;
+    }
+}
+
+
+@media (max-width: 720px) {
+    .footer {
+        flex-direction: column-reverse;
+        border-top-right-radius: 20px;
+    }
+    .footer_columnOne,
+    .footer_columnTwo
+    {
+        width: 100%;
+    }
+    .footer_columnOne {
+        border-top: 10px solid white;
+    }
+    .columnTwo_formWrapper {
+        border-bottom-left-radius: 0;
+        border-top-right-radius: 20px;
+        border-top-left-radius: 20px;
+        transform: none;
+        border: none;
+        border: 1px solid black;
+    }
+    .columnTwo_logoWrapper {
+        display: none;
+    }
+}
+
+@media (max-width: 500px) {
+    .footer {
+        margin: 100px 0 0 0;
+    }
+
+    .footer_columnOne {
+        padding: 20px;
+        gap: 10px;
+    }
+
+    .footer_link,
+    .footer_text
+    {
+        font-size: 14px;
+        line-height: 14px;
+    }
+
+    .columnTwo_formWrapper {
+        width: 100%;
+        padding: 0 30px;
+    }
+}

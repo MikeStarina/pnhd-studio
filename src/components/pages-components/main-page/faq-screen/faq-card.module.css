@@ -1,0 +1,113 @@
+.card { 
+    width: 100%;
+    border: 1px solid rgb(57,57,57);
+    background-color: rgb(57,57,57);
+    padding: 20px 30px;
+    margin: 0;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    box-sizing: border-box;
+    color: white;
+    min-width: 400px;
+}
+.card__active { 
+    color: rgb(57,57,57);
+    border: 1px solid rgb(57,57,57);
+    width: 100%;
+    background-color: white;
+    padding: 20px 30px;
+    margin: 0;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.card_textWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 15px;
+    max-width: 335px;
+    box-sizing: border-box;
+}
+
+.card_title {
+    font-family: 'Neue_machina';
+    font-size: 18px;
+    line-height: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+.card_text {
+    font-family: 'Neue_machina';
+    font-size: 18px;
+    line-height: 20px;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+}
+
+.card_button {
+    width: 66px;
+    height: 64px;
+    min-width: 66px;
+    background-color: rgb(153,255,0);
+    border: 1px solid rgb(153,255,0);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.card_button__active {
+    width: 66px;
+    min-width: 66px;
+    height: 64px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+
+@media (max-width: 1020px) {
+    .card_title {
+        font-size: 16px;
+        line-height: 16px;
+    }
+
+    .card_text {
+        font-size: 16px;
+        line-height: 18px;
+    }
+}
+
+@media (max-width: 720px) {
+    .card {
+        min-width: auto;
+        padding: 20px;
+    }
+    .card_title {
+        font-size: 14px;
+    }
+    .card_text {
+        font-size: 14px;
+        line-height: 16px;
+    }
+
+    .card_button {
+        width: 45px;
+        height: 45px;
+        min-width: 45px;
+    }
+
+    .card_button__active {
+        width: 45px;
+        height: 45px;
+        min-width: 45px;
+    }
+}

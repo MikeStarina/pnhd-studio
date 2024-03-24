@@ -1,0 +1,130 @@
+.screen {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 120px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    overflow: hidden;
+    height: auto;
+}
+
+.screen_titleWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.screen_title {
+    max-width: 936px;
+    font-family: 'DrukTextWideCyr-Medium';
+    font-size: 46px;
+    line-height: 48px;
+    color: rgb(57,57,57);
+    text-transform: uppercase;
+    text-align: right;
+    margin: 0;
+    padding: 0;
+}
+
+.screen_ratingWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    margin: 0;
+    padding: 0;
+    gap: 20px;
+}
+
+.rating_text {
+    font-family: 'Neue_machina';
+    font-weight: 400;
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+    color: black;
+}
+
+.rating_box {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.rating_number {
+    font-family: 'Neue_machina';
+    font-weight: 800;
+    font-size: 46px;
+    margin: 0;
+    padding: 0;
+    color: black;
+    margin-right: 10px;
+}
+
+.screen_image {
+    width: 100%;
+    transform: translateY(-120px);
+}
+
+
+
+@media (max-width: 1020px) {
+    .screen_titleWrapper {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+        gap: 30px;
+    }
+    .screen_title {
+        text-align: left;
+        max-width: 100%;
+        font-size: 34px;
+        line-height: 36px;
+    }
+
+    .screen_ratingWrapper {
+        gap: 10px;
+    }
+
+    .rating_text {
+        font-size: 16px;
+    }
+
+    .rating_number {
+        font-size: 34px;
+    }
+}
+
+
+@media (max-width: 500px) {
+    .screen {
+        margin: 100px 0 0 0;
+    }
+    .screen_title {
+        font-size: 26px;
+        line-height: 28px;
+    }
+    .rating_number {
+        font-size: 26px;
+    }
+
+    .rating_text {
+        font-size: 14px;
+    }
+}
+@media (max-width: 390px) {
+    .screen_title {
+        font-size: 25px;
+        line-height: 27px;
+    }
+    .rating_number {
+        font-size: 25px;
+    }
+
+    .rating_text {
+        font-size: 14px;
+    }
+}

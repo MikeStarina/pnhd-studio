@@ -1,0 +1,60 @@
+.cartIcon {
+    position: fixed;
+    top: 130px;
+    right: calc(50% - 635px); /* <-- 635px - половина ширины main минус отступ в 20px */
+    width: 60px;
+    height: 60px;
+    box-sizing: border-box;
+    z-index: 888;
+}
+
+.cartIcon__disabled {
+    display: none;
+    visibility: collapse;
+}
+
+.cartIcon_link {
+    width: 100%;
+    height: 100%
+}
+
+.cartIcon_button {
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: white;
+    position: relative;
+    cursor: pointer;
+}
+
+.cartIcon_counterBox {
+    width: 26px;
+    height: 26px;
+    border: none;
+    border-radius: 2px;
+    background-color: rgb(153,255,0);
+    position: absolute;
+    right: -10px;
+    bottom: -10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cartIcon_counter {
+    margin: 0;
+    padding: 0;
+    font-family: 'Neue_machina';
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: 800;
+    color: black;
+}
+
+
+@media (max-width: 1350px) {
+    .cartIcon {
+        right: 40px;
+    }
+}

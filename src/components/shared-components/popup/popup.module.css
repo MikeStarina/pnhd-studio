@@ -1,0 +1,58 @@
+.popup {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0,0,0,.5);
+    z-index: 9999;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.popup__disabled {
+    display: none;
+    visibility: hidden;
+}
+
+.popup_box {
+    width: 340px;
+    box-sizing: border-box;
+    overflow: hidden;
+    position: fixed;
+    top: 150px;
+    left: calc(50% - 170px);
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 15px;
+    margin: 0;
+    padding: 40px;
+}
+
+.popup_title {
+    font-family: 'Neue_machina';
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: 800;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+}
+
+.popup_closeButton {
+    background-color: white;
+    border: none;
+    font-family: 'Neue_machina';
+    font-size: 18px;
+    line-height: 18px;
+    font-weight: 800;
+    color: black;
+    position: absolute;
+    top: 15px;
+    right: 10px;
+    cursor: pointer;
+}

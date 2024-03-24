@@ -1,0 +1,28 @@
+.menu_button {
+    display: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    background-color: rgb(153,255,0);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    border: none;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.button_line {
+    height: 2px;
+    width: 16px;
+    background-color: black;
+    border-radius: 3px;
+    border: none
+}
+
+@media (max-width: 1020px) {
+    .menu_button {
+        display: flex;
+    }
+}

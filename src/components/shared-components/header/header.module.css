@@ -1,0 +1,158 @@
+.header {
+    box-sizing: border-box;
+    width: 100%;
+    height: 90px;
+    max-height: 90px;
+    border: 1px solid black;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;    
+    border-top: none;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin: 0;
+    padding: 20px;
+
+    font-family: inherit;
+}
+
+.header_menu {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    max-width: 453px;
+    gap: 4px 4px;
+    height: 100%;
+}
+
+.header_menu_listItem {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.header_menu_link {
+    color: black;
+    width: auto;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 0;
+    padding: 4px 12px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 12px;
+    line-height: 12px;
+    height: 22px;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-weight: 800;
+}
+.header_menu_link:hover {
+    background-color: rgb(153,255,0);
+    border-color: rgb(153,255,0);
+}
+.header_buttonsWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    justify-content: center;
+    align-items: flex-end;
+    
+}
+
+.header_phoneButton {
+    color: black;
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 12px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 4px 12px;
+    font-family: inherit;
+    font-weight: 800;
+}
+
+.header_phoneButton:hover {
+    background-color: rgb(153,255,0);
+    border-color: rgb(153,255,0);
+}
+
+.header_leadButton {
+    text-decoration: none;
+    font-size: 12px;
+    border: none;
+    color: black;
+    border-radius: 5px;
+    padding: 4px 14px;
+    border: 1px solid rgb(153,255,0);
+    background-color: rgb(153,255,0);
+    text-transform: uppercase;
+    font-family: inherit;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.header_leadButton:hover {
+    background-color: black;
+    color: white;
+    border-color: black;
+}
+
+.header_logo {
+    font-family: 'DrukTextWideCyr-Medium';
+    font-weight: 600;
+    color: black;
+    font-size: 30px;
+    line-height: 30px;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+
+
+
+
+
+
+@media (max-width: 1020px) {
+    .header_menu {
+        display: none;
+        visibility: hidden;
+    }
+
+    .header_buttonsWrapper {
+        display: none;
+        visibility: hidden;
+    }
+
+    .header_logo {
+        font-size: 20px;
+        line-height: 20px;
+    }
+
+    .header {
+        height: 75px;
+    }
+}
+
+@media (max-width: 500px) { 
+    .header_logo {
+        font-size: 15px;
+        line-height: 15px;
+    }
+
+    .header {
+        height: 50px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+}

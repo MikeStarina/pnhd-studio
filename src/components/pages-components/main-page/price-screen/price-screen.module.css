@@ -1,0 +1,357 @@
+.screen {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 120px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+    
+}
+
+.screen_titleMobile {
+    display: none;
+    color: rgb(57,57,57);
+    font-family: 'DrukTextWideCyr-Medium';
+    font-size: 46px;
+    line-height: 48px;
+    text-transform: uppercase;
+    font-weight: 800;
+    margin: 0 0 0 10px;
+    text-align: left;
+    max-width: 65%;
+}
+
+.screen_subtitleMobile {
+    display: none;
+    color: rgb(57,57,57);
+    font-family: 'DrukTextWideCyr-Medium';
+    font-size: 18px;
+    line-height: 20px;
+    text-transform: uppercase;
+    font-weight: 800;
+    margin: 20px 0 40px 10px;
+    max-width: 400px;
+    text-align: left;
+}
+
+.screen_cardsWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 10px;
+    
+}
+
+.screen_mainBlock {
+    width: 30%;
+    box-sizing: border-box;
+    background-color: rgb(57,57,57);
+    border-radius: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+    padding: 35px 25px;
+    overflow: hidden;
+    height: 512px;
+}
+
+.mainBlock_title {
+    max-width: 230px;
+    color: white;
+    font-family: 'DrukTextWideCyr-Medium';
+    font-size: 18px;
+    line-height: 20px;
+    font-weight: 400;
+    text-align: right;
+}
+
+.mainBlock_linkButton {
+    background-color: rgb(153,255,0);
+    border: none;
+    border-radius: 5px;
+    color: black;
+    font-family: 'Neue_machina';
+    font-size: 14px;
+    line-height: 14px;
+    text-transform: uppercase;
+    font-weight: 800;
+    padding: 6px 10px;
+    cursor: pointer;   
+    width: 230px;
+    z-index: 2;
+}
+
+.mainBlock_linkButton:hover {
+    color: white;
+    background-color: black;
+}
+
+.mainBlock_shape {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+.screen_wrapper {
+    width: 70%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    box-sizing: border-box;
+}
+
+.screen_title {
+    color: rgb(57,57,57);
+    font-family: 'DrukTextWideCyr-Medium';
+    font-size: 46px;
+    line-height: 48px;
+    text-transform: uppercase;
+    font-weight: 800;
+    margin: 0 0 0 10px;
+}
+
+.screen_subtitle {
+    color: rgb(57,57,57);
+    font-family: 'DrukTextWideCyr-Medium';
+    font-size: 18px;
+    line-height: 20px;
+    text-transform: uppercase;
+    font-weight: 800;
+    margin: 20px 0 40px 10px;
+    max-width: 400px;
+}
+
+.wrapper_cards {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 10px;
+    box-sizing: border-box;
+}
+
+.cards_priceCard {
+    width: 55%;
+    height: 100%;
+    border: 1px solid black;
+    border-radius: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+    /* min-width: 494px; */
+}
+
+
+.cards_infoCard {
+    width: 45%;
+    background-color: rgb(57,57,57);
+    border-radius: 20px;
+    padding: 40px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.infocard_text {
+    font-family: 'DrukTextWideCyr-Medium';
+    font-size: 18px;
+    line-height: 20px;
+    font-weight: 400;
+    color: white;
+    max-width: 250px;
+    margin: 0;
+    padding: 0;
+}
+.infoBlock_shape {
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    right: 0;
+}
+
+@media (max-width: 1150px) {
+    .screen {
+        align-items: flex-start;
+    }
+    .screen_titleMobile {
+        display: block;
+        font-size: 34px;
+        line-height: 36px;
+    }
+    .screen_title {
+        display: none;
+    }
+
+    .screen_subtitleMobile {
+        display: block;
+        font-size: 16px;
+        line-height: 18px;
+    }
+    .screen_subtitle {
+        display: none;
+    }
+
+    .mainBlock_title {
+        font-size: 16px;
+        line-height: 18px;
+    }
+    
+    .infocard_text {
+        font-size: 16px;
+        line-height: 18px;
+        max-width: 75%;
+    }
+    .wrapper_cards {
+        flex-direction: column-reverse;
+        width: 100%;
+    }
+
+    .screen_wrapper {
+        width: 65%
+    }
+
+    .screen_mainBlock {
+        width: 35%;
+        height: auto;
+        min-height: 512px;
+        min-width: 300px;
+    }
+
+    .mainBlock_shape {
+        top: 50px;
+    }
+
+    .cards_priceCard {
+        width: 100%;
+        min-width: 436px;
+    }
+
+    .cards_infoCard {
+        width: 100%;
+        min-height: 150px;
+        justify-content: center;
+    }
+
+    .infoBlock_shape {
+        left: calc(50% - 202px);
+        right: calc(50% - 202px);
+    }
+}
+
+
+
+
+
+@media (max-width: 800px) {
+
+    .screen_cardsWrapper {
+        flex-direction: column-reverse;
+    }
+
+    .screen_wrapper {
+        width: 100%;
+    }
+
+    .wrapper_cards {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .screen_mainBlock {
+        width: 100%;
+        min-width: auto;
+        min-height: auto;
+        height: auto
+    }
+
+    .cards_infoCard {
+        align-items: flex-start;
+    }
+
+    .infocard_text {
+        width: 40%;
+    }
+
+    .infoBlock_shape {
+        left: auto;
+        right: 0;
+        bottom: -75px;
+    }
+
+    .mainBlock_shape {
+        top: -50px;
+        left: -50px;
+        bottom: 0;
+        height: 150%;
+    }
+
+    .screen_titleMobile {
+        max-width: 85%;
+    }
+    
+}
+
+
+
+
+
+@media (max-width: 500px) {
+    .screen {
+        margin: 100px 0 0 0;
+    }
+    .screen_titleMobile {
+        max-width: 100%;
+        font-size: 26px;
+        line-height: 28px;
+    }
+
+    .screen_subtitleMobile {
+        max-width: 100%;
+        font-size: 14px;
+        line-height: 16px;
+    }
+    .cards_infoCard {
+        min-height: auto;
+        border-radius: 10px;
+    }
+
+    .infocard_text {
+        font-size: 14px;
+        line-height: 16px;
+        width: 80%;
+    }
+
+    .infoBlock_shape {
+        width: 220px;
+    }
+
+    .mainBlock_title {
+        font-size: 14px;
+        line-height: 16px;
+    }
+
+    .mainBlock_linkButton {
+        font-size: 14px;
+    }
+
+    .cards_priceCard {
+        min-width: auto;
+        border-radius: 10px;
+    }
+
+    .screen_mainBlock {
+        border-radius: 10px;
+    }
+}
