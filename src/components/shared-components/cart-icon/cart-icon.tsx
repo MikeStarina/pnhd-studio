@@ -9,10 +9,12 @@ import { usePathname } from "next/navigation";
 import { useAppDispatch } from "@/redux/redux-hooks";
 import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
 import { ICartOrderElement } from "@/app/utils/types";
+import { useRouter } from "next/navigation";
 
 const CartIcon: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { order } = useAppSelector((store) => store.cart);
+  const { order, paymentUrl } = useAppSelector((store) => store.cart);
+  const router = useRouter();
   const pathname = usePathname();
   const containerStyles =
     order &&
@@ -22,6 +24,10 @@ const CartIcon: React.FC = () => {
     !pathname.includes("constructor")
       ? styles.cartIcon
       : styles.cartIcon__disabled;
+
+  //  useEffect(() => {
+  //       paymentUrl && router.push(paymentUrl);
+  // }, [paymentUrl])
 
   useEffect(() => {
     const restoredOrder = sessionStorage.getItem('order');

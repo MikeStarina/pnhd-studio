@@ -40,9 +40,9 @@ const CheckoutPage: React.FC = () => {
     const [ createOrder ] = useCreateOrderMutation();
     //console.log(paymentUrl)
 
-    useEffect(() => {
-        paymentUrl && router.push(paymentUrl);
-    }, [paymentUrl])
+    // useEffect(() => {
+    //     paymentUrl && router.push(paymentUrl);
+    // }, [paymentUrl])
 
     useEffect(() => {
 
@@ -64,13 +64,14 @@ const CheckoutPage: React.FC = () => {
         e.preventDefault();
         const order = checkoutOrderObjectCreateFunc(cart);
         const response = await createOrder(order);
-
+        //console.log(response);
         //@ts-ignore
         dispatch(cartActions.setPaymentURL(await response.data.paymentUrl))
         dispatch(cartActions.resetCart());
         sessionStorage.setItem('cart', '');
         //@ts-ignore
-        router.push(await response.data.paymentUrl);
+        window.open(await response.data.paymentUrl);
+        //router.push(await response.data.paymentUrl);
     }
 
     const switchHandler = (e: ChangeEvent<HTMLInputElement>) => {
