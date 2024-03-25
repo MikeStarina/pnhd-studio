@@ -20,6 +20,7 @@
     text-transform: uppercase;
     padding: 6px 10px;
     min-width: 141px;
+    color: black;
 }
 
 .active_tab {
@@ -33,6 +34,7 @@
     text-transform: uppercase;
     padding: 6px 10px;
     min-width: 141px;
+    color: black;
 }
 
 .tab:hover {

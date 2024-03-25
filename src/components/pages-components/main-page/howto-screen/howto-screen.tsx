@@ -10,7 +10,7 @@ const HowToScreen: React.FC = () => {
     return (
         <section className={styles.screen}>
             <h2 className={styles.screen_title}>
-                всё&nbsp;просто:&nbsp;купи, дождись, забери
+                всё&nbsp;просто: купи, дождись, забери
             </h2>
             <div className={styles.screen_cardsWrapper}>
                 <div className={styles.screen_card}>
