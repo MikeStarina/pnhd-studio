@@ -1,0 +1,129 @@
+.dtfCalc {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    border: 1px solid black;
+    border-radius: 20px;
+    margin: 120px 0 0 0;
+}
+
+.dtfCalc_form {
+    width: 35%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.dtfCalc_title {
+    font-family: 'Neue_machina';
+    font-size: 18px;
+    line-height: 18px;
+    color: black;
+    font-weight: 800;
+    margin: 0 0 20px 0;
+    padding: 0;
+    text-transform: uppercase;
+}
+
+.dtfCalc_button {
+    margin: 20px 0 0 0;
+    padding: 6px 10px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    font-family: 'Neue_machina';
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: 800;
+    color: black;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.dtfCalc_button:hover {
+    background-color: rgb(153,255,0);
+    border-color: rgb(153,255,0);
+}
+
+.dtfCalc_result {
+    width: 65%;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 40px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.result_text {
+    margin: 0;
+    padding: 0;
+    font-family: 'Neue_machina';
+    font-size: 18px;
+    line-height: 18px;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+.result_title {
+    margin: 20px 0 0 0;
+    padding: 0;
+    font-family: 'Neue_machina';
+    font-size: 18px;
+    line-height: 18px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+@media (max-width: 1020px) {
+    .dtfCalc_title,
+    .result_title {
+        font-size: 16px;
+        line-height: 16px;
+    }
+    .result_text {
+        font-size: 16px;
+        line-height: 16px;
+    }
+}
+
+@media (max-width: 720px) {
+    .dtfCalc {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 40px;
+        gap: 50px;
+    }
+    .dtfCalc_form {
+        width: 100%;
+        padding: 0;
+    }
+    .dtfCalc_result {
+        width: 100%;
+        padding: 0;
+        align-items: flex-start;
+    }
+}
+@media (max-width: 500px) {
+    .dtfCalc {
+        margin: 100px 0 0 0;
+    }
+    .dtfCalc_title,
+    .result_title {
+        font-size: 14px;
+        line-height: 14px;
+    }
+    .result_text {
+        font-size: 14px;
+        line-height: 14px;
+    }
+}

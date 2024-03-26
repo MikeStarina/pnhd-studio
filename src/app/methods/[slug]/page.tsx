@@ -5,6 +5,7 @@ import Image from "next/image";
 import PriceScreen from "@/components/pages-components/main-page/price-screen/price-screen";
 import MapScreen from "@/components/pages-components/main-page/map-screen/map-screen";
 import { Metadata } from "next";
+import DtfCalculator from "@/components/pages-components/method-page/dtf-calculator/dtf-calculator";
 
 export const generateMetadata = ({ params }: { params: { slug: string }}): Metadata => {
 
@@ -28,7 +29,7 @@ const MethodPage: React.FC<{
     params: { slug: string };
 }> = ({ params }) => {
     const method = methodsData.find((item) => item.slug === params.slug);
-
+    
     return (
         <>
             {method && (
@@ -76,7 +77,7 @@ const MethodPage: React.FC<{
                         </ul>
                     </section>
 
-
+                    {method.name === 'DTF' && <DtfCalculator />}
                     <PriceScreen />
                     <MapScreen />
                 </>
