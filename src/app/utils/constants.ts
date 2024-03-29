@@ -123,10 +123,6 @@ export const prices = [
             },
             {
                 format: 'А3',
-                price: '750 Р.'
-            },
-            {
-                format: 'А3+',
                 price: '2100 Р.'
             },
         ]
