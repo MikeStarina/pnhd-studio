@@ -18,6 +18,7 @@ export const checkResponse = (res: any) => {
 
   export const getShopData = async () => {
     const shopData = await fetch(`${apiBaseUrl}/api/products`, {
+        cache: 'no-store',
         headers: {
           'Content-Type': 'application/json',
         },
