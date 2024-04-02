@@ -63,8 +63,9 @@ const CheckoutPage: React.FC = () => {
     const formSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const order = checkoutOrderObjectCreateFunc(cart);
+        //console.log(order)
         const response = await createOrder(order);
-        console.log(response);
+        //console.log(response);
         //@ts-ignore
         dispatch(cartActions.setPaymentURL(await response.data.paymentUrl))
         dispatch(cartActions.resetCart());

@@ -89,14 +89,12 @@ export const checkoutOrderObjectCreateFunc = (cart: TCartState) => {
         const stringSizes = sizesToString();
         const itemQty = elem.item.sizes.reduce((acc, { userQty }) => (acc + userQty!), 0); 
         
-        const printPriceF = () => {
+        const printPriceF = (): number => {
             let price = 0;
-            if (elem.prints) {
-                price = elem.prints?.front?.cartParams ?  elem.prints.front.cartParams.price : 0;
-                price = elem.prints?.back?.cartParams ?  elem.prints.back.cartParams.price : 0;
-                price = elem.prints?.lsleeve?.cartParams ?  elem.prints.lsleeve.cartParams.price : 0;
-                price = elem.prints?.rsleeve?.cartParams ?  elem.prints.rsleeve.cartParams.price : 0;
-            }
+                price = elem.prints?.front?.cartParams ?  price + elem.prints.front.cartParams.price : price + 0;
+                price = elem.prints?.back?.cartParams ?  price + elem.prints.back.cartParams.price : price + 0;
+                price = elem.prints?.lsleeve?.cartParams ?  price + elem.prints.lsleeve.cartParams.price : price + 0;
+                price = elem.prints?.rsleeve?.cartParams ?  price + elem.prints.rsleeve.cartParams.price : price + 0;
             return price;
         }
 
@@ -108,6 +106,7 @@ export const checkoutOrderObjectCreateFunc = (cart: TCartState) => {
             }
         } 
         const printPrice = printPriceF() * itemQty;
+        //console.log(printPrice);
             itemToAdd = {
                 ...itemToAdd,
                 textile: elem.item.name.concat(stringSizes),
