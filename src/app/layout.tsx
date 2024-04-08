@@ -35,7 +35,7 @@ export default function RootLayout({
             {children}
             <Footer />
           </main>
-          <Script>
+          <Script id='roistat'>
             {`(function(w, d, s, h, id) {
                 w.roistatProjectId = id; w.roistatHost = h;
                 var p = d.location.protocol == "https:" ? "https://" : "http://";
@@ -67,6 +67,7 @@ export default function RootLayout({
             id="calltr"
           ></Script>
           <Script
+            id='andata'
             type="application/javascript"
             async
             src="//tagmanager.andata.ru/api/v1/container/9b6370c8-6f89-4792-b816-520e886444ad/published/code.js"
