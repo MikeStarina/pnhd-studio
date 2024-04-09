@@ -155,4 +155,5 @@ export interface IOrderBody {
   length: string,
   weight: string,
   width: string,}>,
+  roistat: string,
 }

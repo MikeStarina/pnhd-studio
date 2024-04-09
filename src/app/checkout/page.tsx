@@ -12,6 +12,7 @@ import { cartSummaryFunc } from "../utils/cart-utils";
 import { checkoutOrderObjectCreateFunc } from "../utils/cart-utils";
 import { useCreateOrderMutation } from "@/api/api";
 import { useRouter } from "next/navigation";
+import { getCookie } from "../utils/constants";
 
 
 const switchSx = {
@@ -62,7 +63,9 @@ const CheckoutPage: React.FC = () => {
 
     const formSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const order = checkoutOrderObjectCreateFunc(cart);
+        const cookie: {[n: string]: string} = getCookie(document.cookie);
+        const roistat = cookie.roistat_visit;
+        const order = checkoutOrderObjectCreateFunc(cart, roistat);
         //console.log(order)
         const response = await createOrder(order);
         //console.log(response);

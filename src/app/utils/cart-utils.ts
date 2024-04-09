@@ -50,7 +50,7 @@ export const packagesWeightCalcFunc = (order: Array<ICartOrderElement>): Array<{
 
     return orderWeightArr;
 }
-export const checkoutOrderObjectCreateFunc = (cart: TCartState) => {
+export const checkoutOrderObjectCreateFunc = (cart: TCartState, roistat: string) => {
 
     const { order, validPromoCode, deliveryParams, userData, isDelivery } = cart;
 
@@ -70,6 +70,7 @@ export const checkoutOrderObjectCreateFunc = (cart: TCartState) => {
         shipping_point: deliveryParams.validDeliveryPoint,
         shipping_price: deliveryParams.deliveryPrice,
         packages: [],
+        roistat
       };
 
     order?.forEach((elem) => {
