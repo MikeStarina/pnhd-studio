@@ -8,6 +8,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { actions as leadActions } from "@/redux/lead-slice/lead.slice";
 import { useCreateLeadMutation } from "@/api/api";
+import { getCookie } from "@/app/utils/constants";
 
 
 
@@ -22,9 +23,13 @@ const LeadForm: React.FC = () => {
         return () => { clearTimeout(timeout) };
     }, [isSuccess])
 
-    const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+    const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        createLead({name, phone: phone.replaceAll(' ', '')});
+        const cookie: {[n: string]: string} = getCookie(document.cookie);
+        //console.log(cookie);
+        //console.log(cookie.roistat_visit);
+        const roistat = cookie.roistat_visit;
+        createLead({roistat, name, phone: phone.replaceAll(' ', '')});
         dispatch(leadActions.resetLeadData());
     }
 

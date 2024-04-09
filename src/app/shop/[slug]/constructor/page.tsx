@@ -17,6 +17,8 @@ const Constructor = () => {
     const { order } = useAppSelector((store) => store.cart);
     const orderElement = order?.filter((item) => item.itemCartId === itemCartId)[0];
 
+
+
     useEffect(() => {
         if (!orderElement) router.replace("/shop"); //переписать чтоб возвращало на кароточку товара
     }, [orderElement, router]);

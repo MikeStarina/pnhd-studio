@@ -28,6 +28,7 @@ export const metadata: Metadata = {
   },
 };
 
+
 const App: React.FC = () => {
   return (
     <>

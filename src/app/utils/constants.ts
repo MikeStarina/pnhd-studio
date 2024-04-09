@@ -202,3 +202,13 @@ export const faqArr = [
         подтверждение прав`,
     },
 ]
+
+
+export function getCookie(cookie: string) {
+    return cookie.split('; ').reduce((acc, item) => {
+      const [name, value] = item.split('=')
+      //@ts-ignore
+      acc[name] = value
+      return acc
+    }, {})
+}
