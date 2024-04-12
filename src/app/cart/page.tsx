@@ -30,9 +30,9 @@ const Cart: React.FC = () => {
         );
       })}
       <CartSummary />
-      {/* <Link href={'/checkout'} className={styles.cart_checkoutLink}>
+      <Link href={'/checkout'} className={styles.cart_checkoutLink}>
         <button type="button" className={styles.cart_checkoutButton}>оформить заказ</button>
-      </Link> */}
+      </Link>
     </section>
   );
 };
