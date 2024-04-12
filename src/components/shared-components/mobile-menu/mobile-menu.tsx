@@ -100,7 +100,6 @@ const MobileMenu: React.FC = () => {
                             </li>
                         </ul>
                         <div className={styles.menu_buttonsWrapper}>
-                            <Link className={styles.menu_phoneButton} href='/'>+7 (812) 904 61 56</Link>
                             <Link className={styles.menu_phoneButton} href='https://pnhd.ru'>корпоративный отдел</Link>                           
                             <button className={styles.menu_leadButton}>проконсультироваться</button>
                         </div>

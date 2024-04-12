@@ -29,7 +29,8 @@ const MapScreen: React.FC = () => {
 
                     <div className={styles.contacs_buttonsWrapper}>
                         <Link href='tel:+78129046156'>
-                            <button type='button' className={styles.contacts_contactsButton}>+7 (812) 904 61 56</button>
+                            +7 (812) 904 61 56
+                            {/* <button type='button' className={styles.contacts_contactsButton}>+7 (812) 904 61 56</button> */}
                         </Link>
                         <Link href='mailto:studio@pnhd.ru'>
                             <button type='button' className={styles.contacts_contactsButton}>studio@pnhd.ru</button>
@@ -50,21 +51,21 @@ const MapScreen: React.FC = () => {
                                 <Image src={vk} alt='логотип вконтакте' />
                             </button>
                         </Link>
-                        <Link href='https://t.me/pnhd_studio_bot' target="blank">
+                        {/* <Link href='https://t.me/pnhd_studio_bot' target="blank">
                             <button type='button' className={styles.contacts_socialButton}>
                                 <Image src={tg} alt='логотип телеграм'/>
                             </button>
-                        </Link>
+                        </Link> */}
                         <Link href='https://instagram.com/pnhd.studio/' target="blank">
                             <button type='button' className={styles.contacts_socialButton}>
                                 <Image src={inst} alt='логотип инстаграм' />
                             </button>
                         </Link>
-                        <Link href='https://wa.me/79313566552' target="blank">
+                        {/* <Link href='https://wa.me/79313566552' target="blank">
                             <button type='button' className={styles.contacts_socialButton}>
                                 <Image src={wa} alt='логотип ватсап' />
                             </button>
-                        </Link>
+                        </Link> */}
                     </div>
                 </div>
                 <Image src={shape} alt='декоративный штрихкод' style={{ height: '100%', alignSelf: 'center', paddingLeft: '20px'}} />
