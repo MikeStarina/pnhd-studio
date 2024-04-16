@@ -26,7 +26,9 @@ main {
   overflow: hidden;
   box-sizing: border-box;
 }
-
+.roistat-online-chat-holder {
+  display: none;
+}
 @media (max-width: 1350px) {
   main {
     box-sizing: initial;
