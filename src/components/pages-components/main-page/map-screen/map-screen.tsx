@@ -28,13 +28,8 @@ const MapScreen: React.FC = () => {
                     </p>
 
                     <div className={styles.contacs_buttonsWrapper}>
-                        <Link href='tel:+78129046156'>
-                            +7 (812) 904 61 56
-                            {/* <button type='button' className={styles.contacts_contactsButton}>+7 (812) 904 61 56</button> */}
-                        </Link>
-                        <Link href='mailto:studio@pnhd.ru'>
-                            <button type='button' className={styles.contacts_contactsButton}>studio@pnhd.ru</button>
-                        </Link>
+                        <span className={styles.contacts_contactsButton}>+7 (812) 904 61 56</span>
+                        <button type='button' className={styles.contacts_contactsButton}>studio@pnhd.ru</button>
                         <Link href='/shop'>
                             <button type='button' className={styles.contacts_leadButton}>перейти в конструктор</button>
                         </Link>
