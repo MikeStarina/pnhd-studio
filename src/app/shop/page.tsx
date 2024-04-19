@@ -33,7 +33,7 @@ const ShopPage: React.FC<{ searchParams: { [n: string]: string } }> = async ({ s
     const filteredArr = productFilterFunc(shopData, searchParams);
     return (
       <section className={styles.main}>
-        <ProductFilterComp />
+        {/* <ProductFilterComp /> */}
         {filteredArr && <ProductCardsBlock shopData={filteredArr} />}
       </section>
     )
