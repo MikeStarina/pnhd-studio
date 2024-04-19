@@ -61,8 +61,8 @@ const CheckoutPage: React.FC = () => {
         e.preventDefault();
         const cookie: {[n: string]: string} = getCookie(document.cookie);
         const roistat = cookie.roistat_visit;
-        //const order = checkoutOrderObjectCreateFunc(cart, roistat);
-        //const response = await createOrder(order);
+        const order = checkoutOrderObjectCreateFunc(cart, roistat);
+        await createOrder(order);
         //@ts-ignore
         //dispatch(cartActions.setPaymentURL(await response.data.paymentUrl))
         dispatch(cartActions.resetCart());
