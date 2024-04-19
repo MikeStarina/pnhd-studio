@@ -2,6 +2,12 @@ import React from 'react';
 import styles from './page.module.css';
 import { Metadata } from 'next';
 import ProductCardsBlock from '@/components/pages-components/shop-page/product-cards-block/product-cards-block';
+import { IProduct } from '../utils/types';
+import { getShopData } from '../utils/constants';
+import { productFilterFunc } from '../utils/constants';
+import ProductFilterComp from '@/components/pages-components/shop-page/products-filter/products-filter';
+
+
 
 export const metadata: Metadata = {
     title: 'Печать на одежде в Санкт-Петербурге на заказ от 1 штуки цена в Pinhead Studio',
@@ -18,10 +24,18 @@ export const metadata: Metadata = {
     },
   };
 
-const ShopPage = () => {
-    
+
+
+
+const ShopPage: React.FC<{ searchParams: { [n: string]: string } }> = async ({ searchParams }) => {
+
+    const shopData: Array<IProduct> = await getShopData();    
+    const filteredArr = productFilterFunc(shopData, searchParams);
     return (
-        <ProductCardsBlock />
+      <section className={styles.main}>
+        <ProductFilterComp />
+        {filteredArr && <ProductCardsBlock shopData={filteredArr} />}
+      </section>
     )
 }
 

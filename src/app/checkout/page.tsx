@@ -39,11 +39,7 @@ const CheckoutPage: React.FC = () => {
     const cart = useAppSelector(store => store.cart);
     const totalOrderPrice = cartSummaryFunc(order!);
     const [ createOrder ] = useCreateOrderMutation();
-    //console.log(paymentUrl)
-
-    // useEffect(() => {
-    //     paymentUrl && router.push(paymentUrl);
-    // }, [paymentUrl])
+  
 
     useEffect(() => {
 
@@ -65,16 +61,13 @@ const CheckoutPage: React.FC = () => {
         e.preventDefault();
         const cookie: {[n: string]: string} = getCookie(document.cookie);
         const roistat = cookie.roistat_visit;
-        const order = checkoutOrderObjectCreateFunc(cart, roistat);
-        //console.log(order)
-        const response = await createOrder(order);
-        //console.log(response);
+        //const order = checkoutOrderObjectCreateFunc(cart, roistat);
+        //const response = await createOrder(order);
         //@ts-ignore
-        dispatch(cartActions.setPaymentURL(await response.data.paymentUrl))
+        //dispatch(cartActions.setPaymentURL(await response.data.paymentUrl))
         dispatch(cartActions.resetCart());
         sessionStorage.setItem('cart', '');
-        //@ts-ignore
-        router.push(await response.data.paymentUrl);
+        window.location.replace('/');
     }
 
     const switchHandler = (e: ChangeEvent<HTMLInputElement>) => {

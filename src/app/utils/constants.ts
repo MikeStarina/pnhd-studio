@@ -15,7 +15,7 @@ export const checkResponse = (res: any) => {
     return res.json().then((err: any) => Promise.reject(err));
   };
 
-
+  
   export const getShopData = async () => {
     const shopData = await fetch(`${apiBaseUrl}/api/products`, {
         cache: 'no-store',
@@ -24,8 +24,19 @@ export const checkResponse = (res: any) => {
         },
       })
       .then(checkResponse)
-
     return shopData.data;
+}
+
+
+export const productFilterFunc = (data: Array<IProduct>, params: { [n: string]: string }, i = 0): Array<IProduct> => {
+    const keys = Object.keys(params);
+    if (keys.length === 0) return data;
+    const currentKey = keys[i];
+    //@ts-ignore
+    const filteredArr = data.filter((item: IProduct) => (item[currentKey] === params[currentKey]));
+    if (i === keys.length - 1) return filteredArr;
+    let newIter = i + 1;
+    return productFilterFunc(filteredArr, params, newIter);
 }
 
 

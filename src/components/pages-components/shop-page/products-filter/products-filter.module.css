@@ -1,0 +1,40 @@
+.filters {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    margin: 50px 0 0 0;
+    padding: 5px 0;
+    gap: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.filters_wrapper {
+    display: flex;
+    gap: 20px;
+}
+
+.filters_select {
+    width: 150px;
+}
+
+.filters_submitButton {
+    border: 1px solid black;
+    border-radius: 5px;
+    font-family: 'Neue_machina';
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: 800;
+    color: black;
+    text-transform: uppercase;
+    background-color: transparent;
+    padding: 6px 10px;
+    cursor: pointer;
+}
+
+.filters_submitButton:hover {
+    background-color: rgb(153,255,0);
+    border-color: rgb(153,255,0);
+}

@@ -3,15 +3,14 @@ import styles from './product-cards-block.module.css';
 import Link from 'next/link';
 import { IProduct } from '@/app/utils/types';
 import ProductCard from '../product-card/product-card';
-import { getShopData } from '@/app/utils/constants';
 import { apiBaseUrl } from '@/app/utils/constants';
 
-export const ProductCardsBlock = async () => {
+export const ProductCardsBlock: React.FC<{ shopData: Array<IProduct> }> = ({ shopData }) => {
  
-    const shopData: Array<IProduct> = await getShopData();
-    //console.log(Object.keys(shopData));
+    
+
     return (
-        <section className={styles.screen}>
+        <div className={styles.screen}>
           {shopData && shopData.map((item, index) => {
             const url = `${apiBaseUrl}${item.image_url}`;
             return (
@@ -29,7 +28,7 @@ export const ProductCardsBlock = async () => {
               </Link>
             );
           })} 
-        </section>
+        </div>
     )
 }
 

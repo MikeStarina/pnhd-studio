@@ -26,8 +26,7 @@ const LeadForm: React.FC = () => {
     const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const cookie: {[n: string]: string} = getCookie(document.cookie);
-        //console.log(cookie);
-        //console.log(cookie.roistat_visit);
+
         const roistat = cookie.roistat_visit;
         createLead({roistat, name, phone: phone.replaceAll(' ', '')});
         dispatch(leadActions.resetLeadData());
