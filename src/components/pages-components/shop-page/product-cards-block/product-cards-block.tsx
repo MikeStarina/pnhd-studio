@@ -9,13 +9,13 @@ import { apiBaseUrl } from '@/app/utils/constants';
 export const ProductCardsBlock: React.FC<{ shopData: Array<IProduct> }> = ({ shopData }) => {
  
     const [ endIndex, setEndIndex ] = useState(8);
-    console.log(endIndex);
+    //console.log(endIndex);
     const observerRef = useRef(null);
     
     const observerOptions = {
       root: null,
       rootMargin: '0px 0px 50px 0px',
-      threshold: 1,
+      threshold: 0.1,
     }
 
     useEffect(() => {
