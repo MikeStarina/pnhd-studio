@@ -16,7 +16,7 @@ export const checkResponse = (res: any) => {
   };
 
   
-  export const getShopData = async (searchParams: { [n: string]: string}) => {
+  export const getShopData = async (searchParams?: { [n: string]: string}) => {
     let queryString = '';
     if (searchParams) {
         const keys = Object.keys(searchParams);
