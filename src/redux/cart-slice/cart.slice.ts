@@ -204,7 +204,7 @@ const cartSlice = createSlice({
             }
         },
         resetCart: () => {
-            return initialState;
+            return {...initialState};
         },
         restoreCart: (state, action: PayloadAction<Array<ICartOrderElement>>) => {
             return {

@@ -31,7 +31,7 @@ const CartIcon: React.FC = () => {
 
   useEffect(() => {
     const restoredOrder = sessionStorage.getItem('order');
-    const parsedOrder: Array<ICartOrderElement> = JSON.parse(restoredOrder!);
+    const parsedOrder: Array<ICartOrderElement> = restoredOrder && JSON.parse(restoredOrder!);
     if (parsedOrder) {
       dispatch(cartActions.restoreCart(parsedOrder))
     }

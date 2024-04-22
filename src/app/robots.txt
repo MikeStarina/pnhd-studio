@@ -23,6 +23,7 @@ Disallow: /pechat-na-hudi
 Disallow: /pechat-na-futbolkah
 Disallow: /pechat-na-svitshotah
 Disallow: /pryamaya-dtg-pechat
+Disallow: /thanks
 User-agent: Yandex
 Disallow: /zagitova
 Disallow: /blog/
@@ -46,6 +47,7 @@ Disallow: /pechat-na-hudi
 Disallow: /pechat-na-futbolkah
 Disallow: /pechat-na-svitshotah
 Disallow: /pryamaya-dtg-pechat
+Disallow: /thanks
 Clean-param: etext
 Clean-param: type
 Clean-param: category&type

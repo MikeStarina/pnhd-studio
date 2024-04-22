@@ -66,8 +66,9 @@ const CheckoutPage: React.FC = () => {
         //@ts-ignore
         //dispatch(cartActions.setPaymentURL(await response.data.paymentUrl))
         dispatch(cartActions.resetCart());
-        sessionStorage.setItem('cart', '');
-        window.location.replace('/');
+        sessionStorage.setItem('order', '');
+        dispatch(cartActions.resetCart());
+        window.location.replace('/thanks?from=checkout');
     }
 
     const switchHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -105,7 +106,7 @@ const CheckoutPage: React.FC = () => {
                 {deliveryParams.validCityTo && deliveryParams.validCityTo.city && <p className={styles.checkout_priceText}>Доставка в: {deliveryParams.validCityTo.city}</p>}
                 {deliveryParams.validDeliveryPoint && deliveryParams.validDeliveryPoint.name && <p className={styles.checkout_priceText}>Пункт выдачи: {deliveryParams.validDeliveryPoint.name}</p>}
                 <p className={styles.checkout_finalPriceText}>= {totalOrderPrice + deliveryParams.deliveryPrice} Р.</p>
-                <button type='submit' form='checkout' className={styles.form_submitButton}>Оплатить</button>
+                <button type='submit' form='checkout' className={styles.form_submitButton}>Заказать</button>
             </div>
         </section>
     );
