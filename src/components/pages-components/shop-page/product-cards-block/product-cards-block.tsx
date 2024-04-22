@@ -1,4 +1,5 @@
-import React from 'react';
+'use client'
+import React, { useEffect, useRef, useState} from 'react';
 import styles from './product-cards-block.module.css';
 import Link from 'next/link';
 import { IProduct } from '@/app/utils/types';
@@ -7,13 +8,40 @@ import { apiBaseUrl } from '@/app/utils/constants';
 
 export const ProductCardsBlock: React.FC<{ shopData: Array<IProduct> }> = ({ shopData }) => {
  
+    const [ endIndex, setEndIndex ] = useState(8);
+
+    const observerRef = useRef(null);
     
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 1,
+    }
+
+    useEffect(() => {
+
+      const observer = new IntersectionObserver((entries) => {
+          const [ entry ] = entries;
+          if (entry.isIntersecting) {
+            setEndIndex(endIndex + 8);
+            console.log(entry)
+          }
+      }, observerOptions);
+      if (observerRef && observerRef.current) {
+          observer.observe(observerRef.current);
+      }
+
+      return () => {
+          if (observerRef.current) observer.unobserve(observerRef.current);
+      }
+  }, [observerRef, endIndex])
 
     return (
+      <>
         <div className={styles.screen}>
           {shopData && shopData.map((item, index) => {
             const url = `${apiBaseUrl}${item.image_url}`;
-            return (
+            return index < endIndex && (
               <Link
                 href={{ pathname: `/shop/${item.slug}`, query: `id=${item._id}` }}
                 className={styles.link}
@@ -28,13 +56,23 @@ export const ProductCardsBlock: React.FC<{ shopData: Array<IProduct> }> = ({ sho
               </Link>
             );
           })} 
+         
         </div>
+        {/* observer elem */}
+        <div
+            style={{ width: '100%', height: '50px' }}
+            ref={observerRef}
+        >
+        </div>
+        </>
     )
 }
 
 
 
 export default ProductCardsBlock;
+
+
 
 
 

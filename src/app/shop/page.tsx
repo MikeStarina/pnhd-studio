@@ -4,7 +4,6 @@ import { Metadata } from 'next';
 import ProductCardsBlock from '@/components/pages-components/shop-page/product-cards-block/product-cards-block';
 import { IProduct } from '../utils/types';
 import { getShopData } from '../utils/constants';
-import { productFilterFunc } from '../utils/constants';
 import ProductFilterComp from '@/components/pages-components/shop-page/products-filter/products-filter';
 
 
@@ -29,12 +28,15 @@ export const metadata: Metadata = {
 
 const ShopPage: React.FC<{ searchParams: { [n: string]: string } }> = async ({ searchParams }) => {
 
-    const shopData: Array<IProduct> = await getShopData();    
-    const filteredArr = productFilterFunc(shopData, searchParams);
+    const shopData: Array<IProduct> = await getShopData(searchParams);    
+    if (searchParams.priceSort) {
+      searchParams.priceSort === 'ASC' && shopData.sort((a,b) => (a.price - b.price));
+      searchParams.priceSort === 'DESC' && shopData.sort((a,b) => (b.price - a.price));
+    }
     return (
       <section className={styles.main}>
-        {/* <ProductFilterComp /> */}
-        {filteredArr && <ProductCardsBlock shopData={filteredArr} />}
+        <ProductFilterComp />
+        {shopData && shopData.length > 0 && <ProductCardsBlock shopData={shopData} />}
       </section>
     )
 }

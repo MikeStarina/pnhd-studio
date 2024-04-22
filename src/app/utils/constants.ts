@@ -16,8 +16,16 @@ export const checkResponse = (res: any) => {
   };
 
   
-  export const getShopData = async () => {
-    const shopData = await fetch(`${apiBaseUrl}/api/products`, {
+  export const getShopData = async (searchParams: { [n: string]: string}) => {
+    let queryString = '';
+    if (searchParams) {
+        const keys = Object.keys(searchParams);
+        keys.forEach((key, index) => {
+            if (index === 0)  return queryString += `?${key}=${searchParams[key]}`;
+            return queryString += `&${key}=${searchParams[key]}`
+        })
+    }
+    const shopData = await fetch(`${apiBaseUrl}/api/products${queryString}`, {
         cache: 'no-store',
         headers: {
           'Content-Type': 'application/json',
@@ -26,19 +34,6 @@ export const checkResponse = (res: any) => {
       .then(checkResponse)
     return shopData.data;
 }
-
-
-export const productFilterFunc = (data: Array<IProduct>, params: { [n: string]: string }, i = 0): Array<IProduct> => {
-    const keys = Object.keys(params);
-    if (keys.length === 0) return data;
-    const currentKey = keys[i];
-    //@ts-ignore
-    const filteredArr = data.filter((item: IProduct) => (item[currentKey] === params[currentKey]));
-    if (i === keys.length - 1) return filteredArr;
-    let newIter = i + 1;
-    return productFilterFunc(filteredArr, params, newIter);
-}
-
 
 export const tumblers = [ 'DTG', 'DTF', 'ТЕРМОПЕРЕНОС', 'ВЫШИВКА' ];
 

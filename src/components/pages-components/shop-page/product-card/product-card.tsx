@@ -18,7 +18,7 @@ const ProductCard: React.FC<TCardProps> = ({ title, price, img, sizes }) => {
         {sizes.length === 0 && (
           <div className={styles.no_stock_icon}>Нет в наличии</div>
         )}
-        <img src={img} alt="card pic" className={styles.card_image} />
+        <img src={img} alt="card pic" className={styles.card_image} width='371px' height='556px' loading="lazy" />
         <div className={styles.card_caption}>
           <p className={styles.card_title}>{title}</p>
           <p className={styles.card_price}>
