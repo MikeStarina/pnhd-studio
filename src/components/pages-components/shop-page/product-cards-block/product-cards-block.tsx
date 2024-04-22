@@ -24,7 +24,6 @@ export const ProductCardsBlock: React.FC<{ shopData: Array<IProduct> }> = ({ sho
           const [ entry ] = entries;
           if (entry.isIntersecting) {
             setEndIndex(endIndex + 8);
-            console.log(entry)
           }
       }, observerOptions);
       if (observerRef && observerRef.current) {
@@ -34,7 +33,7 @@ export const ProductCardsBlock: React.FC<{ shopData: Array<IProduct> }> = ({ sho
       return () => {
           if (observerRef.current) observer.unobserve(observerRef.current);
       }
-  }, [observerRef, endIndex])
+  }, [observerRef, endIndex, observerOptions])
 
     return (
       <>
@@ -60,7 +59,7 @@ export const ProductCardsBlock: React.FC<{ shopData: Array<IProduct> }> = ({ sho
         </div>
         {/* observer elem */}
         <div
-            style={{ width: '100%', height: '50px' }}
+            style={{ width: '100%', height: '1px' }}
             ref={observerRef}
         >
         </div>
