@@ -9,12 +9,12 @@ import { apiBaseUrl } from '@/app/utils/constants';
 export const ProductCardsBlock: React.FC<{ shopData: Array<IProduct> }> = ({ shopData }) => {
  
     const [ endIndex, setEndIndex ] = useState(8);
-
+    console.log(endIndex);
     const observerRef = useRef(null);
     
     const observerOptions = {
       root: null,
-      rootMargin: '0px',
+      rootMargin: '0px 0px 50px 0px',
       threshold: 1,
     }
 
@@ -22,7 +22,7 @@ export const ProductCardsBlock: React.FC<{ shopData: Array<IProduct> }> = ({ sho
 
       const observer = new IntersectionObserver((entries) => {
           const [ entry ] = entries;
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && endIndex < shopData.length) {
             setEndIndex(endIndex + 8);
           }
       }, observerOptions);
@@ -59,7 +59,7 @@ export const ProductCardsBlock: React.FC<{ shopData: Array<IProduct> }> = ({ sho
         </div>
         {/* observer elem */}
         <div
-            style={{ width: '100%', height: '1px' }}
+            style={{ width: '100%', height: '10px' }}
             ref={observerRef}
         >
         </div>
