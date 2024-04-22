@@ -36,9 +36,14 @@ const ProductFilterComp: React.FC = () => {
 
     
     const [ filterState, setFilterState ] = useState<{'category': string, 'type': string, 'priceSort': string}>({'category': '', 'type': '', 'priceSort': ''})
-
     const router = useRouter();
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+
+    const resetFilterButtonClickHandler = () => {
+        setFilterState({'category': '', 'type': '', 'priceSort': ''});
+        router.push('/shop');
+    }
+
+    const filterInputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         setFilterState({
             ...filterState,
@@ -47,7 +52,7 @@ const ProductFilterComp: React.FC = () => {
 
     }
 
-    const submitHandler = (e: any) => {
+    const filtersSubmitHandler = (e: any) => {
         e.preventDefault();
         const keys = Object.keys(filterState);
         let queryString = '';
@@ -64,7 +69,7 @@ const ProductFilterComp: React.FC = () => {
     }
 
     return (
-        <form className={styles.filters} onSubmit={submitHandler}>
+        <form className={styles.filters} onSubmit={filtersSubmitHandler}>
                 <div className={styles.filters_wrapper}>   
                     <TextField
                         select
@@ -75,7 +80,7 @@ const ProductFilterComp: React.FC = () => {
                         id='category'
                         name='category'
                         value={filterState.category}
-                        onChange={onChangeHandler}
+                        onChange={filterInputChangeHandler}
                     >
                         {filterParams.category.map((item, index) => (
                             <MenuItem value={item.value} key={index}>{item.name}</MenuItem>
@@ -90,7 +95,7 @@ const ProductFilterComp: React.FC = () => {
                         id='type'
                         name='type'
                         value={filterState.type}
-                        onChange={onChangeHandler}
+                        onChange={filterInputChangeHandler}
                     >
                         {filterParams.type.map((item, index) => (
                             <MenuItem value={item.value} key={index}>{item.name}</MenuItem>
@@ -105,13 +110,14 @@ const ProductFilterComp: React.FC = () => {
                         id='priceSort'
                         name='priceSort'
                         value={filterState.priceSort}
-                        onChange={onChangeHandler}
+                        onChange={filterInputChangeHandler}
                     >
                             <MenuItem value='ASC'>По возрастанию</MenuItem>
                             <MenuItem value='DESC'>По убыванию</MenuItem>
                     </TextField>
                 </div>
-                <button type='submit' className={styles.filters_submitButton}>применить</button>
+                <button type='button' className={styles.filters_submitButton} onClick={resetFilterButtonClickHandler}>сбросить</button>
+                <button type='submit' className={styles.filters_submitButton}>применить</button>                
         </form>
     )
 }
