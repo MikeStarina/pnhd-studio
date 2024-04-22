@@ -47,6 +47,10 @@
     cursor: pointer;
 }
 
+.form_submitButton:disabled {
+    background-color: lightgray;
+}
+
 .checkout_priceText {
     font-family: 'Neue_machina';
     font-size: 18px;

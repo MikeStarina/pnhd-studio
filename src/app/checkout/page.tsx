@@ -1,5 +1,5 @@
 "use client";
-import React, { ChangeEvent, FormEvent, useEffect } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import styles from "./page.module.css";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -32,13 +32,13 @@ const switchLabelSx = {
 
 
 const CheckoutPage: React.FC = () => {
-
+    const [ isDisabled, setIsDisabled ] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const router = useRouter();
     const { isDelivery, order, deliveryParams, paymentUrl } = useAppSelector(store => store.cart);
     const cart = useAppSelector(store => store.cart);
     const totalOrderPrice = cartSummaryFunc(order!);
-    const [ createOrder ] = useCreateOrderMutation();
+    const [ createOrder, { isLoading, isSuccess} ] = useCreateOrderMutation();
   
 
     useEffect(() => {
@@ -59,6 +59,7 @@ const CheckoutPage: React.FC = () => {
 
     const formSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setIsDisabled(true);
         const cookie: {[n: string]: string} = getCookie(document.cookie);
         const roistat = cookie.roistat_visit;
         const order = checkoutOrderObjectCreateFunc(cart, roistat);
@@ -106,7 +107,7 @@ const CheckoutPage: React.FC = () => {
                 {deliveryParams.validCityTo && deliveryParams.validCityTo.city && <p className={styles.checkout_priceText}>Доставка в: {deliveryParams.validCityTo.city}</p>}
                 {deliveryParams.validDeliveryPoint && deliveryParams.validDeliveryPoint.name && <p className={styles.checkout_priceText}>Пункт выдачи: {deliveryParams.validDeliveryPoint.name}</p>}
                 <p className={styles.checkout_finalPriceText}>= {totalOrderPrice + deliveryParams.deliveryPrice} Р.</p>
-                <button type='submit' form='checkout' className={styles.form_submitButton}>Заказать</button>
+                <button type='submit' form='checkout' className={styles.form_submitButton} disabled={isDisabled}>{isDisabled ? 'Загрузка...':'Заказать'}</button>
             </div>
         </section>
     );
