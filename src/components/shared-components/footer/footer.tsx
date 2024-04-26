@@ -22,6 +22,8 @@ const Footer: React.FC = () => {
 
                 <Image src={shape1} alt='картинка штрихкода'/>
 
+                
+                <p className={styles.footer_text}>ООО ПИНХЭД СТУДИО<br/>ИНН/КПП 7810463916/781301001</p>
                 <p className={styles.footer_text}>© 2024. Все права защищены</p>
                 <Link href='/' className={styles.footer_text}>Политика конфиденциальности</Link>
             </div>
