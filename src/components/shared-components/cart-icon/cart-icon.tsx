@@ -10,15 +10,12 @@ import { useAppDispatch } from "@/redux/redux-hooks";
 import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
 import { ICartOrderElement } from "@/app/utils/types";
 import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
-import { splitString } from "@/app/utils/constants";
 
 const CartIcon: React.FC = () => {
   const dispatch = useAppDispatch();
   const { order, paymentUrl } = useAppSelector((store) => store.cart);
   const router = useRouter();
   const pathname = usePathname();
-  const params = splitString(useSearchParams().toString());
   const containerStyles =
     order &&
     order.length > 0 &&
@@ -42,7 +39,7 @@ const CartIcon: React.FC = () => {
 
   return (
     <div className={containerStyles}>
-      <Link href={{ pathname: '/cart', query: {...params}}} className={styles.cartIcon_link}>
+      <Link href="/cart" className={styles.cartIcon_link}>
         <button type="button" className={styles.cartIcon_button}>
           <Image src={cartIcon} alt="иконка корзины" />
           {order && order.length > 0 && (

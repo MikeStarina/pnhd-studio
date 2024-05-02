@@ -11,7 +11,7 @@ import button_arrow_right from "../../../../../public/button_arrow_right.svg";
 
 import Link from "next/link";
 
-const PrintMethodsScreen: React.FC<{ searchParams: {[n:string]: string }}> = ({ searchParams}) => {
+const PrintMethodsScreen: React.FC = () => {
     return (
         <section className={styles.screen} id='methods'>
             <div className={styles.screen_firstRow}>
@@ -22,10 +22,7 @@ const PrintMethodsScreen: React.FC<{ searchParams: {[n:string]: string }}> = ({ 
                             Обеспечивает высокую детализацию принтов разных цветов и оттенков,
                             устойчивость к стирке и износу
                         </p>
-                        <Link href={{pathname: "/methods/shelkografiya", query: (() => {
-                    const { category, type, priceSort, ...rest} = searchParams;
-                    return rest;
-                })()}}>
+                        <Link href="/methods/shelkografiya">
                             <button type="button" className={styles.card_button}>
                                 <Image src={button_arrow_right} alt="стрелка вправо" />
                             </button>
@@ -61,10 +58,7 @@ const PrintMethodsScreen: React.FC<{ searchParams: {[n:string]: string }}> = ({ 
                         Подходит для принтов с кислотными, золотыми, медными цветами и
                         светоотражателей
                     </p>
-                    <Link href={{pathname: "/methods/termotransfernaya-pechat", query: (() => {
-                    const { category, type, priceSort, ...rest} = searchParams;
-                    return rest;
-                })()}}>
+                    <Link href="/methods/termotransfernaya-pechat">
                         <button type="button" className={styles.card_button}>
                             <Image src={button_arrow_right} alt="стрелка вправо" />
                         </button>
@@ -80,10 +74,7 @@ const PrintMethodsScreen: React.FC<{ searchParams: {[n:string]: string }}> = ({ 
                                 Помогает нанести рисунок с яркими насыщенными цветами, которые
                                 не выцветают со временем
                             </p>
-                            <Link href={{pathname:"/methods/dtf-pechat", query: (() => {
-                    const { category, type, priceSort, ...rest} = searchParams;
-                    return rest;
-                })()}}>
+                            <Link href="/methods/dtf-pechat">
                                 <button type="button" className={styles.card_button}>
                                     <Image src={button_arrow_right} alt="стрелка вправо" />
                                 </button>
@@ -105,10 +96,7 @@ const PrintMethodsScreen: React.FC<{ searchParams: {[n:string]: string }}> = ({ 
                                 Наносится на белые вещи за 5–15 минут, а рисунок сохраняется
                                 столько же, сколько на обычных вещах из магазинов
                             </p>
-                            <Link href={{pathname: "/methods/pryamaya-dtg-pechat",query: (() => {
-                    const { category, type, priceSort, ...rest} = searchParams;
-                    return rest;
-                })()}}>
+                            <Link href="/methods/pryamaya-dtg-pechat">
                                 <button type="button" className={styles.card_button}>
                                     <Image src={button_arrow_right} alt="стрелка вправо" />
                                 </button>
@@ -139,10 +127,7 @@ const PrintMethodsScreen: React.FC<{ searchParams: {[n:string]: string }}> = ({ 
                         Используется для лого и фраз, которые выделяются на одежде и
                         добавляют индивидуальностим
                     </p>
-                    <Link href={{pathname:"/methods/vishivka",query: (() => {
-                    const { category, type, priceSort, ...rest} = searchParams;
-                    return rest;
-                })()}}>
+                    <Link href="/methods/vishivka">
                         <button type="button" className={styles.card_button}>
                             <Image src={button_arrow_right} alt="стрелка вправо" />
                         </button>

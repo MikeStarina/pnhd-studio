@@ -6,17 +6,16 @@ import Photos from "@/components/pages-components/shop-page/product-photos/produ
 import ProductDescription from "@/components/pages-components/shop-page/product-description/product-description";
 import { Metadata, ResolvingMetadata } from 'next'
 import { apiBaseUrl } from "@/app/utils/constants";
-import Header from "@/components/shared-components/header/header";
-import Footer from "@/components/shared-components/footer/footer";
+
 
 type TMetadataProps = {
-    item: IProduct
     params: { slug: string },
     searchParams: { id: string },
 }
 
-export async function generateMetadata ({ params, searchParams, item }: TMetadataProps): Promise<Metadata> {
-    const [ currItem ]: Array<IProduct> = await getShopData({...params});
+export async function generateMetadata ({ params, searchParams }: TMetadataProps): Promise<Metadata> {
+    const shopData: Array<IProduct> = await getShopData();
+    const currItem = shopData.find(item => item._id === searchParams.id);
     return {
       title: currItem?.name,
       description: currItem?.description,
@@ -36,17 +35,17 @@ export async function generateMetadata ({ params, searchParams, item }: TMetadat
 const ProductPage: React.FC<{
     params: { slug: string };
     searchParams: { id: string };
-}> = async ({ searchParams, params }) => {
-    const [ item ]: Array<IProduct> = await getShopData({...params});
+}> = async ({ searchParams }) => {
+
+    const { id } = searchParams;
+    const shopData: Array<IProduct> = await getShopData();
+    const item = shopData?.filter((item) => item._id === id)[0];
     return (
-      <>
-      <Header searchParams={searchParams}/>
         <section className={styles.screen}>
+            {/* {screenWidth.width > 1250 ? <Photos {...item} /> : <PhotosMobile {...item} />} */}
             <Photos item={item} />
             <ProductDescription item={item} />
         </section>
-      <Footer searchParams={searchParams}/>
-      </>
     );
 };
 

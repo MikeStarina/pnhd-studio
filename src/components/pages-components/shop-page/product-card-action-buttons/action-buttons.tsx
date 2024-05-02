@@ -7,10 +7,8 @@ import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from 'uuid';
 import { actions as ustilActions } from "@/redux/utils-slice/utils.slice";
-import { useSearchParams } from "next/navigation";
 
 const ActionButtons: React.FC<{ item: IProduct }> = ({ item }) => {
-    const params = useSearchParams().toString();
     const currItem = {...item};
     const router = useRouter();
     const dispatch = useAppDispatch();
@@ -34,11 +32,9 @@ const ActionButtons: React.FC<{ item: IProduct }> = ({ item }) => {
             itemCartId: uuidv4(),
         };
 
-        const urlString = params ? `?${params}` : '';
-
         dispatch(ustilActions.resetStateSizes());
         dispatch(cartActions.addToCartWithoutPrint(orderItem));
-        router.push(`/shop${urlString}`);
+        router.push('/shop');
     };
 
 
@@ -60,8 +56,7 @@ const ActionButtons: React.FC<{ item: IProduct }> = ({ item }) => {
         };
 
         dispatch(cartActions.addToCartWithPrint(orderItem));
-        const urlString = params ? `&${params}` : '';
-        router.push(`/shop/${item.slug}/constructor?itemCartId=${itemCartId}${urlString}`)
+        router.push(`/shop/${item.slug}/constructor?itemCartId=${itemCartId}`)
     }
 
     return (

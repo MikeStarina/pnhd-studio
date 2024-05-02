@@ -8,8 +8,6 @@ import standartTee from "../../../public/sizeChart/tee_standart_sizes.png";
 import gildanTee from "../../../public/sizeChart/tee_gildan_sizes.png";
 import promoTee from "../../../public/sizeChart/tee_promo_sizes.png";
 import classicHood from "../../../public/sizeChart/hoodie_classic_sizes.png";
-import Header from "@/components/shared-components/header/header";
-import Footer from "@/components/shared-components/footer/footer";
 
 const itemsArr = [
     {
@@ -42,10 +40,8 @@ const itemsArr = [
     },
 ];
 
-const SizeChartPage: React.FC<{ searchParams: {[n:string]: string}}> = ({ searchParams }) => {
+const SizeChartPage: React.FC = () => {
     return (
-        <>
-        <Header searchParams={searchParams}/>
         <section className={styles.sizeChart}>
             <h1 className={styles.sizeChart_mainTitle}>РАЗМЕРЫ / SIZE CHART</h1>
             {itemsArr.map((item, index) => (
@@ -59,8 +55,6 @@ const SizeChartPage: React.FC<{ searchParams: {[n:string]: string}}> = ({ search
                 </div>
             ))}
         </section>
-        <Footer searchParams={searchParams}/>
-        </>
     );
 };
 

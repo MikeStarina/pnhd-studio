@@ -9,17 +9,11 @@ import LeadButton from '../lead-button/lead-button';
 
 
 
-const Header: React.FC<{ searchParams: {[n:string]: string}}> = ({ searchParams }) => {
+const Header: React.FC = () => {
 
     return (
         <header className={styles.header}>
-            <Link href={{
-                pathname: '/',
-                query: (() => {
-                    const { category, type, priceSort, ...rest} = searchParams;
-                    return rest;
-                })()
-            }} style={{textDecoration: 'none'}}>
+            <Link href='/' style={{textDecoration: 'none'}}>
                 {/*<Image className={styles.logo} src={pnhd_studio_header_logo} alt='Логотип PINHEAD STUDIO'/>*/}
                 <p className={styles.header_logo}>PNHD{'>'}STUDIO</p>
             </Link>
@@ -27,48 +21,26 @@ const Header: React.FC<{ searchParams: {[n:string]: string}}> = ({ searchParams 
                 <li className={styles.header_menu_listItem}>
                     <Link className={styles.header_menu_link} href={{
                         pathname: '/',
-                        hash: '#methods',
-                        query: (() => {
-                            const { category, type, priceSort, ...rest} = searchParams;
-                            return rest;
-                        })()
+                        hash: '#methods'
                     }}>методы нанесения</Link>
                 </li>
                 <li className={styles.header_menu_listItem}>
-                    <Link className={styles.header_menu_link} href={{pathname: '/shop', query: (() => {
-                    const { category, type, priceSort, ...rest} = searchParams;
-                    return rest;
-                })()}}>каталог</Link>
+                    <Link className={styles.header_menu_link} href='/shop'>каталог</Link>
                 </li>
                 <li className={styles.header_menu_listItem}>
-                    <Link className={styles.header_menu_link} href={{ pathname: '/', hash: '#stages', query: (() => {
-                    const { category, type, priceSort, ...rest} = searchParams;
-                    return rest;
-                })()}}>этапы работы</Link>
+                    <Link className={styles.header_menu_link} href={{ pathname: '/', hash: '#stages'}}>этапы работы</Link>
                 </li>
                 <li className={styles.header_menu_listItem}>
-                    <Link className={styles.header_menu_link} href={{ pathname: '/', hash: '#feedback', query: (() => {
-                    const { category, type, priceSort, ...rest} = searchParams;
-                    return rest;
-                })()}}>отзывы</Link>
+                    <Link className={styles.header_menu_link} href={{ pathname: '/', hash: '#feedback'}}>отзывы</Link>
                 </li>
                 <li className={styles.header_menu_listItem}>
-                    <Link className={styles.header_menu_link} href={{ pathname: '/', hash: '#faq', query: (() => {
-                    const { category, type, priceSort, ...rest} = searchParams;
-                    return rest;
-                })()}}>FAQ</Link>
+                    <Link className={styles.header_menu_link} href={{ pathname: '/', hash: '#faq'}}>FAQ</Link>
                 </li>
                 <li className={styles.header_menu_listItem}>
-                    <Link className={styles.header_menu_link} href={{ pathname: '/', hash: '#contacts', query: (() => {
-                    const { category, type, priceSort, ...rest} = searchParams;
-                    return rest;
-                })()}}>контакты</Link>
+                    <Link className={styles.header_menu_link} href={{ pathname: '/', hash: '#contacts'}}>контакты</Link>
                 </li>
                 <li className={styles.header_menu_listItem}>
-                    <Link className={styles.header_menu_link} href={{pathname: 'https://pnhd.ru', query: (() => {
-                    const { category, type, priceSort, ...rest} = searchParams;
-                    return rest;
-                })()}} target='blank'>корпоративный отдел</Link>
+                    <Link className={styles.header_menu_link} href='https://pnhd.ru' target='blank'>корпоративный отдел</Link>
                 </li>
             </ul>
             <div className={styles.header_buttonsWrapper}>

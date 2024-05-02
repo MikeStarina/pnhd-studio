@@ -6,8 +6,6 @@ import PriceScreen from "@/components/pages-components/main-page/price-screen/pr
 import MapScreen from "@/components/pages-components/main-page/map-screen/map-screen";
 import { Metadata } from "next";
 import DtfCalculator from "@/components/pages-components/method-page/dtf-calculator/dtf-calculator";
-import Header from "@/components/shared-components/header/header";
-import Footer from "@/components/shared-components/footer/footer";
 
 export const generateMetadata = ({ params }: { params: { slug: string }}): Metadata => {
 
@@ -29,13 +27,11 @@ export const generateMetadata = ({ params }: { params: { slug: string }}): Metad
 
 const MethodPage: React.FC<{
     params: { slug: string };
-    searchParams: {[n:string]: string}
-}> = async ({ params, searchParams }) => {
+}> = ({ params }) => {
     const method = methodsData.find((item) => item.slug === params.slug);
     
     return (
         <>
-            <Header searchParams={searchParams}/>
             {method && (
                 <>
                     <section className={styles.method_mainScreen}>
@@ -86,7 +82,6 @@ const MethodPage: React.FC<{
                     <MapScreen />
                 </>
             )}
-        <Footer searchParams={searchParams}/>
         </>
     );
 };

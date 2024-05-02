@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "@/redux/redux-provider";
+import Header from "@/components/shared-components/header/header";
+import Footer from "@/components/shared-components/footer/footer";
 import MobileMenu from "@/components/shared-components/mobile-menu/mobile-menu";
 import CartIcon from "@/components/shared-components/cart-icon/cart-icon";
 import Popup from "@/components/shared-components/popup/popup";
@@ -16,11 +18,8 @@ export const metadata: Metadata = {
   },
 };
 
-
-
-
 export default function RootLayout({
-  children
+  children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
@@ -32,7 +31,9 @@ export default function RootLayout({
           <MobileMenu />
           <main>
             <CartIcon />
+            <Header />
             {children}
+            <Footer />
           </main>
           <Script id='roistat'>
             {`(function(w, d, s, h, id) {
