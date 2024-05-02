@@ -13,9 +13,10 @@ const Page: React.FC<{ searchParams: { [n: string]: string }}> = ({ searchParams
     const [ counter, setCounter ] = useState(5)
 
     const router = useRouter();
-    useEffect(() => {
-        const stringParams = useSearchParams().toString();
+    const stringParams = useSearchParams().toString();
         const urlString = stringParams ? `?${stringParams}` : '';
+    useEffect(() => {
+        
         if (!searchParams.from || searchParams.from !== 'checkout') router.push(`/${urlString}`);
         const interval = setInterval(() => {
             if(counter === 0) return router.push(`/${urlString}`);

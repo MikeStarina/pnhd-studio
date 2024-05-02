@@ -54,10 +54,10 @@ const CheckoutPage: React.FC = () => {
             dispatch(cartActions.setCdekCitySearchUserQuery(''));
         }
     }, [])
-
-    useEffect(() => {
-        const stringParams = useSearchParams().toString();
+    const stringParams = useSearchParams().toString();
         const urlString = stringParams ? `?${stringParams}` : '';
+    useEffect(() => {
+        
         !order || order.length === 0 && router.replace(`/shop${urlString}`);
     }, [order])
 
@@ -75,8 +75,6 @@ const CheckoutPage: React.FC = () => {
         dispatch(cartActions.resetCart());
         sessionStorage.setItem('order', '');
         dispatch(cartActions.resetCart());
-        const stringParams = useSearchParams().toString();
-        const urlString = stringParams ? `?${stringParams}` : '';
         window.location.replace(`/thanks?from=checkout${urlString}`);
     }
 

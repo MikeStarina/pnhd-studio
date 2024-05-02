@@ -22,10 +22,11 @@ const Cart: React.FC = () => {
   const router = useRouter();
 
   const params = splitString(useSearchParams().toString());
+  const stringParams = useSearchParams().toString();
+  const urlString = stringParams ? `?${stringParams}` : '';
 
   useEffect(() => {
-    const stringParams = useSearchParams().toString();
-    const urlString = stringParams ? `?${stringParams}` : '';
+    
     order?.length === 0 && router.replace(`/shop${urlString}`);
   }, [order])
   return (
