@@ -33,6 +33,7 @@
     background-color: transparent;
     padding: 6px 10px;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .filters_submitButton:hover {

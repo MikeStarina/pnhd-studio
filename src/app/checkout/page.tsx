@@ -13,7 +13,10 @@ import { checkoutOrderObjectCreateFunc } from "../utils/cart-utils";
 import { useCreateOrderMutation } from "@/api/api";
 import { useRouter } from "next/navigation";
 import { getCookie } from "../utils/constants";
-
+import { useSearchParams } from "next/navigation";
+import { splitString } from "../utils/constants";
+import Header from "@/components/shared-components/header/header";
+import Footer from "@/components/shared-components/footer/footer";
 
 const switchSx = {
     '& .MuiSwitch-switchBase.Mui-checked': {
@@ -39,6 +42,7 @@ const CheckoutPage: React.FC = () => {
     const cart = useAppSelector(store => store.cart);
     const totalOrderPrice = cartSummaryFunc(order!);
     const [ createOrder, { isLoading, isSuccess} ] = useCreateOrderMutation();
+    const params = splitString(useSearchParams().toString());
   
 
     useEffect(() => {
@@ -52,7 +56,9 @@ const CheckoutPage: React.FC = () => {
     }, [])
 
     useEffect(() => {
-        !order || order.length === 0 && router.replace('/shop');
+        const stringParams = useSearchParams().toString();
+        const urlString = stringParams ? `?${stringParams}` : '';
+        !order || order.length === 0 && router.replace(`/shop${urlString}`);
     }, [order])
 
     
@@ -69,7 +75,9 @@ const CheckoutPage: React.FC = () => {
         dispatch(cartActions.resetCart());
         sessionStorage.setItem('order', '');
         dispatch(cartActions.resetCart());
-        window.location.replace('/thanks?from=checkout');
+        const stringParams = useSearchParams().toString();
+        const urlString = stringParams ? `?${stringParams}` : '';
+        window.location.replace(`/thanks?from=checkout${urlString}`);
     }
 
     const switchHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -82,6 +90,8 @@ const CheckoutPage: React.FC = () => {
     }
 
     return (
+        <>
+        <Header searchParams={params}/>
         <section className={styles.checkout}>
             <form className={styles.checkout_form} id='checkout' onSubmit={formSubmitHandler}>               
                 <MainUserData />
@@ -110,6 +120,8 @@ const CheckoutPage: React.FC = () => {
                 <button type='submit' form='checkout' className={styles.form_submitButton} disabled={isDisabled}>{isDisabled ? 'Загрузка...':'Заказать'}</button>
             </div>
         </section>
+        <Footer searchParams={params}/>
+        </>
     );
 };
 

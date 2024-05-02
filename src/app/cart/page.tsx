@@ -9,14 +9,28 @@ import CartItemTotalPrice from "@/components/pages-components/cart-page/cart-ite
 import CartSummary from "@/components/pages-components/cart-page/cart-summary/cart-summary";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Header from "@/components/shared-components/header/header";
+import Footer from "@/components/shared-components/footer/footer";
+import { useSearchParams } from "next/navigation";
+import { splitString } from "../utils/constants";
+
+
+
 
 const Cart: React.FC = () => {
   const { order } = useAppSelector((store) => store.cart);
-    const router = useRouter();
+  const router = useRouter();
+
+  const params = splitString(useSearchParams().toString());
+
   useEffect(() => {
-    order?.length === 0 && router.replace('/shop');
+    const stringParams = useSearchParams().toString();
+    const urlString = stringParams ? `?${stringParams}` : '';
+    order?.length === 0 && router.replace(`/shop${urlString}`);
   }, [order])
   return (
+    <>
+    <Header searchParams={params}/>
     <section className={styles.cart}>
       {order!.map((elem) => {
         
@@ -30,10 +44,12 @@ const Cart: React.FC = () => {
         );
       })}
       <CartSummary />
-      <Link href={'/checkout'} className={styles.cart_checkoutLink}>
+      <Link href={{pathname:'/checkout', query: {...params}}} className={styles.cart_checkoutLink}>
         <button type="button" className={styles.cart_checkoutButton}>оформить заказ</button>
       </Link>
     </section>
+    <Footer searchParams={params}/>
+    </>
   );
 };
 

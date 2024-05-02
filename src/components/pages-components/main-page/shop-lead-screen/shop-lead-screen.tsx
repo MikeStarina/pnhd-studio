@@ -12,7 +12,7 @@ import shop_lead_main_photo from '../../../../../public/shop_lead_main_photo.png
 
 
 
-const ShopLeadScreen: React.FC = () => {
+const ShopLeadScreen: React.FC<{ searchParams: {[n:string]: string }}> = ({ searchParams }) => {
 
     return (
         <section className={styles.screen}>
@@ -29,7 +29,10 @@ const ShopLeadScreen: React.FC = () => {
                 <div className={styles.box_shapeWrapper}>
                     <Image src={shop_screen_left_shape} alt='графическая форма' className={styles.box_shape} />
                 </div>
-                <Link href='/shop' className={styles.box_link}>
+                <Link href={{pathname:'/shop', query:(() => {
+                    const { category, type, priceSort, ...rest} = searchParams;
+                    return rest;
+                })()}} className={styles.box_link}>
                     <button className={styles.box_linkButton}>перейти в конструктор</button>
                 </Link>
                 <div className={styles.box_shapeWrapper}>

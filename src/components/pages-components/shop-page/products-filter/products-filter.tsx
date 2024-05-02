@@ -4,6 +4,7 @@ import styles from './products-filter.module.css';
 import { TextField } from "@mui/material";
 import { MenuItem } from "@mui/material";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const filterParams = {
     category: [
@@ -32,16 +33,16 @@ const inputSx = {
 }
 
 
-const ProductFilterComp: React.FC = () => {
+const ProductFilterComp: React.FC<{ searchParams: {[n:string]: string}}> = ({searchParams}) => {
 
     
-    const [ filterState, setFilterState ] = useState<{'category': string, 'type': string, 'priceSort': string}>({'category': '', 'type': '', 'priceSort': ''})
+    const [ filterState, setFilterState ] = useState<{'category': string, 'type': string, 'priceSort': string, [n:string]: string}>({...searchParams, 'category': '', 'type': '', 'priceSort': '',})
     const router = useRouter();
 
-    const resetFilterButtonClickHandler = () => {
-        setFilterState({'category': '', 'type': '', 'priceSort': ''});
-        router.push('/shop');
-    }
+    // const resetFilterButtonClickHandler = () => {
+    //     setFilterState({...searchParams, 'category': '', 'type': '', 'priceSort': ''});
+    //     router.push('/shop');
+    // }
 
     const filterInputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
@@ -116,10 +117,14 @@ const ProductFilterComp: React.FC = () => {
                             <MenuItem value='DESC'>По убыванию</MenuItem>
                     </TextField>
                 </div>
-                <button type='button' className={styles.filters_submitButton} onClick={resetFilterButtonClickHandler}>сбросить</button>
-                <button type='submit' className={styles.filters_submitButton}>применить</button>                
+                {/* <button type='button' className={styles.filters_submitButton} onClick={resetFilterButtonClickHandler}>сбросить</button> */}
+                <Link className={styles.filters_submitButton} href={{ pathname: '/shop', query: (() => {
+                    const { category, type, priceSort, ...rest} = searchParams;
+                    return rest;
+                })()}}>сбросить</Link>
+                <button type='submit' className={styles.filters_submitButton}>применить</button>             
         </form>
-    )
+    ) 
 }
 
 export default ProductFilterComp;

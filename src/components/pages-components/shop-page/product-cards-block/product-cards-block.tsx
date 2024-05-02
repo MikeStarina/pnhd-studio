@@ -6,7 +6,12 @@ import { IProduct } from '@/app/utils/types';
 import ProductCard from '../product-card/product-card';
 import { apiBaseUrl } from '@/app/utils/constants';
 
-export const ProductCardsBlock: React.FC<{ shopData: Array<IProduct> }> = ({ shopData }) => {
+type TProps = {
+  shopData: Array<IProduct>,
+  searchParams: {[n:string]: string}
+}
+
+export const ProductCardsBlock: React.FC<TProps> = ({ shopData, searchParams }) => {
  
     const [ endIndex, setEndIndex ] = useState(8);
     //console.log(endIndex);
@@ -42,7 +47,10 @@ export const ProductCardsBlock: React.FC<{ shopData: Array<IProduct> }> = ({ sho
             const url = `${apiBaseUrl}${item.image_url}`;
             return index < endIndex && (
               <Link
-                href={{ pathname: `/shop/${item.slug}`, query: `id=${item._id}` }}
+                href={{ pathname: `/shop/${item.slug}`, query:  (() => {
+                  const { category, type, priceSort, ...rest} = searchParams;
+                  return rest;
+              })(), }}
                 className={styles.link}
                 key={item._id}
               >

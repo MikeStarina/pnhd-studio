@@ -2,21 +2,23 @@
 import React, { useEffect, useState } from "react";
 import { useRouter, redirect } from "next/navigation";
 import styles from './page.module.css';
-
-
+import Header from "@/components/shared-components/header/header";
+import Footer from "@/components/shared-components/footer/footer";
+import { useSearchParams } from "next/navigation";
 
 
 
 
 const Page: React.FC<{ searchParams: { [n: string]: string }}> = ({ searchParams }) => {
-
     const [ counter, setCounter ] = useState(5)
 
     const router = useRouter();
     useEffect(() => {
-        if (!searchParams.from || searchParams.from !== 'checkout') router.push('/');
+        const stringParams = useSearchParams().toString();
+        const urlString = stringParams ? `?${stringParams}` : '';
+        if (!searchParams.from || searchParams.from !== 'checkout') router.push(`/${urlString}`);
         const interval = setInterval(() => {
-            if(counter === 0) return router.push('/');
+            if(counter === 0) return router.push(`/${urlString}`);
             setCounter(counter - 1);
         }, 1000)
 
@@ -26,6 +28,8 @@ const Page: React.FC<{ searchParams: { [n: string]: string }}> = ({ searchParams
     }, [counter])
 
     return (
+        <>
+        <Header searchParams={searchParams}/>
         <section className={styles.page}>
         {searchParams.from && searchParams.from === 'checkout' &&
             <div className={styles.wrapper}>
@@ -36,6 +40,8 @@ const Page: React.FC<{ searchParams: { [n: string]: string }}> = ({ searchParams
             </div>
         }
         </section>
+        <Footer searchParams={searchParams}/>
+        </>
     )
 }
 

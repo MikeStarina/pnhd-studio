@@ -11,6 +11,8 @@ import HowToScreen from "@/components/pages-components/main-page/howto-screen/ho
 import FeedbackScreen from "@/components/pages-components/main-page/feedback-screen/feedback-screen";
 import FaqScreen from "@/components/pages-components/main-page/faq-screen/faq-screen";
 import MapScreen from "@/components/pages-components/main-page/map-screen/map-screen";
+import Footer from "@/components/shared-components/footer/footer";
+import Header from "@/components/shared-components/header/header";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -29,19 +31,22 @@ export const metadata: Metadata = {
 };
 
 
-const App: React.FC = () => {
+const App: React.FC<{ searchParams: {[n:string]: string}}> = async ({ searchParams }) => {
+
   return (
     <>
-      <MainScreen />
+      <Header searchParams={searchParams} />
+      <MainScreen searchParams={searchParams} />
       <PhotosScreen />
-      <PrintMethodsScreen />
-      <ShopLeadScreen />
-      <StagesScreen />
+      <PrintMethodsScreen searchParams={searchParams}/>
+      <ShopLeadScreen searchParams={searchParams}/>
+      <StagesScreen searchParams={searchParams}/>
       <PriceScreen />
       <HowToScreen />
       <FeedbackScreen />
       <FaqScreen />
       <MapScreen />
+      <Footer searchParams={searchParams}/>
     </>
   );
 }

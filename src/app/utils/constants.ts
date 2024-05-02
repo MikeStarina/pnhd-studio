@@ -218,3 +218,17 @@ export function getCookie(cookie: string) {
       return acc
     }, {})
 }
+
+export const splitString = (str: string) => {
+    let obj = {};
+    const splitted = str.split('&');
+    splitted.forEach((item) => {
+      const splittedItem = item.split('=');
+      if (splittedItem[0] === 'itemCartId') return
+      obj = {
+        ...obj,
+        [splittedItem[0]]: splittedItem[1]
+      }
+    })
+    return obj;
+} 

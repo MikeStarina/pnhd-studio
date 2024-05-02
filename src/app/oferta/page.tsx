@@ -1,9 +1,13 @@
 import React from 'react';
 import styles from './page.module.css';
+import Header from '@/components/shared-components/header/header';
+import Footer from '@/components/shared-components/footer/footer';
 
-function Oferta() {
+const Oferta:React.FC<{ searchParams: {[n:string]: string }}> = async ({ searchParams }) => {
  
   return (
+    <>
+    <Header searchParams={searchParams}/>
     <section className={styles.page}>
       Правила согласования изображения и его печати в компании «Pinhead studio»
       (ООО &quot;ПИНХЭД СТУДИО&quot;)
@@ -242,6 +246,8 @@ function Oferta() {
       <br />
       <br />
     </section>
+    <Footer searchParams={searchParams}/>
+    </>
   );
 }
 

@@ -9,13 +9,16 @@ import stage_photo_two from "../../../../../public/stage_photo_two.png";
 import stage_photo_three from "../../../../../public/stage_photo_three.png";
 import stage_photo_four from "../../../../../public/stage_photo_four.png";
 
-const StagesScreen: React.FC = () => {
+const StagesScreen: React.FC<{ searchParams: {[n:string]: string }}> = ({ searchParams }) => {
     return (
         <section className={styles.screen} id="stages">
             <h2 className={styles.screen_title}>
                 почувствуй себя дизайнером и собери мерч в онлайн-конструкторе
             </h2>
-            <Link href="/shop">
+            <Link href={{pathname:"/shop",query:(() => {
+                    const { category, type, priceSort, ...rest} = searchParams;
+                    return rest;
+                })()}}>
                 <button type="button" className={styles.screen_button}>
                     <Image src={button_arrow_right} alt="стрелка вправо" />
                 </button>
