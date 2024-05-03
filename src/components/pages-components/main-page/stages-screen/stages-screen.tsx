@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./stages-screen.module.css";
-
+import UtmLink from "@/components/shared-components/utm-link/utm-link";
 import Link from "next/link";
 import Image from "next/image";
 import button_arrow_right from "../../../../../public/button_arrow_right.svg";
@@ -15,11 +15,11 @@ const StagesScreen: React.FC = () => {
             <h2 className={styles.screen_title}>
                 почувствуй себя дизайнером и собери мерч в онлайн-конструкторе
             </h2>
-            <Link href="/shop">
+            <UtmLink pathname="/shop">
                 <button type="button" className={styles.screen_button}>
                     <Image src={button_arrow_right} alt="стрелка вправо" />
                 </button>
-            </Link>
+            </UtmLink>
             <div className={styles.screen_cards}>
                 <div className={styles.cards_blockWrapper}>
                     <div className={styles.cards_textCard}>

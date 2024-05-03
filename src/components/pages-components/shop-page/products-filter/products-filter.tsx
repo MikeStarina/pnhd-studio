@@ -4,6 +4,7 @@ import styles from './products-filter.module.css';
 import { TextField } from "@mui/material";
 import { MenuItem } from "@mui/material";
 import { useRouter } from "next/navigation";
+import UtmLink from "@/components/shared-components/utm-link/utm-link";
 
 const filterParams = {
     category: [
@@ -117,7 +118,7 @@ const ProductFilterComp: React.FC = () => {
                     </TextField>
                 </div>
                 <button type='button' className={styles.filters_submitButton} onClick={resetFilterButtonClickHandler}>сбросить</button>
-                <button type='submit' className={styles.filters_submitButton}>применить</button>                
+                <button type='submit' className={styles.filters_submitButton} >применить</button>                
         </form>
     )
 }

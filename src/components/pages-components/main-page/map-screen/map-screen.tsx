@@ -5,7 +5,7 @@ import MapComponent from "./map-component";
 import Link from "next/link";
 import Image from "next/image";
 import shape from '../../../../../public/map_shape.svg';
-
+import UtmLink from "@/components/shared-components/utm-link/utm-link";
 import vk from '../../../../../public/vk_logo.svg';
 import tg from '../../../../../public/tg_logo.svg';
 import inst from '../../../../../public/inst_logo.svg';
@@ -30,9 +30,9 @@ const MapScreen: React.FC = () => {
                     <div className={styles.contacs_buttonsWrapper}>
                         <span className={styles.contacts_contactsButton}>+7 (812) 904 61 56</span>
                         <button type='button' className={styles.contacts_contactsButton}>studio@pnhd.ru</button>
-                        <Link href='/shop'>
+                        <UtmLink pathname='/shop'>
                             <button type='button' className={styles.contacts_leadButton}>перейти в конструктор</button>
-                        </Link>
+                        </UtmLink>
                     </div>
                     
                     <p className={styles.contacts_text}>

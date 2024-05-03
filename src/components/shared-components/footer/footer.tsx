@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from './footer.module.css';
-import Link from 'next/link';
 import Image from 'next/image';
 import shape1 from '../../../../public/footer_shape_1.svg';
 import shape2 from '../../../../public/footer_shape2.svg';
 import LeadForm from '../lead-form/lead-form';
+import UtmLink from '../utm-link/utm-link';
 
 
 
@@ -13,19 +13,19 @@ const Footer: React.FC = () => {
     return (
         <footer className={styles.footer}>
             <div className={styles.footer_columnOne}>
-                <Link href={{ pathname: '/', hash: '#methods'}} className={styles.footer_link}>методы нанесения</Link>
-                <Link href='/shop' className={styles.footer_link}>каталог</Link>
-                <Link href={{ pathname: '/', hash: '#stages'}} className={styles.footer_link}>этапы работы</Link>
-                <Link href={{ pathname: '/', hash: '#feedback'}} className={styles.footer_link}>отзывы</Link>
-                <Link href={{ pathname: '/', hash: '#faq'}} className={styles.footer_link}>FAQ</Link>
-                <Link href={{ pathname: '/', hash: '#contacts'}} className={styles.footer_link}>контакты</Link>
+                <UtmLink pathname='/' hash='#methods' style={styles.footer_link}>методы нанесения</UtmLink>
+                <UtmLink pathname='/shop' style={styles.footer_link}>каталог</UtmLink>
+                <UtmLink pathname='/' hash='#stages' style={styles.footer_link}>этапы работы</UtmLink>
+                <UtmLink pathname='/' hash='#feedback' style={styles.footer_link}>отзывы</UtmLink>
+                <UtmLink pathname='/' hash='#faq' style={styles.footer_link}>FAQ</UtmLink>
+                <UtmLink pathname='/' hash='#contacts' style={styles.footer_link}>контакты</UtmLink>
 
                 <Image src={shape1} alt='картинка штрихкода'/>
 
                 
                 <p className={styles.footer_text}>ООО ПИНХЭД СТУДИО<br/>ИНН/КПП 7810463916/781301001</p>
                 <p className={styles.footer_text}>© 2024. Все права защищены</p>
-                <Link href='/' className={styles.footer_text}>Политика конфиденциальности</Link>
+                <UtmLink pathname='/' style={styles.footer_text}>Политика конфиденциальности</UtmLink>
             </div>
 
             <div className={styles.footer_columnTwo}>

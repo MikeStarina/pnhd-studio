@@ -8,7 +8,7 @@ import card_image_three from "../../../../../public/card_image_three.png";
 import card_image_four from "../../../../../public/card_image_four.png";
 import card_image_five from "../../../../../public/card_image_five.png";
 import button_arrow_right from "../../../../../public/button_arrow_right.svg";
-
+import UtmLink from "@/components/shared-components/utm-link/utm-link";
 import Link from "next/link";
 
 const PrintMethodsScreen: React.FC = () => {
@@ -22,11 +22,11 @@ const PrintMethodsScreen: React.FC = () => {
                             Обеспечивает высокую детализацию принтов разных цветов и оттенков,
                             устойчивость к стирке и износу
                         </p>
-                        <Link href="/methods/shelkografiya">
+                        <UtmLink pathname="/methods/shelkografiya">
                             <button type="button" className={styles.card_button}>
                                 <Image src={button_arrow_right} alt="стрелка вправо" />
                             </button>
-                        </Link>
+                        </UtmLink>
                     </div>
 
                     <div className={styles.card_imageWrapper}>
@@ -58,11 +58,11 @@ const PrintMethodsScreen: React.FC = () => {
                         Подходит для принтов с кислотными, золотыми, медными цветами и
                         светоотражателей
                     </p>
-                    <Link href="/methods/termotransfernaya-pechat">
+                    <UtmLink pathname="/methods/termotransfernaya-pechat">
                         <button type="button" className={styles.card_button}>
                             <Image src={button_arrow_right} alt="стрелка вправо" />
                         </button>
-                    </Link>
+                    </UtmLink>
                     </div>
                 </div>
 
@@ -74,11 +74,11 @@ const PrintMethodsScreen: React.FC = () => {
                                 Помогает нанести рисунок с яркими насыщенными цветами, которые
                                 не выцветают со временем
                             </p>
-                            <Link href="/methods/dtf-pechat">
+                            <UtmLink pathname="/methods/dtf-pechat">
                                 <button type="button" className={styles.card_button}>
                                     <Image src={button_arrow_right} alt="стрелка вправо" />
                                 </button>
-                            </Link>
+                            </UtmLink>
                         </div>
 
                         <div className={styles.card_imageWrapper}>
@@ -96,11 +96,11 @@ const PrintMethodsScreen: React.FC = () => {
                                 Наносится на белые вещи за 5–15 минут, а рисунок сохраняется
                                 столько же, сколько на обычных вещах из магазинов
                             </p>
-                            <Link href="/methods/pryamaya-dtg-pechat">
+                            <UtmLink pathname="/methods/pryamaya-dtg-pechat">
                                 <button type="button" className={styles.card_button}>
                                     <Image src={button_arrow_right} alt="стрелка вправо" />
                                 </button>
-                            </Link>
+                            </UtmLink>
                         </div>
 
                         <div className={styles.card_imageWrapper}>
@@ -127,11 +127,11 @@ const PrintMethodsScreen: React.FC = () => {
                         Используется для лого и фраз, которые выделяются на одежде и
                         добавляют индивидуальностим
                     </p>
-                    <Link href="/methods/vishivka">
+                    <UtmLink pathname="/methods/vishivka">
                         <button type="button" className={styles.card_button}>
                             <Image src={button_arrow_right} alt="стрелка вправо" />
                         </button>
-                    </Link>
+                    </UtmLink>
                     </div>
                 </div>
             </div>

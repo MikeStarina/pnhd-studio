@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { IProduct } from '@/app/utils/types';
 import ProductCard from '../product-card/product-card';
 import { apiBaseUrl } from '@/app/utils/constants';
+import UtmLink from '@/components/shared-components/utm-link/utm-link';
 
 export const ProductCardsBlock: React.FC<{ shopData: Array<IProduct> }> = ({ shopData }) => {
  
@@ -41,9 +42,9 @@ export const ProductCardsBlock: React.FC<{ shopData: Array<IProduct> }> = ({ sho
           {shopData && shopData.map((item, index) => {
             const url = `${apiBaseUrl}${item.image_url}`;
             return index < endIndex && (
-              <Link
-                href={{ pathname: `/shop/${item.slug}`, query: `id=${item._id}` }}
-                className={styles.link}
+              <UtmLink
+                pathname={`/shop/${item.slug}`}
+                style={styles.link}
                 key={item._id}
               >
                 <ProductCard
@@ -52,7 +53,7 @@ export const ProductCardsBlock: React.FC<{ shopData: Array<IProduct> }> = ({ sho
                   img={url}
                   sizes={item.sizes}
                 />
-              </Link>
+              </UtmLink>
             );
           })} 
          

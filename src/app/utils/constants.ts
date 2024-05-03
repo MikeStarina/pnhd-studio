@@ -218,3 +218,25 @@ export function getCookie(cookie: string) {
       return acc
     }, {})
 }
+
+
+export const urlQueryStringToObject = (searchParams: string) => {
+    let obj = {};
+    if (searchParams.includes('#')) {
+        searchParams = searchParams.substring(0, searchParams.indexOf('#'));
+    }
+    const paramsArr = searchParams.split('&');
+    paramsArr.forEach((param) => {
+        const keyValueArr = param.split('=')
+        if (keyValueArr[0].includes('utm') ||
+            keyValueArr[0].includes('rs') ||
+            keyValueArr[0].includes('roistat')
+        ) {
+            obj = {
+                ...obj,
+                [keyValueArr[0]]: keyValueArr[1]
+            }
+        }
+    })
+    return obj;
+}

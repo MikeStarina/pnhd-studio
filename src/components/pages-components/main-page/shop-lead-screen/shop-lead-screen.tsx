@@ -7,7 +7,7 @@ import Image from "next/image";
 import shop_screen_left_shape from '../../../../../public/shop_lead_left_shape.svg'
 import shop_screen_right_shape from '../../../../../public/shop_lead_right_shape.svg'
 import shop_lead_main_photo from '../../../../../public/shop_lead_main_photo.png'
-
+import UtmLink from "@/components/shared-components/utm-link/utm-link";
 
 
 
@@ -29,9 +29,9 @@ const ShopLeadScreen: React.FC = () => {
                 <div className={styles.box_shapeWrapper}>
                     <Image src={shop_screen_left_shape} alt='графическая форма' className={styles.box_shape} />
                 </div>
-                <Link href='/shop' className={styles.box_link}>
+                <UtmLink pathname='/shop' style={styles.box_link}>
                     <button className={styles.box_linkButton}>перейти в конструктор</button>
-                </Link>
+                </UtmLink>
                 <div className={styles.box_shapeWrapper}>
                     <Image src={shop_screen_right_shape} alt='графическая форма' className={styles.box_shape} />
                 </div>

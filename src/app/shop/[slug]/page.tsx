@@ -14,8 +14,8 @@ type TMetadataProps = {
 }
 
 export async function generateMetadata ({ params, searchParams }: TMetadataProps): Promise<Metadata> {
-    const shopData: Array<IProduct> = await getShopData();
-    const currItem = shopData.find(item => item._id === searchParams.id);
+    const [ currItem ]: Array<IProduct> = await getShopData({ slug: params.slug});
+    //const currItem = shopData.find(item => item._id === searchParams.id);
     return {
       title: currItem?.name,
       description: currItem?.description,
@@ -35,11 +35,11 @@ export async function generateMetadata ({ params, searchParams }: TMetadataProps
 const ProductPage: React.FC<{
     params: { slug: string };
     searchParams: { id: string };
-}> = async ({ searchParams }) => {
+}> = async ({ params, searchParams }) => {
 
-    const { id } = searchParams;
-    const shopData: Array<IProduct> = await getShopData();
-    const item = shopData?.filter((item) => item._id === id)[0];
+    //const { id } = searchParams;
+    const [ item ]: Array<IProduct> = await getShopData({ slug: params.slug});
+    //const item = shopData?.filter((item) => item._id === id)[0];
     return (
         <section className={styles.screen}>
             {/* {screenWidth.width > 1250 ? <Photos {...item} /> : <PhotosMobile {...item} />} */}
