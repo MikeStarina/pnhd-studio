@@ -68,11 +68,6 @@ export default function RootLayout({
           `}
           </Script>
           <Script
-            src="//cdn.callibri.ru/callibri.js"
-            async
-            id="calltr"
-          ></Script>
-          <Script
             id='andata'
             type="application/javascript"
             async
@@ -80,24 +75,6 @@ export default function RootLayout({
           ></Script>
         </body>
       </ReduxProvider>
-
-      <Script async
-            id="b24widget">
-        {`(function(w,d,u){
-                var s=d.createElement('script');s.async=true;s.src=u+'?'+(Date.now()/60000|0);
-                var h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(s,h);
-        })(window,document,'https://cdn-ru.bitrix24.ru/b26302288/crm/site_button/loader_2_96njja.js');`}
-      </Script>
-
-      <Script id='GTM'>
-         {`
-          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','GTM-TVTGSHWK');
-         `}
-      </Script>
     </html>
   );
 }
