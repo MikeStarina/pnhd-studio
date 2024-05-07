@@ -50,11 +50,11 @@ const MainScreen: React.FC = () => {
 
 
                             <div className={styles.smallBlockOne_buttonWrapper}>
-                                <UtmLink pathname='/shop'>
+                                <Link href='/shop'>
                                     <button type='button' className={styles.smallBlockOne_button}>
                                         <Image src={button_arrow} alt='Стрелка на кнопке' className={styles.button_arrow}></Image>
                                     </button>
-                                </UtmLink>
+                                </Link>
                                 
                             </div>
   
@@ -81,7 +81,7 @@ const MainScreen: React.FC = () => {
             <div className={styles.screen_largeBlock}>
                 <div className={styles.largeBlock_contentWrapper}>
                     <div className={styles.largeBlock_buttonsWrapper}>
-                        <UtmLink style={styles.largeBlock_link} pathname='/shop'>перейти в каталог</UtmLink>
+                        <Link className={styles.largeBlock_link} href='/shop'>перейти в каталог</Link>
                         <LeadButton styleType='white' />
                     </div>
                     <h1 className={styles.screen_mainTitle}>

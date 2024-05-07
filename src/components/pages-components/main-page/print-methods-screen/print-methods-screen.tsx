@@ -22,11 +22,11 @@ const PrintMethodsScreen: React.FC = () => {
                             Обеспечивает высокую детализацию принтов разных цветов и оттенков,
                             устойчивость к стирке и износу
                         </p>
-                        <UtmLink pathname="/methods/shelkografiya">
+                        <Link href="/methods/shelkografiya">
                             <button type="button" className={styles.card_button}>
                                 <Image src={button_arrow_right} alt="стрелка вправо" />
                             </button>
-                        </UtmLink>
+                        </Link>
                     </div>
 
                     <div className={styles.card_imageWrapper}>
@@ -58,11 +58,11 @@ const PrintMethodsScreen: React.FC = () => {
                         Подходит для принтов с кислотными, золотыми, медными цветами и
                         светоотражателей
                     </p>
-                    <UtmLink pathname="/methods/termotransfernaya-pechat">
+                    <Link href="/methods/termotransfernaya-pechat">
                         <button type="button" className={styles.card_button}>
                             <Image src={button_arrow_right} alt="стрелка вправо" />
                         </button>
-                    </UtmLink>
+                    </Link>
                     </div>
                 </div>
 
@@ -74,11 +74,11 @@ const PrintMethodsScreen: React.FC = () => {
                                 Помогает нанести рисунок с яркими насыщенными цветами, которые
                                 не выцветают со временем
                             </p>
-                            <UtmLink pathname="/methods/dtf-pechat">
+                            <Link href="/methods/dtf-pechat">
                                 <button type="button" className={styles.card_button}>
                                     <Image src={button_arrow_right} alt="стрелка вправо" />
                                 </button>
-                            </UtmLink>
+                            </Link>
                         </div>
 
                         <div className={styles.card_imageWrapper}>
@@ -96,11 +96,11 @@ const PrintMethodsScreen: React.FC = () => {
                                 Наносится на белые вещи за 5–15 минут, а рисунок сохраняется
                                 столько же, сколько на обычных вещах из магазинов
                             </p>
-                            <UtmLink pathname="/methods/pryamaya-dtg-pechat">
+                            <Link href="/methods/pryamaya-dtg-pechat">
                                 <button type="button" className={styles.card_button}>
                                     <Image src={button_arrow_right} alt="стрелка вправо" />
                                 </button>
-                            </UtmLink>
+                            </Link>
                         </div>
 
                         <div className={styles.card_imageWrapper}>
@@ -127,11 +127,11 @@ const PrintMethodsScreen: React.FC = () => {
                         Используется для лого и фраз, которые выделяются на одежде и
                         добавляют индивидуальностим
                     </p>
-                    <UtmLink pathname="/methods/vishivka">
+                    <Link href="/methods/vishivka">
                         <button type="button" className={styles.card_button}>
                             <Image src={button_arrow_right} alt="стрелка вправо" />
                         </button>
-                    </UtmLink>
+                    </Link>
                     </div>
                 </div>
             </div>

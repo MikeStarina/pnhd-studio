@@ -13,43 +13,40 @@ const Header: React.FC = () => {
     return (
        
         <header className={styles.header}>
-                <UtmLink
-                    pathname='/'
-                >
+                <Link href='/' style={{ textDecoration: 'none' }}>
                     <p className={styles.header_logo}>PNHD{'>'}STUDIO</p>
-                </UtmLink>
+                </Link>
             <ul className={styles.header_menu}>
                 <li className={styles.header_menu_listItem}>
-                        <UtmLink
-                            pathname='/'
-                            style={styles.header_menu_link}
-                            hash='#methods'
+                        <Link
+                            className={styles.header_menu_link}
+                            href={{ pathname: '/', hash: '#methods'}}
                         >
                             методы нанесения
-                        </UtmLink>
+                        </Link>
                 </li>
                 <li className={styles.header_menu_listItem}>
-                        <UtmLink
-                            pathname='/shop'
-                            style={styles.header_menu_link}
+                        <Link
+                            href='/shop'
+                            className={styles.header_menu_link}
                         >
                             каталог
-                        </UtmLink>
+                        </Link>
                 </li>
                 <li className={styles.header_menu_listItem}>
-                    <UtmLink style={styles.header_menu_link} pathname='/' hash='#stages'>этапы работы</UtmLink>
+                    <Link className={styles.header_menu_link} href={{ pathname: '/', hash: '#stages'}}>этапы работы</Link>
                 </li>
                 <li className={styles.header_menu_listItem}>
-                    <UtmLink style={styles.header_menu_link} pathname='/' hash='#feedback'>отзывы</UtmLink>
+                    <Link className={styles.header_menu_link} href={{pathname: '/', hash: '#feedback'}}>отзывы</Link>
                 </li>
                 <li className={styles.header_menu_listItem}>
-                    <UtmLink style={styles.header_menu_link} pathname='/' hash='#faq'>FAQ</UtmLink>
+                    <Link className={styles.header_menu_link} href={{pathname: '/', hash: '#faq'}}>FAQ</Link>
                 </li>
                 <li className={styles.header_menu_listItem}>
-                    <UtmLink style={styles.header_menu_link} pathname='/' hash='#contacts'>контакты</UtmLink>
+                    <Link className={styles.header_menu_link} href={{pathname: '/', hash: '#contacts'}}>контакты</Link>
                 </li>
                 <li className={styles.header_menu_listItem}>
-                    <Link className={styles.header_menu_link} href='https://pnhd.ru' target='blank'>корпоративный отдел</Link>
+                    <UtmLink style={styles.header_menu_link} pathname='https://pnhd.ru' target='blank'>корпоративный отдел</UtmLink>
                 </li>
             </ul>
             <div className={styles.header_buttonsWrapper}>

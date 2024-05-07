@@ -29,9 +29,9 @@ const ShopLeadScreen: React.FC = () => {
                 <div className={styles.box_shapeWrapper}>
                     <Image src={shop_screen_left_shape} alt='графическая форма' className={styles.box_shape} />
                 </div>
-                <UtmLink pathname='/shop' style={styles.box_link}>
+                <Link href='/shop' className={styles.box_link}>
                     <button className={styles.box_linkButton}>перейти в конструктор</button>
-                </UtmLink>
+                </Link>
                 <div className={styles.box_shapeWrapper}>
                     <Image src={shop_screen_right_shape} alt='графическая форма' className={styles.box_shape} />
                 </div>

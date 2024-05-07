@@ -15,11 +15,11 @@ const StagesScreen: React.FC = () => {
             <h2 className={styles.screen_title}>
                 почувствуй себя дизайнером и собери мерч в онлайн-конструкторе
             </h2>
-            <UtmLink pathname="/shop">
+            <Link href="/shop">
                 <button type="button" className={styles.screen_button}>
                     <Image src={button_arrow_right} alt="стрелка вправо" />
                 </button>
-            </UtmLink>
+            </Link>
             <div className={styles.screen_cards}>
                 <div className={styles.cards_blockWrapper}>
                     <div className={styles.cards_textCard}>
