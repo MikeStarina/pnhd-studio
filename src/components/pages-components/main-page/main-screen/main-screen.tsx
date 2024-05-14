@@ -8,7 +8,7 @@ import main_screen_tshirt from '../../../../../public/main_screen_tshirt.png';
 import button_arrow from '../../../../../public/button_arrow.svg';
 import LeadButton from '@/components/shared-components/lead-button/lead-button';
 import Link from 'next/link';
-import UtmLink from '@/components/shared-components/utm-link/utm-link';
+import Tee from '@/components/shared-components/3d-tee/3d-tee';
 
 
 
@@ -33,8 +33,10 @@ const MainScreen: React.FC = () => {
                 <div className={styles.screen_blocksWrapper}>
                     
                     <div className={styles.screen_smallBlockOne}>
+                        {/* Вот сюда */}
                         <div className={styles.smallBlockImageWrapper}>
-                            <Image src={main_screen_tshirt} alt='футболка' className={styles.smallBlock_image} />
+                            {/* <Image src={main_screen_tshirt} alt='футболка' className={styles.smallBlock_image} /> */}
+                            <Tee backdropStatus={true} />
                         </div>
                         
                         <div className={styles.smallBlock_squareWrapper}>
@@ -42,11 +44,11 @@ const MainScreen: React.FC = () => {
                         </div>
                             
                             
-                            <div className={styles.divForm_verticalHelper}>
-                                <p className={styles.smallBlock_title}>футболка<span className={styles.title_star}>*</span></p>
+                            {/* <div className={styles.divForm_verticalHelper}>
+                                
                             </div>
                             <div className={styles.divForm_horizontalHelper}></div>
-                            <div className={styles.divform_main}></div>
+                            <div className={styles.divform_main}></div> */}
 
 
                             <div className={styles.smallBlockOne_buttonWrapper}>
