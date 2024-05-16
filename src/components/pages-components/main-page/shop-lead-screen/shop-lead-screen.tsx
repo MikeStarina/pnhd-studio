@@ -36,7 +36,7 @@ const ShopLeadScreen: React.FC = () => {
                     <Image src={shop_screen_right_shape} alt='графическая форма' className={styles.box_shape} />
                 </div>
                 <div className={styles.box_imageWrapper}>
-                    <Tee backdropStatus={false} />
+                    <Tee backdropStatus={false} fov={15} />
                     {/* <Image src={shop_lead_main_photo} alt='футболка с принтом' className={styles.box_image} /> */}
                 </div>
             </div>
