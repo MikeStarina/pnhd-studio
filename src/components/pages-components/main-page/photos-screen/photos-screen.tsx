@@ -1,6 +1,5 @@
 import React from "react";
 import styles from './photos-screen.module.css';
-
 import Image from "next/image";
 import photos_screen_image_one from '../../../../../public/photos_screen_image_one.png'
 import photos_screen_image_two from '../../../../../public/photos_screen_image_two.png'
@@ -15,7 +14,9 @@ const PhotosScreen: React.FC = () => {
     return (
         <section className={styles.screen}>
             <div className={styles.screen_largeBlock}>
-                <Image src={photos_screen_image_one} alt='футболка с принтом' className={styles.largeBlock_image}   />
+                <div className={styles.imgWrapper}>
+                    <Image src={photos_screen_image_one} alt='футболка с принтом' className={styles.largeBlock_image}   />
+                </div>                
                 <div className={styles.largeBlock_topImageWrapper}>
                     <Image src={photos_screen_image_four} alt='футболка с принтом' className={styles.largeBlock_topImage}   />
                 </div>

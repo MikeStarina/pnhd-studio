@@ -55,13 +55,17 @@
 
 .card_imageWrapper {
     width: 90%;
+    max-height: 220px;
     border-radius: 20px;
     overflow: hidden;
+    background-color: #393939;
 }
 
 .card_image {
-    width: 100%;
+    height: 100%;
+    width: 110%;
     object-fit: cover;
+    object-position: 0px top;
 }
 
 .card_title {

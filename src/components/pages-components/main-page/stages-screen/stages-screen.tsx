@@ -34,7 +34,7 @@ const StagesScreen: React.FC = () => {
                             <Image
                                 src={stages_photo_one}
                                 alt="Фото модели"
-                                style={{ objectFit: "cover", height: "100%" }}
+                                className={styles.card_image}
                             />
                         </div>
                     </div>
@@ -54,7 +54,7 @@ const StagesScreen: React.FC = () => {
                             <Image
                                 src={stage_photo_two}
                                 alt="Фото модели"
-                                style={{ objectFit: "cover", height: "100%" }}
+                                className={styles.card_image}
                             />
                         </div>
                     </div>
@@ -66,7 +66,7 @@ const StagesScreen: React.FC = () => {
                             <Image
                                 src={stage_photo_three}
                                 alt="Фото модели"
-                                style={{ objectFit: "cover", height: "100%" }}
+                                className={styles.card_image}
                             />
                         </div>
                     </div>
@@ -86,7 +86,7 @@ const StagesScreen: React.FC = () => {
                             <Image
                                 src={stage_photo_four}
                                 alt="Фото модели"
-                                style={{ objectFit: "cover", height: "100%" }}
+                                className={styles.card_image}
                             />
                         </div>
                     </div>

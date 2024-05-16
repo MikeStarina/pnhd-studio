@@ -8,7 +8,6 @@ import card_image_three from "../../../../../public/card_image_three.png";
 import card_image_four from "../../../../../public/card_image_four.png";
 import card_image_five from "../../../../../public/card_image_five.png";
 import button_arrow_right from "../../../../../public/button_arrow_right.svg";
-import UtmLink from "@/components/shared-components/utm-link/utm-link";
 import Link from "next/link";
 
 const PrintMethodsScreen: React.FC = () => {
@@ -49,7 +48,7 @@ const PrintMethodsScreen: React.FC = () => {
                         <Image
                             src={card_image_two}
                             alt="стрелка вправо"
-                            style={{ objectFit: "cover", width: "100%" }}
+                            style={{ objectFit: "cover", width: "100%", height: '100%' }}
                         />
                     </div>
                     <div className={styles.card_textWrapper}>
@@ -118,7 +117,7 @@ const PrintMethodsScreen: React.FC = () => {
                         <Image
                             src={card_image_three}
                             alt="стрелка вправо"
-                            style={{ objectFit: "cover", width: "100%" }}
+                            style={{ objectFit: "cover", width: "100%", height: '100%' }}
                         />
                     </div>
                     <div className={styles.card_textWrapper}>

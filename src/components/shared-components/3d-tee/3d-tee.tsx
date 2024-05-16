@@ -17,7 +17,7 @@ const Tee = ({ backdropStatus }: { backdropStatus: boolean}) => {
       <Suspense fallback={null}>
         <Canvas shadows camera={{ position: [0, 0, 2.5], fov: 25}} gl={{ preserveDrawingBuffer: true }} eventPrefix="client">
             <ambientLight intensity={0.5} />
-            <Environment files="https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/potsdamer_platz_1k.hdr" />
+            <Environment files="/potsdamer_platz_1k.hdr" />
             <CameraRig>
                 {backdropStatus && <Backdrop />}
                 <Center>
