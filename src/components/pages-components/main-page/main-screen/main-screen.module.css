@@ -103,6 +103,7 @@
     align-items: center;
     box-sizing: border-box;
     overflow: hidden;
+    background-color: #393939;
 }
 
 .smallBlock_title {

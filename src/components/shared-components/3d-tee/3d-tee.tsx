@@ -17,12 +17,19 @@ const Tee = ({ backdropStatus, fov = 25 }: { backdropStatus: boolean, fov: numbe
         <Canvas shadows={false} camera={{ position: [0, 0, 2.5], fov}} gl={{ preserveDrawingBuffer: true }} eventPrefix="client">
             <ambientLight intensity={0.5} />
             <Environment files="/potsdamer_platz_1k.hdr" />
-            {backdropStatus && <CameraRig>
+            {backdropStatus &&
+                <Center>
+                    <Shirt backdropStatus={backdropStatus} />
+                    <OrbitControls maxPolarAngle={Math.PI / 2} minPolarAngle={Math.PI / 2} autoRotate autoRotateSpeed={-5} enablePan={false} enableZoom={false}/>  
+                </Center>
+            }
+            {/* {backdropStatus && <CameraRig>
                 <Backdrop />
                 <Center>
                     <Shirt backdropStatus={backdropStatus} />
+                    <OrbitControls maxPolarAngle={Math.PI / 2} minPolarAngle={Math.PI / 2} autoRotate autoRotateSpeed={5} enablePan={false} enableZoom={false}/>  
                 </Center>
-            </CameraRig>}
+            </CameraRig>} */}
             {!backdropStatus && 
               <Center>
                 
@@ -62,9 +69,10 @@ function CameraRig({ children }: any) {
 }
 
 function Shirt({ backdropStatus }: any) {
-    //const snap = useSnapshot(state)
-    //const texture = useTexture(`/${snap.decal}.png`)
-    const texture = useTexture('/texture.png')
+
+    const whiteTexture = useTexture('whiteTexture.png');
+    //const texture = useTexture('/texture.png');
+    const texture = useTexture('/Glitch2.jpg');
     const ref = useRef(null);
     const { nodes, materials } = useGLTF('/shirt_baked_collapsed.glb')
     //@ts-ignore
@@ -78,8 +86,8 @@ function Shirt({ backdropStatus }: any) {
         //@ts-ignore
       <mesh castShadow ref={ref} geometry={nodes.T_Shirt_male.geometry} material={materials.lambert1} material-roughness={2} dispose={null} polygonOffset
       polygonOffsetFactor={1}>
-        {!backdropStatus && <Decal position={[0, 0.04, 0.15]} rotation={[0, 0, 0]}  scale={1}>
-              <meshPhysicalMaterial
+         <Decal position={[0, 0.04, 0.15]} rotation={[0, 0, 0]}  scale={1}>
+         {!backdropStatus ? (<meshPhysicalMaterial
               transparent
               polygonOffset
               polygonOffsetFactor={-10}
@@ -93,15 +101,31 @@ function Shirt({ backdropStatus }: any) {
               clearcoat={0.5}
               metalness={0.75}
               toneMapped={false}
+            />) : (
+              <meshPhysicalMaterial
+                transparent
+                polygonOffset
+                polygonOffsetFactor={-10}
+                map={whiteTexture}
+                map-flipY={false}
+                map-anisotropy={16}
+                iridescence={1}
+                iridescenceIOR={1}
+                iridescenceThicknessRange={[0, 1400]}
+                roughness={1}
+                clearcoat={0.5}
+                metalness={0.75}
+                toneMapped={false}
             />
+            )}
           </Decal>  
-        }
+        
       </mesh>
     )
   }
   
   useGLTF.preload('/shirt_baked_collapsed.glb')
-  ;['/hoodie_text.png'].forEach(useTexture.preload)
+  ;['/whiteTexture.png', '/Glitch2.jpg'].forEach(useTexture.preload)
 
 
 
