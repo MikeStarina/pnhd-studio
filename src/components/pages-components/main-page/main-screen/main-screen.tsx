@@ -36,7 +36,7 @@ const MainScreen: React.FC = () => {
                         {/* Вот сюда */}
                         <div className={styles.smallBlockImageWrapper}>
                             {/* <Image src={main_screen_tshirt} alt='футболка' className={styles.smallBlock_image} /> */}
-                            <Tee backdropStatus={true} fov={25} />
+                            <Tee backdropStatus={true} fov={20} />
                         </div>
                         
                         <div className={styles.smallBlock_squareWrapper}>

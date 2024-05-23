@@ -8,6 +8,7 @@ Disallow: /static/media/1.baa9cb59494a8f054044.webp
 Disallow: /tproduct/1-974652062611-klassicheskii-hudi-chernii
 Disallow: /faq
 Disallow: /rules
+Disallow: /test
 Disallow: /store
 Disallow: /shelkografiya
 Disallow: /pechat-logotipa
