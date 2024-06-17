@@ -1,6 +1,6 @@
 import { ICdekPointsResponse, IProduct } from "@/app/utils/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ICartOrderElement } from "@/app/utils/types";
+import { ICartOrderElement, TParams } from "@/app/utils/types";
 import { IUploadPrintResponse } from "@/app/utils/types";
 import { setCoords } from "@/app/utils/constructor-utils";
 import { getPrintFormatAndPriceFunc } from "@/app/utils/constructor-utils";
@@ -121,7 +121,7 @@ const cartSlice = createSlice({
                 }
             })
         },
-        updateStageParams: (state, action: PayloadAction<{newAttrs: IStageParams, activeView: string, itemCartId: string}>) => {
+        updateStageParams: (state, action: PayloadAction<{newAttrs: TParams, activeView: string, itemCartId: string}>) => {
             const { newAttrs, activeView, itemCartId } = action.payload;
             state.order?.forEach((elem) => {
                 if (elem.itemCartId === itemCartId) {
@@ -131,7 +131,7 @@ const cartSlice = createSlice({
             })
             sessionStorage.setItem('order', JSON.stringify(state.order));
         },
-        updateCartParams: (state, action: PayloadAction<{newAttrs: IStageParams, activeView: string, itemColor: string, itemCartId: string}>) => {
+        updateCartParams: (state, action: PayloadAction<{newAttrs: TParams, activeView: string, itemColor: string, itemCartId: string}>) => {
             const { newAttrs, activeView, itemColor, itemCartId } = action.payload;
             const newCartParams = getPrintFormatAndPriceFunc(newAttrs, activeView, itemColor);
             state.order?.forEach((elem) => {

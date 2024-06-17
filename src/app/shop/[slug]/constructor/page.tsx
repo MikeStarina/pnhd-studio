@@ -4,6 +4,8 @@ import styles from "./page.module.css";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAppSelector } from "@/redux/redux-hooks";
 import Controls from "@/components/pages-components/constructor-page/constructor-controls/constructor-controls";
+import Stage from "@/components/pages-components/constructor-page/3dmockup/3dmokup";
+import DecalComp from "@/components/pages-components/constructor-page/3dmockup/decal";
 
 import dynamic from "next/dynamic";
 const DynamicStage = dynamic(
@@ -14,23 +16,29 @@ const DynamicStage = dynamic(
 const Constructor = () => {
     const router = useRouter();
     const itemCartId = useSearchParams().get("itemCartId");
-    const { order } = useAppSelector((store) => store.cart);
-    const orderElement = order?.filter((item) => item.itemCartId === itemCartId)[0];
+    //const { order } = useAppSelector((store) => store.cart);
+    //const orderElement = order?.filter((item) => item.itemCartId === itemCartId)[0];
+    //const { activeView } = useAppSelector((store) => store.printConstructor);
 
-
-
+    //console.log('page render')
     useEffect(() => {
-        if (!orderElement) router.replace("/shop"); //переписать чтоб возвращало на кароточку товара
-    }, [orderElement, router]);
+        if (!itemCartId) router.replace("/shop"); //переписать чтоб возвращало на кароточку товара
+    }, [itemCartId]);
 
     return (
         <section className={styles.screen}>
             <div className={styles.mockup_container}>
                 <div className={styles.stage_container}>
-                    {orderElement?.item && <DynamicStage orderElement={orderElement} />}
+                    {/* {orderElement?.item && <DynamicStage orderElement={orderElement} />} */}
+
+                        <Stage>
+                            <DecalComp />
+                        </Stage>
+                    
+                    
                 </div>
             </div>
-            {orderElement && <Controls orderElement={orderElement} />}
+            {itemCartId && <Controls itemCartId={itemCartId} />}
         </section>
     );
 };

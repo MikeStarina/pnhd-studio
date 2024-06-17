@@ -26,7 +26,7 @@ const FileUploader: React.FC<{ orderElement: ICartOrderElement }> = ({
     //console.log(currentPrint);
 
     const [ uploadPrint, print ] = useUploadPrintImageMutation();
-
+    //console.log(print);
 
 
 
@@ -44,6 +44,7 @@ const FileUploader: React.FC<{ orderElement: ICartOrderElement }> = ({
         } else {            
             data.append("files", print, `${uuidv4()}_${print.name}`);           
             const uploadedPrint = await uploadPrint(data);
+            //console.log(uploadPrint);
             // @ts-ignore
             uploadedPrint && dispatch(cartActions.setPrint({ print: uploadedPrint, activeView, itemCartId: orderElement.itemCartId, itemType: orderElement.item.type, itemColor: orderElement.item.color }));
             

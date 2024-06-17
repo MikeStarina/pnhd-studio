@@ -82,8 +82,9 @@ const StageComponent: React.FC<{ orderElement: ICartOrderElement}> = ({ orderEle
             imgRef={imgRef}
             scene={getScene}
             onChange={(newAttrs) => {
-               dispatch(cartActions.updateStageParams({ newAttrs, activeView, itemCartId: orderElement.itemCartId }))
-               dispatch(cartActions.updateCartParams({newAttrs, activeView, itemColor: orderElement.item.color, itemCartId: orderElement.itemCartId }))
+
+               //dispatch(cartActions.updateStageParams({ newAttrs, activeView, itemCartId: orderElement.itemCartId }))
+               //dispatch(cartActions.updateCartParams({newAttrs, activeView, itemColor: orderElement.item.color, itemCartId: orderElement.itemCartId }))
                getScene(activeView);
             }}
           />

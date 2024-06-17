@@ -4,6 +4,9 @@ import { IPrintFile } from "./types";
 import { IInitialPrintParams } from "./types";
 import { IStageParams } from "./types";
 import { v4 as uuidv4 } from 'uuid';
+import { apiBaseUrl } from "./constants";
+import * as THREE from 'three';
+import { TParams } from "./types";
 
 export const sideItemForPrint = (item: IProduct, activeView: string) => {
     let initialParams = {
@@ -155,108 +158,168 @@ export const totalPrintPriceFunc = (
 
 
 
+
 // считает начальные координаты загруженного изображения
-export const setCoords = (currentImage: IInitialPrintParams, activeView: string, itemType: string): {x: number, y: number, width: number, height: number, rotation: number} => {
-  let imageCoords = {
-    x: 125,
-    y: 100,
-    width: 220,
-    height: 300,
-    rotation: 0,
+export const setCoords = (currentImage: IInitialPrintParams, activeView: string, itemType: string): TParams => {
+
+
+  let params = {
+    
+      url: currentImage.url ? `${apiBaseUrl}${currentImage.url}` : undefined,
+      decalRotation: [0,0,0],
+      decalPosition: [0,0.1,0],
+      deltaX: 0,
+      deltaY: 0,
+      deltaZ: 0,
+      decalScale: [0.15,0.15 * (currentImage.height / currentImage.width),0.4],
+      pivotVisibility: false,
+      pivotRotation: [0,0,0],
+      pivotPosition: [0,0,0.15],
+      pivotScale: 0.15,
+      dragAxis: [true, true, false],  
+      meshRotation: [0,0,0], 
   };
 
-  if (activeView === 'front' || activeView === 'back') {
-    if (currentImage.width >= currentImage.height) {
-      const proportion = currentImage.width / currentImage.height;
-      const displayWidth = 200;
-      const displayHeight = displayWidth / proportion;
+  
+  if (activeView === 'front') {
+    const deltaX = 0.15;
+    const deltaY = 0.15 * (currentImage.height / currentImage.width);
+    let deltaZ = 0.4;
 
-      imageCoords = {
-        x: 150,
-        y: itemType === 'hoodie' ? 130 : itemType === 'totebag' ? 190 : itemType === 'longsleeve' ? 130 : 100,
-        width: displayWidth,
-        height: displayHeight,
-        rotation: 0,
-      };
-    } else {
-      const proportion = currentImage.width / currentImage.height;
-      const displayHeight = 200;
-      const displayWidth = displayHeight * proportion;
-      const xCoord = (220 - displayWidth) / 2;
 
-      imageCoords = {
-        x: 140 + xCoord,
-        y: itemType === 'hoodie' ? 130 : itemType === 'totebag' ? 190 : itemType === 'longsleeve' ? 130 : 100,
-        width: displayWidth,
-        height: displayHeight,
-        rotation: 0,
-      };
-    }
-  } else if (activeView === 'lsleeve') {
-    if (currentImage.width >= currentImage.height) {
-      const proportion = currentImage.width / currentImage.height;
-      const displayWidth = itemType === 'hoodie' ? 50 : 80;
-      const displayHeight = displayWidth / proportion;
+    if (itemType === 'tshirt') {  return {
+          ...params,
+          deltaX,
+          deltaY,
+          deltaZ,
+          decalScale: [deltaX,deltaY,deltaZ],
+      };}
+    if (itemType === 'longsleeve' || itemType === 'sweatshirt' || itemType === 'hoodie') {  return {
+          ...params,
+          deltaX,
+          deltaY,
+          deltaZ,
+          decalScale: [deltaX,deltaY,deltaZ],
+          decalPosition: [0,0.2,0],
+          pivotPosition: [0,0.1,0.15],
+      };}
 
-      imageCoords = {
-        x: 230,
-        y: itemType === 'hoodie' ? 125 : 105,
-        width: displayWidth,
-        height: displayHeight,
-        rotation: 0,
-      };
-    } else {
-      const proportion = currentImage.width / currentImage.height;
-      const displayHeight = 80;
-      const displayWidth = displayHeight * proportion;
-      const xCoord = (90 - displayWidth) / 2;
+      if (itemType === 'totebag') {  
+        
+        deltaZ = 0.2;
 
-      imageCoords = {
-        x: itemType === 'hoodie' ? 230 : 230 + xCoord,
-        y: itemType === 'hoodie' ? 125 : 105,
-        width: displayWidth,
-        height: displayHeight,
-        rotation: 0,
-      };
-    }
-  } else if (activeView === 'rsleeve') {
-    if (currentImage.width >= currentImage.height) {
-      const proportion = currentImage.width / currentImage.height;
-      const displayWidth = itemType === 'hoodie' ? 50 : 80;
-      const displayHeight = displayWidth / proportion;
+        return {
+        ...params,
+        deltaX,
+        deltaY,
+        deltaZ,
+        decalScale: [deltaX,deltaY,deltaZ],
+        decalPosition: [0,0,0.1],
+    };}
 
-      imageCoords = {
-        x: itemType === 'hoodie' ? 215 : 190,
-        y: itemType === 'hoodie' ? 125 : 105,
-        width: displayWidth,
-        height: displayHeight,
-        rotation: 0,
-      };
-    } else {
-      const proportion = currentImage.width / currentImage.height;
-      const displayHeight = 80;
-      const displayWidth = displayHeight * proportion;
-      const xCoord = (90 - displayWidth) / 2;
-
-      imageCoords = {
-        x: itemType === 'hoodie' ? 215 : 190 + xCoord,
-        y: itemType === 'hoodie' ? 125 : 105,
-        width: displayWidth,
-        height: displayHeight,
-        rotation: 0,
-      };
-    }
+    
   }
 
-  return imageCoords;
+
+  if (activeView === 'back') {
+
+    const deltaX = 0.15;
+    const deltaY = 0.15 * (currentImage.height / currentImage.width)
+    let deltaZ = 0.4;
+
+    if (itemType === 'tshirt') {  return {
+        ...params,
+        deltaX,
+        deltaY,
+        deltaZ,
+        decalScale: [deltaX,deltaY,deltaZ],
+        decalRotation: [0,Math.PI,0],
+        meshRotation: [0,Math.PI, 0],
+        pivotPosition: [0, 0, -0.2],
+        pivotRotation: [0,Math.PI,0],
+    } }
+    if (itemType === 'longsleeve' || itemType === 'sweatshirt' || itemType === 'hoodie') {  return {
+        ...params,
+        deltaX,
+        deltaY,
+        deltaZ,
+        decalScale: [deltaX,deltaY,deltaZ],
+        decalRotation: [0,Math.PI,0],
+        meshRotation: [0,Math.PI, 0],
+        pivotPosition: [0, 0.1, -0.2],
+        pivotRotation: [0,Math.PI,0],
+        decalPosition: [0,0.2,0],
+    } }
+    if (itemType === 'totebag') {  
+        
+      deltaZ = 0.2;
+
+      return {
+      ...params,
+      deltaX,
+      deltaY,
+      deltaZ,
+      decalScale: [deltaX,deltaY,deltaZ],
+      decalPosition: [0,0,0.1],
+      decalRotation: [0,Math.PI,0],
+        meshRotation: [0,Math.PI, 0],
+        pivotPosition: [0, 0.1, -0.2],
+        pivotRotation: [0,Math.PI,0],
+  };}
+  }
+
+  if (activeView === 'lsleeve') {
+
+    const deltaX = 0.08;
+    const deltaY = 0.08 * (currentImage.height / currentImage.width)
+    const deltaZ = 0.15
+
+
+    return {
+        ...params,
+        decalRotation: [0,Math.PI / 2,0],
+        decalPosition: [0.25,0.06,-0.025],
+        deltaX,
+        deltaY,
+        deltaZ,
+        decalScale: [deltaX,deltaY,deltaZ],
+        meshRotation: [0,Math.PI / -2, 0],
+        pivotPosition: [0.4, 0.06, -0.025],
+        pivotRotation: [0, Math.PI, 0],
+        dragAxis: [false, true, true],
+      }
+    }
+    
+  
+  
+  if (activeView === 'rsleeve') {
+    const deltaX = 0.08;
+    const deltaY = 0.08 * (currentImage.height / currentImage.width)
+    const deltaZ = 0.15
+    return {
+        ...params,
+        decalPosition: [-0.25,0.06,-0.025],
+        decalRotation: [0,Math.PI / -2,0],
+        deltaX,
+        deltaY,
+        deltaZ,
+        decalScale: [deltaX,deltaY,deltaZ],
+        meshRotation: [0,Math.PI / 2, 0],
+        pivotPosition: [-0.4, 0.06, -0.025],
+        dragAxis: [false, true, true],
+      
+    }
+  }
+  return params;
 };
 
 
 
 // определяет формат изображения (по площади) и стоимость печати
-export const getPrintFormatAndPriceFunc = (newAttrs: IStageParams, activeView: string, color: string) => {
-  const width = newAttrs.width * 0.16;
-  const height = newAttrs.height * 0.14;
+export const getPrintFormatAndPriceFunc = (newAttrs: TParams, activeView: string, color: string) => {
+  const [ stageWidth, stageHeight, stageDepth ] = newAttrs.decalScale;
+  const width = stageWidth * 120;
+  const height = stageHeight * 120;
   const printSqr = width * height;
 
   let screenSize = '';

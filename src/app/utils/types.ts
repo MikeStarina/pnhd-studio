@@ -16,6 +16,7 @@ export interface IProduct {
   };
   stock: string;
   color: string;
+  stageColor: string;
   category: string;
   isSale: boolean;
   isForPrinting: boolean;
@@ -30,7 +31,7 @@ export interface IProduct {
 }
 export interface IPrintFile {
   file?: { name: string, url: string, width: number, height: number, message?: string },
-  stageParams?: { x: number, y: number, width: number, height: number, rotation: number },
+  stageParams?: TParams,
   cartParams?: { price: number, format: string, size: string, place: string, },
   preview?: string,
 }
@@ -156,4 +157,21 @@ export interface IOrderBody {
   weight: string,
   width: string,}>,
   roistat: string,
+}
+
+export type TParams = {
+  
+    url: string | undefined,
+    decalRotation: Array<number>,
+    decalPosition: Array<number>,
+    deltaX: number,
+    deltaY: number,
+    deltaZ: number,
+    decalScale: Array<number>,
+    pivotVisibility: boolean,
+    pivotRotation: Array<number>,
+    pivotPosition: Array<number>,
+    pivotScale: number,
+    dragAxis: Array<boolean>,
+    meshRotation?: Array<number>,
 }
