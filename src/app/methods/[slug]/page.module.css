@@ -21,9 +21,9 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     margin: 0;
-    padding: 0;
+    padding: 20px 50px;
     z-index: 1;
 }
 
@@ -45,6 +45,20 @@
     max-width: 350px;
     margin: 0;
     padding: 0;
+}
+
+.main_text_wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 50px;
+    margin: 0;
+    gap: 50px;
+    border: 1px solid black;
+    box-sizing: border-box;
+    border-radius: 20px;
 }
 
 
@@ -78,8 +92,46 @@
     color: black;
     margin: 0;
     padding: 0;
-    max-width: 75%;
+    max-width: 100%;
     text-align: justify;
+}
+
+.blocks_wrapper {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 10px;
+}
+
+.block {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 50px;
+    border: 1px solid black;
+    border-radius: 20px;
+    gap: 50px;
+}
+
+.pros_list {
+    width: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.pros_list_item {
+    font-family: 'Neue_machina';
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: 400;
+    color: black;
 }
 
 .method_gallery {
@@ -162,6 +214,34 @@
     text-align: justify;
 }
 
+.more_block {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 10px;
+    margin: 120px 0 0 0;
+}
+
+.link_wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    
+}
+
+.link_wrapper > a {
+    color: black;
+    font-family: 'Neue_machina';
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: 400;
+    text-transform: lowercase;
+}
+
 @media (max-width: 1020px) {
     .method_title {
         font-size: 34px;
@@ -180,7 +260,22 @@
 
 }
 
+@media (max-width: 700px) {
+    .main_text_wrapper {
+        padding: 20px;
+    }
+    .more_block {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+}
+
 @media (max-width: 500px) {
+    .method_titleWrapper {
+        padding: 20px;
+    }
+    
     .method_title {
         font-size: 26px;
         line-height: 26px;

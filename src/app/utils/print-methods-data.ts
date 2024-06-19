@@ -228,7 +228,6 @@ const methodsData = [
             main: dtgMain,
             gallery: [dtg1, dtg2, dtg3, dtg4, dtg5, dtg6],
         },
-
     },
     {
         name: 'DTF',
