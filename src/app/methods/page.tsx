@@ -12,6 +12,8 @@ const Page: React.FC = () => {
 
     return (
         <PrintMethodsScreen />
+
+        
     )
 }
 

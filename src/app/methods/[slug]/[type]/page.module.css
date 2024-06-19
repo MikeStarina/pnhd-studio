@@ -42,9 +42,22 @@
     line-height: 46px;
     font-weight: 400;
     color: rgb(153,255,0);
-    max-width: 350px;
+    max-width: 600px;
     margin: 0;
     padding: 0;
+}
+
+
+.method_brief {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0;
+    margin: 120px 0 0 0;
+    gap: 10px;
+    box-sizing: border-box;
 }
 
 .main_text_wrapper {
@@ -59,18 +72,6 @@
     border: 1px solid black;
     box-sizing: border-box;
     border-radius: 20px;
-}
-
-
-.method_brief {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 0;
-    margin: 120px 0 0 0;
-    gap: 50px;
 }
 
 .brief_title {
@@ -161,13 +162,41 @@
     box-sizing: border-box;
     overflow: hidden;
     margin: 120px 0 0 0;
-    padding: 0; 
+    padding: 50px; 
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
     gap: 50px;
+    border: 1px solid black;
+    border-radius: 20px;
 }
+
+.robots_block {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.robots_block > h1,
+.robots_block > p,
+.robots_block > h2,
+.robots_block > ul,
+.robots_block > h3 {
+    font-family: 'Neue_machina';
+    font-size: 10px;
+    line-height: 10px;
+    font-weight: 200;
+    color: black;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
 
 .description_list {
     width: 75%;
@@ -214,34 +243,6 @@
     text-align: justify;
 }
 
-.more_block {
-    width: 100%;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: space-between;
-    align-items: stretch;
-    gap: 10px;
-    margin: 120px 0 0 0;
-}
-
-.link_wrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    
-}
-
-.link_wrapper > a {
-    color: black;
-    font-family: 'Neue_machina';
-    font-size: 18px;
-    line-height: 22px;
-    font-weight: 400;
-    text-transform: lowercase;
-}
-
 @media (max-width: 1020px) {
     .method_title {
         font-size: 34px;
@@ -259,23 +260,23 @@
     }
 
 }
-
 @media (max-width: 700px) {
     .main_text_wrapper {
         padding: 20px;
     }
-    .more_block {
+    .blocks_wrapper {
+        width: 100%;
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
     }
+    .block {
+        width: 100%;
+        padding: 20px;
+    }
 }
 
 @media (max-width: 500px) {
-    .method_titleWrapper {
-        padding: 20px;
-    }
-    
     .method_title {
         font-size: 26px;
         line-height: 26px;
