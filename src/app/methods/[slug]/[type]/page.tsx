@@ -92,6 +92,9 @@ const MethodOptionsPage: React.FC<{
                     
                     <PriceScreen />
                     <MapScreen />
+                    <section>
+                        
+                    </section>
 
                     <section className={styles.method_description}>
 

@@ -6,6 +6,8 @@ import PriceScreen from "@/components/pages-components/main-page/price-screen/pr
 import MapScreen from "@/components/pages-components/main-page/map-screen/map-screen";
 import { Metadata } from "next";
 import DtfCalculator from "@/components/pages-components/method-page/dtf-calculator/dtf-calculator";
+import Link from "next/link";
+import { ssOptions } from "@/app/utils/method-options-data";
 
 export const generateMetadata = ({ params }: { params: { slug: string }}): Metadata => {
 
@@ -29,6 +31,7 @@ const MethodPage: React.FC<{
     params: { slug: string };
 }> = ({ params }) => {
     const method = methodsData.find((item) => item.slug === params.slug);
+    const options = ssOptions.filter((item) => item.parent === method?.name);
     
     return (
         <>
@@ -47,8 +50,28 @@ const MethodPage: React.FC<{
                         />
                     </section>
                     <section className={styles.method_brief}>
-                        <h2 className={styles.brief_title}>КРАТКО</h2>
-                        <p className={styles.brief_text}>{method.brief_subtitle}</p>
+                        <div className={styles.main_text_wrapper}>
+                            <h2 className={styles.brief_title}>КРАТКО</h2>
+                            <p className={styles.brief_text}>{method.brief_subtitle}</p>
+                        </div>
+                        {/* <div className={styles.blocks_wrapper}>
+                            <div className={styles.block}>
+                                <h2 className={styles.brief_title}>ПЛЮСЫ</h2>
+                                <ul className={styles.pros_list}>
+                                    {option.pros && option.pros.split(',').map((item, index) => (
+                                        <li className={styles.pros_list_item} key={index}>{item}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                            <div className={styles.block}>
+                                <h2 className={styles.brief_title}>МИНУСЫ</h2>
+                                <ul className={styles.pros_list}>
+                                    {option.cons && option.cons.split(',').map((item, index) => (
+                                        <li className={styles.pros_list_item} key={index}>{item}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div> */}
                     </section>
 
                     <section className={styles.method_gallery}>
@@ -80,6 +103,24 @@ const MethodPage: React.FC<{
                     {method.name === 'DTF' && <DtfCalculator />}
                     <PriceScreen />
                     <MapScreen />
+                    <section className={styles.more_block}>
+                        <div className={styles.main_text_wrapper}>
+                            <h2 className={styles.brief_title}>ЧТО ДАЛЬШЕ?</h2>
+                            <div className={styles.link_wrapper}>
+                                <Link href='/methods'>К методам печати</Link>
+                                <Link href='/'>На главную</Link>
+                                <Link href='/shop'>В каталог</Link>
+                            </div>
+                        </div>
+                        <div className={styles.main_text_wrapper}>
+                            <h2 className={styles.brief_title}>ЧТО ЕЩЕ ПОЧИТАТЬ?</h2>
+                            <div className={styles.link_wrapper}>
+                            {options && options.map((item, index) => (
+                                <Link href={`/methods/${item.slug}/${item.type}`} key={index}>{item.title} {item.subtitle}</Link>
+                            ))}
+                            </div>
+                        </div>
+                    </section>
                 </>
             )}
         </>
