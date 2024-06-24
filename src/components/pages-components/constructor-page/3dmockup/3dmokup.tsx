@@ -65,11 +65,11 @@ const Stage: React.FC<{ children: React.ReactNode}> = ({ children }) => {
           <Environment files="/potsdamer_platz_1k.hdr" />
           
           <CameraRig>
-          <Backdrop>
-          <Shirt activeView={activeView}>\
-            { children }
-          </Shirt>
-          </Backdrop>
+            <Backdrop>
+              <Shirt activeView={activeView}>\
+                { children }
+              </Shirt>
+            </Backdrop>
           </CameraRig>
           <AccumulativeShadows
             temporal

@@ -167,14 +167,16 @@ export const setCoords = (currentImage: IInitialPrintParams, activeView: string,
     
       url: currentImage.url ? `${apiBaseUrl}${currentImage.url}` : undefined,
       decalRotation: [0,0,0],
+      //decalPosition: [0,0.1,0],
       decalPosition: [0,0.1,0],
-      deltaX: 0,
-      deltaY: 0,
-      deltaZ: 0,
+      deltaX: 0.15,
+      deltaY: 0.15 * (currentImage.height / currentImage.width),
+      deltaZ: 0.4,
       decalScale: [0.15,0.15 * (currentImage.height / currentImage.width),0.4],
       pivotVisibility: false,
       pivotRotation: [0,0,0],
-      pivotPosition: [0,0,0.15],
+      //pivotPosition: [-0.075,-0.075,0.15],
+      pivotPosition: [0,0.1,0.2],
       pivotScale: 0.15,
       dragAxis: [true, true, false],  
       meshRotation: [0,0,0], 
@@ -182,8 +184,10 @@ export const setCoords = (currentImage: IInitialPrintParams, activeView: string,
 
   
   if (activeView === 'front') {
-    const deltaX = 0.15;
-    const deltaY = 0.15 * (currentImage.height / currentImage.width);
+    const sizeDelta = currentImage.height / currentImage.width;
+    //const pivotInitScale = sizeDelta <= 1 ? 0.15 : sizeDelta > 1 ? 0.15 * sizeDelta : 0.15;
+    const deltaX = 0.15;    
+    const deltaY = 0.15 * sizeDelta;
     let deltaZ = 0.4;
 
 
@@ -193,6 +197,7 @@ export const setCoords = (currentImage: IInitialPrintParams, activeView: string,
           deltaY,
           deltaZ,
           decalScale: [deltaX,deltaY,deltaZ],
+          //pivotScale: pivotInitScale,
       };}
     if (itemType === 'longsleeve' || itemType === 'sweatshirt' || itemType === 'hoodie') {  return {
           ...params,
@@ -201,7 +206,7 @@ export const setCoords = (currentImage: IInitialPrintParams, activeView: string,
           deltaZ,
           decalScale: [deltaX,deltaY,deltaZ],
           decalPosition: [0,0.2,0],
-          pivotPosition: [0,0.1,0.15],
+          pivotPosition: [0,0.2,0.2],
       };}
 
       if (itemType === 'totebag') {  
@@ -215,6 +220,7 @@ export const setCoords = (currentImage: IInitialPrintParams, activeView: string,
         deltaZ,
         decalScale: [deltaX,deltaY,deltaZ],
         decalPosition: [0,0,0.1],
+        pivotPosition: [0,0,0.2]
     };}
 
     
@@ -235,7 +241,7 @@ export const setCoords = (currentImage: IInitialPrintParams, activeView: string,
         decalScale: [deltaX,deltaY,deltaZ],
         decalRotation: [0,Math.PI,0],
         meshRotation: [0,Math.PI, 0],
-        pivotPosition: [0, 0, -0.2],
+        pivotPosition: [0, 0.1, -0.2],
         pivotRotation: [0,Math.PI,0],
     } }
     if (itemType === 'longsleeve' || itemType === 'sweatshirt' || itemType === 'hoodie') {  return {
@@ -246,7 +252,7 @@ export const setCoords = (currentImage: IInitialPrintParams, activeView: string,
         decalScale: [deltaX,deltaY,deltaZ],
         decalRotation: [0,Math.PI,0],
         meshRotation: [0,Math.PI, 0],
-        pivotPosition: [0, 0.1, -0.2],
+        pivotPosition: [0, 0.2, -0.2],
         pivotRotation: [0,Math.PI,0],
         decalPosition: [0,0.2,0],
     } }
@@ -263,7 +269,7 @@ export const setCoords = (currentImage: IInitialPrintParams, activeView: string,
       decalPosition: [0,0,0.1],
       decalRotation: [0,Math.PI,0],
         meshRotation: [0,Math.PI, 0],
-        pivotPosition: [0, 0.1, -0.2],
+        pivotPosition: [0, 0, -0.2],
         pivotRotation: [0,Math.PI,0],
   };}
   }
@@ -278,6 +284,7 @@ export const setCoords = (currentImage: IInitialPrintParams, activeView: string,
     return {
         ...params,
         decalRotation: [0,Math.PI / 2,0],
+        //decalPosition: [0.25,0.06,-0.025],
         decalPosition: [0.25,0.06,-0.025],
         deltaX,
         deltaY,
@@ -285,7 +292,9 @@ export const setCoords = (currentImage: IInitialPrintParams, activeView: string,
         decalScale: [deltaX,deltaY,deltaZ],
         meshRotation: [0,Math.PI / -2, 0],
         pivotPosition: [0.4, 0.06, -0.025],
-        pivotRotation: [0, Math.PI, 0],
+        //pivotRotation: [Math.PI / -2, 0, 0],
+        pivotRotation: [0, 0, 0],
+        pivotScale: 0.15,
         dragAxis: [false, true, true],
       }
     }
