@@ -1,25 +1,14 @@
 "use client";
-import React, { Suspense, useEffect } from "react";
+import React from "react";
 import * as THREE from "three";
-import { useRef, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { useState } from "react";
 import {
-  useGLTF,
   useTexture,
-  AccumulativeShadows,
-  RandomizedLight,
   PivotControls,
   Decal,
-  Environment,
-  Center,
-  OrbitControls,
-  TransformControls,
-  CycleRaycast,
 } from "@react-three/drei";
-import { easing } from "maath";
 import { useAppDispatch, useAppSelector } from "@/redux/redux-hooks";
 import { apiBaseUrl } from "@/app/utils/constants";
-import { ICartOrderElement, TParams } from "@/app/utils/types";
 import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
 import { useSearchParams } from "next/navigation";
 import { useUploadPrintImageMutation } from '@/api/api';
@@ -72,12 +61,15 @@ const DecalComp = () => {
         {currPrint && currPrint.stageParams && activeView === 'front' &&
         <>
         <PivotControls
+          //disableScaling
+          disableAxes
           rotation={currPrint.stageParams.pivotRotation}
           offset={currPrint.stageParams.pivotPosition}
           scale={currPrint.stageParams.pivotScale}
           activeAxes={currPrint.stageParams.dragAxis}
           visible={pivotVisibility}
           axisColors={['rgb(153,255,0)','rgb(153,255,0)','rgb(153,255,0)']}
+          userData={{ rotation: 0 }}
           onDragStart={(props) => {
             setPivotComp(props.component);
             setPivotAxis(props.axis);
@@ -97,28 +89,28 @@ const DecalComp = () => {
                 newAttrs = {
                         ...newAttrs,
                         decalPosition: [position.x, position.y, position.z + 0],
-                       // pivotPosition: [position.x, position.y, 0.15],                    
+                        pivotPosition: [0, 0, 0.2]          
                 }}
 
                 if (orderElement?.item.type === 'totebag') {
                     newAttrs = {
                         ...newAttrs,
-                        decalPosition: [position.x, position.y, position.z + 0.1],
-                       // pivotPosition: [position.x, position.y, 0.15],                    
+                        decalPosition: [position.x, position.y, position.z + 0.1], 
+                        pivotPosition: [0, 0, 0.2]               
                 }
                 }
             }
             if (pivotComp === 'Rotator') {            
                 newAttrs = {
                         ...newAttrs,
-                        decalRotation: [rotation.x, rotation.y, rotation.z],
-                        pivotRotation: [rotation.x, rotation.y, rotation.z]
+                        decalRotation: [0, 0, rotation.z],
+                        pivotPosition: [0, 0, 0.2]
                     
                 }
             }
             if (pivotComp === 'Sphere') {            
-                if (pivotAxis === 0) newAttrs = {...newAttrs,decalScale:[newAttrs.deltaX * scale.x, newAttrs.deltaY * scale.x, newAttrs.deltaZ * scale.z]};
-                if (pivotAxis === 1) newAttrs = {...newAttrs,decalScale:[newAttrs.deltaX * scale.y, newAttrs.deltaY * scale.y, newAttrs.deltaZ * scale.z]};                    
+               
+                if (pivotAxis === 1) newAttrs = {...newAttrs,decalScale:[newAttrs.deltaX * scale.y, newAttrs.deltaY * scale.y, newAttrs.deltaZ * scale.z], pivotPosition: [0, 0, 0.2]};                    
             }
                 
            //@ts-ignore
@@ -141,12 +133,14 @@ const DecalComp = () => {
         {currPrint && currPrint.stageParams && activeView === 'back' &&
         <>
         <PivotControls
+          disableAxes
           rotation={currPrint.stageParams.pivotRotation}
           offset={currPrint.stageParams.pivotPosition}
           scale={currPrint.stageParams.pivotScale}
           activeAxes={currPrint.stageParams.dragAxis}
           visible={pivotVisibility}
           axisColors={['rgb(153,255,0)','rgb(153,255,0)','rgb(153,255,0)']}
+          userData={{ rotation: 0 }}
           onDragStart={(props) => {
             setPivotComp(props.component);
             setPivotAxis(props.axis);
@@ -165,7 +159,8 @@ const DecalComp = () => {
                 if (orderElement?.item.type !== 'totebag') {
                 newAttrs = {
                         ...newAttrs,
-                         decalPosition: [position.x, position.y, position.z + 0],      
+                         decalPosition: [position.x, position.y, position.z + 0],   
+                         pivotPosition: [0, 0, -0.2]   
                          //pivotPosition: [position.x, position.y, -0.3],
                     
                 }
@@ -185,14 +180,15 @@ const DecalComp = () => {
                 newAttrs = {
                         ...newAttrs,
                         decalRotation: [rotation.x, Math.PI, rotation.z * -1],
-                         pivotRotation: [rotation.x, Math.PI, rotation.z * -1]
+                        pivotPosition: [0, 0, -0.2]
+                        //pivotRotation: [rotation.x, Math.PI, rotation.z * -1]
                     
                 }
             }
             if (pivotComp === 'Sphere') {
 
-                if (pivotAxis === 0) newAttrs = {...newAttrs,decalScale:[newAttrs.deltaX * scale.x, newAttrs.deltaY * scale.x, newAttrs.deltaZ * scale.z]};
-                if (pivotAxis === 1) newAttrs = {...newAttrs,decalScale:[newAttrs.deltaX * scale.y, newAttrs.deltaY * scale.y, newAttrs.deltaZ * scale.z]};                    
+                //if (pivotAxis === 0) newAttrs = {...newAttrs,decalScale:[newAttrs.deltaX * scale.x, newAttrs.deltaY * scale.x, newAttrs.deltaZ * scale.z]};
+                if (pivotAxis === 1) newAttrs = {...newAttrs,decalScale:[newAttrs.deltaX * scale.y, newAttrs.deltaY * scale.y, newAttrs.deltaZ * scale.z], pivotPosition: [0, 0, -0.2]};                    
 
             }
                 
@@ -215,12 +211,14 @@ const DecalComp = () => {
         {currPrint && currPrint.stageParams && activeView === 'lsleeve' &&
         <>
         <PivotControls
+          disableAxes
           rotation={currPrint.stageParams.pivotRotation}
           offset={currPrint.stageParams.pivotPosition}
           scale={currPrint.stageParams.pivotScale}
           activeAxes={currPrint.stageParams.dragAxis}
           visible={pivotVisibility}
           axisColors={['rgb(153,255,0)','rgb(153,255,0)','rgb(153,255,0)']}
+          userData={{ rotation: Math.PI / -2 }}
           onDragStart={(props) => {
             setPivotComp(props.component);
             //console.log(props.axis);
@@ -240,7 +238,8 @@ const DecalComp = () => {
             
                 newAttrs = {
                         ...newAttrs,
-                         decalPosition: [position.x + 0.25, position.y, position.z],                    
+                         decalPosition: [position.x + 0.25, position.y, position.z],  
+                         pivotPosition: [0.4,0,0],                  
                 }
             }
             if (pivotComp === 'Rotator') {
@@ -249,14 +248,15 @@ const DecalComp = () => {
                 newAttrs = {
                         ...newAttrs,
                         decalRotation: [rotation.x, Math.PI / 2, rotation.z * -1],
-                        pivotRotation: [rotation.x, Math.PI, rotation.z]
+                        //pivotRotation: [rotation.x, Math.PI, rotation.z],
+                        pivotPosition: [0.4,0,0],
                     
                 }
             }
             if (pivotComp === 'Sphere') {
 
-                if (pivotAxis === 2) newAttrs = {...newAttrs,decalScale:[newAttrs.deltaX * scale.z, newAttrs.deltaY * scale.z, newAttrs.deltaZ * scale.x]};
-                if (pivotAxis === 1) newAttrs = {...newAttrs,decalScale:[newAttrs.deltaX * scale.y, newAttrs.deltaY * scale.y, newAttrs.deltaZ * scale.x]};                    
+                //if (pivotAxis === 2) newAttrs = {...newAttrs,decalScale:[newAttrs.deltaX * scale.z, newAttrs.deltaY * scale.z, newAttrs.deltaZ * scale.x]};
+                if (pivotAxis === 1) newAttrs = {...newAttrs,decalScale:[newAttrs.deltaX * scale.y, newAttrs.deltaY * scale.y, newAttrs.deltaZ * scale.x], pivotPosition: [0.4,0,0],};                    
 
             }
             //@ts-ignore
@@ -278,12 +278,14 @@ const DecalComp = () => {
         {currPrint && currPrint.stageParams && activeView === 'rsleeve' &&
         <>
         <PivotControls
+          disableAxes
           rotation={currPrint.stageParams.pivotRotation}
           offset={currPrint.stageParams.pivotPosition}
           scale={currPrint.stageParams.pivotScale}
           activeAxes={currPrint.stageParams.dragAxis}
           visible={pivotVisibility}
           axisColors={['rgb(153,255,0)','rgb(153,255,0)','rgb(153,255,0)']}
+          userData={{ rotation: Math.PI / -2 }}
           onDragStart={(props) => {
             setPivotComp(props.component);
             setPivotAxis(props.axis);
@@ -302,7 +304,8 @@ const DecalComp = () => {
             
                 newAttrs = {
                         ...newAttrs,
-                         decalPosition: [position.x - 0.25, position.y, position.z],                    
+                         decalPosition: [position.x - 0.25, position.y, position.z],  
+                         pivotPosition: [-0.4, 0, 0],                  
                 }
             }
             if (pivotComp === 'Rotator') {
@@ -311,14 +314,15 @@ const DecalComp = () => {
                 newAttrs = {
                         ...newAttrs,
                         decalRotation: [rotation.x, Math.PI / -2, rotation.z * -1],
-                        pivotRotation: [rotation.x, rotation.y, rotation.z]
+                        //pivotRotation: [rotation.x, rotation.y, rotation.z]
+                        pivotPosition: [-0.4, 0, 0],
                     
                 }
             }
             if (pivotComp === 'Sphere') {
 
-                if (pivotAxis === 2) newAttrs = {...newAttrs,decalScale:[newAttrs.deltaX * scale.z, newAttrs.deltaY * scale.z, newAttrs.deltaZ * scale.x]};
-                if (pivotAxis === 1) newAttrs = {...newAttrs,decalScale:[newAttrs.deltaX * scale.y, newAttrs.deltaY * scale.y, newAttrs.deltaZ * scale.x]};                    
+                //if (pivotAxis === 2) newAttrs = {...newAttrs,decalScale:[newAttrs.deltaX * scale.z, newAttrs.deltaY * scale.z, newAttrs.deltaZ * scale.x]};
+                if (pivotAxis === 1) newAttrs = {...newAttrs,decalScale:[newAttrs.deltaX * scale.y, newAttrs.deltaY * scale.y, newAttrs.deltaZ * scale.x], pivotPosition: [-0.4, 0, 0],};                    
 
             }
                 //@ts-ignore

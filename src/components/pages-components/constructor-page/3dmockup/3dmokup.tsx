@@ -46,8 +46,8 @@ const Stage: React.FC<{ children: React.ReactNode}> = ({ children }) => {
       style={{
         width: "100%",
         height: '100%',
-        border: '1px solid black',
-        borderRadius: '20px',
+        //border: '1px solid black',
+        //borderRadius: '20px',
         boxSizing: "border-box",
         overflow: "hidden",
       }}
@@ -65,11 +65,11 @@ const Stage: React.FC<{ children: React.ReactNode}> = ({ children }) => {
           <Environment files="/potsdamer_platz_1k.hdr" />
           
           <CameraRig>
-          <Backdrop>
-          <Shirt activeView={activeView}>\
-            { children }
-          </Shirt>
-          </Backdrop>
+            <Backdrop>
+              <Shirt activeView={activeView}>\
+                { children }
+              </Shirt>
+            </Backdrop>
           </CameraRig>
           <AccumulativeShadows
             temporal
