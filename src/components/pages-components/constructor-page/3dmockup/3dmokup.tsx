@@ -69,6 +69,7 @@ const Stage: React.FC<{ children: React.ReactNode}> = ({ children }) => {
               <Shirt activeView={activeView}>\
                 { children }
               </Shirt>
+              
             </Backdrop>
           </CameraRig>
           <AccumulativeShadows
@@ -88,7 +89,8 @@ const Stage: React.FC<{ children: React.ReactNode}> = ({ children }) => {
               size={10}
             />
           </AccumulativeShadows>
-          <OrbitControls makeDefault />
+          {window.screen.width < 1000 && <OrbitControls maxPolarAngle={Math.PI / 2} minPolarAngle={Math.PI / 2} minAzimuthAngle={0} maxAzimuthAngle={0} />}
+          {window.screen.width >= 1000 && <OrbitControls makeDefault />}
         </Canvas>
       </Suspense>
     </div>
@@ -119,6 +121,7 @@ function CameraRig({ children }: any) {
     window.screen.width >= 1000 && easing.damp3(state.camera.position, [0, 0, 2], 0.25, delta)
     //@ts-ignore
     window.screen.width >= 1000 && easing.dampE(group.current.rotation, [state.pointer.y / 10, -state.pointer.x / 5, 0], 0.25, delta)
+    //@ts-ignore
   })
   //@ts-ignore
   return <group ref={group}>{children}</group>
