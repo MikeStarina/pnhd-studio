@@ -29,6 +29,9 @@ const Controls: React.FC<{ itemCartId: any}> = ({ itemCartId }) => {
         
             <Tabs orderElement={orderElement} />
             <FileUploader orderElement={orderElement} />
+            <div style={{width: '100%', display: 'flex', justifyContent: 'flex-end', margin: '10px 0 0 0'}}>
+                <Link className={styles.link} href='/howto' target='blank'>Как использовать конструктор ?</Link>
+            </div>
             <OrderInfo orderElement={orderElement} />
 
             <Link href='/cart' style={{ alignSelf: 'flex-end', marginTop: '50px'}} onClick={clickHandler}>
