@@ -9,6 +9,7 @@ import { actions as constructorActions } from "@/redux/constructor-slice/constru
 import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
 import { useUploadPrintImageMutation } from "@/api/api";
 import { setCoords } from "@/app/utils/constructor-utils";
+import Link from "next/link";
 
 const FileUploader: React.FC<{ orderElement: ICartOrderElement }> = ({
     orderElement,
@@ -113,6 +114,7 @@ const FileUploader: React.FC<{ orderElement: ICartOrderElement }> = ({
                     </div>
                 )}
             </form>
+            
         </div>
     );
 };
