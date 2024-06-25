@@ -116,9 +116,9 @@ function Backdrop({ children }: { children: React.ReactNode}) {
 function CameraRig({ children }: any) {
   const group = useRef()
   useFrame((state, delta) => {
-    easing.damp3(state.camera.position, [0, 0, 2], 0.25, delta)
+    window.screen.width >= 1000 && easing.damp3(state.camera.position, [0, 0, 2], 0.25, delta)
     //@ts-ignore
-    easing.dampE(group.current.rotation, [state.pointer.y / 10, -state.pointer.x / 5, 0], 0.25, delta)
+    window.screen.width >= 1000 && easing.dampE(group.current.rotation, [state.pointer.y / 10, -state.pointer.x / 5, 0], 0.25, delta)
   })
   //@ts-ignore
   return <group ref={group}>{children}</group>

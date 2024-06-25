@@ -28,7 +28,7 @@ const DecalComp = () => {
     //@ts-ignore
     let currPrint = orderElement && orderElement.prints && orderElement.prints[activeView] ? orderElement.prints[activeView] : undefined;
     const [ uploadPreview ] = useUploadPrintImageMutation();
-    
+    console.log(window.screen.width);
 
     const getScene = async (activeView: string, scene: Blob | null) => {
         // @ts-ignore
@@ -48,6 +48,7 @@ const DecalComp = () => {
     const [ pivotVisibility, setpivotVisibility ] = useState<boolean>(); 
     const [ pivotComp, setPivotComp ] = useState<string>(); 
     const [ pivotAxis, setPivotAxis ] = useState<number>(); 
+   
    
     const url = currPrint?.file?.url ? `${apiBaseUrl}${currPrint.file.url}` : '/whiteTexture.png';
     const texture = useTexture(url, () => { if (currPrint && !currPrint.preview) {return document.querySelector('canvas')?.toBlob((blob) => {getScene(activeView, blob);});}});
@@ -89,6 +90,7 @@ const DecalComp = () => {
                 newAttrs = {
                         ...newAttrs,
                         decalPosition: [position.x, position.y, position.z + 0],
+                       //pivotPosition: [position.x, position.y, 0.2],
                         pivotPosition: [0, 0, 0.2]          
                 }}
 
@@ -112,13 +114,14 @@ const DecalComp = () => {
                
                 if (pivotAxis === 1) newAttrs = {...newAttrs,decalScale:[newAttrs.deltaX * scale.y, newAttrs.deltaY * scale.y, newAttrs.deltaZ * scale.z], pivotPosition: [0, 0, 0.2]};                    
             }
-                
+            
            //@ts-ignore
             dispatch(cartActions.updateStageParams({ newAttrs, activeView, itemCartId: orderElement.itemCartId }));
             //@ts-ignore
             dispatch(cartActions.updateCartParams({ newAttrs, activeView, itemCartId: orderElement.itemCartId, itemColor: orderElement.item.color }));
           }}
           onDragEnd={() => {      
+            
             setpivotVisibility(false)      
             setPivotComp('');
             document.querySelector('canvas')?.toBlob((blob) => {
@@ -305,7 +308,7 @@ const DecalComp = () => {
                 newAttrs = {
                         ...newAttrs,
                          decalPosition: [position.x - 0.25, position.y, position.z],  
-                         pivotPosition: [-0.4, 0, 0],                  
+                         //pivotPosition: [-0.4, 0, 0],                  
                 }
             }
             if (pivotComp === 'Rotator') {
