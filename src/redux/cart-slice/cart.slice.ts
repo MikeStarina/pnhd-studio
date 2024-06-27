@@ -16,7 +16,7 @@ interface IInitialState {
         email: string,
     },
     paymentUrl: string,
-    user_promocode?: string,
+    user_promocode: string,
     isPromocodeLoading?: boolean,
     promocodeFail?: boolean,
     isDelivery: boolean,
@@ -28,7 +28,7 @@ interface IInitialState {
         deliveryPrice: number,
     },
     validPromoCode: {
-      discount_ratio?: number,
+      discount_ratio: number,
       discounted_item: string,
       mechanic: string,
       message: string,
@@ -51,6 +51,7 @@ const initialState: IInitialState = {
         phone: '',
         email: '',
     },
+    user_promocode: '',
     paymentUrl: '',
     orderPrice: {},
     isDelivery: false,
@@ -59,7 +60,7 @@ const initialState: IInitialState = {
         deliveryPrice: 0,
     },
     validPromoCode: {
-        discount_ratio: 0,
+        discount_ratio: 1,
         discounted_item: 'all',
         mechanic: 'discount',
         message: '',
@@ -211,7 +212,25 @@ const cartSlice = createSlice({
                 ...state,
                 order: action.payload
             }
-        }
+        },
+        setUserPromocode: (state, action: PayloadAction<string>) => {
+            return {
+                ...state,
+                user_promocode: action.payload
+            }
+        },
+        setValidPromocode: (state, action: PayloadAction<typeof initialState.validPromoCode>) => {
+            return {
+                ...state,
+                validPromoCode: action.payload
+            }
+        },
+        resetValidPromocode: (state) => {
+            return {
+                ...state,
+                validPromoCode: initialState.validPromoCode
+            }
+        } 
     }
 })
 

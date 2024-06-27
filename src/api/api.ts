@@ -97,7 +97,19 @@ export const api = createApi({
         },
       })
     }),
-  }),
+    promocodeValidation: builder.mutation<unknown, {user_promocode: string}>({
+      query: (data) => ({
+        url: '/api/promocodes/',
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+          'Content-length': '',
+        },
+      })
+    }),
+
+  }),  
 });
 
 export const {
@@ -106,5 +118,6 @@ export const {
   useGetCdekPointsQuery,
   useGetCdekDeliveryPriceQuery,
   useCreateOrderMutation,
-  useCreateLeadMutation
+  useCreateLeadMutation,
+  usePromocodeValidationMutation,
 } = api;

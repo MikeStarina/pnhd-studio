@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "@/redux/redux-provider";
+import InfoBar from "@/components/shared-components/info-bar/info-bar";
 import Header from "@/components/shared-components/header/header";
 import Footer from "@/components/shared-components/footer/footer";
 import MobileMenu from "@/components/shared-components/mobile-menu/mobile-menu";
@@ -27,10 +28,12 @@ export default function RootLayout({
     <html lang="en">
       <ReduxProvider>
         <body className={inter.className}>
+        <InfoBar />
           <Popup />
           <MobileMenu />
           <main>
             <CartIcon />
+            
             <Header />
             {children}
             <Footer />
