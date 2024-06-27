@@ -58,7 +58,7 @@ export const checkoutOrderObjectCreateFunc = (cart: TCartState, roistat: string)
 
     let data: IOrderBody = {
         order_total_price: orderTotalPrice,
-        order_discounted_price: orderTotalPrice,
+        order_discounted_price: validPromoCode.name ? orderTotalPrice * validPromoCode.discount_ratio : orderTotalPrice,
         order_promocode: validPromoCode,
         owner_name: `${userData.surname} ${userData.name}`,
         owner_phone: userData.phone.substring(1, userData.phone.length),
