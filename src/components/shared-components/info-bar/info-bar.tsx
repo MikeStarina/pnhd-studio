@@ -8,12 +8,12 @@ import { actions as cartActions } from '@/redux/cart-slice/cart.slice';
 
 
 const InfoBar: React.FC = () => {
-    // const searchParams = useSearchParams();
-    // const dispatch = useAppDispatch();
-    // const promocode = searchParams.get('promocode');
-    // promocode && dispatch(cartActions.setUserPromocode(promocode));
-    //const text = promocode ? `Промокод ${promocode} автоматически сохранен и будет доступен при чекауте.` : '';
-    const text = '';
+    const searchParams = useSearchParams();
+    const dispatch = useAppDispatch();
+    const promocode = searchParams.get('promocode');
+    promocode && dispatch(cartActions.setUserPromocode(promocode));
+    const text = promocode ? `Промокод ${promocode} автоматически сохранен и будет доступен при чекауте.` : '';
+    //const text = '';
 
     return (
         <>

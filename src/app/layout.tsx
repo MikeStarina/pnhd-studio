@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "@/redux/redux-provider";
@@ -28,7 +29,9 @@ export default function RootLayout({
     <html lang="en">
       <ReduxProvider>
         <body className={inter.className}>
-        {/* <InfoBar /> */}
+          <Suspense>
+            <InfoBar />
+          </Suspense>        
           <Popup />
           <MobileMenu />
           <main>
