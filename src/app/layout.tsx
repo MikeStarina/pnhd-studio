@@ -28,7 +28,7 @@ export default function RootLayout({
     <html lang="en">
       <ReduxProvider>
         <body className={inter.className}>
-        <InfoBar />
+        {/* <InfoBar /> */}
           <Popup />
           <MobileMenu />
           <main>
