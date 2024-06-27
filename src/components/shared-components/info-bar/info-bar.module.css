@@ -1,0 +1,45 @@
+.infoBar {
+    min-height: 25px;
+    width: 100%;
+    background-color: rgb(153,255,0);
+    overflow: hidden;  
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+    border-bottom: 1px solid black;
+    box-sizing: border-box;
+}
+
+.infoBar_textWrapper {
+    overflow: hidden;
+    width: 100%;
+    min-height: 100%;
+    max-width: 1310px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 2px 20px;
+}
+
+.infoBar_text {
+    margin: 0;
+    padding: 0;
+    font-family: 'Neue_machina';
+    font-size: 12px;
+    line-height: 12px;
+    font-weight: 200;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@media (max-width: 650px) {
+    .infoBar {
+        box-sizing: content-box;
+    }
+
+    .infoBar_text {
+        white-space: wrap;
+        text-overflow: unset;
+    }
+}
+

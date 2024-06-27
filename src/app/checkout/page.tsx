@@ -1,5 +1,5 @@
 "use client";
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState, FormEventHandler } from "react";
 import styles from "./page.module.css";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -10,9 +10,12 @@ import MainUserData from "@/components/pages-components/checkout-page/main-user-
 import DeliveryData from "@/components/pages-components/checkout-page/delivery-data/delivery-data";
 import { cartSummaryFunc } from "../utils/cart-utils";
 import { checkoutOrderObjectCreateFunc } from "../utils/cart-utils";
-import { useCreateOrderMutation } from "@/api/api";
+import { useCreateOrderMutation, usePromocodeValidationMutation } from "@/api/api";
 import { useRouter } from "next/navigation";
 import { getCookie } from "../utils/constants";
+import TextField from "@mui/material/TextField";
+import rightArrow from '../../../public/button_arrow_right.svg';
+import Image from "next/image";
 
 
 const switchSx = {
@@ -30,15 +33,24 @@ const switchLabelSx = {
     "& .MuiTypography-root": { fontFamily: "Neue_machina" },
 };
 
+const textFieldSx = {
+    "& .MuiInputLabel-root": { fontFamily: "Neue_machina" },
+    "& .MuiInputLabel-root.Mui-focused": { color: "rgb(57,57,57)" },
+    "& .MuiOutlinedInput-root.Mui-focused": {
+        "& > fieldset": { borderColor: "rgb(57,57,57)" },
+    },
+};
+
 
 const CheckoutPage: React.FC = () => {
     const [ isDisabled, setIsDisabled ] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const router = useRouter();
-    const { isDelivery, order, deliveryParams, paymentUrl } = useAppSelector(store => store.cart);
+    const { isDelivery, order, deliveryParams, paymentUrl, user_promocode, validPromoCode } = useAppSelector(store => store.cart);
     const cart = useAppSelector(store => store.cart);
     const totalOrderPrice = cartSummaryFunc(order!);
     const [ createOrder, { isLoading, isSuccess} ] = useCreateOrderMutation();
+    const [ validatePromocode, { isLoading: isPromocodeLoading, isSuccess: isPromocodeValidationSuccess, reset } ] = usePromocodeValidationMutation(); 
   
 
     useEffect(() => {
@@ -66,6 +78,7 @@ const CheckoutPage: React.FC = () => {
         await createOrder(order);
         //@ts-ignore
         //dispatch(cartActions.setPaymentURL(await response.data.paymentUrl))
+        
         dispatch(cartActions.resetCart());
         sessionStorage.setItem('order', '');
         dispatch(cartActions.resetCart());
@@ -79,6 +92,21 @@ const CheckoutPage: React.FC = () => {
             dispatch(cartActions.resetValidDeliveryPoint())
             dispatch(cartActions.setCdekCitySearchUserQuery(''));
         }
+    }
+
+    const promocodeChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        dispatch(cartActions.setUserPromocode(e.target.value));
+        if (!e.target.value) {
+            dispatch(cartActions.resetValidPromocode());
+            reset();
+        }
+    }
+
+    const promocodeFormSubmitHandler = async (e: any) => {
+        e.preventDefault();
+        const response = await validatePromocode({ user_promocode });
+        //@ts-ignore
+        response.data.promocode.length > 0 && dispatch(cartActions.setValidPromocode(response.data.promocode[0]))
     }
 
     return (
@@ -102,11 +130,28 @@ const CheckoutPage: React.FC = () => {
                 {isDelivery && <DeliveryData />}
             </form>
             <div className={styles.checkout_priceWrapper}>
+                <form className={styles.promocode_form} onSubmit={promocodeFormSubmitHandler}>
+                    <TextField
+                        id="promocode"
+                        label="Промокод"
+                        fullWidth
+                        autoComplete="off"
+                        sx={textFieldSx}
+                        size="small"
+                        onChange={promocodeChangeHandler}
+                        value={user_promocode}
+                    />  
+
+                    <button type='submit' className={styles.promocode_button} disabled={isPromocodeLoading || isPromocodeValidationSuccess}>
+                        <Image src={rightArrow} alt='стрелка вправо' />
+                    </button>
+                </form>
                 <p className={styles.checkout_priceText}>Итого по заказу: {totalOrderPrice} Р.</p>    
                 <p className={styles.checkout_priceText}>Доставка: {deliveryParams.deliveryPrice} Р.</p>
                 {deliveryParams.validCityTo && deliveryParams.validCityTo.city && <p className={styles.checkout_priceText}>Доставка в: {deliveryParams.validCityTo.city}</p>}
                 {deliveryParams.validDeliveryPoint && deliveryParams.validDeliveryPoint.name && <p className={styles.checkout_priceText}>Пункт выдачи: {deliveryParams.validDeliveryPoint.name}</p>}
-                <p className={styles.checkout_finalPriceText}>= {totalOrderPrice + deliveryParams.deliveryPrice} Р.</p>
+                <p className={styles.checkout_finalPriceText} style={validPromoCode.name ? { textDecoration: 'line-through rgb(153,255,0)'} : {}}>= {totalOrderPrice + deliveryParams.deliveryPrice} Р.</p>
+                {validPromoCode.name && validPromoCode.discount_ratio && <p className={styles.checkout_finalPriceText} style={{ fontSize: '18px' }}>= {(totalOrderPrice * validPromoCode.discount_ratio) + deliveryParams.deliveryPrice} Р.</p>}
                 <button type='submit' form='checkout' className={styles.form_submitButton} disabled={isDisabled}>{isDisabled ? 'Загрузка...':'Заказать'}</button>
             </div>
         </section>
