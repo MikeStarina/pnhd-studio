@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { Suspense } from 'react';
 import styles from './info-bar.module.css';
 import { useSearchParams } from 'next/navigation';
 import { useAppDispatch } from '@/redux/redux-hooks';
@@ -16,13 +16,16 @@ const InfoBar: React.FC = () => {
 
     return (
         <>
+        <Suspense fallback={null}>
             {promocode && text &&
+            
             <div className={styles.infoBar}>
                 <div className={styles.infoBar_textWrapper}>
                     <p className={styles.infoBar_text}>{text}</p>
                 </div>
             </div>
             }
+        </Suspense>
         </>
     )
 }
