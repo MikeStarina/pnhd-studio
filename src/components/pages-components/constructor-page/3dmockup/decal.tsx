@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import * as THREE from "three";
 import { useState } from "react";
 import {
@@ -20,6 +20,7 @@ import { v4 as uuidv4 } from "uuid";
 
 const DecalComp = () => {
     //console.log('decal render');
+    const pivotRef = useRef(null)
     const dispatch = useAppDispatch();
     const itemCartId = useSearchParams().get("itemCartId");
     const { activeView } = useAppSelector((store) => store.printConstructor);
@@ -28,7 +29,9 @@ const DecalComp = () => {
     //@ts-ignore
     let currPrint = orderElement && orderElement.prints && orderElement.prints[activeView] ? orderElement.prints[activeView] : undefined;
     const [ uploadPreview ] = useUploadPrintImageMutation();
-    console.log(window.screen.width);
+
+    
+    
 
     const getScene = async (activeView: string, scene: Blob | null) => {
         // @ts-ignore
@@ -45,15 +48,30 @@ const DecalComp = () => {
   
       }
 
-    const [ pivotVisibility, setpivotVisibility ] = useState<boolean>(); 
+
+    const [ pivotVisibility, setpivotVisibility ] = useState<boolean>(false); 
+    const [ pivotOpacity, setPivotOpacity ] = useState<number>(1); 
     const [ pivotComp, setPivotComp ] = useState<string>(); 
     const [ pivotAxis, setPivotAxis ] = useState<number>(); 
    
    
     const url = currPrint?.file?.url ? `${apiBaseUrl}${currPrint.file.url}` : '/whiteTexture.png';
     const texture = useTexture(url, () => { if (currPrint && !currPrint.preview) {return document.querySelector('canvas')?.toBlob((blob) => {getScene(activeView, blob);});}});
+    //const texture = useTexture(url);
    
-      //console.log(currPrint.stageParams);
+    // useEffect(() => {
+    //   document.querySelector('canvas')?.toBlob((blob) => {
+    //     console.log('screenshot')
+    //     getScene(activeView, blob);
+    //   });
+
+    //   return () => {
+    //     document.querySelector('canvas')?.toBlob((blob) => {
+    //       getScene(activeView, blob);
+    //     });
+    //   }
+
+    // }, [pivotVisibility, pivotOpacity])
    
     return (
         
@@ -71,6 +89,8 @@ const DecalComp = () => {
           visible={pivotVisibility}
           axisColors={['rgb(153,255,0)','rgb(153,255,0)','rgb(153,255,0)']}
           userData={{ rotation: 0 }}
+          ref={pivotRef}
+          opacity={pivotOpacity}
           onDragStart={(props) => {
             setPivotComp(props.component);
             setPivotAxis(props.axis);
@@ -119,18 +139,26 @@ const DecalComp = () => {
             dispatch(cartActions.updateStageParams({ newAttrs, activeView, itemCartId: orderElement.itemCartId }));
             //@ts-ignore
             dispatch(cartActions.updateCartParams({ newAttrs, activeView, itemCartId: orderElement.itemCartId, itemColor: orderElement.item.color }));
+            //setpivotVisibility(false)
           }}
-          onDragEnd={() => {      
-            
-            setpivotVisibility(false)      
-            setPivotComp('');
-            document.querySelector('canvas')?.toBlob((blob) => {
+          onDragEnd={async () => {     
+            setpivotVisibility(false)  
+            setPivotOpacity(0)  
+            setPivotComp('');            
+            const to = setTimeout(() => {
+              document.querySelector('canvas')?.toBlob((blob) => {
+                
                 getScene(activeView, blob);
             });
+            }, 100)
+            
+            return () => {clearTimeout(to)}
+            
+           
           }}
         />
 
-      <Decal onClick={() => {setpivotVisibility(!pivotVisibility)}} position={currPrint.stageParams.decalPosition} rotation={currPrint.stageParams.decalRotation} scale={currPrint ? currPrint.stageParams.decalScale : 0} matrixAutoUpdate map={texture} />
+      <Decal onClick={() => {setpivotVisibility(!pivotVisibility), setPivotOpacity(1)}} position={currPrint.stageParams.decalPosition} rotation={currPrint.stageParams.decalRotation} scale={currPrint ? currPrint.stageParams.decalScale : 0} matrixAutoUpdate map={texture} />
         </>
         }
         {currPrint && currPrint.stageParams && activeView === 'back' &&
@@ -200,12 +228,20 @@ const DecalComp = () => {
             //@ts-ignore
             dispatch(cartActions.updateCartParams({ newAttrs, activeView, itemCartId: orderElement.itemCartId, itemColor: orderElement.item.color }));
           }}
-          onDragEnd={() => {      
-            setpivotVisibility(false)      
-            setPivotComp('');
-            document.querySelector('canvas')?.toBlob((blob) => {
+          onDragEnd={async () => {     
+            setpivotVisibility(false)  
+            setPivotOpacity(0)  
+            setPivotComp('');            
+            const to = setTimeout(() => {
+              document.querySelector('canvas')?.toBlob((blob) => {
+                
                 getScene(activeView, blob);
             });
+            }, 100)
+            
+            return () => {clearTimeout(to)}
+            
+           
           }}
         />
       <Decal onClick={() => {setpivotVisibility(!pivotVisibility)}} position={currPrint.stageParams.decalPosition} rotation={currPrint.stageParams.decalRotation} scale={currPrint ? currPrint.stageParams.decalScale : 0} matrixAutoUpdate map={texture} />
@@ -267,12 +303,20 @@ const DecalComp = () => {
             //@ts-ignore
             dispatch(cartActions.updateCartParams({ newAttrs, activeView, itemCartId: orderElement.itemCartId, itemColor: orderElement.item.color }));
           }}
-          onDragEnd={() => {      
-            setpivotVisibility(false)      
-            setPivotComp('');
-            document.querySelector('canvas')?.toBlob((blob) => {
+          onDragEnd={async () => {     
+            setpivotVisibility(false)  
+            setPivotOpacity(0)  
+            setPivotComp('');            
+            const to = setTimeout(() => {
+              document.querySelector('canvas')?.toBlob((blob) => {
+                
                 getScene(activeView, blob);
             });
+            }, 100)
+            
+            return () => {clearTimeout(to)}
+            
+           
           }}
         />
       <Decal onClick={() => {setpivotVisibility(!pivotVisibility)}} position={currPrint.stageParams.decalPosition} rotation={currPrint.stageParams.decalRotation} scale={currPrint ? currPrint.stageParams.decalScale : 0} matrixAutoUpdate map={texture} />
@@ -333,12 +377,20 @@ const DecalComp = () => {
             //@ts-ignore
             dispatch(cartActions.updateCartParams({ newAttrs, activeView, itemCartId: orderElement.itemCartId, itemColor: orderElement.item.color }));
           }}
-          onDragEnd={() => {      
-            setpivotVisibility(false)      
-            setPivotComp('');
-            document.querySelector('canvas')?.toBlob((blob) => {
+          onDragEnd={async () => {     
+            setpivotVisibility(false)  
+            setPivotOpacity(0)  
+            setPivotComp('');            
+            const to = setTimeout(() => {
+              document.querySelector('canvas')?.toBlob((blob) => {
+                
                 getScene(activeView, blob);
             });
+            }, 100)
+            
+            return () => {clearTimeout(to)}
+            
+           
           }}
         />
       <Decal onClick={() => {setpivotVisibility(!pivotVisibility)}} position={currPrint.stageParams.decalPosition} rotation={currPrint.stageParams.decalRotation} scale={currPrint ? currPrint.stageParams.decalScale : 0} matrixAutoUpdate map={texture} />
