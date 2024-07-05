@@ -19,6 +19,7 @@
 # misc
 .DS_Store
 *.pem
+/pivot-custom-source
 
 # debug
 npm-debug.log*
