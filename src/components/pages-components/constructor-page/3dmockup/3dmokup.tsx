@@ -66,7 +66,7 @@ const Stage: React.FC<{ children: React.ReactNode}> = ({ children }) => {
           
           <CameraRig>
             <Backdrop>
-              <Shirt activeView={activeView}>\
+              <Shirt activeView={activeView}>
                 { children }
               </Shirt>
               
@@ -118,9 +118,9 @@ function Backdrop({ children }: { children: React.ReactNode}) {
 function CameraRig({ children }: any) {
   const group = useRef()
   useFrame((state, delta) => {
-    window.screen.width >= 1000 && easing.damp3(state.camera.position, [0, 0, 2], 0.25, delta)
+    window?.screen?.width >= 1000 && easing.damp3(state.camera.position, [0, 0, 2], 0.25, delta)
     //@ts-ignore
-    window.screen.width >= 1000 && easing.dampE(group.current.rotation, [state.pointer.y / 10, -state.pointer.x / 5, 0], 0.25, delta)
+    window?.screen?.width >= 1000 && easing.dampE(group.current.rotation, [state.pointer.y / 10, -state.pointer.x / 5, 0], 0.25, delta)
     //@ts-ignore
   })
   //@ts-ignore
@@ -143,13 +143,6 @@ function Shirt({ activeView, children }: { children: React.ReactNode, activeView
     useEffect(() => {
         setMeshParams(getInitialMeshParams(activeView));
     }, [activeView]);
-    // useEffect(() => {
-    //     let params = decalParams;
-    //     if (currPrint && currPrint.stageParams) {params = currPrint.stageParams};
-    //     setDecalParams(params);
-    // }, [activeView, orderElement]);
-    //@ts-ignore
-    //let currPrint = orderElement?.prints[activeView] ? orderElement.prints[activeView] : undefined;
 
     const getInitialMeshParams = (activeView: string) => {
         let params: any = {
