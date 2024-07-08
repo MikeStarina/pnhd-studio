@@ -6,6 +6,7 @@ import { useAppSelector } from "@/redux/redux-hooks";
 import Controls from "@/components/pages-components/constructor-page/constructor-controls/constructor-controls";
 import Stage from "@/components/pages-components/constructor-page/3dmockup/3dmokup";
 import DecalComp from "@/components/pages-components/constructor-page/3dmockup/decal";
+import Preview from "@/components/pages-components/constructor-page/3dmockup/preview";
 
 import dynamic from "next/dynamic";
 const DynamicStage = dynamic(
@@ -18,7 +19,7 @@ const Constructor = () => {
     const itemCartId = useSearchParams().get("itemCartId");
     //const { order } = useAppSelector((store) => store.cart);
     //const orderElement = order?.filter((item) => item.itemCartId === itemCartId)[0];
-    //const { activeView } = useAppSelector((store) => store.printConstructor);
+    const { previewMode } = useAppSelector((store) => store.printConstructor);
 
     //console.log('page render')
     useEffect(() => {
@@ -30,11 +31,14 @@ const Constructor = () => {
             <div className={styles.mockup_container}>
                 <div className={styles.stage_container}>
                     {/* {orderElement?.item && <DynamicStage orderElement={orderElement} />} */}
-
+                        {!previewMode &&
                         <Stage>
                             <DecalComp />
                         </Stage>
-                    
+                        }
+                        {previewMode &&
+                            <Preview />
+                        }
                     
                 </div>
             </div>

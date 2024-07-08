@@ -5,6 +5,7 @@ interface IInitialState {
     isSelected: boolean,
     isImageLoading: boolean,
     activeView: string,
+    previewMode: boolean
 }
 
 
@@ -12,6 +13,7 @@ const initialState: IInitialState = {
     isSelected: false,
     isImageLoading: false,
     activeView: 'front',
+    previewMode: false
 };
 
 const constructorSlice = createSlice({
@@ -34,6 +36,12 @@ const constructorSlice = createSlice({
             return {
                 ...state,
                 activeView: action.payload,
+            }
+        },
+        setPreviewMode: (state) => {
+            return {
+                ...state,
+                previewMode: !state.previewMode
             }
         }
     }

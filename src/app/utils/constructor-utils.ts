@@ -168,7 +168,7 @@ export const setCoords = (currentImage: IInitialPrintParams, activeView: string,
       url: currentImage.url ? `${apiBaseUrl}${currentImage.url}` : undefined,
       decalRotation: [0,0,0],
       //decalPosition: [0,0.1,0],
-      decalPosition: [0,0.1,0],
+      decalPosition: [0,0.1,0.1],
       deltaX: 0.15,
       deltaY: 0.15 * (currentImage.height / currentImage.width),
       deltaZ: 0.4,
@@ -188,7 +188,7 @@ export const setCoords = (currentImage: IInitialPrintParams, activeView: string,
     //const pivotInitScale = sizeDelta <= 1 ? 0.15 : sizeDelta > 1 ? 0.15 * sizeDelta : 0.15;
     const deltaX = 0.15;    
     const deltaY = 0.15 * sizeDelta;
-    let deltaZ = 0.4;
+    let deltaZ = 0.2;
 
 
     if (itemType === 'tshirt') {  return {
@@ -205,7 +205,7 @@ export const setCoords = (currentImage: IInitialPrintParams, activeView: string,
           deltaY,
           deltaZ,
           decalScale: [deltaX,deltaY,deltaZ],
-          decalPosition: [0,0.2,0],
+          decalPosition: [0,0.2,0.1],
           pivotPosition: [0,0.2,0.2],
       };}
 
@@ -231,7 +231,7 @@ export const setCoords = (currentImage: IInitialPrintParams, activeView: string,
 
     const deltaX = 0.15;
     const deltaY = 0.15 * (currentImage.height / currentImage.width)
-    let deltaZ = 0.4;
+    let deltaZ = 0.2;
 
     if (itemType === 'tshirt') {  return {
         ...params,
@@ -243,6 +243,7 @@ export const setCoords = (currentImage: IInitialPrintParams, activeView: string,
         meshRotation: [0,Math.PI, 0],
         pivotPosition: [0, 0.1, -0.2],
         pivotRotation: [0,Math.PI,0],
+        decalPosition: [0,0.1,-0.1],
     } }
     if (itemType === 'longsleeve' || itemType === 'sweatshirt' || itemType === 'hoodie') {  return {
         ...params,
@@ -252,9 +253,9 @@ export const setCoords = (currentImage: IInitialPrintParams, activeView: string,
         decalScale: [deltaX,deltaY,deltaZ],
         decalRotation: [0,Math.PI,0],
         meshRotation: [0,Math.PI, 0],
-        pivotPosition: [0, 0.2, -0.2],
+        pivotPosition: [0, 0.2, -0.17],
         pivotRotation: [0,Math.PI,0],
-        decalPosition: [0,0.2,0],
+        decalPosition: [0,0.2,-0.1],
     } }
     if (itemType === 'totebag') {  
         
@@ -266,7 +267,7 @@ export const setCoords = (currentImage: IInitialPrintParams, activeView: string,
       deltaY,
       deltaZ,
       decalScale: [deltaX,deltaY,deltaZ],
-      decalPosition: [0,0,0.1],
+      decalPosition: [0,0,-0.1],
       decalRotation: [0,Math.PI,0],
         meshRotation: [0,Math.PI, 0],
         pivotPosition: [0, 0, -0.2],

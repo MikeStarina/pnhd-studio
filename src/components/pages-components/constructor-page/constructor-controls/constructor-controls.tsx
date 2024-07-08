@@ -14,25 +14,36 @@ import { useAppDispatch } from '@/redux/redux-hooks';
 
 const Controls: React.FC<{ itemCartId: any}> = ({ itemCartId }) => {
     const { order } = useAppSelector((store) => store.cart);
+    const { previewMode } = useAppSelector((store) => store.printConstructor);
     const orderElement = order?.filter((item) => item.itemCartId === itemCartId)[0];
     const dispatch = useAppDispatch();
 
     const clickHandler = () => {
         dispatch(constructorActions.setActiveView('front'));
     }
-
     return (
         <>
         {orderElement && 
             <>
             <div className={styles.controls_container}>
-        
-            <Tabs orderElement={orderElement} />
-            <FileUploader orderElement={orderElement} />
-            <div style={{width: '100%', display: 'flex', justifyContent: 'flex-end', margin: '10px 0 0 0'}}>
-                <Link className={styles.link} href='/howto' target='blank'>Как использовать конструктор ?</Link>
-            </div>
-            <OrderInfo orderElement={orderElement} />
+                <div className={styles.controls_previewControlsWrapper}>
+                    <button type='button' className={!previewMode ? styles.active_tab : styles.tab} onClick={() => {dispatch(constructorActions.setPreviewMode())}}>Редактор</button>
+                    <button type='button' className={previewMode ? styles.active_tab : styles.tab} onClick={() => {dispatch(constructorActions.setPreviewMode())}}>Превью</button>
+                </div>
+                
+                {!previewMode && 
+                    <>
+                        <Tabs orderElement={orderElement} />
+                        <FileUploader orderElement={orderElement} />
+                        <div style={{width: '100%', display: 'flex', justifyContent: 'flex-end', margin: '10px 0 0 0'}}>
+                            <Link className={styles.link} href='/howto' target='blank'>Как использовать конструктор ?</Link>
+                        </div>
+                    </>
+                }
+                {/* {previewMode &&
+                    <button type='button'>Поделиться</button>
+                } */}
+                <OrderInfo orderElement={orderElement} />
 
             <Link href='/cart' style={{ alignSelf: 'flex-end', marginTop: '50px'}} onClick={clickHandler}>
                 <button
