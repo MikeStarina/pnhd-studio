@@ -109,7 +109,7 @@ const DecalComp = () => {
                 if (orderElement?.item.type !== 'totebag') {
                 newAttrs = {
                         ...newAttrs,
-                        decalPosition: [position.x, position.y, position.z + 0],
+                        decalPosition: [position.x, position.y, position.z + 0.1],
                        //pivotPosition: [position.x, position.y, 0.2],
                         pivotPosition: [0, 0, 0.2]          
                 }}
@@ -190,7 +190,7 @@ const DecalComp = () => {
                 if (orderElement?.item.type !== 'totebag') {
                 newAttrs = {
                         ...newAttrs,
-                         decalPosition: [position.x, position.y, position.z + 0],   
+                         decalPosition: [position.x, position.y, position.z - 0.1],   
                          pivotPosition: [0, 0, -0.2]   
                          //pivotPosition: [position.x, position.y, -0.3],
                     

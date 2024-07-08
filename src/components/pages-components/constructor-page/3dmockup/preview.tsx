@@ -13,6 +13,9 @@ import {
   Environment,
   Center,
   OrbitControls,
+  TransformControls,
+  CycleRaycast,
+  CameraControls
 } from "@react-three/drei";
 import { easing } from "maath";
 import { useAppDispatch, useAppSelector } from "@/redux/redux-hooks";
@@ -21,6 +24,7 @@ import { ICartOrderElement } from "@/app/utils/types";
 import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
 import { useSearchParams } from "next/navigation";
 import { ReactReduxContextValue } from "react-redux";
+import { frontFacing } from "three/examples/jsm/nodes/Nodes.js";
 
 
 type TPrintProps = {
@@ -36,10 +40,9 @@ type TPrintProps = {
 }
 
 
-const Stage: React.FC<{ children: React.ReactNode}> = ({ children }) => {
+const Preview: React.FC<{ children?: React.ReactNode}> = ({ children }) => {
     //console.log('stage render')
     const { activeView } = useAppSelector((store) => store.printConstructor);
-    const { width } = window.screen;
   return (
     <div
       style={{
@@ -63,14 +66,14 @@ const Stage: React.FC<{ children: React.ReactNode}> = ({ children }) => {
           <directionalLight intensity={0.5} position={[10, 10, 10]} />
           <Environment files="/potsdamer_platz_1k.hdr" />
           
-          <CameraRig>
-            <Backdrop>
+          
+
               <Shirt activeView={activeView}>
                 { children }
               </Shirt>
               
-            </Backdrop>
-          </CameraRig>
+
+         
           <AccumulativeShadows
             temporal
             frames={100}
@@ -88,46 +91,15 @@ const Stage: React.FC<{ children: React.ReactNode}> = ({ children }) => {
               size={10}
             />
           </AccumulativeShadows>
-          {width && width < 1000 && <OrbitControls maxPolarAngle={Math.PI / 2} minPolarAngle={Math.PI / 2} minAzimuthAngle={0} maxAzimuthAngle={0} />}
-          {width && width >= 1000 && <OrbitControls makeDefault />}
+          <OrbitControls maxPolarAngle={Math.PI / 2} minPolarAngle={Math.PI / 2} autoRotate autoRotateSpeed={5} enablePan={true} enableZoom={true} />
         </Canvas>
       </Suspense>
     </div>
   );
 };
 
-function Backdrop({ children }: { children: React.ReactNode}) {
-    //console.log('backdrop render')
-  const shadows = useRef(null)
-  useFrame((state, delta) => {
-    //@ts-ignore
-    return easing.dampC(shadows.current.getMesh().material.color, '', 0.25, delta)})
-  return (
-    <>
-    {/* //@ts-ignore */}
-    <AccumulativeShadows ref={shadows} temporal frames={60} alphaTest={0.85} scale={5} rotation={[Math.PI / 2, 0, 0]} position={[0, 0, -0.14]}>
-      <RandomizedLight amount={4} radius={9} intensity={2} ambient={0.25} position={[5, 5, -10]} />
-      <RandomizedLight amount={4} radius={5} intensity={1.25} ambient={0.55} position={[-5, 5, -9]} />
-    </AccumulativeShadows>
-    { children }
-    </>
-  )
-}
 
-function CameraRig({ children }: any) {
-  const group = useRef()
-  useFrame((state, delta) => {
-    //console.log(state);
-    window?.screen?.width >= 1000 && easing.damp3(state.camera.position, [0, 0, 2], 0.25, delta)
 
-    //@ts-ignore
-    window?.screen?.width >= 1000 && easing.dampE(group.current.rotation, [state.pointer.y / 10, -state.pointer.x / 5, 0], 0.25, delta)
-
-    //@ts-ignore
-  })
-  //@ts-ignore
-  return <group ref={group}>{children}</group>
-}
 
 
 function Shirt({ activeView, children }: { children: React.ReactNode, activeView: string}) {
@@ -138,68 +110,28 @@ function Shirt({ activeView, children }: { children: React.ReactNode, activeView
     //@ts-ignore
     const { type, stageColor } = orderElement?.item;
 
-    const dispatch = useAppDispatch();
-    //@ts-ignore
-    //let currPrint = orderElement?.prints[activeView] ? orderElement.prints[activeView] : undefined;
 
-    useEffect(() => {
-        setMeshParams(getInitialMeshParams(activeView));
-    }, [activeView]);
-
-    const getInitialMeshParams = (activeView: string) => {
-        let params: any = {
-            pivotVisibility: false,
-            pivotRotation: [0,0,0],
-            pivotPosition: [0,0,0.3],
-            pivotScale: 0.15,
-            dragAxis: [true, true, false],
-            meshRotation: [0,0,0],
-        };
-
-
-        if (activeView === 'rsleeve') {
-            return {
-                ...params,
-                meshRotation: [0,Math.PI / 2, 0],
-                pivotPosition: [-0.4, 0.06, -0.025],
-                dragAxis: [false, true, true],
-            }
-        }
-        if (activeView === 'lsleeve') {
-            return {
-                ...params,
-                meshRotation: [0,Math.PI / -2, 0],
-                pivotPosition: [0.4, 0.06, -0.025],
-                dragAxis: [false, true, true],
-            }
-        }
-        if (activeView === 'back') {
-            return {
-                ...params,
-                meshRotation: [0,Math.PI, 0],
-                pivotPosition: [0, 0, -0.3],
-                pivotRotation: [0,Math.PI,0],
-                dragAxis: [true, true, false],
-            }
-        }
-
-       
-
-        return params;
-    }
-
-    
+    let params: any = {
+      pivotVisibility: false,
+      pivotRotation: [0,0,0],
+      pivotPosition: [0,0,0.3],
+      pivotScale: 0.15,
+      dragAxis: [true, true, false],
+      meshRotation: [0,0,0],
+  };       
   const ref = useRef(null);
   const { nodes, materials } = useGLTF(`/${type}.glb`);
-  const model = useGLTF(`/${type}.glb`);
-  console.log(model);
+
     
   //@ts-ignore
   useFrame((state, delta) => {
     //@ts-ignore
+    //return easing.dampC(materials.lambert1.color, "#fff", 0.25, delta);
     return easing.dampC(materials.mat.color, stageColor, 0.25, delta);
   });
-  const [ meshParams, setMeshParams ] = useState(getInitialMeshParams(activeView)); 
+  const [ meshParams, setMeshParams ] = useState(params); 
+  //const [ decalParams, setDecalParams ] = useState(getInitialMeshParams(activeView)); 
+  //const texture = currPrint ? useTexture(`${apiBaseUrl}${currPrint.file.url}`) : useTexture("/whiteTexture.png");
 
   /**
    * 
@@ -232,14 +164,52 @@ function Shirt({ activeView, children }: { children: React.ReactNode, activeView
         dispose={null}
         rotation={meshParams.meshRotation}
       >
-      { children }
+      <Prints />
       </mesh>
     
   );
 }
 
+
+
+const Prints = () => {
+  const itemCartId = useSearchParams().get("itemCartId");
+  const { order } = useAppSelector((store) => store.cart);
+  const orderElement = order?.filter((item) => item.itemCartId === itemCartId)[0];
+  //@ts-ignore
+  const { front, back, lsleeve, rsleeve } = orderElement?.prints;
+
+  const frontPrint = useTexture(front?.file?.url ? `${apiBaseUrl}${front.file.url}` : '/whiteTexture.png');
+  const backPrint = useTexture(back?.file?.url ? `${apiBaseUrl}${back.file.url}` : '/whiteTexture.png');
+  const lsleevePrint = useTexture(lsleeve?.file?.url ? `${apiBaseUrl}${lsleeve.file.url}` : '/whiteTexture.png');
+  const rsleevePrint = useTexture(rsleeve?.file?.url ? `${apiBaseUrl}${rsleeve.file.url}` : '/whiteTexture.png');
+  return (
+      
+      
+      <>
+      {front && front.stageParams && front.file &&
+        <Decal position={front.stageParams.decalPosition} rotation={front.stageParams.decalRotation} scale={front ? front.stageParams.decalScale : 0} matrixAutoUpdate map={frontPrint} />
+      }
+      {back && back.stageParams && back.file &&
+        <Decal position={back.stageParams.decalPosition} rotation={back.stageParams.decalRotation} scale={back ? back.stageParams.decalScale : 0} matrixAutoUpdate map={backPrint} />
+      }
+      {lsleeve && lsleeve.stageParams && lsleeve.file &&
+        <Decal position={lsleeve.stageParams.decalPosition} rotation={lsleeve.stageParams.decalRotation} scale={lsleeve ? lsleeve.stageParams.decalScale : 0} matrixAutoUpdate map={lsleevePrint} />
+      }
+      {rsleeve && rsleeve.stageParams && rsleeve.file &&
+        <Decal position={rsleeve.stageParams.decalPosition} rotation={rsleeve.stageParams.decalRotation} scale={rsleeve ? rsleeve.stageParams.decalScale : 0} matrixAutoUpdate map={rsleevePrint} />
+      }
+      </>
+  )
+}
+
+
+
+
+
+
+
+
 useGLTF.preload("/shirt_baked_collapsed.glb");
 ["/whiteTexture.png", "/Glitch2.jpg"].forEach(useTexture.preload);
-
-
-export default Stage;
+export default Preview;
