@@ -91,7 +91,7 @@ const Preview: React.FC<{ children?: React.ReactNode}> = ({ children }) => {
               size={10}
             />
           </AccumulativeShadows>
-          <OrbitControls maxPolarAngle={Math.PI / 2} minPolarAngle={Math.PI / 2} autoRotate autoRotateSpeed={5} enablePan={true} enableZoom={true} />
+          <OrbitControls maxPolarAngle={Math.PI / 2} minPolarAngle={Math.PI / 2} autoRotate autoRotateSpeed={10} enablePan={true} enableZoom={true} />
         </Canvas>
       </Suspense>
     </div>

@@ -191,8 +191,7 @@ function Shirt({ activeView, children }: { children: React.ReactNode, activeView
     
   const ref = useRef(null);
   const { nodes, materials } = useGLTF(`/${type}.glb`);
-  const model = useGLTF(`/${type}.glb`);
-  console.log(model);
+
     
   //@ts-ignore
   useFrame((state, delta) => {
