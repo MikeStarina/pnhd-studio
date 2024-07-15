@@ -1,3 +1,4 @@
+import { StaticImageData } from "next/image";
 
 
 export interface IProduct {
@@ -174,4 +175,24 @@ export type TParams = {
     pivotScale: number,
     dragAxis: Array<boolean>,
     meshRotation?: Array<number>,
+}
+
+export type TOptionsData = {
+        parent?: string,
+        slug: string,
+        type?: string,
+        title: string,
+        subtitle: string,
+        mainText: string,
+        pros?: string,
+        cons?: string,
+        summaryText?: string,
+        robotsText: {__html: string},
+        cover: StaticImageData | string,
+        gallery?: Array<StaticImageData | string>,
+        meta: {
+            metaTitle: string,
+            metaDescription: string,
+            metaKeywords: string,
+        }
 }
