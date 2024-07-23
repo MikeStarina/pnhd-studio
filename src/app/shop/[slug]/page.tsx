@@ -16,7 +16,7 @@ type TMetadataProps = {
 export async function generateMetadata ({ params, searchParams }: TMetadataProps): Promise<Metadata> {
     const [ currItem ]: Array<IProduct> = await getShopData({ slug: params.slug});
     return {
-      title: currItem?.name,
+      title: `${currItem?.name} | PINHEAD STUDIO`,
       description: currItem?.description,
       keywords: [currItem?.category!, currItem?.type!, currItem?.color!],
       openGraph: {

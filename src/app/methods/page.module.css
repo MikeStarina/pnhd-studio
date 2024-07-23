@@ -1,0 +1,32 @@
+.title_wrapper {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    overflow: hidden;
+    padding: 0 20px;
+    margin-top: 50px;
+}
+
+.page_title {
+    text-transform: uppercase;
+    font-family: 'DrukTextWideCyr-Medium';
+    font-size: 46px;
+}
+
+@media (max-width: 720px) {
+    .page_title {
+        font-size: 34px;
+    }
+}
+@media (max-width: 500px) {
+    .page_title {
+        font-size: 26px;
+    }
+}
+@media (max-width: 400px) {
+    .page_title {
+        font-size: 25px;
+    }
+}
