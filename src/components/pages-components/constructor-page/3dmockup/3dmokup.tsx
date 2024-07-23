@@ -1,7 +1,6 @@
 "use client";
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect, useState, useRef } from "react";
 import * as THREE from "three";
-import { useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
   useGLTF,
@@ -18,9 +17,10 @@ import { easing } from "maath";
 import { useAppDispatch, useAppSelector } from "@/redux/redux-hooks";
 import { apiBaseUrl } from "@/app/utils/constants";
 import { ICartOrderElement } from "@/app/utils/types";
-import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
 import { useSearchParams } from "next/navigation";
-import { ReactReduxContextValue } from "react-redux";
+import { useUploadPrintImageMutation } from "@/api/api";
+import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
+
 
 
 type TPrintProps = {
@@ -40,8 +40,32 @@ const Stage: React.FC<{ children: React.ReactNode}> = ({ children }) => {
     //console.log('stage render')
     const { activeView } = useAppSelector((store) => store.printConstructor);
     const { width } = window.screen;
+    const [ state, setState ] = useState<any>()
+    const [ uploadPrint ] = useUploadPrintImageMutation();
+    const { order } = useAppSelector(store => store.cart);
+    const dispatch = useAppDispatch()
+
+   const handleDrag = async (e: any) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    //console.log(e.type);
+    //console.log(e.target);
+    //console.log(e.currentTarget);
+    //console.log(e.dataTransfer?.files);
+    if (e.currentTarget.id === 'dropzone' && e.type === 'drop') {
+      console.log(e.dataTransfer.files[0]);
+      alert(e.dataTransfer.files[0].name + ' ' + e.dataTransfer.files[0].type);
+      //setState(e.dataTransfer.files[0].toString());
+      //const data = new FormData;
+      //data.append("files", e.dataTransfer.files[0], `test`);   
+      //const uploadedPrint = await uploadPrint(data);
+      //uploadedPrint && dispatch(cartActions.setPrint({ print: uploadedPrint, activeView, itemCartId: orderElement.itemCartId, itemType: orderElement.item.type, itemColor: orderElement.item.color }))
+    }
+   }
   return (
     <div
+      id='dropzone'
       style={{
         width: "100%",
         height: '100%',
@@ -50,9 +74,16 @@ const Stage: React.FC<{ children: React.ReactNode}> = ({ children }) => {
         boxSizing: "border-box",
         overflow: "hidden",
       }}
+      onDragStart={handleDrag}
+      onDragOver={handleDrag}
+      onDragLeave={handleDrag}
+      onDrop={handleDrag}
+      onDragEnd={handleDrag}
+     
     >
       <Suspense fallback={null}>
         <Canvas
+          id='canvas'
           shadows
           orthographic
           gl={{ preserveDrawingBuffer: true }}

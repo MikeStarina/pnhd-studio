@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { useAppSelector } from '@/redux/redux-hooks';
 import { actions as constructorActions } from '@/redux/constructor-slice/constructor.slice';
 import { useAppDispatch } from '@/redux/redux-hooks';
+import { useUploadPrintImageMutation } from '@/api/api';
 
 
 
@@ -20,7 +21,9 @@ const Controls: React.FC<{ itemCartId: any}> = ({ itemCartId }) => {
     const clickHandler = () => {
         dispatch(constructorActions.setActiveView('front'));
     }
+    const [ uploadPrint ] = useUploadPrintImageMutation();
     const videoRef = React.useRef(null)
+   
     const test = () => {
         const mediaSource = new MediaSource();
         let sourceBuffer;
@@ -31,7 +34,8 @@ const Controls: React.FC<{ itemCartId: any}> = ({ itemCartId }) => {
 
         function handleSourceOpen(event) {
             console.log('MediaSource opened');
-            sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vp8"');
+            sourceBuffer = mediaSource.addSourceBuffer('video/mp4');
+            //sourceBuffer = mediaSource.addSourceBuffer('video/mp4; codecs="vp8"');
             console.log('Source buffer: ', sourceBuffer);
           }
         function handleDataAvailable(event) {
@@ -39,19 +43,25 @@ const Controls: React.FC<{ itemCartId: any}> = ({ itemCartId }) => {
               recordedBlobs.push(event.data);
             }
         }
-        function handleStop(event) {
+        async function handleStop(event) {
             console.log('Recorder stopped: ', event);
-            const superBuffer = new Blob(recordedBlobs, {type: 'video/avi'});
+            const superBuffer = new Blob(recordedBlobs, {type: 'video/mp4'});
+            
             video.src = window.URL.createObjectURL(superBuffer);
-            console.log(window.URL.createObjectURL(superBuffer))
+            //console.log(window.URL.createObjectURL(superBuffer))
             //navigator.share(superBuffer);
+            // const data = new FormData();
+            // data.append("files", superBuffer, `test`);
+            // const uploadedPrint = await uploadPrint(data);
+            // console.log(uploadedPrint)
+
             recordedBlobs = [];
         }
 
 
 
-        const stream = canvas?.captureStream();
-        let options = {mimeType: 'video/webm'};
+        let stream = canvas?.captureStream();
+        let options = {mimeType: 'video/mp4'};
         let mediaRecorder = new MediaRecorder(stream, options);
         mediaRecorder.onstop = handleStop;
         mediaRecorder.ondataavailable = handleDataAvailable;
