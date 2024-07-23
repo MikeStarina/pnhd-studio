@@ -25,6 +25,9 @@ Disallow: /pechat-na-futbolkah
 Disallow: /pechat-na-svitshotah
 Disallow: /pryamaya-dtg-pechat
 Disallow: /thanks
+Disallow: /tproduct/https:/pnhd.ru	
+Disallow: /game	
+Disallow: *&&&
 User-agent: Yandex
 Disallow: /zagitova
 Disallow: /blog/
@@ -49,10 +52,20 @@ Disallow: /pechat-na-futbolkah
 Disallow: /pechat-na-svitshotah
 Disallow: /pryamaya-dtg-pechat
 Disallow: /thanks
+Disallow: /tproduct/https:/pnhd.ru	
+Disallow: /game	
+Disallow: *&&&
 Clean-param: etext
 Clean-param: type
 Clean-param: category&type
 Clean-param: s
 Clean-param: fbclid
+Clean-param: color
+Clean-param: region&region_name&block&callibri
+Clean-param: region&region_name&source&callibri
+Clean-param: yycleed
+Clean-param: id
+Clean-param: itemCartId
 Host: https://studio.pnhd.ru
 Sitemap: https://studio.pnhd.ru/sitemap.xml
+
