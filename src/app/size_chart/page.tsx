@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./page.module.css";
 import Image from "next/image";
+import { Metadata } from "next";
 import classicTee from "../../../public/sizeChart/tee_classic_sizes.png";
 import oversizeTee from "../../../public/sizeChart/tee_oversize_sizes.png";
 import freeFit from "../../../public/sizeChart/tee_freefit_sizes.png";
@@ -39,6 +40,21 @@ const itemsArr = [
         image: classicHood,
     },
 ];
+
+export const metadata: Metadata = {
+    title: 'Таблицы размеров одежды | Pinhead Studio',
+    description: 'Свертесь с нашей таблицей размеров одежды перед заказом печати в Pinhead Studio. Найдите идеальную посадку для ваших изделий.',
+    keywords: 'печать на футболках, санкт-петербург, недорого, на заказ, цена, от 1 шт, срочный, заказать, хороший, сделать, стоимость, доставка, быстрый, качественный, черный, оверсайз, белый, онлайн, спортивный, свой дизайн, конструктор, создать макет, нанесение, собственный, толстовка, худи, студия, услуги, каталог, а3, а4, одежда, свитшот',
+    metadataBase: new URL('https://studio.pnhd.ru'),
+    alternates: {
+      canonical: '/',
+    },
+    openGraph: {
+      type: 'website',
+      title: 'PNHD STUDIO | Главная',
+      images: '/opengraph-image.jpg',
+    },
+  };
 
 const SizeChartPage: React.FC = () => {
     return (
