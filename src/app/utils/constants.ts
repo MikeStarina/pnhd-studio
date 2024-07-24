@@ -26,7 +26,7 @@ export const checkResponse = (res: any) => {
         })
     }
     const shopData = await fetch(`${apiBaseUrl}/api/products${queryString}`, {
-        cache: 'no-store',
+        next: { revalidate: 3600, tags: ['shopDataTag'] },
         headers: {
           'Content-Type': 'application/json',
         },

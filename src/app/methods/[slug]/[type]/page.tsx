@@ -6,6 +6,8 @@ import MapScreen from "@/components/pages-components/main-page/map-screen/map-sc
 import { Metadata } from "next";
 import { ssOptions } from '@/app/utils/method-options-data';
 
+
+
 export const generateMetadata = ({ params }: { params: { slug: string, type: string }}): Metadata => {
     const { slug, type } = params;
     const option: typeof ssOptions[0] = ssOptions.filter((item) => item.slug === slug && item.type === type)[0];
@@ -23,6 +25,11 @@ export const generateMetadata = ({ params }: { params: { slug: string, type: str
         }
     }
 }
+export const dynamicParams = false;
+export const generateStaticParams = async ({ params }: { params: { slug: string }}) => {
+    const filtered = ssOptions.filter((item) => item.slug === params.slug);
+    return filtered.map((item) => ({type: item.type }))
+}
 
 
 const MethodOptionsPage: React.FC<{
@@ -35,7 +42,7 @@ const MethodOptionsPage: React.FC<{
 
     return (
         <>
-        {option && (
+            { option && (
                 <>
                     <section className={styles.method_mainScreen}>
                         <div className={styles.method_titleWrapper}>
@@ -108,7 +115,7 @@ const MethodOptionsPage: React.FC<{
                         </div>
                     </section>
                 </>
-            )}
+        )}
         </>
     )
 }
