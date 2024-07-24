@@ -4,7 +4,8 @@ import styles from './products-filter.module.css';
 import { TextField } from "@mui/material";
 import { MenuItem } from "@mui/material";
 import { useRouter } from "next/navigation";
-import UtmLink from "@/components/shared-components/utm-link/utm-link";
+import ProductCardsBlock from "../product-cards-block/product-cards-block";
+import { IProduct } from "@/app/utils/types";
 
 const filterParams = {
     category: [
@@ -33,15 +34,19 @@ const inputSx = {
 }
 
 
-const ProductFilterComp: React.FC = () => {
+const ProductFilterComp: React.FC<{ children?: React.ReactNode, shopData: Array<IProduct> }> = ({ children, shopData }) => {
 
     
-    const [ filterState, setFilterState ] = useState<{'category': string, 'type': string, 'priceSort': string}>({'category': '', 'type': '', 'priceSort': ''})
-    const router = useRouter();
+    const [ filterState, setFilterState ] = useState<{'category': string, 'type': string, 'priceSort': string}>({'category': '', 'type': '', 'priceSort': ''});
+    const [ isFiltered, setIsFiltred ] = useState<boolean>(false);
+    const [ filteredData, setFilteredData ] = useState<Array<IProduct> | null>(null);
+    //const router = useRouter();
 
     const resetFilterButtonClickHandler = () => {
         setFilterState({'category': '', 'type': '', 'priceSort': ''});
-        router.push('/shop');
+        setIsFiltred(false);
+        setFilteredData(null);
+        //router.push('/shop');
     }
 
     const filterInputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -55,21 +60,33 @@ const ProductFilterComp: React.FC = () => {
 
     const filtersSubmitHandler = (e: any) => {
         e.preventDefault();
-        const keys = Object.keys(filterState);
-        let queryString = '';
-        keys.forEach((key) => {
-            //@ts-ignore
-            if (filterState[key]) {
-                //@ts-ignore
-                if (queryString === '') return queryString += `?${key}=${filterState[key]}`;
-                //@ts-ignore
-                return queryString += `&${key}=${filterState[key]}`
-            }
-        })
-        router.push(`/shop${queryString}`);
+        // const keys = Object.keys(filterState);
+        // let queryString = '';
+        // keys.forEach((key) => {
+        //     //@ts-ignore
+        //     if (filterState[key]) {
+        //         //@ts-ignore
+        //         if (queryString === '') return queryString += `?${key}=${filterState[key]}`;
+        //         //@ts-ignore
+        //         return queryString += `&${key}=${filterState[key]}`
+        //     }
+        // })
+        // router.push(`/shop${queryString}`);
+        setIsFiltred(true)
+        const filterFunc = () => {
+            let filteredData = shopData;
+            if (filterState.category) filteredData = filteredData.filter((item) => (item.category === filterState.category));
+            if (filterState.type) filteredData = filteredData.filter((item) => (item.type === filterState.type));
+            if (filterState.priceSort && filterState.priceSort === 'ASC') filteredData = filteredData.sort((a,b) => (a.price - b.price));
+            if (filterState.priceSort && filterState.priceSort === 'DESC') filteredData = filteredData.sort((a,b) => (b.price - a.price));
+            
+            return filteredData;
+        }
+        setFilteredData(filterFunc());
     }
 
     return (
+        <section className={styles.main}>
         <form className={styles.filters} onSubmit={filtersSubmitHandler}>
                 <div className={styles.filters_wrapper}>   
                     <TextField
@@ -120,6 +137,8 @@ const ProductFilterComp: React.FC = () => {
                 <button type='button' className={styles.filters_submitButton} onClick={resetFilterButtonClickHandler}>сбросить</button>
                 <button type='submit' className={styles.filters_submitButton} >применить</button>                
         </form>
+        {isFiltered && filteredData ? (<ProductCardsBlock shopData={filteredData} />) : (<>{children}</>)}
+        </section>
     )
 }
 

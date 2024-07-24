@@ -26,6 +26,9 @@ export const generateMetadata = ({ params }: { params: { slug: string }}): Metad
         }
     }
 }
+export const dynamicParams = false;
+
+
 
 const MethodPage: React.FC<{
     params: { slug: string };

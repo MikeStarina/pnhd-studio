@@ -23,21 +23,17 @@ export const metadata: Metadata = {
     },
   };
 
+const ShopPage: React.FC = async () => {
 
-
-
-const ShopPage: React.FC<{ searchParams: { [n: string]: string } }> = async ({ searchParams }) => {
-
-    const shopData: Array<IProduct> = await getShopData(searchParams);    
-    if (searchParams.priceSort) {
-      searchParams.priceSort === 'ASC' && shopData.sort((a,b) => (a.price - b.price));
-      searchParams.priceSort === 'DESC' && shopData.sort((a,b) => (b.price - a.price));
-    }
+    const shopData: Array<IProduct> = await getShopData();    
+    // if (searchParams.priceSort) {
+    //   searchParams.priceSort === 'ASC' && shopData.sort((a,b) => (a.price - b.price));
+    //   searchParams.priceSort === 'DESC' && shopData.sort((a,b) => (b.price - a.price));
+    // }
     return (
-      <section className={styles.main}>
-        <ProductFilterComp />
-        {shopData && shopData.length > 0 && <ProductCardsBlock shopData={shopData} />}
-      </section>
+        <ProductFilterComp shopData={shopData}>
+          {shopData && shopData.length > 0 && <ProductCardsBlock shopData={shopData} />}
+        </ProductFilterComp>
     )
 }
 
