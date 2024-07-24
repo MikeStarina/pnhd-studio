@@ -8,9 +8,17 @@ import { Metadata, ResolvingMetadata } from 'next'
 import { apiBaseUrl } from "@/app/utils/constants";
 
 
+
 type TMetadataProps = {
     params: { slug: string },
     searchParams: { id: string },
+}
+
+export const generateStaticParams = async () => {
+    const data = await getShopData();
+    //console.log(data)
+
+    return data.map((item: IProduct) => ({ slug: item.slug }))
 }
 
 export async function generateMetadata ({ params, searchParams }: TMetadataProps): Promise<Metadata> {

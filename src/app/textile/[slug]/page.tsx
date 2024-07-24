@@ -29,6 +29,10 @@ export const generateMetadata = ({
         },
     };
 };
+export const dynamicParams = false;
+export const generateStaticParams = async () => {
+    return textileOptions.map((item) => ({slug: item.slug}))
+}
 
 const MethodPage: React.FC<{
     params: { slug: string };
