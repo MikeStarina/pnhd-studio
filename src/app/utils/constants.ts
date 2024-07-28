@@ -1,5 +1,5 @@
 import { IProduct } from "./types";
-
+import { TBlogPosts } from "./types";
 
 
 
@@ -33,6 +33,16 @@ export const checkResponse = (res: any) => {
       })
       .then(checkResponse)
     return shopData.data;
+}
+
+export const getPosts = async (): Promise<TBlogPosts> => {
+    const posts = await fetch(`${apiBaseUrl}/api/blog`, {
+        cache: 'no-store',
+        //next: { revalidate: 3600, tags: ['blogTag'] },
+    })
+    .then(checkResponse);
+
+    return posts;
 }
 
 export const tumblers = [ 'DTG', 'DTF', 'ТЕРМОПЕРЕНОС', 'ВЫШИВКА' ];
@@ -240,3 +250,20 @@ export const urlQueryStringToObject = (searchParams: string) => {
     })
     return obj;
 }
+
+
+
+/*
+{
+  "post_id": 001,
+  "title": "TEST POST",
+  "subtitle": "Test subtitle",
+  "slug": "test-slug",
+  "createdAt": "27.07.2024",
+  "cover": "https://pnhdstudioapi.ru/images/classic_tee/white_main.jpg",
+  "likes": 300,
+  "hashtags": ["#test1","test2","test3"],
+  "author": "Mike Starina",
+  "blog": {"__html": ""}
+}
+*/

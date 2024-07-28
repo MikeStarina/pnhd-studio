@@ -196,3 +196,19 @@ export type TOptionsData = {
             metaKeywords: string,
         }
 }
+
+
+export type TBlogPosts = {
+  posts: Array<{
+    post_id: number;
+    title: string;
+    subtitle: string;
+    slug: string;
+    createdAt: string;
+    cover: string;
+    likes: number;
+    hashtags: Array<string>;
+    blog: {__html: string};
+    author: string
+  }>
+}
