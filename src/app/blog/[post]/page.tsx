@@ -39,7 +39,7 @@ const PostPage = async ({ params }: { params: { post: string }}) => {
                 </div>
                 <div className={cx('postPage__head-block', 'postPage__head-block_right')}>
                     <div>
-                        <Image src={testPic} alt='Обложка поста'/>
+                        <img src={post.cover} alt='Обложка поста'/>
                     </div>
                 </div>                
             </div>
