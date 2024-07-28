@@ -15,6 +15,10 @@ body {
   position: relative;
 }
 
+* {
+  font-family: 'Neue_machina', Arial, Helvetica, sans-serif;
+}
+
 main {
   display: flex;
   flex-direction: column;
