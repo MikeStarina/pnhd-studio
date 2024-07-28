@@ -30,7 +30,7 @@ const Blog = async () => {
                     <div className={cx('blogPage__card-wrapper')}>
                         <div className={cx('blogPage__card-image-wrapper')}>
                             <div className={cx('blogPage__card-cover-container')}>
-                                <Image src={testPic} alt='Обложка поста' className={cx('blogPage__card-cover')}/>
+                                <img src={post.cover} alt='Обложка поста' className={cx('blogPage__card-cover')}/>
                             </div>                            
                         </div>
                         <div className={cx('blogPage__card-title-wrapper')}>

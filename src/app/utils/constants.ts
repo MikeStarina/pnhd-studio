@@ -37,8 +37,7 @@ export const checkResponse = (res: any) => {
 
 export const getPosts = async (): Promise<TBlogPosts> => {
     const posts = await fetch(`${apiBaseUrl}/api/blog`, {
-        cache: 'no-store',
-        //next: { revalidate: 3600, tags: ['blogTag'] },
+        next: { revalidate: 3600, tags: ['blogTag'] },
     })
     .then(checkResponse);
 
