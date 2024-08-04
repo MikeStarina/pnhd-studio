@@ -1,6 +1,6 @@
 "use client";
 import React, { Suspense, useEffect } from "react";
-import * as THREE from "three";
+import styles from './preview.module.css';
 import { useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
@@ -8,23 +8,15 @@ import {
   useTexture,
   AccumulativeShadows,
   RandomizedLight,
-  PivotControls,
   Decal,
   Environment,
-  Center,
   OrbitControls,
-  TransformControls,
-  CycleRaycast,
-  CameraControls
 } from "@react-three/drei";
 import { easing } from "maath";
-import { useAppDispatch, useAppSelector } from "@/redux/redux-hooks";
+import { useAppSelector } from "@/redux/redux-hooks";
 import { apiBaseUrl } from "@/app/utils/constants";
 import { ICartOrderElement } from "@/app/utils/types";
-import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
 import { useSearchParams } from "next/navigation";
-import { ReactReduxContextValue } from "react-redux";
-import { frontFacing } from "three/examples/jsm/nodes/Nodes.js";
 
 
 type TPrintProps = {
@@ -45,14 +37,7 @@ const Preview: React.FC<{ children?: React.ReactNode}> = ({ children }) => {
     const { activeView } = useAppSelector((store) => store.printConstructor);
   return (
     <div
-      style={{
-        width: "100%",
-        height: '100%',
-        //border: '1px solid black',
-        //borderRadius: '20px',
-        boxSizing: "border-box",
-        overflow: "hidden",
-      }}
+      className={styles.container}
     >
       <Suspense fallback={null}>
         <Canvas
@@ -91,7 +76,7 @@ const Preview: React.FC<{ children?: React.ReactNode}> = ({ children }) => {
               size={10}
             />
           </AccumulativeShadows>
-          <OrbitControls maxPolarAngle={Math.PI / 2} minPolarAngle={Math.PI / 2} autoRotate autoRotateSpeed={5} enablePan={true} enableZoom={true} />
+          <OrbitControls maxPolarAngle={Math.PI / 2} minPolarAngle={Math.PI / 2} autoRotate autoRotateSpeed={10} enablePan={true} enableZoom={true} />
         </Canvas>
       </Suspense>
     </div>
