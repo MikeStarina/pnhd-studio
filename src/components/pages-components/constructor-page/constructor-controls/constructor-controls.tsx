@@ -1,5 +1,5 @@
 'use client'
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './constructor-controls.module.css';
 import Tabs from '../tabs/tabs';
 import FileUploader from '../file-uploader/file-uploader';
@@ -22,56 +22,55 @@ const Controls: React.FC<{ itemCartId: any}> = ({ itemCartId }) => {
         dispatch(constructorActions.setActiveView('front'));
     }
     const [ uploadPrint ] = useUploadPrintImageMutation();
-    const videoRef = React.useRef(null)
-   
-    const test = () => {
-        const mediaSource = new MediaSource();
-        let sourceBuffer;
-        mediaSource.addEventListener('sourceopen', handleSourceOpen, false);
+
+    useEffect(() => {
         const canvas = document.querySelector('canvas');
-        const video = document.querySelector('video');
-        let recordedBlobs = [];
-
-        function handleSourceOpen(event) {
-            console.log('MediaSource opened');
-            sourceBuffer = mediaSource.addSourceBuffer('video/mp4');
-            //sourceBuffer = mediaSource.addSourceBuffer('video/mp4; codecs="vp8"');
-            console.log('Source buffer: ', sourceBuffer);
-          }
-        function handleDataAvailable(event) {
-            if (event.data && event.data.size > 0) {
-              recordedBlobs.push(event.data);
-            }
-        }
-        async function handleStop(event) {
-            console.log('Recorder stopped: ', event);
-            const superBuffer = new Blob(recordedBlobs, {type: 'video/mp4'});
-            
-            video.src = window.URL.createObjectURL(superBuffer);
-            //console.log(window.URL.createObjectURL(superBuffer))
-            //navigator.share(superBuffer);
-            // const data = new FormData();
-            // data.append("files", superBuffer, `test`);
-            // const uploadedPrint = await uploadPrint(data);
-            // console.log(uploadedPrint)
-
-            recordedBlobs = [];
-        }
-
-
-
-        let stream = canvas?.captureStream();
-        let options = {mimeType: 'video/mp4'};
-        let mediaRecorder = new MediaRecorder(stream, options);
-        mediaRecorder.onstop = handleStop;
-        mediaRecorder.ondataavailable = handleDataAvailable;
-        mediaRecorder.start(1000);
-
-        const timeout = setTimeout(() => {mediaRecorder.stop()}, 5000);
-
+        const vid = document.querySelector('video');
+        //const img: HTMLImageElement | null = document.querySelector('#gif');
+        const link = document.querySelector('#share');
+        var x = 0;
        
-     }
-
+        previewMode && startRecording();
+           
+            function startRecording() {
+                if(canvas) {
+                    const chunks: Array<Blob> = []; // here we will store our recorded media chunks (Blobs)
+                    const stream = canvas.captureStream(); // grab our canvas MediaStream
+                    const rec = new MediaRecorder(stream); // init the recorder
+                    // every time the recorder has new data, we will store it in our array
+                    rec.ondataavailable = e => chunks.push(e.data);
+                    // only when the recorder stops, we construct a complete Blob from all the chunks
+                    rec.onstop = e => exportVid(new Blob(chunks, {type: 'video/mp4'}));
+                    //rec.onstop = e => exportVid(new Blob(chunks, {type: 'image/gif'}));
+                    rec.start();
+                    setTimeout(()=>rec.stop(), 7250); // stop recording in 5s
+                }
+            }
+            function exportVid(blob: Blob) {
+                if (canvas && vid) {
+                    const url = URL.createObjectURL(blob);
+                    console.log(url);
+                    vid.src = url;
+                    //img.src = url;
+                    //vid.controls = true;
+                    //@ts-ignore
+                    link.href = `https://t.me/share/url?url=${url}`
+                    //@ts-ignore
+                    link.textContent = 'Отправить (готово)'
+                    // const a = document.createElement('a');
+                    // a.download = 'myvid.webm';
+                    // a.href = vid.src;
+                    // a.textContent = 'download the video';
+                    // document.body.appendChild(a);
+                }
+            }
+         
+    }, [previewMode])
+   
+  
+    const test = () => {
+        
+    }
     return (
         <>
         {orderElement && 
@@ -94,8 +93,9 @@ const Controls: React.FC<{ itemCartId: any}> = ({ itemCartId }) => {
                 {previewMode &&
                     <>
                     <button type='button' onClick={test}>Поделиться</button>
+                    <a id='share' href='/'>Отправить (не готово)</a>
                     <video autoPlay loop></video>
-                    
+                    <img id='gif' src='/' alt='' />
                     </>
                 }
                 <OrderInfo orderElement={orderElement} />

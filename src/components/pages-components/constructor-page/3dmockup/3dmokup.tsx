@@ -1,5 +1,6 @@
 "use client";
 import React, { Suspense, useEffect, useState, useRef } from "react";
+import styles from './3dmockup.module.css';
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
@@ -40,10 +41,7 @@ const Stage: React.FC<{ children: React.ReactNode}> = ({ children }) => {
     //console.log('stage render')
     const { activeView } = useAppSelector((store) => store.printConstructor);
     const { width } = window.screen;
-    const [ state, setState ] = useState<any>()
     const [ uploadPrint ] = useUploadPrintImageMutation();
-    const { order } = useAppSelector(store => store.cart);
-    const dispatch = useAppDispatch()
 
    const handleDrag = async (e: any) => {
     e.preventDefault();
@@ -66,14 +64,7 @@ const Stage: React.FC<{ children: React.ReactNode}> = ({ children }) => {
   return (
     <div
       id='dropzone'
-      style={{
-        width: "100%",
-        height: '100%',
-        //border: '1px solid black',
-        //borderRadius: '20px',
-        boxSizing: "border-box",
-        overflow: "hidden",
-      }}
+      className={styles.container}
       onDragStart={handleDrag}
       onDragOver={handleDrag}
       onDragLeave={handleDrag}
@@ -94,14 +85,14 @@ const Stage: React.FC<{ children: React.ReactNode}> = ({ children }) => {
           <directionalLight intensity={0.5} position={[10, 10, 10]} />
           <Environment files="/potsdamer_platz_1k.hdr" />
           
-          <CameraRig>
+          {/* <CameraRig> */}
             <Backdrop>
               <Shirt activeView={activeView}>
                 { children }
               </Shirt>
               
             </Backdrop>
-          </CameraRig>
+          {/* </CameraRig> */}
           <AccumulativeShadows
             temporal
             frames={100}

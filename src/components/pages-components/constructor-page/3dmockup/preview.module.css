@@ -1,0 +1,25 @@
+@keyframes loader {
+    from {
+        opacity: 0;
+        content: 'ЗАГРУЗКА...'
+    }
+
+    99% {
+        opacity: 0;
+        content: 'ЗАГРУЗКА...'
+    }
+
+    to {
+        opacity: 100%;
+        content: ''
+    }
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    background-color: white;
+    animation: loader 7s ease-out forwards;
+}
