@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './constructor-controls.module.css';
 import Tabs from '../tabs/tabs';
 import FileUploader from '../file-uploader/file-uploader';
@@ -21,55 +21,51 @@ const Controls: React.FC<{ itemCartId: any}> = ({ itemCartId }) => {
     const clickHandler = () => {
         dispatch(constructorActions.setActiveView('front'));
     }
-    const [ uploadPrint ] = useUploadPrintImageMutation();
+    const [ createVideoState, setCreateVideoState ] = useState({
+        inProgress: false,
+        isVideoReady: false,
+        text: 'Записать видео'
+    })
 
-    useEffect(() => {
+    console.log(createVideoState)
+
+  
+    const createVideo = () => {
+        setCreateVideoState({
+            isVideoReady: false,
+            inProgress: true,
+            text: 'Запись...'
+        })
         const canvas = document.querySelector('canvas');
-        const vid = document.querySelector('video');
-        //const img: HTMLImageElement | null = document.querySelector('#gif');
-        const link = document.querySelector('#share');
-        var x = 0;
+        const link: HTMLLinkElement | null = document.querySelector('#share');
+        
        
         previewMode && startRecording();
            
             function startRecording() {
                 if(canvas) {
-                    const chunks: Array<Blob> = []; // here we will store our recorded media chunks (Blobs)
-                    const stream = canvas.captureStream(); // grab our canvas MediaStream
-                    const rec = new MediaRecorder(stream); // init the recorder
-                    // every time the recorder has new data, we will store it in our array
+                    const chunks: Array<Blob> = [];
+                    const stream = canvas.captureStream();
+                    const rec = new MediaRecorder(stream);
                     rec.ondataavailable = e => chunks.push(e.data);
-                    // only when the recorder stops, we construct a complete Blob from all the chunks
                     rec.onstop = e => exportVid(new Blob(chunks, {type: 'video/mp4'}));
-                    //rec.onstop = e => exportVid(new Blob(chunks, {type: 'image/gif'}));
                     rec.start();
-                    setTimeout(()=>rec.stop(), 7250); // stop recording in 5s
+                    setTimeout(()=>rec.stop(), 6000);
                 }
             }
             function exportVid(blob: Blob) {
-                if (canvas && vid) {
+                if (link) {
+                    setCreateVideoState({
+                        inProgress: false,
+                        isVideoReady: true,
+                        text: 'Записать видео'
+                    })
                     const url = URL.createObjectURL(blob);
-                    console.log(url);
-                    vid.src = url;
-                    //img.src = url;
-                    //vid.controls = true;
                     //@ts-ignore
-                    link.href = `https://t.me/share/url?url=${url}`
-                    //@ts-ignore
-                    link.textContent = 'Отправить (готово)'
-                    // const a = document.createElement('a');
-                    // a.download = 'myvid.webm';
-                    // a.href = vid.src;
-                    // a.textContent = 'download the video';
-                    // document.body.appendChild(a);
+                    link.download = 'video.mp4';
+                    link.href = url;
                 }
             }
-         
-    }, [previewMode])
-   
-  
-    const test = () => {
-        
     }
     return (
         <>
@@ -91,12 +87,22 @@ const Controls: React.FC<{ itemCartId: any}> = ({ itemCartId }) => {
                     </>
                 }
                 {previewMode &&
-                    <>
-                    <button type='button' onClick={test}>Поделиться</button>
-                    <a id='share' href='/'>Отправить (не готово)</a>
-                    <video autoPlay loop></video>
-                    <img id='gif' src='/' alt='' />
-                    </>
+                    <div className={styles.preview_container}>
+                        <button
+                            disabled={createVideoState.inProgress}
+                            type='button'
+                            onClick={createVideo}
+                            className={styles.preview_createVideoButton}
+                        >
+                            {createVideoState.text}
+                        </button>
+                        <a href='/' id='share'aria-disabled={!createVideoState.isVideoReady} style={{ textDecoration: 'none'}}>
+                        <button disabled={!createVideoState.isVideoReady} className={styles.preview_downloadButton}>
+                            Скачать
+                        </button>
+                        </a>
+                    </div>
+                    
                 }
                 <OrderInfo orderElement={orderElement} />
 

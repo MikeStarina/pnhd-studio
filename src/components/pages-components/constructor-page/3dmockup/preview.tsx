@@ -1,6 +1,6 @@
 "use client";
 import React, { Suspense, useEffect } from "react";
-import styles from './preview.module.css';
+import styles from './preview.module.scss';
 import { useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
@@ -17,6 +17,8 @@ import { useAppSelector } from "@/redux/redux-hooks";
 import { apiBaseUrl } from "@/app/utils/constants";
 import { ICartOrderElement } from "@/app/utils/types";
 import { useSearchParams } from "next/navigation";
+import classNames from "classnames/bind";
+const cx = classNames.bind(styles)
 
 
 type TPrintProps = {
@@ -33,11 +35,10 @@ type TPrintProps = {
 
 
 const Preview: React.FC<{ children?: React.ReactNode}> = ({ children }) => {
-    //console.log('stage render')
     const { activeView } = useAppSelector((store) => store.printConstructor);
   return (
     <div
-      className={styles.container}
+      className={cx('container')}
     >
       <Suspense fallback={null}>
         <Canvas

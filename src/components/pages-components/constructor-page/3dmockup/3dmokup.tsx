@@ -85,14 +85,14 @@ const Stage: React.FC<{ children: React.ReactNode}> = ({ children }) => {
           <directionalLight intensity={0.5} position={[10, 10, 10]} />
           <Environment files="/potsdamer_platz_1k.hdr" />
           
-          {/* <CameraRig> */}
+          <CameraRig>
             <Backdrop>
               <Shirt activeView={activeView}>
                 { children }
               </Shirt>
               
             </Backdrop>
-          {/* </CameraRig> */}
+          </CameraRig>
           <AccumulativeShadows
             temporal
             frames={100}
