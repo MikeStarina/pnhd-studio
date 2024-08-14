@@ -1,3 +1,13 @@
+@keyframes record {
+    from {
+        opacity: 100%;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+
 .controls_container {
     margin: 0 0 0 50px;
     padding: 0;
@@ -196,6 +206,79 @@
 .controls_cartButton:hover {
     background-color: rgb(153,255,0);
     border-color: rgb(153,255,0);
+}
+
+.preview_container {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.preview_createVideoButton,
+.preview_downloadButton {
+    font-family: 'Neue_machina';
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: 800;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    text-transform: uppercase;
+    padding: 6px 10px;
+    color: black;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+    align-items: center;
+}
+
+
+.preview_createVideoButton:hover {
+    color:white;
+    background-color: black ;
+}
+
+.preview_createVideoButton:disabled,
+.preview_downloadButton:disabled {
+    color: gray;
+    border-color: gray;
+    cursor: auto;
+}
+
+.preview_createVideoButton:disabled:hover,
+.preview_downloadButton:disabled:hover {
+    color: gray;
+    border-color: gray;
+    background-color: white;
+}
+
+.preview_createVideoButton::before {
+    display: none;
+    width: 5px;
+    height: 5px;
+    background-color: red;
+    border-radius: 50%;
+    animation: record .5s linear infinite;
+}
+
+.preview_createVideoButton:disabled::before {
+    display: block;
+    content: ' ';
+    width: 5px;
+    height: 5px;
+    background-color: red;
+    border-radius: 50%;
+    animation: record .5s linear infinite;
+}
+
+.preview_downloadButton:hover {
+    border-color: rgb(153,255,0);
+    background-color: rgb(153,255,0);
 }
 
 @media (max-width: 1250px) {

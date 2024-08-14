@@ -146,8 +146,7 @@ const DecalComp = () => {
             setPivotOpacity(0)  
             setPivotComp('');            
             const to = setTimeout(() => {
-              document.querySelector('canvas')?.toBlob((blob) => {
-                
+              document.querySelector('canvas')?.toBlob((blob) => {                
                 getScene(activeView, blob);
             });
             }, 100)
