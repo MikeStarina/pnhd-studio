@@ -13,7 +13,7 @@ export const checkResponse = (res: any) => {
       return res.json() as Array<IProduct>;
     }
     return res.json().then((err: any) => Promise.reject(err));
-  };
+};
 
   
   export const getShopData = async (searchParams?: { [n: string]: string}) => {
