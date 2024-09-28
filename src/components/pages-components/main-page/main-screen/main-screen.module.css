@@ -20,6 +20,12 @@
     box-sizing: border-box;
 }
 
+.banner {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
 .screen_blocksColumn {
     display: flex;
     flex-direction: column;
@@ -87,6 +93,7 @@
     justify-content: flex-start;
     align-items: flex-end;
     gap: 10px;
+    height: 50%;
 }
 
 .screen_smallBlockOne {
@@ -137,6 +144,7 @@
     justify-content: flex-start;
     align-items: center;
     overflow: hidden;
+    /* max-height: 320px; */
 }
 
 .smallBlockTwo_textWrapper {
@@ -582,11 +590,15 @@
     }
     .screen_smallBlockTwo {
         width: 100%;
-        height: 200px;
+        height: calc(100vw - 40px);
     }
 
     .smallBlock_title {
         display: none;
+    }
+    .banner {
+        height: 100%;
+        width: auto;
     }
 }
 

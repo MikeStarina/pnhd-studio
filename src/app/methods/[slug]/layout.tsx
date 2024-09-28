@@ -1,7 +1,8 @@
-import { ssOptions } from "@/app/utils/method-options-data"
+import methodsData from "@/app/utils/print-methods-data";
+
 export const dynamicParams = false;
 export const generateStaticParams = async () => {
-    return ssOptions.map((item) => ({ slug: item.slug }))
+    return methodsData.map((item) => ({ slug: item.slug }))
 }
 
 

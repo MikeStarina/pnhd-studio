@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './main-screen.module.css';
-
+import saleBanner from '../../../../../public/sale_banner.png'
 import Image from 'next/image';
 import main_screen_shape_one from '../../../../../public/main_screen_shape_one.svg';
 import main_screen_shape_two from '../../../../../public/main_screen_shape_two.svg';
@@ -62,10 +62,10 @@ const MainScreen: React.FC = () => {
   
                     </div>
                     <div className={styles.screen_smallBlockTwo}>
-                        <div style={{width: '100%'}}>
+                        {/* <div style={{width: '100%'}}>
                             <div className={styles.smallBlock_square}></div>
-                        </div>
-                        <div className={styles.smallBlockTwo_textWrapper}>
+                        </div> */}
+                        {/* <div className={styles.smallBlockTwo_textWrapper}>
                              
                             <p className={styles.screen_title}>шелкография</p>
                             <p className={styles.screen_title}>вышивка</p>
@@ -73,9 +73,9 @@ const MainScreen: React.FC = () => {
                             <p className={styles.screen_title}>dtg</p>
                         
 
-                        </div>
-                       
-                        <Image src={main_screen_shape_two} alt='форма' className={styles.smallBlock_graphics} />
+                        </div> */}
+                        <Image className={styles.banner} src={saleBanner} alt='' />
+                        {/* <Image src={main_screen_shape_two} alt='форма' className={styles.smallBlock_graphics} /> */}
                          
                     </div>
                 </div>
