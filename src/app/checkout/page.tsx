@@ -43,7 +43,8 @@ const textFieldSx = {
 
 
 const CheckoutPage: React.FC = () => {
-    const [ isDisabled, setIsDisabled ] = useState<boolean>(false);
+    const [ isDisabled, setIsDisabled ] = useState<boolean>(false)
+    const [ submitButtonDisabled, setSubmitButtonDisabled ] = useState<boolean>(false)
     const dispatch = useAppDispatch();
     const router = useRouter();
     const { isDelivery, order, deliveryParams, paymentUrl, user_promocode, validPromoCode } = useAppSelector(store => store.cart);
@@ -67,13 +68,22 @@ const CheckoutPage: React.FC = () => {
         !order || order.length === 0 && router.replace('/shop');
     }, [order])
 
+    const checkDeliveryValidayion = (): boolean => {
+        let result = true;
+        if (!isDelivery) {result = true}
+        if (isDelivery) {
+            if (!deliveryParams.validCityTo || !deliveryParams.validDeliveryPoint) {result = false}
+        }
+        return result;
+    }
+
     
 
     const formSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsDisabled(true);
-        const cookie: {[n: string]: string} = getCookie(document.cookie);
-        const roistat = cookie.roistat_visit;
+        //const cookie: {[n: string]: string} = getCookie(document.cookie);
+        const roistat = 'n/a';
         const order = checkoutOrderObjectCreateFunc(cart, roistat);
         await createOrder(order);
         //@ts-ignore
@@ -152,7 +162,7 @@ const CheckoutPage: React.FC = () => {
                 {deliveryParams.validDeliveryPoint && deliveryParams.validDeliveryPoint.name && <p className={styles.checkout_priceText}>Пункт выдачи: {deliveryParams.validDeliveryPoint.name}</p>}
                 <p className={styles.checkout_finalPriceText} style={validPromoCode.name ? { textDecoration: 'line-through rgb(153,255,0)'} : {}}>= {totalOrderPrice + deliveryParams.deliveryPrice} Р.</p>
                 {validPromoCode.name && validPromoCode.discount_ratio && <p className={styles.checkout_finalPriceText} style={{ fontSize: '18px' }}>= {(totalOrderPrice * validPromoCode.discount_ratio) + deliveryParams.deliveryPrice} Р.</p>}
-                <button type='submit' form='checkout' className={styles.form_submitButton} disabled={isDisabled}>{isDisabled ? 'Загрузка...':'Заказать'}</button>
+                <button type='submit' form='checkout' className={styles.form_submitButton} disabled={isDisabled || !checkDeliveryValidayion()}>{isDisabled ? 'Загрузка...':'Заказать'}</button>
             </div>
         </section>
     );
