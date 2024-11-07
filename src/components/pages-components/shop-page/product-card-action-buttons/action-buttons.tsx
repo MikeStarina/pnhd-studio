@@ -61,7 +61,7 @@ const ActionButtons: React.FC<{ item: IProduct }> = ({ item }) => {
 
     return (
         <div className={styles.buttons_wrapper}>
-                <button type="button" disabled={sizeChecker} className={styles.button} onClick={addPrintClickHandler}>
+                <button type="button" disabled={sizeChecker || !currItem.isForPrinting} className={styles.button} onClick={addPrintClickHandler}>
                     добавить принт
                 </button>
             <button type="button" disabled={sizeChecker} className={styles.button} onClick={addToCartClickHandler}>
