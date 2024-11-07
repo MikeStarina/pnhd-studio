@@ -14,8 +14,6 @@
 
     margin: 0;
     padding: 20px;
-
-    font-family: inherit;
 }
 
 .header_menu {
@@ -74,12 +72,28 @@
     border: 1px solid black;
     border-radius: 5px;
     padding: 4px 12px;
-    font-family: 'DrukTextWideCyr-Medium';
+    font-family: 'DrukTextWideCyr-Medium' !important;
+    font-weight: 400;
+    text-decoration: none;
+}
+.header_phoneButton > a {
+    color: black;
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 12px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 4px 12px;
+    font-family: 'DrukTextWideCyr-Medium' !important;
     font-weight: 400;
     text-decoration: none;
 }
 
 .header_phoneButton:hover {
+    background-color: rgb(153,255,0);
+    border-color: rgb(153,255,0);
+}
+.header_phoneButton:hover > a {
     background-color: rgb(153,255,0);
     border-color: rgb(153,255,0);
 }

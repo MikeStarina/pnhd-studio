@@ -91,8 +91,27 @@
     cursor: pointer;   
     min-width: 160px;
 }
+.contacts_contactsButton > a {
+    margin: 0;
+    padding: 6px 10px;
+    color: black;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    font-family: 'DrukTextWideCyr-Medium';
+    font-size: 12px;
+    line-height: 14px;
+    font-weight: 400;
+    text-transform: uppercase;
+    cursor: pointer;   
+    min-width: 160px;
+}
 
 .contacts_contactsButton:hover {
+    background-color: rgb(153,255,0);
+    border-color: rgb(153,255,0);
+}
+.contacts_contactsButton:hover > a{
     background-color: rgb(153,255,0);
     border-color: rgb(153,255,0);
 }
