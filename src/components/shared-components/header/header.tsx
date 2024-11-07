@@ -50,7 +50,7 @@ const Header: React.FC = () => {
                 </li>
             </ul>
             <div className={styles.header_buttonsWrapper}>
-                <span className={styles.header_phoneButton}>+7 (812) 904 61 56</span>
+                <Link href='tel:+78129046156' className={styles.header_phoneButton}>+7 (812) 904 61 56</Link>
                 <LeadButton styleType='green' />
             </div>
             <MenuButton />
