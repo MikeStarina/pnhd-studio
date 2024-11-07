@@ -46,11 +46,11 @@ const MapScreen: React.FC = () => {
                                 <Image src={vk} alt='логотип вконтакте' />
                             </button>
                         </Link>
-                        {/* <Link href='https://t.me/pnhd_studio_bot' target="blank">
+                        <Link href='https://t.me/pnhd_studio_bot' target="blank">
                             <button type='button' className={styles.contacts_socialButton}>
                                 <Image src={tg} alt='логотип телеграм'/>
                             </button>
-                        </Link> */}
+                        </Link>
                         <Link href='https://instagram.com/pnhd.studio/' target="blank">
                             <button type='button' className={styles.contacts_socialButton}>
                                 <Image src={inst} alt='логотип инстаграм' />
