@@ -8,8 +8,8 @@
     border: 1px solid rgb(153,255,0);
     background-color: rgb(153,255,0);
     text-transform: uppercase;
-    font-family: 'Neue_machina';
-    font-weight: 800;
+    font-family: 'DrukTextWideCyr-Medium';
+    font-weight: 400;
     cursor: pointer;
     z-index: 1;
 }

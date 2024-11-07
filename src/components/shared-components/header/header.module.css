@@ -74,8 +74,8 @@
     border: 1px solid black;
     border-radius: 5px;
     padding: 4px 12px;
-    font-family: 'Neue_machina';
-    font-weight: 800;
+    font-family: 'DrukTextWideCyr-Medium';
+    font-weight: 400;
 }
 .header_phoneButton a {
     color: black;
