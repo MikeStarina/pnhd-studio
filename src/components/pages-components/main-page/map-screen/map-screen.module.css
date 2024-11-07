@@ -125,11 +125,6 @@
     gap: 8px;
 }
 
-.contacts_contactsButton a {
-    text-decoration: none;
-    color: black;
-}
-
 .contacts_socialButton {
     width: 60px;
     height: 60px;
