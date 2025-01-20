@@ -46,7 +46,7 @@ const Header: React.FC = () => {
                     <Link className={styles.header_menu_link} href={{pathname: '/', hash: '#contacts'}}>контакты</Link>
                 </li>
                 <li className={styles.header_menu_listItem}>
-                    <UtmLink style={styles.header_menu_link} pathname='https://pnhd.ru' target='blank'>корпоративный отдел</UtmLink>
+                    <UtmLink style={styles.header_menu_link} pathname='https://pnhd.ru' target='blank'>оптовый отдел</UtmLink>
                 </li>
             </ul>
             <div className={styles.header_buttonsWrapper}>

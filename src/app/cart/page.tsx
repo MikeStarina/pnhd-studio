@@ -18,7 +18,7 @@ const Cart: React.FC = () => {
   }, [order])
   return (
     <section className={styles.cart}>
-      {order!.map((elem) => {
+      {order!.map((elem: any) => {
         
         return (
           <div className={styles.cart_products} key={elem.itemCartId}>
