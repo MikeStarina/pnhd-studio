@@ -81,6 +81,7 @@ export default function RootLayout({
                 })(window,document,'https://cdn-ru.bitrix24.ru/b26302288/crm/site_button/loader_2_96njja.js');
             `}
           </Script>
+          <Script type="text/javascript" async src="https://app.uiscom.ru/static/cs.min.js?k=79obNG5YrzIplUgKXZYSiPbK7agWm7Dk"></Script>
           {/* <Script
             id='andata'
             type="application/javascript"
