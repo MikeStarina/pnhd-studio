@@ -61,8 +61,8 @@ const MainScreen: React.FC = () => {
                             </div>
   
                     </div>
-                    <div className={styles.screen_smallBlockTwo}>
-                        <div style={{width: '100%'}}>
+                    <Link className={styles.screen_smallBlockTwo} href='/shop'>
+                        {/* <div style={{width: '100%'}}>
                             <div className={styles.smallBlock_square}></div>
                         </div>
                         <div className={styles.smallBlockTwo_textWrapper}>
@@ -73,11 +73,11 @@ const MainScreen: React.FC = () => {
                             <p className={styles.screen_title}>dtg</p>
                         
 
-                        </div>
-                        {/* <Image className={styles.banner} src={saleBanner} alt='' /> */}
-                        <Image src={main_screen_shape_two} alt='форма' className={styles.smallBlock_graphics} />
+                        </div> */}
+                        <Image className={styles.banner} src={saleBanner} alt='' />
+                        {/* <Image src={main_screen_shape_two} alt='форма' className={styles.smallBlock_graphics} /> */}
                          
-                    </div>
+                    </Link>
                 </div>
             </div>
             <div className={styles.screen_largeBlock}>
