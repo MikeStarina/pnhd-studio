@@ -6,11 +6,27 @@ import Image from 'next/image';
 import testPic from '../../../public/changelog.jpg';
 import { getPosts } from '../utils/constants';
 import { apiBaseUrl } from '../utils/constants';
+import { Metadata } from 'next';
 
 const cx = classnames.bind(styles);
 
 
+export async function generateMetadata (): Promise<Metadata> {
 
+    return {
+      title: `БЛОГ | PINHEAD STUDIO`,
+      description: `Блог про мерч и печать на текстиле`,
+      keywords: ['Печать на текстиле', "Мерч"],
+    //   openGraph: {
+    //     images: `${apiBaseUrl}${currItem?.image_url}`,
+    //     type: 'website',
+    //     url: `https://studio.pnhd.ru/shop/${params.slug}?id=${searchParams.id}`,
+    //     description: currItem?.description,
+    //     siteName: 'PINHEAD STUDIO',
+    //     title: currItem?.name,
+    //   }
+    }
+  }
 
 
 const Blog = async () => {

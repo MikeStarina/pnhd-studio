@@ -235,7 +235,7 @@ const methodsData = [
         slug: 'dtf-pechat',
         meta: {
             metaTitle:
-                "DTF печать на футболках в Санкт-Петербурге от 1 штуки цена в Pinhead Studio",
+                "DTF печать в Санкт-Петербурге от 1 штуки цена в Pinhead Studio",
             metaKeywords:
                 "dtf печать на футболках, дтф, пленка, термопленка, полноцветный, одежда, санкт-петербург",
             metaDescription:

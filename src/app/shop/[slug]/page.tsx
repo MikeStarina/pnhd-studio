@@ -25,7 +25,7 @@ export async function generateMetadata ({ params, searchParams }: TMetadataProps
     const [ currItem ]: Array<IProduct> = await getShopData({ slug: params.slug});
     return {
       title: `${currItem?.name} | PINHEAD STUDIO`,
-      description: currItem?.description,
+      description: `${currItem?.name} - ${currItem?.description}`,
       keywords: [currItem?.category!, currItem?.type!, currItem?.color!],
       openGraph: {
         images: `${apiBaseUrl}${currItem?.image_url}`,

@@ -54,6 +54,11 @@ Disallow: /pryamaya-dtg-pechat
 Disallow: /thanks
 Disallow: /tproduct/https:/pnhd.ru	
 Disallow: /game	
+Disallow: /checkout
+Disallow: /cart
+Disallow: /oferta
+Disallow: /methods/pryamay 
+Disallow: /card
 Disallow: *&&&
 Clean-param: etext
 Clean-param: type
@@ -66,6 +71,8 @@ Clean-param: region&region_name&source&callibri
 Clean-param: yycleed
 Clean-param: id
 Clean-param: itemCartId
+Clean-param: cm_id
+Clean-param: yprqee
 Host: https://studio.pnhd.ru
 Sitemap: https://studio.pnhd.ru/sitemap.xml
 

@@ -188,13 +188,14 @@
 .robots_block > ul,
 .robots_block > h3 {
     font-family: 'Neue_machina';
-    font-size: 10px;
-    line-height: 10px;
+    font-size: 18px;
+    line-height: 18px;
     font-weight: 200;
     color: black;
     margin: 0;
     padding: 0;
     list-style-type: none;
+    text-transform: uppercase;
 }
 
 
