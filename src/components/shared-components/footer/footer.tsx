@@ -25,7 +25,7 @@ const Footer: React.FC = () => {
                 
                 <p className={styles.footer_text}>ООО ПИНХЭД СТУДИО<br/>ИНН/КПП 7810463916/781301001</p>
                 <p className={styles.footer_text}>© 2024. Все права защищены</p>
-                <Link href='/' className={styles.footer_text}>Политика конфиденциальности</Link>
+                <Link href='/privacy' className={styles.footer_text}>Политика конфиденциальности</Link>
             </div>
 
             <div className={styles.footer_columnTwo}>

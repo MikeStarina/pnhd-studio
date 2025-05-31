@@ -250,6 +250,11 @@ export const urlQueryStringToObject = (searchParams: string) => {
     return obj;
 }
 
+export const getCurrentUrl = (pathname: string, searchParams?: URLSearchParams) => {
+    const search = searchParams?.toString() ? `?${searchParams.toString()}` : '';
+    return `${pathname}${search}`;
+}
+
 
 
 /*

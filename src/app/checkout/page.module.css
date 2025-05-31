@@ -97,6 +97,16 @@
     text-align: right;
 }
 
+.privacy {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    color: black;
+    font-family: 'Neue_machina';
+    font-weight: 400;
+    text-align: right;
+}
+
 
 @media (max-width: 1020px) {
     .checkout_finalPriceText {

@@ -16,6 +16,7 @@ import { getCookie } from "../utils/constants";
 import TextField from "@mui/material/TextField";
 import rightArrow from '../../../public/button_arrow_right.svg';
 import Image from "next/image";
+import Link from "next/link";
 
 
 const switchSx = {
@@ -163,6 +164,7 @@ const CheckoutPage: React.FC = () => {
                 <p className={styles.checkout_finalPriceText} style={validPromoCode.name ? { textDecoration: 'line-through rgb(153,255,0)'} : {}}>= {totalOrderPrice + deliveryParams.deliveryPrice} Р.</p>
                 {validPromoCode.name && validPromoCode.discount_ratio && <p className={styles.checkout_finalPriceText} style={{ fontSize: '18px' }}>= {(totalOrderPrice * validPromoCode.discount_ratio) + deliveryParams.deliveryPrice} Р.</p>}
                 <button type='submit' form='checkout' className={styles.form_submitButton} disabled={isDisabled || !checkDeliveryValidayion()}>{isDisabled ? 'Загрузка...':'Заказать'}</button>
+                <p className={styles.privacy}>Оформляя заказ вы соглашаетесь с <Link target="_blank" style={{color: 'black'}} href='/privacy'>политикой конфиденциальности</Link></p>
             </div>
         </section>
     );

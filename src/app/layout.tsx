@@ -10,6 +10,7 @@ import MobileMenu from "@/components/shared-components/mobile-menu/mobile-menu";
 import CartIcon from "@/components/shared-components/cart-icon/cart-icon";
 import Popup from "@/components/shared-components/popup/popup";
 import Script from "next/script";
+import CookieBar from "@/components/shared-components/cookie-bar/cookie-bar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,6 +32,9 @@ export default function RootLayout({
         <body className={inter.className}>
           <Suspense>
             <InfoBar />
+          </Suspense>        
+          <Suspense>
+            <CookieBar />
           </Suspense>        
           <Popup />
           <MobileMenu />

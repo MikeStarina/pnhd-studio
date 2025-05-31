@@ -9,6 +9,7 @@ import Checkbox from '@mui/material/Checkbox';
 import { actions as leadActions } from "@/redux/lead-slice/lead.slice";
 import { useCreateLeadMutation } from "@/api/api";
 import { getCookie } from "@/app/utils/constants";
+import Link from "next/link";
 
 
 
@@ -91,7 +92,7 @@ const LeadForm: React.FC = () => {
                                 fontFamily: 'Neue_machina',
                                 "& .MuiFormControlLabel-root.MuiFormControlLabel-label": { fontFamily: 'Neue_machina' },
                             }}
-                            label={<p style={{ margin: 0, padding: 0, fontFamily: 'Neue_machina', fontSize: '14px', lineHeight: '14px'}}>Согласен с политикой конфиденциальности</p>}
+                            label={<p style={{ margin: 0, padding: 0, fontFamily: 'Neue_machina', fontSize: '14px', lineHeight: '14px'}}>Согласен с <Link target="_blank" style={{color: 'black'}} href='/privacy'>политикой конфиденциальности</Link></p>}
                          />
                          {isUninitialized && <button type='submit' disabled={!isAgreedWithPrivacyPolicy} className={styles.form_submitButton}>проконсультироваться</button>}
                          {isSuccess && <p className={styles.form_statusText}>Заявка отправлена!</p>}
