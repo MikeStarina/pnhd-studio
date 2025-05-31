@@ -3,29 +3,34 @@
     bottom: 0;
     left: 0;
     right: 0;
-    top: 0;
     margin: 0 auto;
     z-index: 999999;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(0,0,0,.25);
-    backdrop-filter: blur(5px);
-    padding: 0 20px;
+    padding: 0 20px 20px;
 }
 
 .bar {
     width: 100%;
-    max-width: 1310px;
-    padding: 60px 30px;
+    max-width: 1270px;
+    padding: 30px;
     background: white;
     border-radius: 16px;
     box-shadow: 0px 0px 20px 0px #00000014;
     display: flex;
-    flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    gap: 14px
+    gap: 30px;
+
+    @media (max-width: 700px) {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    @media (max-width: 500px) {
+       padding: 16px;
+    }
 }
 
 .bar__title {
@@ -36,11 +41,12 @@
     margin: 0;
     padding: 0;
     color: black;
-    margin-top: 30px;
-    text-align: center;
 
     @media (max-width: 1020px) {
         font-size: 34px;
+    }
+    @media (max-width: 700px) {
+        text-align: center;
     }
     @media (max-width: 500px) {
         font-size: 26px;
@@ -54,10 +60,12 @@
     margin: 0;
     padding: 0;
     color: black;
-    text-align: center;
 
     @media (max-width: 1020px) {
         font-size: 16px;
+    }
+    @media (max-width: 700px) {
+        text-align: center;
     }
     @media (max-width: 500px) {
         font-size: 14px;
@@ -89,14 +97,30 @@
     transition: all .2s ease-in;
 }
 
+.bar__wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 16px;
+    @media (max-width: 700px) {
+        align-items: center;
+    }
+}
+
 .bar__imgWrapper {
-    width: 100px;
-    height: 100px;
+    height: 150px;
+    aspect-ratio: 1 / 1;
     border-radius: 50% 50%;
     border: 5px solid #99FF00;
     flex-grow: 0;
     flex-shrink: 0;
     overflow: hidden;
+
+    @media (max-width: 700px) {
+        height: 75px
+    }
 }
 
 .bar__imgWrapper img {

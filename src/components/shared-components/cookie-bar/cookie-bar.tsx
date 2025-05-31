@@ -10,7 +10,7 @@ const routeConfig = ['/privacy', '/oferta'];
 
 const CookieBar = () => {
 
-    const [ isBarVisisble, setIsBarVisible ] = useState(false)
+    const [isBarVisisble, setIsBarVisible] = useState(false)
     const pathname = usePathname()
     const buttonClickHandler = () => {
         localStorage.setItem('COOKIE_AGREEMENT', 'AGREED')
@@ -33,9 +33,11 @@ const CookieBar = () => {
                 <div className={styles.bar__imgWrapper}>
                     <Image src={cookiePic} alt='' />
                 </div>
-                <p className={styles.bar__title}>МЫ СОБИРАЕМ КУКИ!</p>
-                <p className={styles.bar__text}>Мы понятия не имеем что с ними делать, но сообщать об этом теперь обязаны, окак! Юридическим языком написано <Link href='/privacy'>тут</Link></p>
-                <button className={styles.bar__button} onClick={buttonClickHandler}>ПОНЯЛ, СОГЛАСЕН!</button>
+                <div className={styles.bar__wrapper}>
+                    <p className={styles.bar__title}>МЫ СОБИРАЕМ КУКИ!</p>
+                    <p className={styles.bar__text}>Мы понятия не имеем что с ними делать, но сообщать об этом теперь обязаны, окак! Юридическим языком написано <Link href='/privacy'>тут</Link></p>
+                    <button className={styles.bar__button} onClick={buttonClickHandler}>ПОНЯЛ, СОГЛАСЕН!</button>
+                </div>
             </div>
         </div>
     )
