@@ -45,7 +45,7 @@ export default function RootLayout({
             {children}
             <Footer />
           </main>
-          {/* <Script id='roistat'>
+          <Script id='roistat'>
             {`(function(w, d, s, h, id) {
                 w.roistatProjectId = id;
                 w.roistatHost = h;
@@ -57,9 +57,9 @@ export default function RootLayout({
                 js.src = p+h+u;
                 var js2 = d.getElementsByTagName(s)[0];
                 js2.parentNode.insertBefore(js, js2);
-            })(window, document, 'script', 'cloud.roistat.com', 'd377e83a9c9ee68536343fd69de092e3');`
+            })(window, document, 'script', 'cloud.roistat.com', '86cd2ab6047bc5c2f8ea632e1183ac10');`
           }
-          </Script> */}
+          </Script>
           <Script async id="metrika-counter" strategy="afterInteractive">
             {`(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
           m[i].l=1*new Date();
