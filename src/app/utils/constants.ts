@@ -102,23 +102,23 @@ export const prices = [
         prices: [
             {
                 format: 'А6',
-                price: '400 Р.'
+                price: '600 Р.'
             },
             {
                 format: 'А5',
-                price: '500 Р.'
-            },
-            {
-                format: 'А4',
-                price: '650 Р.'
-            },
-            {
-                format: 'А3',
                 price: '750 Р.'
             },
             {
+                format: 'А4',
+                price: '975 Р.'
+            },
+            {
+                format: 'А3',
+                price: '1125 Р.'
+            },
+            {
                 format: 'А3+',
-                price: '900 Р.'
+                price: '1350 Р.'
             },
         ]
     },

@@ -97,6 +97,15 @@ export const api = createApi({
         },
       })
     }),
+    getGalleryImages: builder.query<Array<{id: string, src: string, alt: string}>, void>({
+      query: () => ({
+        url: '/api/gallery/',
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }),
+    }),
     promocodeValidation: builder.mutation<unknown, {user_promocode: string}>({
       query: (data) => ({
         url: '/api/promocodes/',
@@ -117,6 +126,7 @@ export const {
   useGetCdekCitiesDataQuery,
   useGetCdekPointsQuery,
   useGetCdekDeliveryPriceQuery,
+  useGetGalleryImagesQuery,
   useCreateOrderMutation,
   useCreateLeadMutation,
   usePromocodeValidationMutation,

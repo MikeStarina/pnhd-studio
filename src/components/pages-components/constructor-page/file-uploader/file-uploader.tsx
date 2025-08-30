@@ -1,5 +1,5 @@
 "use client";
-import React, { SyntheticEvent, useEffect } from "react";
+import React, { SyntheticEvent } from "react";
 import styles from "./file-uploader.module.css";
 import { ICartOrderElement } from "@/app/utils/types";
 import { v4 as uuidv4 } from "uuid";
@@ -8,7 +8,6 @@ import { useAppSelector, useAppDispatch } from "@/redux/redux-hooks";
 import { actions as constructorActions } from "@/redux/constructor-slice/constructor.slice";
 import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
 import { useUploadPrintImageMutation } from "@/api/api";
-import { setCoords } from "@/app/utils/constructor-utils";
 import Link from "next/link";
 
 const FileUploader: React.FC<{ orderElement: ICartOrderElement }> = ({
@@ -99,6 +98,7 @@ const FileUploader: React.FC<{ orderElement: ICartOrderElement }> = ({
                         </button>
                     </div>
                 ) : (
+                    <>               
                     <div className={styles.input_wrapper}>
                         <input
                             type="file"
@@ -108,10 +108,11 @@ const FileUploader: React.FC<{ orderElement: ICartOrderElement }> = ({
                         />
                         <label htmlFor="file_input" className={styles.file_input_button}>
                             <p className={styles.file_input_button_text}>
-                                Выберите файл
+                                Загрузить файл
                             </p>
                         </label>
                     </div>
+                    </>
                 )}
             </form>
             

@@ -5,6 +5,8 @@ import shape1 from '../../../../public/footer_shape_1.svg';
 import shape2 from '../../../../public/footer_shape2.svg';
 import LeadForm from '../lead-form/lead-form';
 import Link from 'next/link';
+import dayjs from 'dayjs';
+import RU_FLAG from '../../../../public/ru_flag.webp';
 
 
 
@@ -24,7 +26,11 @@ const Footer: React.FC = () => {
 
                 
                 <p className={styles.footer_text}>ООО ПИНХЭД СТУДИО<br/>ИНН/КПП 7810463916/781301001</p>
-                <p className={styles.footer_text}>© 2024. Все права защищены</p>
+                <p className={styles.footer_text}>© 2021 — {dayjs().format('YYYY')}. Все права защищены</p>
+                <div className={styles.footer_textWrapper}>
+                    <Image src={RU_FLAG} alt='ГОООЙДА!' width={26} height={17} style={{ borderRadius: '4px' }} />
+                    <p className={styles.footer_text} style={{ margin: 0 }}>Сделано в России</p>
+                </div>
                 <Link href='/privacy' className={styles.footer_text}>Политика конфиденциальности</Link>
             </div>
 

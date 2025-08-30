@@ -44,6 +44,16 @@
     margin: 0;
 }
 
+.footer_textWrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+    margin: 0;
+    height: min-content;
+}
+
 .footer_text:first-of-type {
     margin-top: 30px;
 }

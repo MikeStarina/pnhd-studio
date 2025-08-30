@@ -7,6 +7,9 @@ import Controls from "@/components/pages-components/constructor-page/constructor
 import Stage from "@/components/pages-components/constructor-page/3dmockup/3dmokup";
 import DecalComp from "@/components/pages-components/constructor-page/3dmockup/decal";
 import Preview from "@/components/pages-components/constructor-page/3dmockup/preview";
+import Image from "next/image";
+import testImg from '../../../../../public/cookie.jpg'
+import GallerySelector from "@/components/pages-components/constructor-page/gallery-selector/gallery-selector";
 
 import dynamic from "next/dynamic";
 const DynamicStage = dynamic(
@@ -17,9 +20,11 @@ const DynamicStage = dynamic(
 const Constructor = () => {
     const router = useRouter();
     const itemCartId = useSearchParams().get("itemCartId");
-    //const { order } = useAppSelector((store) => store.cart);
-    //const orderElement = order?.filter((item) => item.itemCartId === itemCartId)[0];
+    const { order } = useAppSelector((store) => store.cart);
+    const orderElement = order?.filter((item) => item.itemCartId === itemCartId)[0];
     const { previewMode } = useAppSelector((store) => store.printConstructor);
+
+    const gallery = [testImg, testImg, testImg, testImg, testImg, testImg];
 
     //console.log('page render')
     useEffect(() => {
@@ -27,23 +32,26 @@ const Constructor = () => {
     }, [itemCartId]);
 
     return (
-        <section className={styles.screen}>
-            <div className={styles.mockup_container}>
-                <div className={styles.stage_container}>
-                    {/* {orderElement?.item && <DynamicStage orderElement={orderElement} />} */}
+        <>
+            <section className={styles.screen}>
+                <div className={styles.mockup_container}>
+                    <div className={styles.stage_container}>
+                        {/* {orderElement?.item && <DynamicStage orderElement={orderElement} />} */}
                         {!previewMode &&
-                        <Stage>
-                            <DecalComp />
-                        </Stage>
+                            <Stage>
+                                <DecalComp />
+                            </Stage>
                         }
                         {previewMode &&
                             <Preview />
                         }
-                    
+
+                    </div>
                 </div>
-            </div>
-            {itemCartId && <Controls itemCartId={itemCartId} />}
-        </section>
+                {itemCartId && <Controls itemCartId={itemCartId} />}
+            </section>
+            {/* {itemCartId && orderElement && <GallerySelector orderElement={orderElement} />} */}
+        </>
     );
 };
 

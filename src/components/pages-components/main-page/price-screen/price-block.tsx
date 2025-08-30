@@ -7,7 +7,15 @@ import { tumblers, prices } from '@/app/utils/constants';
 
 
 
-
+const getCaption = (tumbler: string) => {
+    if (tumbler === 'DTG') {
+        return 'На белом / цветном';
+    } else if (tumbler === 'ВЫШИВКА') {
+        return 'Стоимость (от 10 штук)';
+    } else  {
+        return 'Стоимость';
+    }
+}
 
 
 
@@ -33,7 +41,8 @@ const PriceBlock: React.FC = () => {
             </div>
             <div className={styles.priceBlock_tableHeader}>
                 <p className={styles.tableHeader_text}>Формат</p>
-                <p className={styles.tableHeader_text}>{activeTumbler === 'DTG' ? 'На белом / цветном' : 'Стоимость' }</p>
+                {activeTumbler === 'DTG'}
+                <p className={styles.tableHeader_text}>{getCaption(activeTumbler)}</p>
             </div>
 
             <div className={styles.priceBlock_table}>

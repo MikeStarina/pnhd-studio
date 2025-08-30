@@ -32,15 +32,15 @@ export default function RootLayout({
         <body className={inter.className}>
           <Suspense>
             <InfoBar />
-          </Suspense>        
+          </Suspense>
           <Suspense>
             <CookieBar />
-          </Suspense>        
+          </Suspense>
           <Popup />
           <MobileMenu />
           <main>
             <CartIcon />
-            
+
             <Header />
             {children}
             <Footer />
@@ -58,7 +58,7 @@ export default function RootLayout({
                 var js2 = d.getElementsByTagName(s)[0];
                 js2.parentNode.insertBefore(js, js2);
             })(window, document, 'script', 'cloud.roistat.com', '86cd2ab6047bc5c2f8ea632e1183ac10');`
-          }
+            }
           </Script>
           <Script async id="metrika-counter" strategy="afterInteractive">
             {`(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
