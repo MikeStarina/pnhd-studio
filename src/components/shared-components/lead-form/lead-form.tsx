@@ -8,8 +8,9 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { actions as leadActions } from "@/redux/lead-slice/lead.slice";
 import { useCreateLeadMutation } from "@/api/api";
-import { getCookie } from "@/app/utils/constants";
 import Link from "next/link";
+import Image from "next/image";
+import RU_FLAG from '../../../../public/ru_flag.webp';
 
 
 
@@ -56,6 +57,7 @@ const LeadForm: React.FC = () => {
                             onChange={(e: ChangeEvent<HTMLInputElement>) => { dispatch(leadActions.setUserData({ id: e.target.id, value: e.target.value })) }}
                         />
                         <MuiTelInput
+                            onlyCountries={['RU']}
                             fullWidth
                             size='small'
                             autoComplete='off'
@@ -63,6 +65,7 @@ const LeadForm: React.FC = () => {
                             label='Твой телефон'
                             required
                             value={phone}
+                            disableDropdown
                             sx={{
                                 fontFamily: 'Neue_machina',
                                 "& .MuiInputLabel-root": { fontFamily: 'Neue_machina' },
@@ -71,6 +74,9 @@ const LeadForm: React.FC = () => {
                                   "& > fieldset": { borderColor: 'rgb(57,57,57)' },
                                 },
                             }}
+                            getFlagElement={() => {
+                                return <Image width={26} height={17} alt='ГОЙДААА!' src={RU_FLAG} aria-label='Россия' />
+                              }}
                             onChange={(newValue: string) => { dispatch(leadActions.setUserData({ id: 'phone', value: newValue })) }}
                         />
                         <FormControlLabel 

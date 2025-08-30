@@ -5,6 +5,8 @@ import { MuiTelInput } from "mui-tel-input";
 import { useAppSelector, useAppDispatch } from "@/redux/redux-hooks";
 import { MuiTelInputInfo } from "mui-tel-input";
 import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
+import Image from "next/image";
+import RU_FLAG from '../../../../../public/ru_flag.webp';
 
 const textFieldSx = {
     "& .MuiInputLabel-root": { fontFamily: "Neue_machina" },
@@ -22,12 +24,12 @@ const MainUserData: React.FC = () => {
 
     const textInputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.target;
-        dispatch(cartActions.setUserData({id, value}));
+        dispatch(cartActions.setUserData({ id, value }));
     }
     const phoneInputChangeHandler = (newValue: string, info: MuiTelInputInfo) => {
         const phoneWOspaces = newValue.replaceAll(' ', '');
-        dispatch(cartActions.setUserData({id: 'phone', value: phoneWOspaces}));
-      }
+        dispatch(cartActions.setUserData({ id: 'phone', value: phoneWOspaces }));
+    }
     return (
         <>
             <TextField
@@ -55,6 +57,7 @@ const MainUserData: React.FC = () => {
             />
 
             <MuiTelInput
+                onlyCountries={['RU']}
                 id="phone"
                 label="Твой телефон"
                 required
@@ -65,6 +68,10 @@ const MainUserData: React.FC = () => {
                 defaultCountry="RU"
                 onChange={phoneInputChangeHandler}
                 value={phone}
+                disableDropdown
+                getFlagElement={() => {
+                    return <Image width={26} height={17} alt='ГОЙДААА!' src={RU_FLAG} aria-label='Россия' />
+                }}
             />
 
             <TextField

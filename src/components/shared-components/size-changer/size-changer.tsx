@@ -9,6 +9,35 @@ import rightArrow from "../../../../public/button_arrow_right.svg";
 import leftArrow from "../../../../public/button_arrow_left.svg";
 import { usePathname } from "next/navigation";
 
+
+const getSizeOrder = (sizes: Array<{name: string, qty: number, userQty: number}>) => {
+    // Базовый порядок известных размеров
+    const knownSizeOrder = ['XXXS', 'XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL', 'XXXXXXL'];
+    
+    return sizes.sort((a, b) => {
+        const aIndex = knownSizeOrder.indexOf(a.name);
+        const bIndex = knownSizeOrder.indexOf(b.name);
+        
+        // Если оба размера известны, сортируем по их позиции
+        if (aIndex !== -1 && bIndex !== -1) {
+            return aIndex - bIndex;
+        }
+        
+        // Если только один размер известен, он идет первым
+        if (aIndex !== -1 && bIndex === -1) {
+            return -1;
+        }
+        if (aIndex === -1 && bIndex !== -1) {
+            return 1;
+        }
+        
+        // Если оба размера неизвестны, сортируем алфавитно
+        return a.name.localeCompare(b.name);
+    });
+}
+
+
+
 const SizeChanger: React.FC<{ item: IProduct }> = ({ item }) => {
     //console.log(item);
     const pathname = usePathname();
@@ -44,9 +73,12 @@ const SizeChanger: React.FC<{ item: IProduct }> = ({ item }) => {
 
     };
 
+    // Сортируем размеры в правильном порядке
+    const sortedSizes = sizes ? getSizeOrder([...sizes]) : [];
+
     return (
         <div className={pathname === '/cart' ? styles.sizeChanger__cart : styles.sizeChanger}>
-            {sizes?.map((item, index) => {
+            {sortedSizes.map((item, index) => {
                 return (
                     <div
                         className={styles.sizeChanger_wrapper}

@@ -70,6 +70,51 @@
     cursor: pointer;
 }
 
+.upload_mode_switcher {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.mode_button {
+    flex: 1;
+    font-family: 'Neue_machina';
+    font-size: 12px;
+    line-height: 12px;
+    font-weight: 600;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.active_mode {
+    flex: 1;
+    font-family: 'Neue_machina';
+    font-size: 12px;
+    line-height: 12px;
+    font-weight: 600;
+    background-color: rgb(153,255,0);
+    border: 1px solid rgb(153,255,0);
+    border-radius: 5px;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    color: black;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mode_button:hover {
+    background-color: #f8f9fa;
+    border-color: #007bff;
+    color: #007bff;
+}
+
 
 
 .input_container {
