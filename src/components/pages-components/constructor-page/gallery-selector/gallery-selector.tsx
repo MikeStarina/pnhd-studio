@@ -7,7 +7,6 @@ import { useAppSelector, useAppDispatch } from "@/redux/redux-hooks";
 import { actions as constructorActions } from "@/redux/constructor-slice/constructor.slice";
 import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
 import { useUploadPrintImageMutation, useGetGalleryImagesQuery } from "@/api/api";
-import { IUploadPrintResponse } from "@/app/utils/types";
 import Image from "next/image";
 import { photoProcessing } from "@/app/utils/constructor-utils";
 
