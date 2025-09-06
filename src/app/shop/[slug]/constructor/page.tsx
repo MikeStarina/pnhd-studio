@@ -9,7 +9,7 @@ import DecalComp from "@/components/pages-components/constructor-page/3dmockup/d
 import Preview from "@/components/pages-components/constructor-page/3dmockup/preview";
 import Image from "next/image";
 import testImg from '../../../../../public/cookie.jpg'
-import GallerySelector from "@/components/pages-components/constructor-page/gallery-selector/gallery-selector";
+
 
 import dynamic from "next/dynamic";
 const DynamicStage = dynamic(
