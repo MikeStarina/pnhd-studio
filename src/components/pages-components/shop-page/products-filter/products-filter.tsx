@@ -88,7 +88,8 @@ const ProductFilterComp: React.FC<{ children?: React.ReactNode, shopData: Array<
     return (
         <section className={styles.main}>
         <form className={styles.filters} onSubmit={filtersSubmitHandler}>
-                <div className={styles.filters_wrapper}>   
+                <div className={styles.filters_wrapper}>
+                    <h1> Каталог</h1>
                     <TextField
                         select
                         inputProps={{MenuProps: {disableScrollLock: true}}}

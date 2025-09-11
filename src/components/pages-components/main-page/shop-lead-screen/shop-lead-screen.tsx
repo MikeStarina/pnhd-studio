@@ -16,14 +16,14 @@ const ShopLeadScreen: React.FC = () => {
 
     return (
         <section className={styles.screen}>
-            <div className={styles.screen_titleWrapper}>
-                <h2 className={styles.screen_title}>
+            <h2 className={styles.screen_titleWrapper}>
+                <span className={styles.screen_title}>
                     перейди в конструктор и создай одежду с уникальными
-                </h2>
-                <p className={styles.screen_subtitle}>
+                </span>
+                <span className={styles.screen_subtitle}>
                     принтами
-                </p>
-            </div>
+                </span>
+            </h2>
            
             <div className={styles.screen_box}>
                 <div className={styles.box_shapeWrapper}>

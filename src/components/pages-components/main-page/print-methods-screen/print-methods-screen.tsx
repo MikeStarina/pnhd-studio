@@ -16,7 +16,7 @@ const PrintMethodsScreen: React.FC = () => {
             <div className={styles.screen_firstRow}>
                 <div className={styles.firstRow_card}>
                     <div className={styles.card_textWrapper}>
-                        <h4 className={styles.card_title}>{"> "}шелкография</h4>
+                        <h3 className={styles.card_title}>{"> "}шелкография</h3>
                         <p className={styles.card_text}>
                             Обеспечивает высокую детализацию принтов разных цветов и оттенков,
                             устойчивость к стирке и износу
@@ -37,10 +37,10 @@ const PrintMethodsScreen: React.FC = () => {
                     </div>
                 </div>
 
-                <div className={styles.screen_titleWrapper}>
-                    <h2 className={styles.screen_title}>воплощай смелые идеи</h2>
-                    <p className={styles.screen_subtitle}>с любым методом нанесения</p>
-                </div>
+                <h2 className={styles.screen_titleWrapper}>
+                    <span className={styles.screen_title}>воплощай смелые идеи</span>
+                    <span className={styles.screen_subtitle}>с любым методом нанесения</span>
+                </h2>
             </div>
             <div className={styles.screen_secondRow}>
                 <div className={styles.secondRow_vertCard}>
@@ -52,7 +52,7 @@ const PrintMethodsScreen: React.FC = () => {
                         />
                     </div>
                     <div className={styles.card_textWrapper}>
-                    <h4 className={styles.card_title}>{"> "}флекс</h4>
+                    <h3 className={styles.card_title}>{"> "}флекс</h3>
                     <p className={styles.card_text}>
                         Подходит для принтов с кислотными, золотыми, медными цветами и
                         светоотражателей
@@ -68,7 +68,7 @@ const PrintMethodsScreen: React.FC = () => {
                 <div className={styles.secondRow_horizCardWrapper}>
                     <div className={styles.firstRow_card}>
                         <div className={styles.card_textWrapper}>
-                            <h4 className={styles.card_title}>{"> "}dtf</h4>
+                            <h3 className={styles.card_title}>{"> "}dtf</h3>
                             <p className={styles.card_text}>
                                 Помогает нанести рисунок с яркими насыщенными цветами, которые
                                 не выцветают со временем
@@ -90,7 +90,7 @@ const PrintMethodsScreen: React.FC = () => {
                     </div>
                     <div className={styles.firstRow_card}>
                         <div className={styles.card_textWrapper}>
-                            <h4 className={styles.card_title}>{"> "}dtg</h4>
+                            <h3 className={styles.card_title}>{"> "}dtg</h3>
                             <p className={styles.card_text}>
                                 Наносится на белые вещи за 5–15 минут, а рисунок сохраняется
                                 столько же, сколько на обычных вещах из магазинов
@@ -121,7 +121,7 @@ const PrintMethodsScreen: React.FC = () => {
                         />
                     </div>
                     <div className={styles.card_textWrapper}>
-                    <h4 className={styles.card_title}>{"> "}вышивка</h4>
+                    <h3 className={styles.card_title}>{"> "}вышивка</h3>
                     <p className={styles.card_text}>
                         Используется для лого и фраз, которые выделяются на одежде и
                         добавляют индивидуальностим

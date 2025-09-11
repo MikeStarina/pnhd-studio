@@ -36,9 +36,9 @@ const LeadForm: React.FC = () => {
 
     return (
                     <form className={styles.footer_form} onSubmit={submitHandler}>
-                        <h4 className={styles.form_title}>Заполни форму, мы
+                        <span className={styles.form_title}>Заполни форму, мы
                             свяжемся для консультации
-                        </h4>
+                        </span>
                         <TextField 
                             id='name'
                             required

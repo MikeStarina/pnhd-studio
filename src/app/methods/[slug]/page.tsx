@@ -97,7 +97,7 @@ const MethodPage: React.FC<{
                         <ul className={styles.description_list}>
                             {method.faq.variants.map((item, index) => (
                                 <li className={styles.description_listItem} key={index}>
-                                    <p className={styles.listItem_title}>{'> '}{item.screen_heading}</p>
+                                    <h3 className={styles.listItem_title}>{'> '}{item.screen_heading}</h3>
                                     <p className={styles.listItem_text}>{item.screen_description}</p>
                                 </li>
                             ))}
@@ -109,7 +109,7 @@ const MethodPage: React.FC<{
                     <MapScreen />
                     <section className={styles.more_block}>
                         <div className={styles.main_text_wrapper}>
-                            <h2 className={styles.brief_title}>ЧТО ДАЛЬШЕ?</h2>
+                            <h3 className={styles.brief_title}>ЧТО ДАЛЬШЕ?</h3>
                             <div className={styles.link_wrapper}>
                                 <Link href='/methods'>К методам печати</Link>
                                 <Link href='/'>На главную</Link>
@@ -117,7 +117,7 @@ const MethodPage: React.FC<{
                             </div>
                         </div>
                         <div className={styles.main_text_wrapper}>
-                            <h2 className={styles.brief_title}>ЧТО ЕЩЕ ПОЧИТАТЬ?</h2>
+                            <h3 className={styles.brief_title}>ЧТО ЕЩЕ ПОЧИТАТЬ?</h3>
                             <div className={styles.link_wrapper}>
                             {options && options.map((item, index) => (
                                 <Link href={`/methods/${item.slug}/${item.type}`} key={index}>{item.title} {item.subtitle}</Link>
