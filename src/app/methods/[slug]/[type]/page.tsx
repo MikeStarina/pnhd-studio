@@ -49,7 +49,7 @@ const MethodOptionsPage: React.FC<{
         ,
         "mainEntity": {
             "@type": "Service",
-            "name": option.title ?? ""
+            "name": (option.title ?? "").replace(/>/g, '').trim()
         },
         "primaryImageOfPage": {
             "@type": "ImageObject",
@@ -124,13 +124,13 @@ const MethodOptionsPage: React.FC<{
             {
                 "@type": "ListItem",
                 "position": 3,
-                "name": `${option.title} ?? ""}`,
+                "name": (option.title ?? "").replace(/>/g, '').trim(),
                 "item": `https://studio.pnhd.ru/methods/${option?.slug}`
             },
             {
                 "@type": "ListItem",
                 "position": 4,
-                "name": `${option.title} ${option.subtitle}`,
+                "name": `${option.meta.metaTitle}`,
                 "item": `https://studio.pnhd.ru/methods/${option?.slug}/${option?.type}`
             },
 
