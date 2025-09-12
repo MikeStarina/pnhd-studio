@@ -12,6 +12,9 @@ import FeedbackScreen from "@/components/pages-components/main-page/feedback-scr
 import FaqScreen from "@/components/pages-components/main-page/faq-screen/faq-screen";
 import MapScreen from "@/components/pages-components/main-page/map-screen/map-screen";
 import { Metadata } from "next";
+import Script from "next/script";
+import MarkupScript from "@/components/shared-components/markup-script/markup-script";
+import {FAQPageJsonLD, LocalBusinessJsonLD, ServiceJsonLD, WebPageJsonLD} from "@/app/utils/markups";
 
 export const metadata: Metadata = {
   title: 'Печать на одежде в Санкт-Петербурге на заказ от 1 штуки цена в Pinhead Studio',
@@ -28,7 +31,6 @@ export const metadata: Metadata = {
   },
 };
 
-
 const App: React.FC = () => {
   return (
     <>
@@ -42,6 +44,10 @@ const App: React.FC = () => {
       <FeedbackScreen />
       <FaqScreen />
       <MapScreen />
+      <MarkupScript jsonLd={LocalBusinessJsonLD} />
+      <MarkupScript jsonLd={WebPageJsonLD} />
+      <MarkupScript jsonLd={FAQPageJsonLD} />
+      <MarkupScript jsonLd={ServiceJsonLD} />
     </>
   );
 }
