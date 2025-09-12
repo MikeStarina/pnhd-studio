@@ -45,7 +45,7 @@ const MethodOptionsPage: React.FC<{
         "@type": "WebPage",
         "name": `${option.title} ${option.subtitle}`,
         "description": option?.meta.metaDescription ?? "",
-        "url": `https://studio.pnhd.ru/methods/${option?.parent}/${option?.slug}`
+        "url": `https://studio.pnhd.ru/methods/${option?.slug}/${option?.type}`
         ,
         "mainEntity": {
             "@type": "Service",
@@ -125,13 +125,13 @@ const MethodOptionsPage: React.FC<{
                 "@type": "ListItem",
                 "position": 3,
                 "name": `${option.title} ?? ""}`,
-                "item": `https://studio.pnhd.ru/methods/${option?.parent}`
+                "item": `https://studio.pnhd.ru/methods/${option?.slug}`
             },
             {
                 "@type": "ListItem",
                 "position": 4,
                 "name": `${option.title} ${option.subtitle}`,
-                "item": `https://studio.pnhd.ru/methods/${option?.parent}/${option?.slug}`
+                "item": `https://studio.pnhd.ru/methods/${option?.slug}/${option?.type}`
             },
 
         ]
