@@ -16,7 +16,7 @@ type TMetadataProps = {
 
 export const generateStaticParams = async () => {
     const data = await getShopData();
-    //console.log(data)
+    // console.log(data)
 
     return data.map((item: IProduct) => ({ slug: item.slug }))
 }

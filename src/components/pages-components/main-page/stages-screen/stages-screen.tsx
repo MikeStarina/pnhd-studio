@@ -23,7 +23,7 @@ const StagesScreen: React.FC = () => {
             <div className={styles.screen_cards}>
                 <div className={styles.cards_blockWrapper}>
                     <div className={styles.cards_textCard}>
-                        <h4 className={styles.textCard_title}>Выбери одежду из каталога</h4>
+                        <h3 className={styles.textCard_title}>Выбери одежду из каталога</h3>
                         <p className={styles.textCard_paragraph}>
                             Добавь в конструктор текстиль нужного фасона и размера
                         </p>
@@ -41,9 +41,9 @@ const StagesScreen: React.FC = () => {
                 </div>
                 <div className={styles.cards_blockWrapper}>
                     <div className={styles.cards_textCard}>
-                        <h4 className={styles.textCard_title}>
+                        <h3 className={styles.textCard_title}>
                             Расположи принт на вещи и узнай стоимость
-                        </h4>
+                        </h3>
                         <p className={styles.textCard_paragraph}>
                             Загрузи изображение и расположи его на одежде
                         </p>
@@ -72,7 +72,7 @@ const StagesScreen: React.FC = () => {
                     </div>
 
                     <div className={styles.cards_textCard}>
-                        <h4 className={styles.textCard_title}>Оформи заказ</h4>
+                        <h3 className={styles.textCard_title}>Оформи заказ</h3>
                         <p className={styles.textCard_paragraph}>
                             Отправь контактные данные, мы позвоним и расскажем, как забрать
                             мерч
@@ -92,9 +92,9 @@ const StagesScreen: React.FC = () => {
                     </div>
 
                     <div className={styles.cards_textCard}>
-                        <h4 className={styles.textCard_title}>
+                        <h3 className={styles.textCard_title}>
                             Дождись, когда сработает магия, и забери мерч
-                        </h4>
+                        </h3>
                         <p className={styles.textCard_paragraph}>
                             Приди в пункт выдачи после прибытия посылки и порази всех новой
                             вещью

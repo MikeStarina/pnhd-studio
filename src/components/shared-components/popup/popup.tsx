@@ -30,9 +30,9 @@ const Popup = () => {
                 >
                     X
                 </button>
-                <h3 className={styles.popup_title}>
+                <p className={styles.popup_title}>
                     {popupTitle}
-                </h3>
+                </p>
                 {popupType === 'lead' && <LeadForm />}
             </div>
         </div>

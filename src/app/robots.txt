@@ -68,7 +68,7 @@ Clean-param: fbclid
 Clean-param: color
 Clean-param: region&region_name&block&callibri
 Clean-param: region&region_name&source&callibri
-Clean-param: yycleed
+Clean-param: tfc_storepartuid_366302325&tfc_storepartuid_366340433&tfc_div&matchtype&gtm_debug&_ym_debug&a&hhtmFrom&rs_stat&mibextid&page&yandex-source&utm_medium&keyword&device&placement&adv&cm_id
 Clean-param: id
 Clean-param: itemCartId
 Clean-param: cm_id

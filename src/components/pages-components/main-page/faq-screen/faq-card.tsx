@@ -17,7 +17,7 @@ const FaqCard: React.FC<{ item: {title: string, text: string}}> = ({ item }) => 
             className={isCardActive ? styles.card__active : styles.card}
         >
             <div className={styles.card_textWrapper}>
-                <h4 className={styles.card_title}>{item.title}</h4>
+                <span className={styles.card_title}>{item.title}</span>
                 {isCardActive &&
                     <p className={styles.card_text}>{item.text}</p>
                 }

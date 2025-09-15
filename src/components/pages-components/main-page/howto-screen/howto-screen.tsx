@@ -22,7 +22,7 @@ const HowToScreen: React.FC = () => {
                                 className={styles.card_image}
                             />
                         </div>
-                        <h4 className={styles.card_title}>1</h4>
+                        <p className={styles.card_title}>1</p>
                     </div>
                     <p className={styles.card_text}>
                         Оплачивай заказ картой любого банка по счёту компании
@@ -37,7 +37,7 @@ const HowToScreen: React.FC = () => {
                                 className={styles.card_image}
                             />
                         </div>
-                        <h4 className={styles.card_title}>2</h4>
+                        <p className={styles.card_title}>2</p>
                     </div>
                     <p className={styles.card_text}>
                         Забирай одежду в пункте выдачи «СДЭК» в своём городе
@@ -52,7 +52,7 @@ const HowToScreen: React.FC = () => {
                                 className={styles.card_image}
                             />
                         </div>
-                        <h4 className={styles.card_title}>3</h4>
+                        <p className={styles.card_title}>3</p>
                     </div>
                     <p className={styles.card_text}>
                         Проверь мерч. Мы заменим его, если что-то будет не так

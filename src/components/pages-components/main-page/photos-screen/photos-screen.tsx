@@ -20,10 +20,10 @@ const PhotosScreen: React.FC = () => {
                 <div className={styles.largeBlock_topImageWrapper}>
                     <Image src={photos_screen_image_four} alt='футболка с принтом' className={styles.largeBlock_topImage}   />
                 </div>
-                <div className={styles.screen_titleWrapper}>
-                    <h2 className={styles.screen_title}>ОТРАЖАЙ</h2>
-                    <p className={styles.screen_subtitle}>индивидуальность в мерче</p>
-                </div>
+                <h2 className={styles.screen_titleWrapper}>
+                    <span className={styles.screen_title}>ОТРАЖАЙ</span>
+                    <span className={styles.screen_subtitle}>индивидуальность в мерче</span>
+                </h2>
             </div>
             <div className={styles.screen_column}>
                 <div className={styles.screen_mediumBlock}>

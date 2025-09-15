@@ -5,6 +5,8 @@ import PriceScreen from "@/components/pages-components/main-page/price-screen/pr
 import MapScreen from "@/components/pages-components/main-page/map-screen/map-screen";
 import { Metadata } from "next";
 import { ssOptions } from '@/app/utils/method-options-data';
+import {prices} from "@/app/utils/constants";
+import MarkupScript from "@/components/shared-components/markup-script/markup-script";
 
 
 
@@ -38,7 +40,102 @@ const MethodOptionsPage: React.FC<{
     const {slug, type} = params;
     const option: typeof ssOptions[0] = ssOptions.filter((item) => item.slug === slug && item.type === type)[0];
 
-   
+    const jsonLdWebPage = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": `${option.title} ${option.subtitle}`,
+        "description": option?.meta.metaDescription ?? "",
+        "url": `https://studio.pnhd.ru/methods/${option?.slug}/${option?.type}`
+        ,
+        "mainEntity": {
+            "@type": "Service",
+            "name": (option.title ?? "").replace(/>/g, '').trim()
+        },
+        "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": `https://studio.pnhd.ru${option.cover.src ?? ""}`,
+        }
+    }
+    const offers: object[] = [];
+
+    prices.forEach((priceGroup) => {
+        priceGroup.prices.forEach((price) => {
+            const cleanedPrice = price.price.replace(/Р\./g, '').trim();
+            if (cleanedPrice.includes('/')) {
+                const [whitePrice, colorPrice] = cleanedPrice.split('/').map(p => p.trim());
+                offers.push({
+                    "@type": "Offer",
+                    "price": whitePrice,
+                    "priceCurrency": "RUB",
+                    "description": `${priceGroup.name} ${price.format} на белой ткани`,
+                    "availability": "https://schema.org/InStock"
+                });
+                offers.push({
+                    "@type": "Offer",
+                    "price": colorPrice,
+                    "priceCurrency": "RUB",
+                    "description": `${priceGroup.name} ${price.format} на цветной ткани`,
+                    "availability": "https://schema.org/InStock"
+                });
+            } else {
+                offers.push({
+                    "@type": "Offer",
+                    "price": cleanedPrice,
+                    "priceCurrency": "RUB",
+                    "description": `${priceGroup.name} ${price.format}`,
+                    "availability": "https://schema.org/InStock"
+                });
+            }
+        });
+    });
+    const jsonLdService = {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": `${option.title} ${option.subtitle}`,
+        "description": option?.mainText ?? "",
+        "provider": {
+            "@type": "LocalBusiness",
+            "name": "PNHD>STUDIO",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Санкт-Петербург",
+                "streetAddress": "ул. Чапыгина, д. 1"
+            }
+        },
+        "areaServed": "Санкт-Петербург",
+        "offers": offers
+    }
+    const jsonLdBreadcrumbList = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Главная",
+                "item": "https://studio.pnhd.ru/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Методы печати",
+                "item": "https://studio.pnhd.ru/methods"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": (option.title ?? "").replace(/>/g, '').trim(),
+                "item": `https://studio.pnhd.ru/methods/${option?.slug}`
+            },
+            {
+                "@type": "ListItem",
+                "position": 4,
+                "name": `${option.meta.metaTitle}`,
+                "item": `https://studio.pnhd.ru/methods/${option?.slug}/${option?.type}`
+            },
+
+        ]
+    }
 
     return (
         <>
@@ -114,6 +211,9 @@ const MethodOptionsPage: React.FC<{
 
                         </div>
                     </section>
+                    <MarkupScript jsonLd={jsonLdWebPage}/>
+                    <MarkupScript jsonLd={jsonLdService}/>
+                    <MarkupScript jsonLd={jsonLdBreadcrumbList}/>
                 </>
         )}
         </>
