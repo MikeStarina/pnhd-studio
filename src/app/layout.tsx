@@ -77,21 +77,7 @@ export default function RootLayout({
           window.dataLayer = window.dataLayer || [];
           `}
           </Script>
-          <Script async id="b24" strategy="afterInteractive">
-            {`
-                (function(w,d,u){
-                        var s=d.createElement('script');s.async=true;s.src=u+'?'+(Date.now()/60000|0);
-                        var h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(s,h);
-                })(window,document,'https://cdn-ru.bitrix24.ru/b26302288/crm/site_button/loader_2_96njja.js');
-            `}
-          </Script>
           <Script type="text/javascript" async src="https://app.uiscom.ru/static/cs.min.js?k=79obNG5YrzIplUgKXZYSiPbK7agWm7Dk"></Script>
-          {/* <Script
-            id='andata'
-            type="application/javascript"
-            async
-            src="//tagmanager.andata.ru/api/v1/container/9b6370c8-6f89-4792-b816-520e886444ad/published/code.js"
-          ></Script> */}
         </body>
       </ReduxProvider>
     </html>

@@ -56,11 +56,11 @@ const MapScreen: React.FC = () => {
                                 <Image src={inst} alt='логотип инстаграм' />
                             </button>
                         </Link>
-                        {/* <Link href='https://wa.me/79313566552' target="blank">
+                        <Link href='https://wa.me/79313566552' target="blank">
                             <button type='button' className={styles.contacts_socialButton}>
                                 <Image src={wa} alt='логотип ватсап' />
                             </button>
-                        </Link> */}
+                        </Link>
                     </div>
                 </div>
                 <Image src={shape} alt='декоративный штрихкод' style={{ height: '100%', alignSelf: 'center', paddingLeft: '20px'}} />
