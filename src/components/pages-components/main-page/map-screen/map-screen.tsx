@@ -41,21 +41,21 @@ const MapScreen: React.FC = () => {
                     </p>
 
                     <div className={styles.contacts_socialsWrapper}>
-                        <Link href='https://vk.com/pinheadspb' target="blank">
+                        {/* <Link href='https://vk.com/pinheadspb' target="blank">
                             <button type='button' className={styles.contacts_socialButton}>
                                 <Image src={vk} alt='логотип вконтакте' />
                             </button>
-                        </Link>
-                        <Link href='https://t.me/pnhd_studio_bot' target="blank">
+                        </Link> */}
+                        <Link href='https://t.me/pnhd_studio' target="blank">
                             <button type='button' className={styles.contacts_socialButton}>
                                 <Image src={tg} alt='логотип телеграм'/>
                             </button>
                         </Link>
-                        <Link href='https://instagram.com/pnhd.studio/' target="blank">
+                        {/* <Link href='https://instagram.com/pnhd.studio/' target="blank">
                             <button type='button' className={styles.contacts_socialButton}>
                                 <Image src={inst} alt='логотип инстаграм' />
                             </button>
-                        </Link>
+                        </Link> */}
                         <Link href='https://wa.me/79313566552' target="blank">
                             <button type='button' className={styles.contacts_socialButton}>
                                 <Image src={wa} alt='логотип ватсап' />
