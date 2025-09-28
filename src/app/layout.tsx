@@ -11,6 +11,7 @@ import CartIcon from "@/components/shared-components/cart-icon/cart-icon";
 import Popup from "@/components/shared-components/popup/popup";
 import Script from "next/script";
 import CookieBar from "@/components/shared-components/cookie-bar/cookie-bar";
+import ContactsWidget from "@/components/shared-components/contactsWidget/contactsWidget";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,6 +31,7 @@ export default function RootLayout({
     <html lang="en">
       <ReduxProvider>
         <body className={inter.className}>
+          <ContactsWidget />
           <Suspense>
             <InfoBar />
           </Suspense>
