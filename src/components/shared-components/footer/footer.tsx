@@ -20,7 +20,7 @@ const Footer: React.FC = () => {
                 <Link href={{pathname: '/', hash: '#stages'}} className={styles.footer_link}>этапы работы</Link>
                 <Link href={{pathname: '/', hash: '#feedback'}} className={styles.footer_link}>отзывы</Link>
                 <Link href={{pathname: '/', hash: '#faq'}} className={styles.footer_link}>FAQ</Link>
-                <Link href={{pathname: '/', hash: '#contacts'}} className={styles.footer_link}>контакты</Link>
+                <Link href={{pathname: '/contacts',}} className={styles.footer_link}>контакты</Link>
 
                 <Image src={shape1} alt='картинка штрихкода'/>
 
