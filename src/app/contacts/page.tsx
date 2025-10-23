@@ -72,8 +72,12 @@ const Page: React.FC = () => {
       <MapScreen />
       <section className={styles.method_brief}>
         <div className={styles.main_text_wrapper}>
-          <h2 className={styles.brief_title}>КРАТКО</h2>
-          <p className={styles.brief_text}>Pinhead Studio в Санкт-Петербурге предлагает заказать шелкографию на футболках и другой одежде для создания уникальных дизайнов и логотипов по выгодной цене.</p>
+          <h2 className={styles.brief_title}>Реквизиты</h2>
+          <p className={styles.brief_text}>
+            - Наименование организации: ООО ПИНХЭД СТУДИО<br/>
+            - ИНН:7810463916<br/>
+            - КПП: 781301001
+          </p>
         </div>
       </section>
       <MarkupScript jsonLd={jsonLdOrganization}/>
