@@ -53,12 +53,13 @@ Disallow: /pechat-na-svitshotah
 Disallow: /pryamaya-dtg-pechat
 Disallow: /thanks
 Disallow: /tproduct/https:/pnhd.ru	
-Disallow: /game	
+Disallow: /game
 Disallow: /checkout
 Disallow: /cart
 Disallow: /oferta
 Disallow: /methods/pryamay 
 Disallow: /card
+Disallow: /*/constructor
 Disallow: *&&&
 Clean-param: etext
 Clean-param: type
