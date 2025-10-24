@@ -42,7 +42,6 @@
     justify-content: flex-start;
     align-items: stretch;
     gap: 10px;
-    
 }
 
 .screen_mainBlock {
@@ -57,7 +56,7 @@
     align-items: flex-end;
     padding: 35px 25px;
     overflow: hidden;
-    height: 512px;
+    height: 562px;
 }
 
 .mainBlock_title {

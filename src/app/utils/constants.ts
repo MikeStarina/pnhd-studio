@@ -52,23 +52,23 @@ export const prices = [
         prices: [
             {
                 format: 'А6',
-                price: '300 Р. / 400 Р.'
+                price: '350 Р. / 450 Р.'
             },
             {
                 format: 'А5',
-                price: '400 Р. / 500 Р.'
+                price: '450 Р. / 575 Р.'
             },
             {
                 format: 'А4',
-                price: '500 Р. / 650 Р.'
+                price: '575 Р. / 750 Р.'
             },
             {
                 format: 'А3',
-                price: '650 Р. / 750 Р.'
+                price: '750 Р. / 850 Р.'
             },
             {
                 format: 'А3+',
-                price: '750 Р. / 900 Р.'
+                price: '850 Р. / 1050 Р.'
             },
         ]
     },
@@ -76,24 +76,28 @@ export const prices = [
         name: 'DTF',
         prices: [
             {
-                format: 'А6',
+                format: 'mini',
                 price: '400 Р.'
             },
             {
+                format: 'А6',
+                price: '450 Р.'
+            },
+            {
                 format: 'А5',
-                price: '500 Р.'
+                price: '550 Р.'
             },
             {
                 format: 'А4',
-                price: '650 Р.'
+                price: '700 Р.'
             },
             {
                 format: 'А3',
-                price: '750 Р.'
+                price: '850 Р.'
             },
             {
                 format: 'А3+',
-                price: '900 Р.'
+                price: '1050 Р.'
             },
         ]
     },
@@ -101,24 +105,28 @@ export const prices = [
         name: 'ТЕРМОПЕРЕНОС',
         prices: [
             {
+                format: 'mini',
+                price: '400 Р.'
+            },
+            {
                 format: 'А6',
-                price: '600 Р.'
+                price: '550 Р.'
             },
             {
                 format: 'А5',
-                price: '750 Р.'
+                price: '700 Р.'
             },
             {
                 format: 'А4',
-                price: '975 Р.'
+                price: '950 Р.'
             },
             {
                 format: 'А3',
-                price: '1125 Р.'
+                price: '1050 Р.'
             },
             {
                 format: 'А3+',
-                price: '1350 Р.'
+                price: '1200 Р.'
             },
         ]
     },
