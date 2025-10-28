@@ -5,6 +5,7 @@ import { TBlogPosts } from "./types";
 
 export const apiBaseUrl = 'https://pnhdstudioapi.ru';
 //export const apiBaseUrl = 'http://localhost:9000';
+export const CDN_URL = 'https://cdn.pnhd.ru';
 
 export const ACQUIRE_RATIO = 0.965 //комиссия эквайринга
 

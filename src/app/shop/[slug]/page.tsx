@@ -21,22 +21,22 @@ export const generateStaticParams = async () => {
     return data.map((item: IProduct) => ({ slug: item.slug }))
 }
 
-export async function generateMetadata ({ params, searchParams }: TMetadataProps): Promise<Metadata> {
-    const [ currItem ]: Array<IProduct> = await getShopData({ slug: params.slug});
+export async function generateMetadata({ params, searchParams }: TMetadataProps): Promise<Metadata> {
+    const [currItem]: Array<IProduct> = await getShopData({ slug: params.slug });
     return {
-      title: `${currItem?.name} | PINHEAD STUDIO`,
-      description: `${currItem?.name} - ${currItem?.description}`,
-      keywords: [currItem?.category!, currItem?.type!, currItem?.color!],
-      openGraph: {
-        images: `${apiBaseUrl}${currItem?.image_url}`,
-        type: 'website',
-        url: `https://studio.pnhd.ru/shop/${params.slug}?id=${searchParams.id}`,
-        description: currItem?.description,
-        siteName: 'PINHEAD STUDIO',
-        title: currItem?.name,
-      }
+        title: `${currItem?.name} | PINHEAD STUDIO`,
+        description: `${currItem?.name} - ${currItem?.description}`,
+        keywords: [currItem?.category!, currItem?.type!, currItem?.color!],
+        openGraph: {
+            images: `${apiBaseUrl}${currItem?.image_url}`,
+            type: 'website',
+            url: `https://studio.pnhd.ru/shop/${params.slug}?id=${searchParams.id}`,
+            description: currItem?.description,
+            siteName: 'PINHEAD STUDIO',
+            title: currItem?.name,
+        }
     }
-  }
+}
 
 
 const ProductPage: React.FC<{
@@ -44,10 +44,15 @@ const ProductPage: React.FC<{
     searchParams: { id: string };
 }> = async ({ params, searchParams }) => {
 
-    const [ item ]: Array<IProduct> = await getShopData({ slug: params.slug});
+    const [item]: Array<IProduct> = await getShopData({ slug: params.slug });
     return (
         <section className={styles.screen}>
-            <Photos item={item} />
+            {/* <Photos item={item} /> */}
+            <div className={styles.photo_box}>
+                {item.galleryPhotos && item.galleryPhotos.map((el, index) => (
+                    <Photos item={item} el={el} key={index} index={index} />
+                ))}
+            </div>
             <ProductDescription item={item} />
         </section>
     );
