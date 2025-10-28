@@ -127,6 +127,28 @@
     padding: 0;
 }
 
+.header_priceButton {
+    text-decoration: none;
+    font-size: 12px;
+    border: none;
+    color: black;
+    border-radius: 5px;
+    padding: 4px 14px;
+    border: 1px solid rgb(153,255,0);
+    background-color: rgb(153,255,0);
+    text-transform: uppercase;
+    font-family: 'DrukTextWideCyr-Medium';
+    font-weight: 400;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.header_priceButton:hover {
+    background-color: black;
+    color: white;
+    border-color: black;
+}
+
 
 
 
