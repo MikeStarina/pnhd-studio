@@ -191,26 +191,15 @@ const MethodOptionsPage: React.FC<{
                         ))}
                     </section>
 
-                    
-
-                    
                     <PriceScreen />
                     <MapScreen />
-                    <section>
-                        
-                    </section>
+                    <section></section>
 
                     <section className={styles.method_description}>
-
-
-                            <h2 className={styles.brief_title}>AI/RBTS CONTENT</h2>
-                            
-                    
-                        
-                        <div className={styles.robots_block} dangerouslySetInnerHTML={option.robotsText}>
-
-                        </div>
+                        <h2 className={styles.brief_title}>AI/RBTS CONTENT</h2>
+                        <div className={styles.robots_block} dangerouslySetInnerHTML={option.robotsText}></div>
                     </section>
+
                     <MarkupScript jsonLd={jsonLdWebPage}/>
                     <MarkupScript jsonLd={jsonLdService}/>
                     <MarkupScript jsonLd={jsonLdBreadcrumbList}/>
