@@ -1,0 +1,65 @@
+.title_wrapper {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    overflow: hidden;
+    padding: 0 20px;
+    margin-top: 50px;
+}
+
+.page_title {
+    text-transform: uppercase;
+    font-family: 'DrukTextWideCyr-Medium';
+    font-size: 46px;
+}
+
+.main_text_wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 50px;
+    margin: 0;
+    gap: 50px;
+    border: 1px solid black;
+    box-sizing: border-box;
+    border-radius: 20px;
+}
+
+
+.method_brief {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0;
+    margin: 120px 0 0 0;
+    gap: 50px;
+}
+
+.brief_title {
+    font-family: 'DrukTextWideCyr-Medium';
+    font-size: 18px;
+    line-height: 18px;
+    font-weight: 400;
+    color: black;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+}
+
+.brief_text {
+    font-family: 'Neue_machina';
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: 400;
+    color: black;
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+    text-align: justify;
+}
