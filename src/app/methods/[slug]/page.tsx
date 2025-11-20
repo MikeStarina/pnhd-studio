@@ -10,6 +10,8 @@ import Link from "next/link";
 import {ssOptions} from "@/app/utils/method-options-data";
 import {prices} from "@/app/utils/constants";
 import MarkupScript from "@/components/shared-components/markup-script/markup-script";
+import PrintMethodsScreen from "@/components/pages-components/main-page/print-methods-screen/print-methods-screen";
+import {type} from "node:os";
 
 export const generateMetadata = ({params}: { params: { slug: string } }): Metadata => {
 
@@ -85,6 +87,7 @@ const MethodPage: React.FC<{
       }
     });
   });
+
   const jsonLdService = {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -196,6 +199,7 @@ const MethodPage: React.FC<{
 
           {method.name === 'DTF' && <DtfCalculator/>}
           <PriceScreen/>
+          <PrintMethodsScreen excludedMethods={[params.slug]}/>
           <MapScreen/>
           <section className={styles.more_block}>
             <div className={styles.main_text_wrapper}>
