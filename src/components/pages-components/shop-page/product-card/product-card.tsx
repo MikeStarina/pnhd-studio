@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from './product-card.module.css';
 import { CDN_URL } from "@/app/utils/constants";
 import Image from "next/image";
@@ -19,6 +19,12 @@ const ProductCard: React.FC<TCardProps> = ({ title, price, img, sizes, slug }) =
   const [imageSrc, setImageSrc] = useState(`${CDN_URL}/${slug}_0.jpg`);
   const [imageError, setImageError] = useState(false);
 
+  useEffect(() => {
+    if (imageError) {
+        setImageSrc(`${CDN_URL}/no-photo.png`);
+    }
+}, [imageError]);
+
   return (
     <div className={styles.card}>
       {sizes.length === 0 && (
@@ -32,13 +38,13 @@ const ProductCard: React.FC<TCardProps> = ({ title, price, img, sizes, slug }) =
         height={556}
         loading="lazy"
         onError={() => {
-          if (imageSrc.includes('cdn.pnhd.ru')) {
-            setImageSrc(img);
-          } else {
+          if (imageSrc.includes('cdn.pnhd.ru') && !imageError) {
+            setImageSrc(img ?? '');
+          } else if (!imageSrc.includes('cdn.pnhd.ru') && !imageError)  {
             setImageError(true);
           }
         }}
-        style={{ display: imageError ? 'none' : 'block' }}
+       // style={{ display: imageError ? 'none' : 'block' }}
       />
       <div className={styles.card_caption}>
         <p className={styles.card_title}>{title}</p>
