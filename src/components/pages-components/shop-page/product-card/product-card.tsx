@@ -21,9 +21,9 @@ const ProductCard: React.FC<TCardProps> = ({ title, price, img, sizes, slug }) =
 
   useEffect(() => {
     if (imageError) {
-        setImageSrc(`${CDN_URL}/no-photo.png`);
+      setImageSrc(`${CDN_URL}/no%20photo.png`);
     }
-}, [imageError]);
+  }, [imageError]);
 
   return (
     <div className={styles.card}>
@@ -40,11 +40,11 @@ const ProductCard: React.FC<TCardProps> = ({ title, price, img, sizes, slug }) =
         onError={() => {
           if (imageSrc.includes('cdn.pnhd.ru') && !imageError) {
             setImageSrc(img ?? '');
-          } else if (!imageSrc.includes('cdn.pnhd.ru') && !imageError)  {
+          } else if (!imageSrc.includes('cdn.pnhd.ru') && !imageError) {
             setImageError(true);
           }
         }}
-       // style={{ display: imageError ? 'none' : 'block' }}
+      // style={{ display: imageError ? 'none' : 'block' }}
       />
       <div className={styles.card_caption}>
         <p className={styles.card_title}>{title}</p>

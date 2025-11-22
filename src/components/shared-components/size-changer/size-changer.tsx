@@ -82,7 +82,7 @@ const SizeChanger: React.FC<{ item: IProduct }> = ({ item }) => {
                 return (
                     <div
                         className={styles.sizeChanger_wrapper}
-                        key={index}
+                        key={item.name}
                         id={item.name}
                     >
                         <div className={styles.size_contolsWrapper}>
@@ -114,7 +114,7 @@ const SizeChanger: React.FC<{ item: IProduct }> = ({ item }) => {
                             </button>
                         </div>
                         <div className={styles.size_stockWrapper}>
-                            <p className={styles.size_stock}>{`(${item.qty} шт.)`}</p>
+                            <p className={styles.size_stock}>{`(${item.qty ?? 0} шт.)`}</p>
                         </div>
                     </div>
                 );
