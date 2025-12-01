@@ -8,9 +8,6 @@ export const metadata: Metadata = {
   title: 'Контактная информация студии печати на одежде Pinhead Studio',
   description: 'Контакты студии печати на одежде Pinhead Studio в Санкт-Петербурге: печать принтов на футболках, создание мерча для брендов, широкоформатная печать.',
   metadataBase: new URL('https://studio.pnhd.ru'),
-  alternates: {
-    canonical: '/',
-  },
   openGraph: {
     type: 'website',
     title: 'PNHD STUDIO | Главная',

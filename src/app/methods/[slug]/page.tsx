@@ -12,10 +12,11 @@ import {prices} from "@/app/utils/constants";
 import MarkupScript from "@/components/shared-components/markup-script/markup-script";
 import PrintMethodsScreen from "@/components/pages-components/main-page/print-methods-screen/print-methods-screen";
 import {type} from "node:os";
+import { SITE_INFO } from "@/app/constants";
 
 export const generateMetadata = ({params}: { params: { slug: string } }): Metadata => {
-
   const method = methodsData.find((item) => item.slug === params.slug);
+  const currentUrl = SITE_INFO.domain+'/methods/'+params.slug
 
   return {
     title: method?.meta.metaTitle,
@@ -23,11 +24,14 @@ export const generateMetadata = ({params}: { params: { slug: string } }): Metada
     keywords: method?.meta.metaKeywords,
     openGraph: {
       type: 'website',
-      url: `https://studio.pnhd.ru/${params.slug}`,
+      url: currentUrl,
       title: method?.ruName,
       description: method?.brief_subtitle,
-      siteName: 'PINHEAD STUDIO',
-    }
+      siteName: SITE_INFO.name,
+    },
+    alternates: {
+      canonical: currentUrl,
+    },
   }
 }
 

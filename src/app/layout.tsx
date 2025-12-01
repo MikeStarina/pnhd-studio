@@ -11,15 +11,26 @@ import CartIcon from "@/components/shared-components/cart-icon/cart-icon";
 import Popup from "@/components/shared-components/popup/popup";
 import Script from "next/script";
 import CookieBar from "@/components/shared-components/cookie-bar/cookie-bar";
+import {headers} from "next/headers";
+import {textileOptions} from "@/app/utils/textile-options-data";
+import {getCurrentPath} from '@/app/utils/constants';
+import {SITE_INFO} from "@/app/constants";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  verification: {
-    yandex: "35381404e7bfd3a4",
-    //google: "M4lIu49eO2o_XQZ5jyQ3zNkORxQftkEpEvf0E04pRFU",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  let path = getCurrentPath()
+
+  return {
+    verification: {
+      yandex: "35381404e7bfd3a4",
+      //google: "M4lIu49eO2o_XQZ5jyQ3zNkORxQftkEpEvf0E04pRFU",
+    },
+    alternates: {
+      canonical: SITE_INFO.domain + '/' + path.join('/'),
+    },
+  }
+}
 
 export default function RootLayout({
   children,
