@@ -15,6 +15,9 @@ import { Metadata } from "next";
 import Script from "next/script";
 import MarkupScript from "@/components/shared-components/markup-script/markup-script";
 import {FAQPageJsonLD, LocalBusinessJsonLD, ServiceJsonLD, WebPageJsonLD} from "@/app/utils/markups";
+import CatalogLeadScreen from "@/components/pages-components/main-page/catalogLeadScreen/catalogLeadScreen";
+import SinceScreen from "@/components/pages-components/main-page/sinceScreen/sinceScreen";
+import FormScreen from "@/components/pages-components/main-page/formScreen/FormScreen";
 
 export const metadata: Metadata = {
   title: 'Печать на одежде в Санкт-Петербурге на заказ от 1 штуки цена в Pinhead Studio',
@@ -35,11 +38,14 @@ const App: React.FC = () => {
   return (
     <>
       <MainScreen />
+      <CatalogLeadScreen />
       <PhotosScreen />
       <PrintMethodsScreen />
       <ShopLeadScreen />
       <StagesScreen />
       <PriceScreen />
+      <SinceScreen />
+      <FormScreen />
       <HowToScreen />
       <FeedbackScreen />
       <FaqScreen />
