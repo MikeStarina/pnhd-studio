@@ -1,9 +1,9 @@
 'use client'
-import React, {ChangeEvent, useState} from "react";
+import React, {ChangeEvent, useState, useEffect} from "react";
 import styles from './products-filter.module.css';
 import { TextField } from "@mui/material";
 import { MenuItem } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import ProductCardsBlock from "../product-cards-block/product-cards-block";
 import { IProduct } from "@/app/utils/types";
 
@@ -36,17 +36,43 @@ const inputSx = {
 
 const ProductFilterComp: React.FC<{ children?: React.ReactNode, shopData: Array<IProduct> }> = ({ children, shopData }) => {
 
+    const router = useRouter();
+    const searchParams = useSearchParams();
     
-    const [ filterState, setFilterState ] = useState<{'category': string, 'type': string, 'priceSort': string}>({'category': '', 'type': '', 'priceSort': ''});
+    const [ filterState, setFilterState ] = useState<{'category': string, 'type': string, 'priceSort': string}>({
+        'category': searchParams.get('category') || '', 
+        'type': searchParams.get('type') || '', 
+        'priceSort': searchParams.get('priceSort') || ''
+    });
     const [ isFiltered, setIsFiltred ] = useState<boolean>(false);
     const [ filteredData, setFilteredData ] = useState<Array<IProduct> | null>(null);
-    //const router = useRouter();
+
+    // Применяем фильтры при загрузке, если есть query-параметры
+    useEffect(() => {
+        const category = searchParams.get('category');
+        const type = searchParams.get('type');
+        const priceSort = searchParams.get('priceSort');
+        
+        if (category || type || priceSort) {
+            const filterFunc = () => {
+                let filteredData = shopData;
+                if (category) filteredData = filteredData.filter((item) => (item.category === category));
+                if (type) filteredData = filteredData.filter((item) => (item.type === type));
+                if (priceSort && priceSort === 'ASC') filteredData = filteredData.sort((a,b) => (a.price - b.price));
+                if (priceSort && priceSort === 'DESC') filteredData = filteredData.sort((a,b) => (b.price - a.price));
+                
+                return filteredData;
+            }
+            setFilteredData(filterFunc());
+            setIsFiltred(true);
+        }
+    }, [searchParams, shopData]);
 
     const resetFilterButtonClickHandler = () => {
         setFilterState({'category': '', 'type': '', 'priceSort': ''});
         setIsFiltred(false);
         setFilteredData(null);
-        //router.push('/shop');
+        router.push('/shop');
     }
 
     const filterInputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -60,18 +86,18 @@ const ProductFilterComp: React.FC<{ children?: React.ReactNode, shopData: Array<
 
     const filtersSubmitHandler = (e: any) => {
         e.preventDefault();
-        // const keys = Object.keys(filterState);
-        // let queryString = '';
-        // keys.forEach((key) => {
-        //     //@ts-ignore
-        //     if (filterState[key]) {
-        //         //@ts-ignore
-        //         if (queryString === '') return queryString += `?${key}=${filterState[key]}`;
-        //         //@ts-ignore
-        //         return queryString += `&${key}=${filterState[key]}`
-        //     }
-        // })
-        // router.push(`/shop${queryString}`);
+        const keys = Object.keys(filterState);
+        let queryString = '';
+        keys.forEach((key) => {
+            //@ts-ignore
+            if (filterState[key]) {
+                //@ts-ignore
+                if (queryString === '') queryString += `?${key}=${filterState[key]}`;
+                //@ts-ignore
+                else queryString += `&${key}=${filterState[key]}`
+            }
+        })
+        router.push(`/shop${queryString}`);
         setIsFiltred(true)
         const filterFunc = () => {
             let filteredData = shopData;

@@ -26,7 +26,6 @@ export const metadata: Metadata = {
 const ShopPage: React.FC = async () => {
 
   const shopData: Array<IProduct> = await getShopData();
-  console.log(shopData[0])
   // if (searchParams.priceSort) {
   //   searchParams.priceSort === 'ASC' && shopData.sort((a,b) => (a.price - b.price));
   //   searchParams.priceSort === 'DESC' && shopData.sort((a,b) => (b.price - a.price));
