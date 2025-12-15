@@ -37,11 +37,8 @@ const PriceScreen: React.FC = () => {
 
                 <div className={styles.screen_wrapper}>
                     <h2 className={styles.screen_title}>
-                        сделай рисунок размером со стикер
-                        <p className={styles.screen_subtitle}>
-                            или разгуляйся с принтами
-                            на всю футболку
-                        </p>
+                        Рассчитайте стоимость уникального мерча
+                        <p className={styles.screen_subtitle}>Делаем яркие принты на любом текстиле: от скромного логотипа до сложных полноцветных изображений на всей поверхности вещи.</p>
                     </h2>
 
 

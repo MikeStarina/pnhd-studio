@@ -16,15 +16,17 @@ const MapScreen: React.FC = () => {
 
     return (
         <section className={styles.screen} id='contacts'>
-            <h2 className={styles.screen_title}>
-                Принты бывают разные, но с <span style={{color: 'rgb(153,255,0)'}}>Pinhead Studio</span> они всегда                
-            </h2>
+            <h2 className={styles.screen_title}>Качественная печать на любой одежде от студии pinhead</h2>
             <span className={styles.screen_titleText}> раскрывают твою индивидуальность</span>
             <div className={styles.screen_mapBox}>
                 <MapComponent />
                 <div className={styles.mapBox_contacts}>
-                    <p className={styles.contacts_text}>
-                        Режим работы: ежедневно, 11:00–20:00
+                    <p className={styles.contacts_text}>Режим работы: ежедневно, 11:00–20:00</p>
+                    <p className={styles.contacts_text}>Телефон: +7 (812) 904-61-56</p>
+                    <p className={styles.contacts_text}>Email: STUDIO@PNHD.RU</p>
+                    <p className={styles.contacts_text}>Адрес: 197022, г. Санкт-Петербург, ул. Чалыгина, д. 1, ст. м. «Петроградская»</p>
+                    <p className={styles.contacts_text}>Как добраться?<br/>
+                        Удобное расположение в центре города. Подробную схему проезда и парковки вы можете узнать у нашего менеджера.
                     </p>
 
                     <div className={styles.contacs_buttonsWrapper}>

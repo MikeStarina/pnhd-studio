@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import styles from './page.module.css';
 import PrintMethodsScreen from "@/components/pages-components/main-page/print-methods-screen/print-methods-screen";
 import { SITE_INFO } from "@/app/constants";
-import {getCurrentPath} from "@/app/utils/constants";
+import AdvantagesComponent from "@/components/pages-components/method-page/advantages/advantages";
 
 export const generateMetadata = (): Metadata => {
     return {
@@ -38,14 +38,12 @@ const Page: React.FC = () => {
 
     return (
         <>
-        <div className={styles.title_wrapper}>        
-            <h1 className={styles.page_title}>Методы печати</h1>
-        </div>
-        <PrintMethodsScreen />
+            <div className={styles.title_wrapper}>
+                <h1 className={styles.page_title}>Методы печати</h1>
+            </div>
+            <AdvantagesComponent />
+            <PrintMethodsScreen />
         </>
-
-
-        
     )
 }
 

@@ -13,6 +13,7 @@ import MarkupScript from "@/components/shared-components/markup-script/markup-sc
 import PrintMethodsScreen from "@/components/pages-components/main-page/print-methods-screen/print-methods-screen";
 import {type} from "node:os";
 import { SITE_INFO } from "@/app/constants";
+import AdvantagesComponent from "@/components/pages-components/method-page/advantages/advantages";
 
 export const generateMetadata = ({params}: { params: { slug: string } }): Metadata => {
   const method = methodsData.find((item) => item.slug === params.slug);
@@ -203,6 +204,7 @@ const MethodPage: React.FC<{
 
           {method.name === 'DTF' && <DtfCalculator/>}
           <PriceScreen/>
+          <AdvantagesComponent />
           <PrintMethodsScreen excludedMethods={[params.slug]}/>
           <MapScreen/>
           <section className={styles.more_block}>

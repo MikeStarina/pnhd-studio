@@ -7,6 +7,7 @@ import { Metadata } from "next";
 import { ssOptions } from '@/app/utils/method-options-data';
 import {prices} from "@/app/utils/constants";
 import MarkupScript from "@/components/shared-components/markup-script/markup-script";
+import AdvantagesComponent from "@/components/pages-components/method-page/advantages/advantages";
 
 
 
@@ -190,7 +191,7 @@ const MethodOptionsPage: React.FC<{
                             />
                         ))}
                     </section>
-
+                    <AdvantagesComponent />
                     <PriceScreen />
                     <MapScreen />
                     <section></section>
