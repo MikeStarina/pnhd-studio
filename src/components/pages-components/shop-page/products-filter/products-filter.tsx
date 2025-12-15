@@ -40,19 +40,27 @@ const ProductFilterComp: React.FC<{ children?: React.ReactNode, shopData: Array<
     const searchParams = useSearchParams();
     
     const [ filterState, setFilterState ] = useState<{'category': string, 'type': string, 'priceSort': string}>({
-        'category': searchParams.get('category') || '', 
-        'type': searchParams.get('type') || '', 
-        'priceSort': searchParams.get('priceSort') || ''
+        'category': '', 
+        'type': '', 
+        'priceSort': ''
     });
     const [ isFiltered, setIsFiltred ] = useState<boolean>(false);
     const [ filteredData, setFilteredData ] = useState<Array<IProduct> | null>(null);
 
-    // Применяем фильтры при загрузке, если есть query-параметры
+    // Инициализируем фильтры из URL и применяем их при загрузке
     useEffect(() => {
-        const category = searchParams.get('category');
-        const type = searchParams.get('type');
-        const priceSort = searchParams.get('priceSort');
+        const category = searchParams.get('category') || '';
+        const type = searchParams.get('type') || '';
+        const priceSort = searchParams.get('priceSort') || '';
         
+        // Обновляем состояние фильтров из URL
+        setFilterState({
+            category,
+            type,
+            priceSort
+        });
+        
+        // Применяем фильтры, если есть query-параметры
         if (category || type || priceSort) {
             const filterFunc = () => {
                 let filteredData = shopData;
@@ -65,6 +73,9 @@ const ProductFilterComp: React.FC<{ children?: React.ReactNode, shopData: Array<
             }
             setFilteredData(filterFunc());
             setIsFiltred(true);
+        } else {
+            setIsFiltred(false);
+            setFilteredData(null);
         }
     }, [searchParams, shopData]);
 
