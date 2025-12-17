@@ -191,7 +191,7 @@ const MethodPage: React.FC<{
 
           <section className={styles.method_description}>
             <h2 className={styles.brief_title}>{method.faq.title}</h2>
-            <p className={styles.brief_text}>{method.faq.description}</p>
+            <div className={styles.brief_text} dangerouslySetInnerHTML={{__html: method.faq.description}}></div>
             <ul className={styles.description_list}>
               {method.faq.variants.map((item, index) => (
                 <li className={styles.description_listItem} key={index}>
