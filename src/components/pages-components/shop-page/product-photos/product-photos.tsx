@@ -10,8 +10,6 @@ import Image from "next/image";
 
 
 const Photos: React.FC<{ item: IProduct, el: string, index: number }> = ({ item, el, index }) => {
-  console.log(item);
-  console.log(el);
   const [imageSrc, setImageSrc] = useState(`${CDN_URL}/${item.slug}_${index}.jpg`);
   // const [imageSrc, setImageSrc] = useState(`${CDN_URL}/test.jpg`);
   const [imageError, setImageError] = useState(false);
