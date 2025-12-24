@@ -37,6 +37,7 @@ const ProductCard: React.FC<TCardProps> = ({ title, price, img, sizes, slug }) =
         width={371}
         height={556}
         loading="lazy"
+        unoptimized
         onError={() => {
           if (imageSrc.includes('cdn.pnhd.ru') && !imageError) {
             setImageSrc(img ?? '');

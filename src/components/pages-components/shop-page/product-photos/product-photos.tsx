@@ -32,6 +32,7 @@ const Photos: React.FC<{ item: IProduct, el: string, index: number }> = ({ item,
         width={371}
         height={556}
         loading="lazy"
+        unoptimized
         onError={(e) => {
           if (imageSrc.includes('cdn.pnhd.ru') && !imageError) {
             setImageSrc(`${apiBaseUrl}${el}`);
