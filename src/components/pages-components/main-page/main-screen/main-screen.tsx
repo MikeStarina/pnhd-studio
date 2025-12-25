@@ -115,15 +115,15 @@ const MainScreen: React.FC = () => {
 const Xmas = () => {
     return (
         <>
-            <p className={styles.screen_title_xmas}>От всей нашей команды поздравляем вас с новым годом!</p>
+            <p className={styles.screen_title_xmas}>c новым годом от PINHEAD STUDIO!</p>
             <div className={styles.xmas_block}>
-                <p><span>до 30 декабря</span> включительно студия работает в обычном режиме</p>
+                <p><span>до 30.12</span> включительно работаем в обычном режиме</p>
             </div>
             <div className={styles.xmas_block}>
-                <p><span>c 31 декабря по 4 января</span> студия будет закрыта</p>
+                <p><span>с 31.12 по 04.01</span> студия будет закрыта</p>
             </div>
             <div className={styles.xmas_block}>
-                <p><span>5 января 2026 года</span> ждем вас снова в обычном режиме: ежедневно с 11 до 20</p>
+                <p><span>с 5.01</span> снова работаем ежедневно с 11 до 20</p>
             </div>
             <Image src={xmasimg} alt='елычка' className={styles.mediumBlock_graphics_xmas}/>
         </>
