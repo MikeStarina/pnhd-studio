@@ -22,15 +22,15 @@ const MainScreen: React.FC = () => {
             <div className={styles.screen_cardsWrapper}>
                 <div className={styles.screen_blocksColumn}>
                     <div className={styles.screen_mediumBlock}>
-                        <Xmas />
-                        {/* <p className={styles.screen_title}>Напечатаем даже самый
-                    безумный рисунок</p>
-                    <p className={styles.screen_title}>Напечатаем фразу, которую
-                    будет видно издалека</p>
-                    <p className={styles.screen_title}>Напечатаем для тебя,
-                    друзей и всей семьи</p>
-                    <p className={styles.screen_title}>Напечатаем на стильной одежде</p>
-                    <Image src={main_screen_shape_one} alt='форма' className={styles.mediumBlock_graphics}/> */}
+                        {/* <Xmas /> */}
+                        <p className={styles.screen_title}>Напечатаем даже самый
+                            безумный рисунок</p>
+                        <p className={styles.screen_title}>Напечатаем фразу, которую
+                            будет видно издалека</p>
+                        <p className={styles.screen_title}>Напечатаем для тебя,
+                            друзей и всей семьи</p>
+                        <p className={styles.screen_title}>Напечатаем на стильной одежде</p>
+                        <Image src={main_screen_shape_one} alt='форма' className={styles.mediumBlock_graphics} />
                     </div>
                     <div className={styles.screen_blocksWrapper}>
 
@@ -125,7 +125,7 @@ const Xmas = () => {
             <div className={styles.xmas_block}>
                 <p><span>с 5.01</span> снова работаем ежедневно с 11 до 20</p>
             </div>
-            <Image src={xmasimg} alt='елычка' className={styles.mediumBlock_graphics_xmas}/>
+            <Image src={xmasimg} alt='елычка' className={styles.mediumBlock_graphics_xmas} />
         </>
     )
 }
