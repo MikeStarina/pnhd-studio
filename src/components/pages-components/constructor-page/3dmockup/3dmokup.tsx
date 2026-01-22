@@ -52,7 +52,6 @@ const Stage: React.FC<{ children: React.ReactNode}> = ({ children }) => {
     //console.log(e.currentTarget);
     //console.log(e.dataTransfer?.files);
     if (e.currentTarget.id === 'dropzone' && e.type === 'drop') {
-      console.log(e.dataTransfer.files[0]);
       alert(e.dataTransfer.files[0].name + ' ' + e.dataTransfer.files[0].type);
       //setState(e.dataTransfer.files[0].toString());
       //const data = new FormData;
