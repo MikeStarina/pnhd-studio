@@ -17,42 +17,42 @@ const config = [
         bgColor: '#F3F4F3',
         image: tshirt,
         color: 'black',
-        query: '?type=tshirt'
+        query: '/futbolki'
     },
     {
         title: '> Свитшоты',
         bgColor: '#393939',
         image: sweatshirt,
         color: 'white',
-        query: '?type=sweatshirt',
+        query: '/svitshoty',
     },
     {
         title: '> Толстовки',
         bgColor: '#F3F4F3',
         image: pullover,
         color: 'black',
-        query: '?type=hoodie'
+        query: '/longslivy'
     },
     {
         title: '> Худи',
         bgColor: '#393939',
         image: hoodie,
         color: 'white',
-        query: '?type=hoodie'
+        query: '/hudi'
     },
     {
         title: '> Шопперы',
         bgColor: '#F3F4F3',
         image: totebag,
         color: 'black',
-        query: '?type=totebag'
+        query: '/shoppery'
     },
     {
         title: '> Кепки',
         bgColor: '#393939',
         image: cap,
         color: 'white',
-        query: '?type=cap'
+        query: '/kepki'
     },
 ]
 
@@ -67,7 +67,7 @@ const CatalogLeadScreen: React.FC = () => {
             <div className={styles.catalogLeadScreen__content}>
                 {config.map((item, index) => (
                     <div key={index} className={styles.catalogLeadScreen__item} style={{ backgroundColor: item.bgColor }}>
-                        <Link href={`/shop${item.query}`} className={styles.catalogLeadScreen__itemTitle} style={{ color: item.color }}>{item.title}</Link>
+                        <Link href={`${item.query}`} className={styles.catalogLeadScreen__itemTitle} style={{ color: item.color }}>{item.title}</Link>
                         <div className={styles.catalogLeadScreen__itemImageWrapper}>
                             <Image src={item.image} alt={item.title} className={styles.catalogLeadScreen__itemImageWrapper_image} />
                         </div>
