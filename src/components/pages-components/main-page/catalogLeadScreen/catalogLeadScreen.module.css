@@ -1,0 +1,116 @@
+.catalogLeadScreen {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 40px;
+    margin: 120px 0 0 0;
+}
+
+.catalogLeadScreen__header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px;
+
+    @media (max-width: 600px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+}
+
+.catalogLeadScreen__title {
+    font-family: 'DrukTextWideCyr-Medium';
+    font-size: 46px;
+    line-height: 48px;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+
+    @media (max-width: 500px) {
+        font-size: 25px;
+    }
+}
+
+.catalogLeadScreen__subtitle {
+    font-family: 'Neue_machina';
+    font-weight: 800;
+    font-size: 18px;
+    line-height: 18px;
+    text-transform: uppercase;
+    margin: 0;
+    padding: 0;
+    max-width: 322px;
+    text-align: right;
+
+    @media (max-width: 600px) {
+        text-align: left;
+    }
+    @media (max-width: 500px) {
+        font-size: 14px;
+    }
+}
+
+.catalogLeadScreen__content {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    overflow: hidden;
+    box-sizing: border-box;
+
+    @media (max-width: 1100px) {
+        grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.catalogLeadScreen__item {
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 20px;
+    height: 257px;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.catalogLeadScreen__itemTitle {
+    display: flex;
+    width: 100%;
+    margin-top: 20px;
+    padding: 0 20px;
+    text-transform: uppercase;
+    text-decoration: none;
+    box-sizing: border-box;
+    font-weight: 800;
+    font-size: 18px;
+    line-height: 100%;
+    text-transform: uppercase;
+
+    @media (max-width: 500px) {
+        font-size: 14px;
+    }
+}
+
+.catalogLeadScreen__itemImageWrapper {
+    width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    height: 100%;
+    position: relative;
+    top: 20px;
+}
+
+.catalogLeadScreen__itemImageWrapper_image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

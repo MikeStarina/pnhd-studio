@@ -11,16 +11,21 @@ import faq3_image from '../../../../../public/faq_image3.png';
 import shape from '../../../../../public/faq_shape.svg';
 
 
-const FaqScreen = () => {
+const FaqScreen = ({faqSet = []}) => {
 
     return (
         <section className={styles.screen} id='faq'>
             <h2 className={styles.screen_title}>frequently asked questions</h2>
             <div className={styles.screen_wrapper}>
                 <div className={styles.screen_faqCardsWrapper}>
-                    {faqArr.map((item, index) => (
-                        <FaqCard key={index} item={item} />
-                    ))}
+                    {faqSet.length>0 ?
+                        faqSet.map((item, index) => (
+                            <FaqCard key={index} item={item} />
+                        ))
+                        : faqArr.map((item, index) => (
+                            <FaqCard key={index} item={item} />
+                        ))
+                    }
                 </div>
 
                 <div className={styles.screen_graphics}>

@@ -1,0 +1,133 @@
+.screen {
+    width: 100%;
+    padding: 40px;
+    margin: 120px 0 0 0;
+    border-radius: 20px;
+    background-color: #393939;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 40px;
+    overflow: hidden;
+    box-sizing: border-box;
+
+    @media (max-width: 500px) {
+        padding: 20px;
+    }
+}
+
+.screen_header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    @media (max-width: 900px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+}
+
+.screen_title {
+    font-family: 'DrukTextWideCyr-Medium';
+    font-size: 46px;
+    line-height: 48px;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+    max-width: 560px;
+    color: white;
+
+    @media (max-width: 500px) {
+        font-size: 25px;
+        line-height: 27px;
+    }
+}
+
+.screen_title span {
+    font-family: inherit;
+    color: rgb(153, 255, 0);
+}
+
+.screen_subtitle {
+    font-family: 'Neue_machina';
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 18px;
+    margin: 0;
+    padding: 0;
+    color: white;
+    text-align: right;
+    max-width: 578px;
+
+    @media (max-width: 900px) {
+        text-align: left;
+    }
+    @media (max-width: 500px) {
+        font-size: 14px;
+        line-height: 16px;
+    }
+}   
+
+.screen_content {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    @media (max-width: 800px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.screen_content_item {
+    border: 1px solid white;
+    border-radius: 20px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-sizing: border-box;
+
+    @media (max-width: 1000px) {
+        padding: 20px;
+    }
+}
+
+.screen_content_item_title {
+    font-family: 'Neue_machina';
+    font-weight: 800;
+    font-size: 18px;
+    line-height: 18px;
+    text-transform: uppercase;
+    color:rgb(153, 255, 0);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    @media (max-width: 500px) {
+        font-size: 16px;
+        line-height: 18px;
+    }
+}
+
+.screen_content_item_text {
+    font-family: 'Neue_machina';
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 18px;
+    margin: 0;
+    padding: 0;
+    color: white;
+    box-sizing: border-box;
+
+    @media (max-width: 500px) {
+        font-size: 14px;
+        line-height: 16px;
+    }
+}

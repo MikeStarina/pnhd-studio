@@ -15,41 +15,47 @@ import { Metadata } from "next";
 import Script from "next/script";
 import MarkupScript from "@/components/shared-components/markup-script/markup-script";
 import {FAQPageJsonLD, LocalBusinessJsonLD, ServiceJsonLD, WebPageJsonLD} from "@/app/utils/markups";
+import CatalogLeadScreen from "@/components/pages-components/main-page/catalogLeadScreen/catalogLeadScreen";
+import SinceScreen from "@/components/pages-components/main-page/sinceScreen/sinceScreen";
+import FormScreen from "@/components/pages-components/main-page/formScreen/FormScreen";
 
 export const metadata: Metadata = {
-  title: 'Печать на одежде в Санкт-Петербурге на заказ от 1 штуки цена в Pinhead Studio',
-  description: 'Печать на одежде на заказ от 1 штуки в Санкт-Петербурге по выгодной цене в Pinhead Studio. Сколько стоит печать на одежде смотрите онлайн на нашем сайте.',
-  keywords: 'печать на футболках, санкт-петербург, недорого, на заказ, цена, от 1 шт, срочный, заказать, хороший, сделать, стоимость, доставка, быстрый, качественный, черный, оверсайз, белый, онлайн, спортивный, свой дизайн, конструктор, создать макет, нанесение, собственный, толстовка, худи, студия, услуги, каталог, а3, а4, одежда, свитшот',
-  metadataBase: new URL('https://studio.pnhd.ru'),
-  alternates: {
-    canonical: '/',
-  },
-  openGraph: {
-    type: 'website',
-    title: 'PNHD STUDIO | Главная',
-    images: '/opengraph-image.jpg',
-  },
+    title: 'Печать на одежде в Санкт-Петербурге на заказ от 1 штуки цена в Pinhead Studio',
+    description: 'Печать на одежде на заказ от 1 штуки в Санкт-Петербурге по выгодной цене в Pinhead Studio. Сколько стоит печать на одежде смотрите онлайн на нашем сайте.',
+    keywords: 'печать на футболках, санкт-петербург, недорого, на заказ, цена, от 1 шт, срочный, заказать, хороший, сделать, стоимость, доставка, быстрый, качественный, черный, оверсайз, белый, онлайн, спортивный, свой дизайн, конструктор, создать макет, нанесение, собственный, толстовка, худи, студия, услуги, каталог, а3, а4, одежда, свитшот',
+    metadataBase: new URL('https://studio.pnhd.ru'),
+    alternates: {
+        canonical: '/',
+    },
+    openGraph: {
+        type: 'website',
+        title: 'PNHD STUDIO | Главная',
+        images: '/opengraph-image.jpg',
+    },
 };
 
 const App: React.FC = () => {
-  return (
-    <>
-      <MainScreen />
-      <PhotosScreen />
-      <PrintMethodsScreen />
-      <ShopLeadScreen />
-      <StagesScreen />
-      <PriceScreen />
-      <HowToScreen />
-      <FeedbackScreen />
-      <FaqScreen />
-      <MapScreen />
-      <MarkupScript jsonLd={LocalBusinessJsonLD} />
-      <MarkupScript jsonLd={WebPageJsonLD} />
-      <MarkupScript jsonLd={FAQPageJsonLD} />
-      <MarkupScript jsonLd={ServiceJsonLD} />
-    </>
-  );
+    return (
+        <>
+            <MainScreen />
+            <CatalogLeadScreen />
+            <PhotosScreen />
+            <PrintMethodsScreen />
+            <ShopLeadScreen />
+            <StagesScreen />
+            <PriceScreen />
+            <SinceScreen />
+            <FormScreen />
+            <HowToScreen />
+            <FeedbackScreen />
+            <FaqScreen />
+            <MapScreen />
+            <MarkupScript jsonLd={LocalBusinessJsonLD} />
+            <MarkupScript jsonLd={WebPageJsonLD} />
+            <MarkupScript jsonLd={FAQPageJsonLD} />
+            <MarkupScript jsonLd={ServiceJsonLD} />
+        </>
+    );
 }
 
 export default App;
