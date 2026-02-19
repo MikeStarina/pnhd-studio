@@ -1,9 +1,17 @@
 import React from 'react';
 import styles from './page.module.css';
+import {Metadata} from "next";
+
+export const metadata: Metadata = {
+    title: "Политика конфиденциальности | Studio PNHD",
+    description: "Политика конфиденциальности Studio PNHD. Узнайте, как мы собираем, используем и защищаем вашу личную информацию, а также какие меры безопасности мы принимаем для защиты данных пользователей.",
+    metadataBase: new URL("https://studio.pnhd.ru"),
+};
 
 function PrivacyPolicyPage() {
   return (
     <section className={styles.page}>
+        <h1>Политика конфиденциальности</h1>
       Общие положения
       <br />
       <br />
