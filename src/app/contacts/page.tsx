@@ -5,8 +5,8 @@ import MapScreen from "@/components/pages-components/main-page/map-screen/map-sc
 import MarkupScript from "@/components/shared-components/markup-script/markup-script";
 
 export const metadata: Metadata = {
-  title: 'Контактная информация студии печати на одежде Pinhead Studio',
-  description: 'Контакты студии печати на одежде Pinhead Studio в Санкт-Петербурге: печать принтов на футболках, создание мерча для брендов, широкоформатная печать.',
+  title: 'Контактная информация студии печати на одежде ПИНХЭД СТУДИЯ',
+  description: 'Контакты студии печати на одежде ПИНХЭД СТУДИЯ в Санкт-Петербурге: печать принтов на футболках, создание мерча для брендов, широкоформатная печать.',
   metadataBase: new URL('https://studio.pnhd.ru'),
   alternates: {
     canonical: '/',
@@ -23,9 +23,9 @@ const Page: React.FC = () => {
   const jsonLdOrganization = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Pinhead Studio",
+    "name": "ПИНХЭД СТУДИЯ",
     "url": "https://studio.pnhd.ru/",
-    "description": "Контакты студии печати на одежде Pinhead Studio в Санкт-Петербурге: печать принтов на футболках, создание мерча для брендов, широкоформатная печать.",
+    "description": "Контакты студии печати на одежде ПИНХЭД СТУДИЯ в Санкт-Петербурге: печать принтов на футболках, создание мерча для брендов, широкоформатная печать.",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "ул. Чапыгина, д. 1",

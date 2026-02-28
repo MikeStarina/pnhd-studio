@@ -371,6 +371,17 @@
 
 }
 
+.screen__mainLogo {
+    flex: 0 0 auto;
+    @media (max-width: 1020px) {
+        height: 135px;
+        width: min-content
+    }
+    @media (max-width: 500px) {
+        height: 95px;
+    }
+}
+
 .mainTitle_span {
     font-size: 95px;
 }

@@ -14,7 +14,7 @@ const cx = classnames.bind(styles);
 export async function generateMetadata (): Promise<Metadata> {
 
     return {
-      title: `БЛОГ | PINHEAD STUDIO`,
+      title: `БЛОГ | ПИНХЭД СТУДИЯ`,
       description: `Блог про мерч и печать на текстиле`,
       keywords: ['Печать на текстиле', "Мерч"],
     //   openGraph: {
@@ -22,7 +22,7 @@ export async function generateMetadata (): Promise<Metadata> {
     //     type: 'website',
     //     url: `https://studio.pnhd.ru/shop/${params.slug}?id=${searchParams.id}`,
     //     description: currItem?.description,
-    //     siteName: 'PINHEAD STUDIO',
+    //     siteName: 'ПИНХЭД СТУДИЯ',
     //     title: currItem?.name,
     //   }
     }

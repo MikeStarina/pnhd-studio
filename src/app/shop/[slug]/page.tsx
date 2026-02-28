@@ -24,7 +24,7 @@ export const generateStaticParams = async () => {
 export async function generateMetadata({ params, searchParams }: TMetadataProps): Promise<Metadata> {
     const [currItem]: Array<IProduct> = await getShopData({ slug: params.slug });
     return {
-        title: `${currItem?.name} | PINHEAD STUDIO`,
+        title: `${currItem?.name} | ПИНХЭД СТУДИЯ`,
         description: `${currItem?.name} - ${currItem?.description}`,
         keywords: [currItem?.category!, currItem?.type!, currItem?.color!],
         openGraph: {
@@ -32,7 +32,7 @@ export async function generateMetadata({ params, searchParams }: TMetadataProps)
             type: 'website',
             url: `https://studio.pnhd.ru/shop/${params.slug}?id=${searchParams.id}`,
             description: currItem?.description,
-            siteName: 'PINHEAD STUDIO',
+            siteName: 'ПИНХЭД СТУДИЯ',
             title: currItem?.name,
         }
     }

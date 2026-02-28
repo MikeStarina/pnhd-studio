@@ -33,8 +33,8 @@ export const printsOptions: Array<TOptionsData> = [
         cover: silkMain,
         gallery: [silk1, silk2, silk3, silk4, silk5, silk6],
         meta: {
-            metaTitle: 'Печать принтов на одежде в Санкт-Петербурге в Pinhead Studio',
-            metaDescription: 'Нанесение принта на одежду в Санкт-Петербурге на заказ. Заказать печать принтов на одежде в Pinhead Studio.',
+            metaTitle: 'Печать принтов на одежде в Санкт-Петербурге в ПИНХЭД СТУДИЯ',
+            metaDescription: 'Нанесение принта на одежду в Санкт-Петербурге на заказ. Заказать печать принтов на одежде в ПИНХЭД СТУДИЯ.',
             metaKeywords: 'нанесение принта на одежду спб, печать, на заказ, заказать',
         }
     }, //печать принтов
@@ -60,8 +60,8 @@ export const printsOptions: Array<TOptionsData> = [
         cover: silkMain,
         gallery: [silk1, silk2, silk3, silk4, silk5, silk6],
         meta: {
-            metaTitle: 'Печать логотипа на одежде в Санкт-Петербурге в Pinhead Studio',
-            metaDescription: 'Нанесение логотипа на одежду в Санкт-Петербурге. Срочная печать логотипов в Pinhead Studio.',
+            metaTitle: 'Печать логотипа на одежде в Санкт-Петербурге в ПИНХЭД СТУДИЯ',
+            metaDescription: 'Нанесение логотипа на одежду в Санкт-Петербурге. Срочная печать логотипов в ПИНХЭД СТУДИЯ.',
             metaKeywords: 'нанесение логотипа на одежду спб, печать, срочно',
         }
     }, // печать лого
@@ -86,8 +86,8 @@ export const printsOptions: Array<TOptionsData> = [
         cover: silkMain,
         gallery: [silk1, silk2, silk3, silk4, silk5, silk6],
         meta: {
-            metaTitle: 'Печать надписей на одежде в Санкт-Петербурге на заказ в Pinhead Studio',
-            metaDescription: 'Печать надписей на одежде в Санкт-Петербурге. Заказать нанесение надписей на одежду в Pinhead Studio.',
+            metaTitle: 'Печать надписей на одежде в Санкт-Петербурге на заказ в ПИНХЭД СТУДИЯ',
+            metaDescription: 'Печать надписей на одежде в Санкт-Петербурге. Заказать нанесение надписей на одежду в ПИНХЭД СТУДИЯ.',
             metaKeywords: 'надпись на одежде на заказ, спб, нанесение',
         }
     }, //печать надписей
@@ -112,8 +112,8 @@ export const printsOptions: Array<TOptionsData> = [
         cover: silkMain,
         gallery: [silk1, silk2, silk3, silk4, silk5, silk6],
         meta: {
-            metaTitle: 'Печать рисунков на одежде в Санкт-Петербурге в Pinhead Studio',
-            metaDescription: 'Печать рисунков на одежде в Санкт-Петербурге. Заказать нанесение рисунков на одежду в Pinhead Studio.',
+            metaTitle: 'Печать рисунков на одежде в Санкт-Петербурге в ПИНХЭД СТУДИЯ',
+            metaDescription: 'Печать рисунков на одежде в Санкт-Петербурге. Заказать нанесение рисунков на одежду в ПИНХЭД СТУДИЯ.',
             metaKeywords: 'печать рисунков на одежде, спб',
         }
     }, //печать рисунков 
@@ -143,8 +143,8 @@ export const printsOptions: Array<TOptionsData> = [
         cover: silkMain,
         gallery: [silk1, silk2, silk3, silk4, silk5, silk6],
         meta: {
-            metaTitle: 'Срочная печать на футболках в Санкт-Петербурге в Pinhead Studio',
-            metaDescription: 'Экспресс печать на футболках в Санкт-Петербурге. Срочная печать на футболках от 24 часов в Pinhead Studio.',
+            metaTitle: 'Срочная печать на футболках в Санкт-Петербурге в ПИНХЭД СТУДИЯ',
+            metaDescription: 'Экспресс печать на футболках в Санкт-Петербурге. Срочная печать на футболках от 24 часов в ПИНХЭД СТУДИЯ.',
             metaKeywords: 'срочная печать на футболках спб, экспресс, быстрая печать',
         }
     }, // срочная печать

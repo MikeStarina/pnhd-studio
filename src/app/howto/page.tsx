@@ -28,7 +28,7 @@ export const generateMetadata = (): Metadata => {
           url: `https://studio.pnhd.ru/howto`,
           title: 'Конструктор / инструкция',
           description: 'Написали подробную инструкцию о том как пользоваться конструктором на сайте like a pro',
-          siteName: 'PINHEAD STUDIO',
+          siteName: 'ПИНХЭД СТУДИЯ',
       }
   }
 }

@@ -17,7 +17,7 @@ const MapScreen: React.FC = () => {
     return (
         <section className={styles.screen} id='contacts'>
             <h2 className={styles.screen_title}>
-                Принты бывают разные, но с <span style={{color: 'rgb(153,255,0)'}}>Pinhead Studio</span> они всегда                
+                Принты бывают разные, но с <span style={{color: 'rgb(153,255,0)'}}>ПИНХЭД СТУДИЯ</span> они всегда                
             </h2>
             <span className={styles.screen_titleText}> раскрывают твою индивидуальность</span>
             <div className={styles.screen_mapBox}>

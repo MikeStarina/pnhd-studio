@@ -2,7 +2,7 @@ export const LocalBusinessJsonLD = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "name": "PNHD>STUDIO",
-  "description": "Печать на одежде на заказ от 1 штуки в Санкт-Петербурге по выгодной цене в Pinhead Studio. Сколько стоит печать на одежде смотрите онлайн на нашем сайте.",
+  "description": "Печать на одежде на заказ от 1 штуки в Санкт-Петербурге по выгодной цене в ПИНХЭД СТУДИЯ. Сколько стоит печать на одежде смотрите онлайн на нашем сайте.",
   "url": "https://studio.pnhd.ru/",
   "telephone": "+78129046156",
   "email": "studio@pnhd.ru",
@@ -22,7 +22,7 @@ export const WebPageJsonLD = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   "name": "PNHD>STUDIO",
-  "description": "Печать на одежде на заказ от 1 штуки в Санкт-Петербурге по выгодной цене в Pinhead Studio. Сколько стоит печать на одежде смотрите онлайн на нашем сайте.",
+  "description": "Печать на одежде на заказ от 1 штуки в Санкт-Петербурге по выгодной цене в ПИНХЭД СТУДИЯ. Сколько стоит печать на одежде смотрите онлайн на нашем сайте.",
   "url": "https://studio.pnhd.ru/",
   "mainEntity": {
     "@type": "Service",
@@ -112,5 +112,5 @@ export const CatalogPageNavigationJsonLD = {
   "@type": "SiteNavigationElement",
   "name": "Каталог",
   "url": "https://studio.pnhd.ru/shop",
-  "description": "Каталог одежды и сумок для печати в Санкт-Петербурге. Печать на футболках,толстовках, шопперах на заказ от 1 штуки по выгодной цене в Pinhead Studio"
+  "description": "Каталог одежды и сумок для печати в Санкт-Петербурге. Печать на футболках,толстовках, шопперах на заказ от 1 штуки по выгодной цене в ПИНХЭД СТУДИЯ"
 }

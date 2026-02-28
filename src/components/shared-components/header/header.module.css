@@ -127,6 +127,19 @@
     padding: 0;
 }
 
+.header_svgLogo {
+
+    flex: 0 0 auto;
+
+    @media (max-width: 1020px) {
+        width: min-content;
+        height: 28px
+    }
+    @media (max-width: 500px) {
+        height: 23px
+    }
+}
+
 .header_priceButton {
     text-decoration: none;
     font-size: 12px;
