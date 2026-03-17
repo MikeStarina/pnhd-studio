@@ -63,7 +63,7 @@ const Page: React.FC = async () => {
     const jsonLdFaq = {
         "@context": "https://schema.org",
         "@type": "FAQPage",
-        "mainEntity": []
+        "mainEntity": [] as any[]
     }
     const faqSet = [
         {

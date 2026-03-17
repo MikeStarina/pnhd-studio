@@ -5,9 +5,8 @@ import {IProduct} from "@/app/utils/types";
 import Photos from "@/components/pages-components/shop-page/product-photos/product-photos";
 import ProductDescription from "@/components/pages-components/shop-page/product-description/product-description";
 import {Metadata, ResolvingMetadata} from 'next'
-import {apiBaseUrl} from "@/app/utils/constants";
+import {apiBaseUrl, CDN_URL} from "@/app/utils/constants";
 import {SITE_INFO} from "@/app/constants";
-
 
 type TMetadataProps = {
     params: { slug: string },
@@ -46,13 +45,25 @@ export async function generateMetadata({params, searchParams}: TMetadataProps): 
 const ProductPage: React.FC<{
     params: { slug: string };
     searchParams: { id: string };
-}> = async ({params, searchParams}) => {
+}> = async ({ params, searchParams }) => {
 
-    const [item]: Array<IProduct> = await getShopData({slug: params.slug});
+    const [item]: Array<IProduct> = await getShopData({ slug: params.slug });
     return (
         <section className={styles.screen}>
-            <Photos item={item}/>
-            <ProductDescription item={item}/>
+            {/* <Photos item={item} /> */}
+            <div className={styles.photo_box}>
+                {item?.galleryPhotos && item.galleryPhotos.length > 0 && item?.galleryPhotos?.map((el, index) => {
+                    return (
+                        <Photos item={item} el={el} key={index} index={index} />
+                    )
+                })}
+                {(!item?.galleryPhotos || item.galleryPhotos.length === 0) && [1,2,3,4].map((el, index) => {
+                    return (
+                        <Photos item={item} el={`${CDN_URL}/${item.slug}_${index}.jpg`} key={el} index={index} />
+                    )
+                })}
+            </div>
+            <ProductDescription item={item} />
         </section>
     );
 };

@@ -10,8 +10,15 @@ import faq2_image from '../../../../../public/faq_image2.png';
 import faq3_image from '../../../../../public/faq_image3.png';
 import shape from '../../../../../public/faq_shape.svg';
 
+type FaqItem = {
+    title: string
+    text: string
+}
+type Props = {
+    faqSet?: FaqItem[]
+}
 
-const FaqScreen = ({faqSet = []}) => {
+const FaqScreen = ({faqSet = []}: Props) => {
 
     return (
         <section className={styles.screen} id='faq'>

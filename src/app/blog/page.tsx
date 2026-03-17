@@ -70,7 +70,7 @@ const Blog = async () => {
                     <h1 className={cx('blogPage__title')}>{h1}</h1>
                     <div className={cx('articles-tag-list')}>
                         {tagList.map((item, index) => (
-                            <ArticleTagButton tag={item}/>
+                            <ArticleTagButton key={index} tag={item}/>
                         ))}
                     </div>
                     <div className={cx('blogPage__posts')}>

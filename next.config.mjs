@@ -18,7 +18,7 @@ const nextConfig = {
             {source: '/tproduct/1-352755267661-klassicheskii-hudi-kakao', destination: '/shop?type=hoodie', permanent: true},
             {source: '/.well-known/apple-app-site-association', destination: '/', permanent: true},
         ]
-    }
+    },
     images: {
         remotePatterns: [
             {
