@@ -1,12 +1,11 @@
 import React from "react";
 import styles from './price-screen.module.css';
-
-import Link from "next/link";
 import Image from "next/image";
 import shape from '../../../../../public/price_screen_shape.svg';
 import shape2 from '../../../../../public/price_screen_shape2.svg';
 import LeadButton from "@/components/shared-components/lead-button/lead-button";
 import PriceBlock from "./price-block";
+import Link from "next/link";
 
 const PriceScreen: React.FC = () => {
 
@@ -29,7 +28,8 @@ const PriceScreen: React.FC = () => {
                         от 10 штук уточняй
                         у менеджеров
                     </p>
-                    <LeadButton styleType="green" />
+                    {/* <LeadButton styleType="green" /> */}
+                    <Link href='https://t.me/pnhd_studio' target='blank' className={styles.leadButton__green}>Заказать срочную печать</Link>
                     <Image src={shape} alt='графическая форма' className={styles.mainBlock_shape} />
                 </div>
 

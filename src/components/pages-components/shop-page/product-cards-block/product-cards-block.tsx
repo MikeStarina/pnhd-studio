@@ -38,7 +38,7 @@ export const ProductCardsBlock: React.FC<{ shopData: Array<IProduct> }> = ({ sho
       <>
         <div className={styles.screen}>
           {shopData && shopData.map((item, index) => {
-            const url = `${apiBaseUrl}${item.image_url}`;
+            const url = item?.image_url ? `${apiBaseUrl}${item.image_url}` : '';
             return index < endIndex && (
               <Link
                 href={`/shop/${item.slug}`}
@@ -50,6 +50,7 @@ export const ProductCardsBlock: React.FC<{ shopData: Array<IProduct> }> = ({ sho
                   price={item.price}
                   img={url}
                   sizes={item.sizes}
+                  slug={item.slug}
                 />
               </Link>
             );

@@ -25,7 +25,7 @@ export const generateMetadata = ({
             url: `https://studio.pnhd.ru/textile/${params.slug}`,
             title: option?.meta.metaTitle,
             description: option?.meta.metaDescription,
-            siteName: "PINHEAD STUDIO",
+            siteName: "ПИНХЭД СТУДИЯ",
         },
     };
 };

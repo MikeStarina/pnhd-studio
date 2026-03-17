@@ -337,22 +337,22 @@ export const getPrintFormatAndPriceFunc = (newAttrs: TParams, activeView: string
 
   if (printSqr <= 150) {
     screenSize = 'А6';
-    priceCounter = color && color === 'белый' ? 300 : 400;
+    priceCounter = color && color === 'белый' ? 350 : 450;
   } else if (printSqr > 150 && printSqr <= 315) {
     screenSize = 'А5';
-    priceCounter = color && color === 'белый' ? 400 : 500;
+    priceCounter = color && color === 'белый' ? 450 : 575;
   } else if (printSqr > 315 && printSqr <= 609) {
     screenSize = 'А4';
-    priceCounter = color && color === 'белый' ? 500 : 650;
+    priceCounter = color && color === 'белый' ? 575 : 750;
   } else if (printSqr > 609 && printSqr <= 1218) {
     screenSize = 'А3';
-    priceCounter = color && color === 'белый' ? 650 : 750;
+    priceCounter = color && color === 'белый' ? 750 : 850;
   } else if (printSqr > 1218 && printSqr <= 1420) {
     screenSize = 'А3+';
-    priceCounter = color && color === 'белый' ? 750 : 900;
+    priceCounter = color && color === 'белый' ? 850 : 1050;
   } else {
     screenSize = 'А3+';
-    priceCounter = color && color === 'белый' ? 750 : 900;
+    priceCounter = color && color === 'белый' ? 850 : 1050;
   }
 
   const displayWidth = Math.round(width) > 35 ? 35 : Math.round(width);

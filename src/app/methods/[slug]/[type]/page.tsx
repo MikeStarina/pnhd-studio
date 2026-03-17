@@ -24,7 +24,7 @@ export const generateMetadata = ({ params }: { params: { slug: string, type: str
             url: `https://studio.pnhd.ru/${params.slug}`,
             title: option?.title,
             description: option?.subtitle,
-            siteName: 'PINHEAD STUDIO',
+            siteName: 'ПИНХЭД СТУДИЯ',
         }
     }
 }

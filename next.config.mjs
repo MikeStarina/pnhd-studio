@@ -19,6 +19,20 @@ const nextConfig = {
             {source: '/.well-known/apple-app-site-association', destination: '/', permanent: true},
         ]
     }
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'cdn.pnhd.ru',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'pnhdstudioapi.ru',
+                pathname: '/**',
+            },
+        ],
+    },
 };
 
 export default nextConfig;

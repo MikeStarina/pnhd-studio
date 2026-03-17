@@ -13,6 +13,7 @@
 }
 .cart_productImage {
     width: 371px;
+    object-fit: cover;
 }
 
 @media (max-width: 1020px) {

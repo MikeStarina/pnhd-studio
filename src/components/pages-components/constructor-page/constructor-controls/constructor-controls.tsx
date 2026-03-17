@@ -27,7 +27,6 @@ const Controls: React.FC<{ itemCartId: any}> = ({ itemCartId }) => {
         text: 'Записать видео'
     })
 
-    console.log(createVideoState)
 
   
     const createVideo = () => {
