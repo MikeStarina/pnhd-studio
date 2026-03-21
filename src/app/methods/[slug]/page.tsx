@@ -10,10 +10,14 @@ import Link from "next/link";
 import {ssOptions} from "@/app/utils/method-options-data";
 import {prices} from "@/app/utils/constants";
 import MarkupScript from "@/components/shared-components/markup-script/markup-script";
+import PrintMethodsScreen from "@/components/pages-components/main-page/print-methods-screen/print-methods-screen";
+import {type} from "node:os";
+import { SITE_INFO } from "@/app/constants";
+import AdvantagesComponent from "@/components/pages-components/method-page/advantages/advantages";
 
 export const generateMetadata = ({params}: { params: { slug: string } }): Metadata => {
-
   const method = methodsData.find((item) => item.slug === params.slug);
+  const currentUrl = SITE_INFO.domain+'/methods/'+params.slug
 
   return {
     title: method?.meta.metaTitle,
@@ -21,11 +25,14 @@ export const generateMetadata = ({params}: { params: { slug: string } }): Metada
     keywords: method?.meta.metaKeywords,
     openGraph: {
       type: 'website',
-      url: `https://studio.pnhd.ru/${params.slug}`,
+      url: currentUrl,
       title: method?.ruName,
       description: method?.brief_subtitle,
-      siteName: 'ПИНХЭД СТУДИЯ',
-    }
+      siteName: SITE_INFO.name,
+    },
+    alternates: {
+      canonical: currentUrl,
+    },
   }
 }
 
@@ -85,6 +92,7 @@ const MethodPage: React.FC<{
       }
     });
   });
+
   const jsonLdService = {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -183,7 +191,7 @@ const MethodPage: React.FC<{
 
           <section className={styles.method_description}>
             <h2 className={styles.brief_title}>{method.faq.title}</h2>
-            <p className={styles.brief_text}>{method.faq.description}</p>
+            <div className={styles.brief_text} dangerouslySetInnerHTML={{__html: method.faq.description}}></div>
             <ul className={styles.description_list}>
               {method.faq.variants.map((item, index) => (
                 <li className={styles.description_listItem} key={index}>
@@ -196,6 +204,8 @@ const MethodPage: React.FC<{
 
           {method.name === 'DTF' && <DtfCalculator/>}
           <PriceScreen/>
+          <AdvantagesComponent />
+          <PrintMethodsScreen excludedMethods={[params.slug]}/>
           <MapScreen/>
           <section className={styles.more_block}>
             <div className={styles.main_text_wrapper}>

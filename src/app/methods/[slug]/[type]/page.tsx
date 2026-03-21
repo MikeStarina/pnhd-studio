@@ -7,6 +7,7 @@ import { Metadata } from "next";
 import { ssOptions } from '@/app/utils/method-options-data';
 import {prices} from "@/app/utils/constants";
 import MarkupScript from "@/components/shared-components/markup-script/markup-script";
+import AdvantagesComponent from "@/components/pages-components/method-page/advantages/advantages";
 
 
 
@@ -190,27 +191,16 @@ const MethodOptionsPage: React.FC<{
                             />
                         ))}
                     </section>
-
-                    
-
-                    
+                    <AdvantagesComponent />
                     <PriceScreen />
                     <MapScreen />
-                    <section>
-                        
-                    </section>
+                    <section></section>
 
                     <section className={styles.method_description}>
-
-
-                            <h2 className={styles.brief_title}>AI/RBTS CONTENT</h2>
-                            
-                    
-                        
-                        <div className={styles.robots_block} dangerouslySetInnerHTML={option.robotsText}>
-
-                        </div>
+                        <h2 className={styles.brief_title}>AI/RBTS CONTENT</h2>
+                        <div className={styles.robots_block} dangerouslySetInnerHTML={option.robotsText}></div>
                     </section>
+
                     <MarkupScript jsonLd={jsonLdWebPage}/>
                     <MarkupScript jsonLd={jsonLdService}/>
                     <MarkupScript jsonLd={jsonLdBreadcrumbList}/>

@@ -1,13 +1,12 @@
 import React from "react";
 import styles from "./page.module.css";
-import { getShopData } from "@/app/utils/constants";
-import { IProduct } from "@/app/utils/types";
+import {getShopData} from "@/app/utils/constants";
+import {IProduct} from "@/app/utils/types";
 import Photos from "@/components/pages-components/shop-page/product-photos/product-photos";
 import ProductDescription from "@/components/pages-components/shop-page/product-description/product-description";
-import { Metadata, ResolvingMetadata } from 'next'
-import { apiBaseUrl, CDN_URL } from "@/app/utils/constants";
-
-
+import {Metadata, ResolvingMetadata} from 'next'
+import {apiBaseUrl, CDN_URL} from "@/app/utils/constants";
+import {SITE_INFO} from "@/app/constants";
 
 type TMetadataProps = {
     params: { slug: string },
@@ -18,13 +17,14 @@ export const generateStaticParams = async () => {
     const data = await getShopData();
     // console.log(data)
 
-    return data.map((item: IProduct) => ({ slug: item.slug }))
+    return data.map((item: IProduct) => ({slug: item.slug}))
 }
 
-export async function generateMetadata({ params, searchParams }: TMetadataProps): Promise<Metadata> {
-    const [currItem]: Array<IProduct> = await getShopData({ slug: params.slug });
+export async function generateMetadata({params, searchParams}: TMetadataProps): Promise<Metadata> {
+    const [currItem]: Array<IProduct> = await getShopData({slug: params.slug});
+
     return {
-        title: `${currItem?.name} | ПИНХЭД СТУДИЯ`,
+        title: `${currItem?.name} | PINHEAD STUDIO`,
         description: `${currItem?.name} - ${currItem?.description}`,
         keywords: [currItem?.category!, currItem?.type!, currItem?.color!],
         openGraph: {
@@ -32,9 +32,12 @@ export async function generateMetadata({ params, searchParams }: TMetadataProps)
             type: 'website',
             url: `https://studio.pnhd.ru/shop/${params.slug}?id=${searchParams.id}`,
             description: currItem?.description,
-            siteName: 'ПИНХЭД СТУДИЯ',
+            siteName: 'PINHEAD STUDIO',
             title: currItem?.name,
-        }
+        },
+        alternates: {
+            canonical: SITE_INFO.domain + '/shop/' + params.slug
+        },
     }
 }
 
