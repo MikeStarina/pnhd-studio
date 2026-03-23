@@ -42,7 +42,7 @@ const Blog = async () => {
             let textContent = post.blog.__html
                 .replace(/<[^>]*>/g, '')
                 .slice(0, 110)
-                .replace(/[,:;\s]$/s, '') + '...';
+                .replace(/[,:;\s]$/, '') + '...';
             txtThumbToPost[postIndex] = textContent
             if (!post['hashtags'] || post['hashtags'].length < 1) {
                 continue;

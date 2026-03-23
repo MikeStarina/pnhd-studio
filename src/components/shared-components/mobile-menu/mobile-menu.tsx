@@ -77,6 +77,17 @@ const MobileMenu: React.FC = () => {
                             <li>
                                 <Link
                                     href={{
+                                        pathname: "/blog",
+                                    }}
+                                    className={styles.menu_link}
+                                    onClick={closeMenuHandler}
+                                >
+                                    блог
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    href={{
                                         pathname: "/",
                                         hash: "#faq",
                                     }}
