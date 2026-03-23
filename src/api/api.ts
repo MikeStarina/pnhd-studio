@@ -86,7 +86,17 @@ export const api = createApi({
         },
       }),
     }),
-    createLead: builder.mutation<{message: string}, {name: string, phone: string, roistat: string}>({
+    createLead: builder.mutation<
+      { message: string },
+      {
+        name: string;
+        phone: string;
+        roistat: string;
+        email?: string;
+        comment?: string;
+        reference_url?: string;
+      }
+    >({
       query: (data) => ({
         url: '/api/leads/',
         method: 'POST',

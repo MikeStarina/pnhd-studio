@@ -1,69 +1,178 @@
 .main {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    max-width: 1310px;
-    margin: 0 auto;
-    padding: 0;
-    overflow: hidden;
-    box-sizing: border-box;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  max-width: 1310px;
+  margin: 0 auto;
+  padding: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  /* border: 1px solid red; */
+}
+
+.header {
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 32px;
+}
+
+.breadcrumbs {
+  font-family: 'Neue_machina', sans-serif;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #9a9a9a;
+  margin: 0 0 12px;
+  font-weight: 400;
+}
+
+.breadcrumbs a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumbSep {
+  margin: 0 6px;
+}
+
+.title {
+  font-family: 'Neue_machina', sans-serif;
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 800;
+  line-height: 1.1;
+  color: #000;
+  margin: 0;
+}
 
 .filters {
-    width: 100%;
-    box-sizing: border-box;
-    overflow: hidden;
-    margin: 50px 0 0 0;
-    padding: 5px 0;
-    gap: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    max-width: 1310px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 0 28px;
+  padding: 0 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.filters_wrapper {
-    align-items: center;
-    display: flex;
-    gap: 20px;
+.filterBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px 48px;
+  width: 100%;
 }
 
-.filters_select {
-    width: 150px;
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.filterGroupTypes {
+  flex: 1 1 auto;
+  max-width: 100%;
+}
+
+.filterGroupPrice {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+.groupLabel {
+  font-family: 'Neue_machina', sans-serif;
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 400;
+  color: #9a9a9a;
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.pill {
+  font-family: 'Neue_machina', sans-serif;
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid #000;
+  background: #fff;
+  color: #000;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.pillActive {
+  background: #c1ff07;
+  border-color: #c1ff07;
+  padding-right: 10px;
+}
+
+.pillClear {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 2px;
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 700;
+  color: #000;
+}
+
+.formActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  align-self: center;
 }
 
 .filters_submitButton {
-    border: 1px solid black;
-    border-radius: 5px;
-    font-family: 'Neue_machina';
-    font-size: 12px;
-    line-height: 12px;
-    font-weight: 800;
-    color: black;
-    text-transform: uppercase;
-    background-color: transparent;
-    padding: 6px 10px;
-    cursor: pointer;
+  border: 1px solid #000;
+  border-radius: 4px;
+  font-family: 'Neue_machina', sans-serif;
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 800;
+  color: #000;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background-color: #fff;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .filters_submitButton:hover {
-    background-color: rgb(153,255,0);
-    border-color: rgb(153,255,0);
+  background-color: #c1ff07;
+  border-color: #c1ff07;
 }
 
-
 @media (max-width: 900px) {
-    .filters {
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-    }
+  .filterBar {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-    .filters_wrapper {
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-    }
+  .filterGroupPrice {
+    margin-left: 0;
+  }
+
+  .formActions {
+    justify-content: flex-start;
+  }
 }

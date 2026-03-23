@@ -1,183 +1,224 @@
 'use client'
-import React, {ChangeEvent, useState, useEffect} from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styles from './products-filter.module.css';
-import { TextField } from "@mui/material";
-import { MenuItem } from "@mui/material";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import ProductCardsBlock from "../product-cards-block/product-cards-block";
 import { IProduct } from "@/app/utils/types";
 
 const filterParams = {
     category: [
-        {name:'Мужское',value:'man'},
-        {name:'Женское',value:'woman'},
-        {name:'Детское',value:'kids'},
-        {name:'Аксессуары',value:'accesorize'}
+        { name: 'Мужское', value: 'man' },
+        { name: 'Женское', value: 'woman' },
+        { name: 'Детское', value: 'kids' },
+        { name: 'Аксессуары', value: 'accesorize' },
     ],
     type: [
-        {name:'Футболка',value:'tshirt'},
-        {name:'Лонгслив',value:'longsleeve'},
-        {name:'Свитшот',value:'sweatshirt'},
-        {name:'Худи',value:'hoodie'},
-        {name:'Шоппер',value:'totebag'},
-        {name:'Кепка',value:'cap'}
-    ]
+        { name: 'Футболка', value: 'tshirt' },
+        { name: 'Лонгслив', value: 'longsleeve' },
+        { name: 'Свитшот', value: 'sweatshirt' },
+        { name: 'Худи', value: 'hoodie' },
+        { name: 'Шоппер', value: 'totebag' },
+        { name: 'Кепка', value: 'cap' },
+    ],
+} as const;
+
+const priceOptions = [
+    { name: '↑ по возрастанию', value: 'ASC' as const },
+    { name: '↓ по убыванию', value: 'DESC' as const },
+];
+
+type FilterState = { category: string; type: string; priceSort: string };
+
+function buildQueryString(state: FilterState): string {
+    const parts: string[] = [];
+    if (state.category) parts.push(`category=${encodeURIComponent(state.category)}`);
+    if (state.type) parts.push(`type=${encodeURIComponent(state.type)}`);
+    if (state.priceSort) parts.push(`priceSort=${encodeURIComponent(state.priceSort)}`);
+    return parts.length ? `?${parts.join('&')}` : '';
 }
 
-const inputSx = {
-    "& .MuiInputLabel-root": { fontFamily: 'Neue_machina' },
-    "& .MuiInputLabel-root.Mui-focused": { color: 'rgb(57,57,57)' }, 
-    "& .MuiOutlinedInput-root.Mui-focused": {
-    "& > fieldset": { borderColor: 'rgb(57,57,57)' },
-    },
-    width: '200px'
+function applyFilters(shopData: IProduct[], state: FilterState): IProduct[] {
+    let data = [...shopData];
+    if (state.category) data = data.filter((item) => item.category === state.category);
+    if (state.type) data = data.filter((item) => item.type === state.type);
+    if (state.priceSort === 'ASC') data.sort((a, b) => a.price - b.price);
+    if (state.priceSort === 'DESC') data.sort((a, b) => b.price - a.price);
+    return data;
 }
 
-
-const ProductFilterComp: React.FC<{ children?: React.ReactNode, shopData: Array<IProduct> }> = ({ children, shopData }) => {
-
+const ProductFilterComp: React.FC<{ children?: React.ReactNode; shopData: Array<IProduct> }> = ({
+    children,
+    shopData,
+}) => {
     const router = useRouter();
     const searchParams = useSearchParams();
-    
-    const [ filterState, setFilterState ] = useState<{'category': string, 'type': string, 'priceSort': string}>({
-        'category': '', 
-        'type': '', 
-        'priceSort': ''
-    });
-    const [ isFiltered, setIsFiltred ] = useState<boolean>(false);
-    const [ filteredData, setFilteredData ] = useState<Array<IProduct> | null>(null);
 
-    // Инициализируем фильтры из URL и применяем их при загрузке
+    const [filterState, setFilterState] = useState<FilterState>({
+        category: '',
+        type: '',
+        priceSort: '',
+    });
+    const [isFiltered, setIsFiltered] = useState(false);
+    const [filteredData, setFilteredData] = useState<Array<IProduct> | null>(null);
+
     useEffect(() => {
         const category = searchParams.get('category') || '';
         const type = searchParams.get('type') || '';
         const priceSort = searchParams.get('priceSort') || '';
-        
-        // Обновляем состояние фильтров из URL
-        setFilterState({
-            category,
-            type,
-            priceSort
-        });
-        
-        // Применяем фильтры, если есть query-параметры
+
+        setFilterState({ category, type, priceSort });
+
         if (category || type || priceSort) {
-            const filterFunc = () => {
-                let filteredData = shopData;
-                if (category) filteredData = filteredData.filter((item) => (item.category === category));
-                if (type) filteredData = filteredData.filter((item) => (item.type === type));
-                if (priceSort && priceSort === 'ASC') filteredData = filteredData.sort((a,b) => (a.price - b.price));
-                if (priceSort && priceSort === 'DESC') filteredData = filteredData.sort((a,b) => (b.price - a.price));
-                
-                return filteredData;
-            }
-            setFilteredData(filterFunc());
-            setIsFiltred(true);
+            setFilteredData(applyFilters(shopData, { category, type, priceSort }));
+            setIsFiltered(true);
         } else {
-            setIsFiltred(false);
+            setIsFiltered(false);
             setFilteredData(null);
         }
     }, [searchParams, shopData]);
 
-    const resetFilterButtonClickHandler = () => {
-        setFilterState({'category': '', 'type': '', 'priceSort': ''});
-        setIsFiltred(false);
-        setFilteredData(null);
-        router.push('/shop');
-    }
+    const navigateWithState = useCallback(
+        (next: FilterState) => {
+            router.push(`/shop${buildQueryString(next)}`);
+        },
+        [router]
+    );
 
-    const filterInputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
-        setFilterState({
-            ...filterState,
-            [e.target.name]: e.target.value
-        })
-
-    }
-
-    const filtersSubmitHandler = (e: any) => {
-        e.preventDefault();
-        const keys = Object.keys(filterState);
-        let queryString = '';
-        keys.forEach((key) => {
-            //@ts-ignore
-            if (filterState[key]) {
-                //@ts-ignore
-                if (queryString === '') queryString += `?${key}=${filterState[key]}`;
-                //@ts-ignore
-                else queryString += `&${key}=${filterState[key]}`
-            }
-        })
-        router.push(`/shop${queryString}`);
-        setIsFiltred(true)
-        const filterFunc = () => {
-            let filteredData = shopData;
-            if (filterState.category) filteredData = filteredData.filter((item) => (item.category === filterState.category));
-            if (filterState.type) filteredData = filteredData.filter((item) => (item.type === filterState.type));
-            if (filterState.priceSort && filterState.priceSort === 'ASC') filteredData = filteredData.sort((a,b) => (a.price - b.price));
-            if (filterState.priceSort && filterState.priceSort === 'DESC') filteredData = filteredData.sort((a,b) => (b.price - a.price));
-            
-            return filteredData;
+    const onCategoryPill = (value: string) => {
+        if (filterState.category === value) {
+            navigateWithState({ ...filterState, category: '' });
+            return;
         }
-        setFilteredData(filterFunc());
-    }
+        navigateWithState({ ...filterState, category: value });
+    };
+
+    const onTypePill = (value: string) => {
+        if (filterState.type === value) {
+            navigateWithState({ ...filterState, type: '' });
+            return;
+        }
+        navigateWithState({ ...filterState, type: value });
+    };
+
+    const onPricePill = (sort: 'ASC' | 'DESC') => {
+        if (filterState.priceSort === sort) {
+            navigateWithState({ ...filterState, priceSort: '' });
+            return;
+        }
+        navigateWithState({ ...filterState, priceSort: sort });
+    };
+
+    const resetFilterButtonClickHandler = () => {
+        router.push('/shop');
+    };
 
     return (
         <section className={styles.main}>
-        <form className={styles.filters} onSubmit={filtersSubmitHandler}>
-                <div className={styles.filters_wrapper}>
-                    <h1> Каталог</h1>
-                    <TextField
-                        select
-                        inputProps={{MenuProps: {disableScrollLock: true}}}
-                        sx={inputSx}
-                        size='small'
-                        label='Категория'
-                        id='category'
-                        name='category'
-                        value={filterState.category}
-                        onChange={filterInputChangeHandler}
-                    >
-                        {filterParams.category.map((item, index) => (
-                            <MenuItem value={item.value} key={index}>{item.name}</MenuItem>
-                        ))}
-                    </TextField>
-                    <TextField
-                        select
-                        inputProps={{MenuProps: {disableScrollLock: true}}}
-                        sx={inputSx}
-                        size='small'
-                        label='Тип'
-                        id='type'
-                        name='type'
-                        value={filterState.type}
-                        onChange={filterInputChangeHandler}
-                    >
-                        {filterParams.type.map((item, index) => (
-                            <MenuItem value={item.value} key={index}>{item.name}</MenuItem>
-                        ))}
-                    </TextField>
-                    <TextField
-                        select
-                        inputProps={{MenuProps: {disableScrollLock: true}}}
-                        sx={inputSx}
-                        size='small'
-                        label='Цена'
-                        id='priceSort'
-                        name='priceSort'
-                        value={filterState.priceSort}
-                        onChange={filterInputChangeHandler}
-                    >
-                            <MenuItem value='ASC'>По возрастанию</MenuItem>
-                            <MenuItem value='DESC'>По убыванию</MenuItem>
-                    </TextField>
+            <header className={styles.header}>
+                <p className={styles.breadcrumbs}>
+                    <Link href="/">Главная</Link>
+                    <span className={styles.breadcrumbSep}>/</span>
+                    <span>Каталог</span>
+                </p>
+                <h1 className={styles.title}>Каталог</h1>
+            </header>
+
+            <div className={styles.filters}>
+                <div className={styles.filterBar} role="group" aria-label="Фильтры каталога">
+                    <div className={styles.filterGroup}>
+                        <span className={styles.groupLabel}>Категория</span>
+                        <div className={styles.pills}>
+                            {filterParams.category.map((item) => {
+                                const active = filterState.category === item.value;
+                                return (
+                                    <button
+                                        key={item.value}
+                                        type="button"
+                                        className={`${styles.pill} ${active ? styles.pillActive : ''}`}
+                                        onClick={() => onCategoryPill(item.value)}
+                                        aria-pressed={active}
+                                    >
+                                        {item.name}
+                                        {active && (
+                                            <span className={styles.pillClear} aria-hidden>
+                                                ×
+                                            </span>
+                                        )}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    <div className={`${styles.filterGroup} ${styles.filterGroupTypes}`}>
+                        <span className={styles.groupLabel}>Тип</span>
+                        <div className={styles.pills}>
+                            {filterParams.type.map((item) => {
+                                const active = filterState.type === item.value;
+                                return (
+                                    <button
+                                        key={item.value}
+                                        type="button"
+                                        className={`${styles.pill} ${active ? styles.pillActive : ''}`}
+                                        onClick={() => onTypePill(item.value)}
+                                        aria-pressed={active}
+                                    >
+                                        {item.name}
+                                        {active && (
+                                            <span className={styles.pillClear} aria-hidden>
+                                                ×
+                                            </span>
+                                        )}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    <div className={`${styles.filterGroup} ${styles.filterGroupPrice}`}>
+                        <span className={styles.groupLabel}>Цена</span>
+                        <div className={styles.pills}>
+                            {priceOptions.map((item) => {
+                                const active = filterState.priceSort === item.value;
+                                return (
+                                    <button
+                                        key={item.value}
+                                        type="button"
+                                        className={`${styles.pill} ${active ? styles.pillActive : ''}`}
+                                        onClick={() => onPricePill(item.value)}
+                                        aria-pressed={active}
+                                    >
+                                        {item.name}
+                                        {active && (
+                                            <span className={styles.pillClear} aria-hidden>
+                                                ×
+                                            </span>
+                                        )}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
                 </div>
-                <button type='button' className={styles.filters_submitButton} onClick={resetFilterButtonClickHandler}>сбросить</button>
-                <button type='submit' className={styles.filters_submitButton} >применить</button>                
-        </form>
-        {isFiltered && filteredData ? (<ProductCardsBlock shopData={filteredData} />) : (<>{children}</>)}
+            </div>
+            <div className={styles.formActions}>
+                <button
+                    type="button"
+                    className={styles.filters_submitButton}
+                    onClick={resetFilterButtonClickHandler}
+                >
+                    сбросить
+                </button>
+            </div>
+
+            {isFiltered && filteredData ? (
+                <ProductCardsBlock shopData={filteredData} />
+            ) : (
+                <>{children}</>
+            )}
         </section>
-    )
-}
+    );
+};
 
 export default ProductFilterComp;

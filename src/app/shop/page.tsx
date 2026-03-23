@@ -6,6 +6,8 @@ import {apiBaseUrl, getShopData} from '../utils/constants';
 import ProductFilterComp from '@/components/pages-components/shop-page/products-filter/products-filter';
 import MarkupScript from "@/components/shared-components/markup-script/markup-script";
 import {CatalogPageBreadCrumbsJsonLD, CatalogPageNavigationJsonLD} from "@/app/utils/markups";
+import FaqScreen from '@/components/pages-components/main-page/faq-screen/faq-screen';
+import NoModelBlock from '@/components/shared-components/noModelBlock/NoModelBlock';
 
 
 export const metadata: Metadata = {
@@ -60,6 +62,10 @@ const ShopPage: React.FC = async () => {
         <MarkupScript jsonLd={CatalogPageBreadCrumbsJsonLD} />
         <MarkupScript jsonLd={CatalogPageNavigationJsonLD} />
       </ProductFilterComp>
+      <NoModelBlock />
+      <div style={{ marginTop: '120px', width: '100%' }}>
+      <FaqScreen />
+      </div>
     </Suspense>
   )
 }
