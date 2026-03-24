@@ -74,7 +74,7 @@ const MobileMenu: React.FC = () => {
                                     отзывы
                                 </Link>
                             </li>
-                            <li>
+                            {/* <li>
                                 <Link
                                     href={{
                                         pathname: "/blog",
@@ -84,7 +84,7 @@ const MobileMenu: React.FC = () => {
                                 >
                                     блог
                                 </Link>
-                            </li>
+                            </li> */}
                             <li>
                                 <Link
                                     href={{

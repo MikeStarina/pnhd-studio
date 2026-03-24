@@ -80,9 +80,9 @@ const Header: React.FC = () => {
                 <li className={styles.header_menu_listItem}>
                     <UtmLink style={styles.header_menu_link} pathname='https://pnhd.ru' target='blank'>оптовый отдел</UtmLink>
                 </li>
-                <li className={styles.header_menu_listItem}>
+                {/* <li className={styles.header_menu_listItem}>
                     <Link className={styles.header_menu_link} href={{ pathname: '/blog' }}>блог</Link>
-                </li>
+                </li> */}
             </ul>
         </header>
 
