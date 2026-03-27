@@ -66,6 +66,8 @@ const Header: React.FC = () => {
                     </Link>
                 </li>
 
+
+
                 
                 <li className={styles.header_menu_listItem}>
                     <Link className={styles.header_menu_link} href={{ pathname: '/', hash: '#stages' }}>этапы работы</Link>
