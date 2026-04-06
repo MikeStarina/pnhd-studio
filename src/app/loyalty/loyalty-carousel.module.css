@@ -1,0 +1,168 @@
+.carousel_section {
+    width: 100%;
+    margin: 40px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.track {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+}
+
+.track::-webkit-scrollbar {
+    display: none;
+}
+
+.card {
+    flex: 0 0 calc(33.333% - 7px);
+    scroll-snap-align: start;
+    border: 1px solid black;
+    border-radius: 20px;
+    padding: 50px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.card_title {
+    font-family: 'DrukTextWideCyr-Medium';
+    font-size: 18px;
+    line-height: 18px;
+    font-weight: 400;
+    color: black;
+    text-transform: uppercase;
+    margin: 0;
+    padding: 0;
+}
+
+.card_body {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    flex: 1;
+}
+
+.card_body p {
+    font-family: 'Neue_machina';
+    font-size: 18px;
+    line-height: 26px;
+    font-weight: 400;
+    color: black;
+    margin: 0;
+    padding: 0;
+}
+
+.card_body ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.card_body ul li {
+    font-family: 'Neue_machina';
+    font-size: 18px;
+    line-height: 26px;
+    font-weight: 400;
+    color: black;
+    padding-left: 28px;
+    position: relative;
+}
+
+.card_body ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: rgb(153, 255, 0);
+}
+
+.card_link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Neue_machina';
+    font-size: 14px;
+    font-weight: 800;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: white;
+    background-color: black;
+    border-radius: 8px;
+    padding: 10px 24px;
+    align-self: flex-start;
+    margin-top: auto;
+    transition: background-color 0.2s ease;
+}
+
+.card_link:hover {
+    background-color: rgb(153, 255, 0);
+    color: black;
+}
+
+.inline_link {
+    color: black;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(0, 0, 0, 0.4);
+    transition: text-decoration-color 0.2s ease;
+}
+
+.inline_link:hover {
+    text-decoration-color: black;
+}
+
+/* dots */
+.dots {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    padding: 0;
+    transition: background-color 0.2s ease, width 0.2s ease;
+}
+
+.dot_active {
+    background-color: black;
+    width: 24px;
+    border-radius: 4px;
+}
+
+@media (max-width: 1024px) {
+    .card {
+        flex: 0 0 calc(50% - 5px);
+        padding: 40px 30px;
+    }
+}
+
+@media (max-width: 640px) {
+    .card {
+        flex: 0 0 calc(85vw);
+        padding: 30px 24px;
+        border-radius: 15px;
+    }
+
+    .card_body p,
+    .card_body ul li {
+        font-size: 16px;
+        line-height: 22px;
+    }
+}

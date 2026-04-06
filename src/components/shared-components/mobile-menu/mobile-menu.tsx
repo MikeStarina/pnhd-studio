@@ -109,6 +109,15 @@ const MobileMenu: React.FC = () => {
                                     контакты
                                 </Link>
                             </li>
+                            <li>
+                                <Link
+                                    href="/loyalty"
+                                    className={styles.menu_link}
+                                    onClick={closeMenuHandler}
+                                >
+                                    бонусы
+                                </Link>
+                            </li>
                         </ul>
                         <div className={styles.menu_buttonsWrapper}>
                             <Link className={styles.menu_phoneButton} href='https://pnhd.ru'>корпоративный отдел</Link>                           

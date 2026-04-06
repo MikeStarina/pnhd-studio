@@ -10,6 +10,7 @@ import LeadButton from '@/components/shared-components/lead-button/lead-button';
 import Link from 'next/link';
 import Tee from '@/components/shared-components/3d-tee/3d-tee';
 import xmasimg from './xmas.svg'
+import LoyaltyBanner from './loyalty-banner'
 
 
 
@@ -115,6 +116,8 @@ const MainScreen: React.FC = () => {
                 </div>
 
             </div>
+
+            <LoyaltyBanner />
 
             <div className={styles.screen_features}>
                 <p className={styles.screen_feature}>{'> '}Наносим принты
