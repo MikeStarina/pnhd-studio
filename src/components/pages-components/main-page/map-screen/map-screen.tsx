@@ -24,7 +24,7 @@ const MapScreen: React.FC = () => {
                     <p className={styles.contacts_text}>Режим работы: ежедневно, 11:00–20:00</p>
                     <p className={styles.contacts_text}>Телефон: +7 (812) 904-61-56</p>
                     <p className={styles.contacts_text}>Email: STUDIO@PNHD.RU</p>
-                    <p className={styles.contacts_text}>Адрес: 197022, г. Санкт-Петербург, ул. Чалыгина, д. 1, ст. м. «Петроградская»</p>
+                    <p className={styles.contacts_text}>Адрес: 197022, г. Санкт-Петербург, ул. Чапыгина, д. 1, ст. м. «Петроградская»</p>
                     <p className={styles.contacts_text}>Как добраться?<br/>
                         Удобное расположение в центре города. Подробную схему проезда и парковки вы можете узнать у нашего менеджера.
                     </p>

@@ -56,7 +56,7 @@
     align-items: flex-end;
     padding: 35px 25px;
     overflow: hidden;
-    height: 562px;
+    /* height: 562px; */
 }
 
 .mainBlock_title {
@@ -116,7 +116,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    transform: scale(1.3);
+    transform: scale(1.5);
     z-index: 0;
     object-fit: cover;
 }
@@ -149,7 +149,7 @@
     text-transform: uppercase;
     font-weight: 800;
     margin: 20px 0 40px 10px;
-    max-width: 400px;
+    /* max-width: 400px; */
 }
 
 .wrapper_cards {
