@@ -1,39 +1,39 @@
 import { IProduct } from "./types";
 import { TBlogPosts } from "./types";
-import {retry} from "@reduxjs/toolkit/query";
+import { retry } from "@reduxjs/toolkit/query";
 
 
 
 export const apiBaseUrl = 'https://pnhdstudioapi.ru';
-//export const apiBaseUrl = 'http://localhost:9000';
+// export const apiBaseUrl = 'http://localhost:8000';
 export const CDN_URL = 'https://cdn.pnhd.ru';
 
 export const ACQUIRE_RATIO = 0.965 //комиссия эквайринга
 
 export const checkResponse = (res: any) => {
     if (res.ok || res.created) {
-      return res.json() as Array<IProduct>;
+        return res.json() as Array<IProduct>;
     }
     return res.json().then((err: any) => Promise.reject(err));
 };
 
-  
-  export const getShopData = async (searchParams?: { [n: string]: string}) => {
+
+export const getShopData = async (searchParams?: { [n: string]: string }) => {
     let queryString = '';
     if (searchParams) {
         const keys = Object.keys(searchParams);
         keys.forEach((key, index) => {
-            if (index === 0)  return queryString += `?${key}=${searchParams[key]}`;
+            if (index === 0) return queryString += `?${key}=${searchParams[key]}`;
             return queryString += `&${key}=${searchParams[key]}`
         })
     }
     const shopData = await fetch(`${apiBaseUrl}/api/products${queryString}`, {
         next: { revalidate: 3600, tags: ['shopDataTag'] },
         headers: {
-          'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
         },
-      })
-      .then(checkResponse)
+    }).then(checkResponse)
+    console.log(shopData);
     return shopData.data;
 }
 
@@ -41,12 +41,12 @@ export const getPosts = async (): Promise<TBlogPosts> => {
     const posts = await fetch(`${apiBaseUrl}/api/blog`, {
         next: { revalidate: 3600, tags: ['blogTag'] },
     })
-    .then(checkResponse);
+        .then(checkResponse);
 
     return posts;
 }
 
-export const tumblers = [ 'DTG', 'DTF', 'ТЕРМОПЕРЕНОС', 'ВЫШИВКА' ];
+export const tumblers = ['DTG', 'DTF', 'ТЕРМОПЕРЕНОС', 'ВЫШИВКА'];
 
 export const prices = [
     {
@@ -231,10 +231,10 @@ export const faqArr = [
 
 export function getCookie(cookie: string) {
     return cookie.split('; ').reduce((acc, item) => {
-      const [name, value] = item.split('=')
-      //@ts-ignore
-      acc[name] = value
-      return acc
+        const [name, value] = item.split('=')
+        //@ts-ignore
+        acc[name] = value
+        return acc
     }, {})
 }
 
@@ -266,11 +266,11 @@ export const getCurrentUrl = (pathname: string, searchParams?: URLSearchParams) 
 }
 
 
-export function getCurrentPath():Array<string>{
-    let currentDir:RegExpMatchArray|null = __dirname.match(/(?<=[\/\\]app[\/\\]).+/)
-    let path:Array<string> = []
+export function getCurrentPath(): Array<string> {
+    let currentDir: RegExpMatchArray | null = __dirname.match(/(?<=[\/\\]app[\/\\]).+/)
+    let path: Array<string> = []
 
-    if (currentDir){
+    if (currentDir) {
         path = currentDir[0].split(/\/\\]/)
     }
 
