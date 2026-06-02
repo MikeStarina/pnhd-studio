@@ -11,10 +11,10 @@ import CartIcon from "@/components/shared-components/cart-icon/cart-icon";
 import Popup from "@/components/shared-components/popup/popup";
 import Script from "next/script";
 import CookieBar from "@/components/shared-components/cookie-bar/cookie-bar";
-import {headers} from "next/headers";
-import {textileOptions} from "@/app/utils/textile-options-data";
-import {getCurrentPath} from '@/app/utils/constants';
-import {SITE_INFO} from "@/app/constants";
+import { headers } from "next/headers";
+import { textileOptions } from "@/app/utils/textile-options-data";
+import { getCurrentPath } from '@/app/utils/constants';
+import { SITE_INFO } from "@/app/constants";
 import ContactsWidget from "@/components/shared-components/contactsWidget/contactsWidget";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -60,17 +60,11 @@ export default function RootLayout({
           </main>
           <Script id='roistat'>
             {`(function(w, d, s, h, id) {
-                w.roistatProjectId = id;
-                w.roistatHost = h;
-                var p = d.location.protocol == "https:" ? "https://" : "http://";
-                var u = /^.*roistat_visit=[^;]+(.*)?$/.test(d.cookie) ? "/dist/module.js" : "/api/site/1.0/"+id+"/init?referrer="+encodeURIComponent(d.location.href);
-                var js = d.createElement(s);
-                js.charset="UTF-8";
-                js.async = 1;
-                js.src = p+h+u;
-                var js2 = d.getElementsByTagName(s)[0];
-                js2.parentNode.insertBefore(js, js2);
-            })(window, document, 'script', 'cloud.roistat.com', '86cd2ab6047bc5c2f8ea632e1183ac10');`
+    w.roistatProjectId = id; w.roistatHost = h; w.roistatPage = d.location.href; w.roistatReferrer = d.referrer;
+    var p = d.location.protocol == "https:" ? "https://" : "http://";
+    var u = /^.*roistat_visit=[^;]+(.*)?$/.test(d.cookie) ? "/dist/module.js" : "/api/site/1.0/"+id+"/init?referrer="+encodeURIComponent(d.location.href);
+    var js = d.createElement(s); js.charset="UTF-8"; js.async = 1; js.src = p+h+u; var js2 = d.getElementsByTagName(s)[0]; js2.parentNode.insertBefore(js, js2);
+})(window, document, 'script', 'cloud.roistat.com', '86cd2ab6047bc5c2f8ea632e1183ac10');`
             }
           </Script>
           <Script async id="metrika-counter" strategy="afterInteractive">
