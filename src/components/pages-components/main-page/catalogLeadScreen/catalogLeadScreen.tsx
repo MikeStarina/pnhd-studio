@@ -27,7 +27,7 @@ const config = [
         query: '/svitshoty',
     },
     {
-        title: '> Толстовки',
+        title: '> Лонгсливы',
         bgColor: '#F3F4F3',
         image: pullover,
         color: 'black',
@@ -66,12 +66,12 @@ const CatalogLeadScreen: React.FC = () => {
             </header>
             <div className={styles.catalogLeadScreen__content}>
                 {config.map((item, index) => (
-                    <div key={index} className={styles.catalogLeadScreen__item} style={{ backgroundColor: item.bgColor }}>
-                        <Link href={`${item.query}`} className={styles.catalogLeadScreen__itemTitle} style={{ color: item.color }}>{item.title}</Link>
+                    <Link key={index} href={`${item.query}`} className={styles.catalogLeadScreen__item} style={{ backgroundColor: item.bgColor }}>
+                        <span className={styles.catalogLeadScreen__itemTitle} style={{ color: item.color }}>{item.title}</span>
                         <div className={styles.catalogLeadScreen__itemImageWrapper}>
                             <Image src={item.image} alt={item.title} className={styles.catalogLeadScreen__itemImageWrapper_image} />
                         </div>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </section>

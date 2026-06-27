@@ -3,10 +3,10 @@ import React, { useState } from "react"
 import styles from './contactsWidget.module.css'
 import Link from "next/link"
 import Image from "next/image"
-import vk from '../../../../public/vk_logo.svg';
+// import vk from '../../../../public/vk_logo.svg';
 import tg from '../../../../public/tg_logo.svg';
-import inst from '../../../../public/inst_logo.svg';
-import wa from '../../../../public/wa_logo.svg';
+// import inst from '../../../../public/inst_logo.svg';
+// import wa from '../../../../public/wa_logo.svg';
 
 const ContactsWidget = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -42,12 +42,12 @@ const ContactsWidget = () => {
                         </button>
                     </Link>
                 </li> */}
-                    <li className={styles.contactsWidget_menuItem}>
+                    {/* <li className={styles.contactsWidget_menuItem}>
                         <Link href='https://wa.me/79313566552' target="blank" className={styles.contactsWidget_menuItemLink}>
                             <Image src={wa} alt='логотип ватсап' width={20} height={20} />
                             Написать в Ватсап
                         </Link>
-                    </li>
+                    </li> */}
                     <li className={styles.contactsWidget_menuItem}>
                         <Link href='https://max.ru/u/f9LHodD0cOLPoya-nl--At_duzt7fmJjN6-3xbnFVdcytMmjXzFDz4fRzDU' target="blank" className={styles.contactsWidget_menuItemLink}>
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -80,6 +80,7 @@
     position: relative;
     box-sizing: border-box;
     overflow: hidden;
+    text-decoration: none;
 }
 
 .catalogLeadScreen__itemTitle {
@@ -107,6 +108,7 @@
     height: 100%;
     position: relative;
     top: 20px;
+
 }
 
 .catalogLeadScreen__itemImageWrapper_image {

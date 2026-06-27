@@ -301,7 +301,7 @@
     align-items: center;
     gap: 20px;
     width: 80%;
-    transform: translateY(25px);
+    padding-bottom: 20px;
 }
 
 
@@ -372,6 +372,7 @@
 }
 
 .screen__mainLogo {
+    /* display: none; */
     flex: 0 0 auto;
     @media (max-width: 1020px) {
         height: 135px;
@@ -665,7 +666,7 @@
         align-items: flex-start;
         box-sizing: border-box;
         padding: 0 25px;
-        transform: translateY(15px);
+        padding-bottom: 15px;
         gap: 5px;
     }
 
@@ -769,10 +770,6 @@
 @media (max-width: 390px) {
     .screen_largeBlock {
         border-radius: 10px;
-    }
-
-    .largeBlock_contentWrapper {
-        transform: translateY(12px);
     }
 
     .screen_mainTitle {

@@ -1,6 +1,7 @@
 import styles from './NoModelBlock.module.css';
 import Image from 'next/image';
 import NoModelBlockForm from './NoModelBlockForm';
+import cover from '../../../../public/NoModelBlockCover.png';
 
 const NoModelBlock = () => {
     return (
@@ -12,7 +13,7 @@ const NoModelBlock = () => {
                     и мы разработаем для вас идеальную модель.
                 </span>
                 <div className={styles.noModelBlock_content_img}>
-                    <Image src="/noModelBlockCover.png" alt='no model' width="629" height="279" />
+                    <Image src={cover} alt='no model' width={629} height={279} />
                 </div>
             </div>
             <div className={styles.noModelBlock_form}>
