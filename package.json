@@ -19,6 +19,7 @@
     "@react-three/fiber": "^8.16.6",
     "@reduxjs/toolkit": "^2.2.1",
     "@types/three": "^0.164.0",
+    "antd": "^6.5.0",
     "classnames": "^2.5.1",
     "dayjs": "^1.11.18",
     "konva": "^9.3.6",
