@@ -1,13 +1,15 @@
 .screen {
     position: relative;
     width: 100%;
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 4fr 2fr;
     box-sizing: border-box;
-    margin: 0;
-    height: 120vh;
-    border-bottom: 1px solid black;
-    /*outline: #1fa7ff 1px solid;*/
+    margin: 20px 0 0 0;
+    gap: 20px;
+
+    @media (max-width: 800px) {
+      grid-template-columns: 1fr;
+    }
   }
   
   .instruction {
@@ -17,20 +19,6 @@
     line-height: 20px;
     text-align: center;
   }
-  
-  @media (max-width: 1250px) {
-    .screen {
-      flex-direction: column;
-      gap: 20px;
-      border: none;
-    }
-  }
-
-  /* @media (max-width: 500px) {
-    .screen {
-      margin: 100px 0 0 0;
-    }
-  } */
 
   .photo_box {
     margin: 0;
@@ -95,4 +83,4 @@
     }  
 } */
   
-  
+

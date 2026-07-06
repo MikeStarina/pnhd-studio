@@ -1,12 +1,12 @@
 import React from "react";
 import styles from "./page.module.css";
-import {getShopData} from "@/app/utils/constants";
-import {IProduct} from "@/app/utils/types";
-import Photos from "@/components/pages-components/shop-page/product-photos/product-photos";
+import { getShopData } from "@/app/utils/constants";
+import { IProduct } from "@/app/utils/types";
 import ProductDescription from "@/components/pages-components/shop-page/product-description/product-description";
-import {Metadata, ResolvingMetadata} from 'next'
-import {apiBaseUrl, CDN_URL} from "@/app/utils/constants";
-import {SITE_INFO} from "@/app/constants";
+import { Metadata } from 'next'
+import { apiBaseUrl } from "@/app/utils/constants";
+import { SITE_INFO } from "@/app/constants";
+import ProductGallery from "@/components/pages-components/shop-page/product-gallery/product-gallery";
 
 type TMetadataProps = {
     params: { slug: string },
@@ -17,11 +17,11 @@ export const generateStaticParams = async () => {
     const data = await getShopData();
     // console.log(data)
 
-    return data.map((item: IProduct) => ({slug: item.slug}))
+    return data.map((item: IProduct) => ({ slug: item.slug }))
 }
 
-export async function generateMetadata({params, searchParams}: TMetadataProps): Promise<Metadata> {
-    const [currItem]: Array<IProduct> = await getShopData({slug: params.slug});
+export async function generateMetadata({ params, searchParams }: TMetadataProps): Promise<Metadata> {
+    const [currItem]: Array<IProduct> = await getShopData({ slug: params.slug });
 
     return {
         title: `${currItem?.name} | PINHEAD STUDIO`,
@@ -45,24 +45,12 @@ export async function generateMetadata({params, searchParams}: TMetadataProps): 
 const ProductPage: React.FC<{
     params: { slug: string };
     searchParams: { id: string };
-}> = async ({ params, searchParams }) => {
+}> = async ({ params }) => {
 
     const [item]: Array<IProduct> = await getShopData({ slug: params.slug });
     return (
         <section className={styles.screen}>
-            {/* <Photos item={item} /> */}
-            <div className={styles.photo_box}>
-                {item?.galleryPhotos && item.galleryPhotos.length > 0 && item?.galleryPhotos?.map((el, index) => {
-                    return (
-                        <Photos item={item} el={el} key={index} index={index} />
-                    )
-                })}
-                {(!item?.galleryPhotos || item.galleryPhotos.length === 0) && [1,2,3,4].map((el, index) => {
-                    return (
-                        <Photos item={item} el={`${CDN_URL}/${item.slug}_${index}.jpg`} key={el} index={index} />
-                    )
-                })}
-            </div>
+            <ProductGallery item={item} />
             <ProductDescription item={item} />
         </section>
     );

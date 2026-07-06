@@ -102,3 +102,139 @@
         min-width: 50px;
     }
 }
+
+
+
+/* new */
+
+.sizeChangerNew {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+}
+
+.sizeCard {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 6px;
+    padding-bottom: 12px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2px;
+    cursor: pointer;
+    box-shadow: inset 0 -6px 0 0 rgba(0, 0, 0, .15);
+    align-items: flex-start;
+}
+
+.sizeCard__plusIcon {
+    font-weight: 700;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Neue_machina';
+    font-size: 18px;
+    line-height: 16px;
+    background-color: black;
+    color: white;
+    flex: 0 0 20px;
+}
+
+.sizeCard__minusIcon {
+    height: 20px;
+    background-color: black;
+    border-radius: 999px;
+    padding: 2px;
+    padding-right: 10px;
+    box-sizing: border-box;
+    width: auto;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Neue_machina';
+    font-size: 14px;
+    line-height: 10px;
+    font-weight: 600;
+    color: white;
+}
+
+.sizeCard__minusIcon span {
+    width: min-content;
+    min-width: 10px;
+    text-align: right;
+    margin-top: 2px;
+}
+
+.sizeCard__minusButton {
+    font-family: 'Neue_machina';
+    border: none;
+    font-size: 15px;
+    line-height: 16px;
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.sizeCard__active {
+    background-color: rgb(153,255,0);
+    box-shadow: inset 0 -3px 0 0 rgba(0, 0, 0, 1), inset 0 -9px 0 0 rgba(0, 0, 0, .15);
+}   
+
+.sizeCard[data-in-stock="true"]:hover {
+    background-color: rgb(153,255,0);
+    box-shadow: inset 0 -3px 0 0 rgba(0, 0, 0, 1), inset 0 -9px 0 0 rgba(0, 0, 0, .15);
+}
+
+.sizeCard_header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 0 0 auto;
+}
+
+.sizeCard_title {
+    font-family: 'DrukTextWideCyr-Medium';
+    font-weight: 400;
+    font-size: 16px;
+    color: black;
+    margin: 0;
+    padding: 0;
+    flex: 1 1 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.sizeCard__footer {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.sizeCard__footer span {
+    font-family: 'Neue_machina';
+    font-size: 12px;
+    line-height: 14px;
+    font-weight: 400;
+    color: black;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+}
