@@ -20,8 +20,11 @@
     "@reduxjs/toolkit": "^2.2.1",
     "@types/three": "^0.164.0",
     "antd": "^6.5.0",
+    "bcryptjs": "^3.0.3",
     "classnames": "^2.5.1",
+    "cookie-parser": "^1.4.7",
     "dayjs": "^1.11.18",
+    "jsonwebtoken": "^9.0.3",
     "konva": "^9.3.6",
     "maath": "^0.10.7",
     "mui-tel-input": "^9.0.1",
@@ -37,6 +40,9 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

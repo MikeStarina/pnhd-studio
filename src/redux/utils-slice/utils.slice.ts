@@ -7,7 +7,7 @@ interface IInitialState {
     sizes?: Array<{name: string, qty: number, userQty: number}>,
     isCartVisible: boolean,
     isPopupVisible: boolean,
-    popupType: 'lead' | '',
+    popupType: 'lead' | 'auth' | '',
     popupTitle: string,
     prints?: { front?: IPrintFile, back?: IPrintFile, lsleeve?: IPrintFile, rsleeve?: IPrintFile },
     isPrintImageLoading: boolean,
@@ -64,7 +64,7 @@ const utilsSlice = createSlice({
                 isPopupVisible: !state.isPopupVisible
             }
         },
-        setPopupType: (state, action: PayloadAction<'lead' | ''>) => {
+        setPopupType: (state, action: PayloadAction<'lead' | 'auth' | ''>) => {
             return {
                 ...state,
                 popupType: action.payload

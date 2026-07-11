@@ -1,0 +1,126 @@
+.auth_form {
+    width: 100%;
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 16px;
+    z-index: 3;
+}
+
+.auth_title {
+    color: black;
+    font-family: 'Neue_machina';
+    font-size: 20px;
+    line-height: 22px;
+    font-weight: 400;
+    text-transform: uppercase;
+    padding: 0;
+    margin: 0;
+}
+
+.auth_subtitle {
+    color: #565656;
+    font-family: 'Neue_machina';
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 400;
+    padding: 0;
+    margin: 0;
+}
+
+.auth_submitButton {
+    color: black;
+    padding: 10px 10px;
+    font-family: 'Neue_machina';
+    text-transform: uppercase;
+    font-size: 14px;
+    line-height: 14px;
+    font-weight: 800;
+    border: none;
+    background-color: rgb(153, 255, 0);
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.auth_submitButton:hover:not(:disabled) {
+    background-color: black;
+    color: white;
+}
+
+.auth_submitButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.auth_linkRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.auth_linkButton {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    color: #111111;
+    font-family: 'Neue_machina';
+    font-size: 13px;
+    line-height: 16px;
+    text-decoration: underline;
+    text-align: left;
+}
+
+.auth_linkButton:hover:not(:disabled) {
+    color: rgb(120, 200, 0);
+}
+
+.auth_linkButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    text-decoration: none;
+}
+
+.auth_errorText {
+    font-family: 'Neue_machina';
+    font-size: 13px;
+    line-height: 16px;
+    color: #d32f2f;
+    margin: 0;
+    padding: 0;
+}
+
+.auth_statusText {
+    font-family: 'Neue_machina';
+    font-size: 13px;
+    line-height: 16px;
+    color: #111111;
+    margin: 0;
+    padding: 0;
+}
+
+.auth_account {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    max-width: 340px;
+}
+
+.auth_accountRow {
+    font-family: 'Neue_machina';
+    font-size: 14px;
+    line-height: 18px;
+    color: #111111;
+    margin: 0;
+    padding: 0;
+}
+
+.auth_accountRow span {
+    color: #565656;
+}

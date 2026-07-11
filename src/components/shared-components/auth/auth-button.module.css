@@ -1,0 +1,22 @@
+.authButton {
+    text-decoration: none;
+    font-size: 12px;
+    color: black;
+    border-radius: 5px;
+    padding: 4px 14px;
+    border: 1px solid black;
+    background-color: transparent;
+    text-transform: uppercase;
+    font-family: 'DrukTextWideCyr-Medium';
+    font-weight: 400;
+    cursor: pointer;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.authButton:hover {
+    background-color: rgb(153, 255, 0);
+    border-color: rgb(153, 255, 0);
+}
