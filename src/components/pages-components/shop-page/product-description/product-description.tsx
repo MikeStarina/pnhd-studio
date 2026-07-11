@@ -47,9 +47,9 @@ const ProductDescription: React.FC<{ item: IProduct }> = ({ item }) => {
                 <div className={styles.size_changer_box}>
                     <SizeChanger item={item} />
                 </div>
-                {/* <div className={styles.row}>
+                <div className={styles.row}>
                     <PrintAddBlock item={item} />
-                </div> */}
+                </div>
             </div>
             <ActionButtons item={item} />
         </div>
