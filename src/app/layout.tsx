@@ -9,6 +9,7 @@ import Footer from "@/components/shared-components/footer/footer";
 import MobileMenu from "@/components/shared-components/mobile-menu/mobile-menu";
 import CartIcon from "@/components/shared-components/cart-icon/cart-icon";
 import Popup from "@/components/shared-components/popup/popup";
+import AuthInit from "@/components/shared-components/auth/auth-init";
 import Script from "next/script";
 import CookieBar from "@/components/shared-components/cookie-bar/cookie-bar";
 import { headers } from "next/headers";
@@ -49,6 +50,7 @@ export default function RootLayout({
           <Suspense>
             <CookieBar />
           </Suspense>
+          <AuthInit />
           <Popup />
           <MobileMenu />
           <main>

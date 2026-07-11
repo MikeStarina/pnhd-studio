@@ -4,7 +4,7 @@ import { retry } from "@reduxjs/toolkit/query";
 
 
 
-export const apiBaseUrl = 'https://pnhdstudioapi.ru';
+export const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://pnhdstudioapi.ru';
 // export const apiBaseUrl = 'http://localhost:8000';
 export const CDN_URL = 'https://cdn.pnhd.ru';
 
