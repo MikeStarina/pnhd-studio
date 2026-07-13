@@ -372,13 +372,16 @@
 }
 
 .screen__mainLogo {
-    /* display: none; */
     flex: 0 0 auto;
     @media (max-width: 1020px) {
         height: 135px;
-        width: min-content
+        width: 390px;
+        /* width: min-content */
     }
     @media (max-width: 500px) {
+        max-width: 100%;
+        min-width: 0;
+        width: 270px;
         height: 95px;
     }
 }

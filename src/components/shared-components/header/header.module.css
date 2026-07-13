@@ -157,16 +157,18 @@
 }
 
 .header_svgLogo {
-
     flex: 0 0 auto;
 
     @media (max-width: 1020px) {
         width: min-content;
-        height: 28px
+        min-width: 0;
+        height: 28px;
+        width: 190px;
     }
 
     @media (max-width: 500px) {
-        height: 23px
+        height: 23px;
+        width: 160px;
     }
 }
 
