@@ -30,7 +30,7 @@ const ContactsWidget = () => {
                     </Link>
                 </li> */}
                     <li className={styles.contactsWidget_menuItem}>
-                        <Link href='https://t.me/pnhd_studio' target="blank" className={styles.contactsWidget_menuItemLink}>
+                        <Link href='https://telegram.me/pnhd_studio' target="blank" className={styles.contactsWidget_menuItemLink}>
                             <Image src={tg} alt='логотип телеграм' width={20} height={20} />
                             Написать в Телеграм
                         </Link>

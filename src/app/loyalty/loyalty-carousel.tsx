@@ -9,7 +9,7 @@ const cards = [
         content: (
             <>
                 <p>После регистрации вам начисляется <strong>500 бонусов</strong>. Их можно использовать при следующем заказе.</p>
-                <Link href="https://t.me/pnhd_bonus_bot" target="_blank" className={styles.card_link}>Зарегистрироваться</Link>
+                <Link href="https://telegram.me/pnhd_bonus_bot" target="_blank" className={styles.card_link}>Зарегистрироваться</Link>
             </>
         ),
     },
@@ -68,7 +68,7 @@ const cards = [
                 <p>Если у вас не отображаются бонусы или уровень:</p>
                 <ul>
                     <li>проверьте номер телефона</li>
-                    <li><Link href="https://t.me/pnhd_bonus_bot" target="_blank" className={styles.inline_link}>попробуйте повторно авторизоваться</Link></li>
+                    <li><Link href="https://telegram.me/pnhd_bonus_bot" target="_blank" className={styles.inline_link}>попробуйте повторно авторизоваться</Link></li>
                     <li>или обратитесь к администратору</li>
                 </ul>
                 <p>Начисление обычно происходит сразу после оплаты, в отдельных случаях — до 24 часов.</p>

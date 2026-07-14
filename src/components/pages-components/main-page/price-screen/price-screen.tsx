@@ -29,7 +29,7 @@ const PriceScreen: React.FC = () => {
                         у менеджеров
                     </p>
                     {/* <LeadButton styleType="green" /> */}
-                    <Link href='https://t.me/pnhd_studio' target='blank' className={styles.leadButton__green}>Заказать срочную печать</Link>
+                    <Link href='https://telegram.me/pnhd_studio' target='blank' className={styles.leadButton__green}>Заказать срочную печать</Link>
                     <Image src={shape} alt='графическая форма' className={styles.mainBlock_shape} />
                 </div>
 
