@@ -48,7 +48,7 @@ const MapScreen: React.FC = () => {
                                 <Image src={vk} alt='логотип вконтакте' />
                             </button>
                         </Link> */}
-                        <Link href='https://t.me/pnhd_studio' target="blank">
+                        <Link href='https://telegram.me/pnhd_studio' target="blank">
                             <button type='button' className={styles.contacts_socialButton}>
                                 <Image src={tg} alt='логотип телеграм' />
                             </button>

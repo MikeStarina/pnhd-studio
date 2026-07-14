@@ -64,7 +64,7 @@ const Page: React.FC = () => {
                     <p className={styles.hero_eyebrow}>Программа лояльности Pinhead Studio</p>
                     <h1 className={styles.hero_title}>Оплачивайте до&nbsp;50%&nbsp;заказа бонусами</h1>
                     <p className={styles.hero_sub}>1 бонус = 1 ₽ &nbsp;·&nbsp; кешбэк до 10% &nbsp;·&nbsp; 500 бонусов при регистрации</p>
-                    <Link href="https://t.me/pnhd_bonus_bot" target="_blank" className={styles.hero_button}>Зарегистрироваться в боте</Link>
+                    <Link href="https://telegram.me/pnhd_bonus_bot" target="_blank" className={styles.hero_button}>Зарегистрироваться в боте</Link>
                 </div>
             </section>
 
@@ -77,7 +77,7 @@ const Page: React.FC = () => {
                     </p>
                     <ul className={styles.list}>
                         <li>через QR-код в студии</li>
-                        <li><Link href="https://t.me/pnhd_bonus_bot" target="_blank" className={styles.inline_link}>через Telegram-бота</Link></li>
+                        <li><Link href="https://telegram.me/pnhd_bonus_bot" target="_blank" className={styles.inline_link}>через Telegram-бота</Link></li>
                         <li>или с помощью администратора</li>
                     </ul>
                     <p className={styles.card_text}>
@@ -124,7 +124,7 @@ const Page: React.FC = () => {
                         Если у вас возникли вопросы, обратитесь к администратору Пинхэд Студии — мы поможем разобраться.
                     </p>
                     <div className={styles.support_buttons}>
-                        <Link href="https://t.me/pnhd_bonus_bot" target="_blank" className={styles.support_link}>Telegram-бот</Link>
+                        <Link href="https://telegram.me/pnhd_bonus_bot" target="_blank" className={styles.support_link}>Telegram-бот</Link>
                         <Link href="/contacts" className={styles.support_link}>Контакты</Link>
                     </div>
                 </div>

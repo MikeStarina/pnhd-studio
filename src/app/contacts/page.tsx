@@ -39,7 +39,7 @@ const Page: React.FC = () => {
     },
     "sameAs": [
       "https://vk.com/pinheadspb",
-      "https://t.me/pnhd_studio_bot"
+      "https://telegram.me/pnhd_studio_bot"
     ]
   }
   const jsonLdBreadcrumbList = {
