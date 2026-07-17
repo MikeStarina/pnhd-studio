@@ -5,6 +5,7 @@ export interface IProduct {
   _id: string;
   slug: string;
   name: string;
+  oneCCode?: string;
   description: string;
   links: string[];
   type: string;
@@ -27,9 +28,33 @@ export interface IProduct {
   editor_back_view: string;
   editor_lsleeve_view: string;
   editor_rsleeve_view: string;
-  sizes: Array<{ name: string; qty: number; userQty?: number }>;
+  sizes: Array<{ name: string; qty: number; userQty?: number; _id?: string }>;
   friends: string;
 }
+
+export type TProductInput = Omit<IProduct, "_id" | "stageColor"> & {
+  stageColor?: string;
+};
+
+export interface IBanner {
+  _id: string;
+  imageUrl: string;
+  mobileImageUrl: string;
+  link: string;
+  order: number;
+  isActive: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export type TBannerInput = {
+  imageUrl: string;
+  mobileImageUrl: string;
+  link: string;
+  order: number;
+  isActive: boolean;
+};
+
 export interface IPrintFile {
   file?: { name: string, url: string, width: number, height: number, message?: string },
   stageParams?: TParams,

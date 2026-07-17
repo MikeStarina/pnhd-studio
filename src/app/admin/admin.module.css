@@ -1,0 +1,290 @@
+.admin_shell {
+  display: flex;
+  min-height: 60vh;
+  width: 100%;
+  max-width: 1400px;
+  min-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+  gap: 24px;
+  box-sizing: border-box;
+}
+
+.admin_nav {
+  flex: 0 0 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin_navTitle {
+  margin: 0 0 8px;
+  font-family: "Neue_machina", sans-serif;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.admin_navLink,
+.admin_navLinkActive {
+  font-family: "Neue_machina", sans-serif;
+  font-size: 14px;
+  text-decoration: none;
+  color: #111;
+  padding: 6px 0;
+}
+
+.admin_navLink:hover {
+  color: rgb(120, 200, 0);
+}
+
+.admin_navLinkActive {
+  font-weight: 800;
+  color: #111;
+}
+
+.admin_content {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.admin_title {
+  margin: 0;
+  font-family: "Neue_machina", sans-serif;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+.admin_button {
+  color: black;
+  padding: 10px 14px;
+  font-family: "Neue_machina", sans-serif;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 800;
+  border: none;
+  background-color: rgb(153, 255, 0);
+  cursor: pointer;
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.admin_button:hover:not(:disabled) {
+  background-color: black;
+  color: white;
+}
+
+.admin_button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.admin_buttonDanger,
+.admin_buttonSecondary {
+  color: black;
+  padding: 10px 14px;
+  font-family: "Neue_machina", sans-serif;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 400;
+  border: none;
+  background-color: #eee;
+  cursor: pointer;
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.admin_buttonDanger:hover:not(:disabled) {
+  background-color: #c00;
+  color: white;
+}
+
+.admin_buttonSecondary:hover:not(:disabled) {
+  background-color: #111;
+  color: white;
+}
+
+.admin_buttonDanger:disabled,
+.admin_buttonSecondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.admin_status {
+  margin: 0 0 12px;
+  font-family: "Neue_machina", sans-serif;
+  font-size: 13px;
+  color: #565656;
+}
+
+.admin_error {
+  margin: 0 0 12px;
+  font-family: "Neue_machina", sans-serif;
+  font-size: 13px;
+  color: #c00;
+}
+
+.admin_table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "Neue_machina", sans-serif;
+  font-size: 13px;
+}
+
+.admin_table th,
+.admin_table td {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 1px solid #e5e5e5;
+  vertical-align: middle;
+}
+
+.admin_table th {
+  text-transform: uppercase;
+  font-size: 11px;
+  color: #565656;
+  font-weight: 400;
+}
+
+.admin_thumb {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  background: #f3f3f3;
+  border-radius: 4px;
+  display: block;
+}
+
+.admin_bannerPreview {
+  width: 100%;
+  max-width: 480px;
+  max-height: 200px;
+  object-fit: contain;
+  background: #f3f3f3;
+  border-radius: 4px;
+  display: block;
+}
+
+.admin_fileInput {
+  font-family: "Neue_machina", sans-serif;
+  font-size: 13px;
+}
+
+.admin_badgeOn,
+.admin_badgeOff {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.admin_badgeOn {
+  background: #e8f8d0;
+  color: #2a5a00;
+}
+
+.admin_badgeOff {
+  background: #eee;
+  color: #666;
+}
+
+.admin_rowLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+.admin_rowLink:hover {
+  color: rgb(120, 200, 0);
+}
+
+.admin_actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.admin_form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  /* max-width: 720px; */
+}
+
+.admin_formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.admin_formSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 8px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.admin_formSectionTitle {
+  margin: 0;
+  font-family: "Neue_machina", sans-serif;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.admin_arrayRow {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.admin_arrayRow > :first-child {
+  flex: 1;
+}
+
+.admin_checks {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.admin_formActions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 8px;
+}
+
+@media (max-width: 768px) {
+  .admin_shell {
+    flex-direction: column;
+  }
+
+  .admin_nav {
+    flex: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 16px;
+  }
+
+  .admin_formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin_table {
+    display: block;
+    overflow-x: auto;
+  }
+}
