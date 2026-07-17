@@ -7,6 +7,7 @@ import { ruPrintPlace } from "@/app/utils/cart-utils";
 import Link from "next/link";
 import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
 import { useAppDispatch } from "@/redux/redux-hooks";
+import { apiBaseUrl } from "@/app/utils/constants";
 
 
 
@@ -33,16 +34,8 @@ const PrintPreview: React.FC<{ elem: ICartOrderElement }> = ({ elem }) => {
                   >
                     <img
                       className={styles.cart_previewImg}
-                      src={item.preview}
-                      alt="Превью принта"
-                      onClick={() => {
-                        //setPrewievImg(elem.preview);
-                        //setModalActive(true);
-                      }}
-                      onKeyDown={() => {
-                        //setPrewievImg(elem.preview);
-                        //setModalActive(true);
-                      }}
+                      src={`${apiBaseUrl}${item.file?.url}`}
+                      alt={item.file?.name || "Файл принта"}
                     />
                      <div className={styles.prints_info}>
                       <p className={styles.printsInfo_size}>
@@ -81,7 +74,7 @@ const PrintPreview: React.FC<{ elem: ICartOrderElement }> = ({ elem }) => {
                       >
                         Удалить
                       </button>
-                      <Link
+                      {/* <Link
                         href={{
                           pathname: `/shop/${elem.item.slug}/constructor`,
                           query: { itemCartId: elem.itemCartId},
@@ -94,38 +87,10 @@ const PrintPreview: React.FC<{ elem: ICartOrderElement }> = ({ elem }) => {
                         >
                           Изменить
                         </button>
-                      </Link> 
+                      </Link>  */}
                     </div>
                   </div>
                 ))}
-              {/* {arr.length < 4 && (
-                <div
-                  className={
-                    arr.length === 0
-                      ? `${styles.addPrintButton_wrap} ${styles.addPrintButton_wrapBottom}`
-                      : `${styles.addPrintButton_wrap}`
-                  }
-                >
-                  {item.attributes.isForPrinting && (
-                    <Link
-                      to={{
-                        pathname: `/shop/${item.attributes.slug}/constructor`,
-                        state: { state: item.cart_item_id, from: 'cart' },
-                      }}
-                      className={`${styles.link} ${styles.link__name}`}
-                      key={item.cart_item_id}
-                    >
-                      <button
-                        className={styles.addPrintButton_wrap_text}
-                        disabled={!item.attributes.isForPrinting}
-                        type="button"
-                      >
-                        Добавить принт &gt;
-                      </button>
-                    </Link>
-                  )}
-                </div>
-              )} */}
             </div>
     );
 };

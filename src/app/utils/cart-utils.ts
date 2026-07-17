@@ -7,10 +7,10 @@ export const getPreviewArrFunc = (prints: {
 }): Array<IPrintFile> => {
     const previewArr = [];
 
-    prints?.front?.preview && previewArr.push(prints.front);
-    prints?.back?.preview && previewArr.push(prints.back);
-    prints?.lsleeve?.preview && previewArr.push(prints.lsleeve);
-    prints?.rsleeve?.preview && previewArr.push(prints.rsleeve);
+    prints?.front?.file && previewArr.push(prints.front);
+    prints?.back?.file && previewArr.push(prints.back);
+    prints?.lsleeve?.file && previewArr.push(prints.lsleeve);
+    prints?.rsleeve?.file && previewArr.push(prints.rsleeve);
 
     return previewArr;
 }
@@ -27,17 +27,28 @@ export const ruPrintPlace = (format: string): string => {
 }
 
 
+export const BASIC_PRINT_COST = 400;
+
 export const cartSummaryFunc = (order: Array<ICartOrderElement>): number => {
     const totalCartPrice = order?.reduce((acc, elem) => {
         const itemQty = elem.item.sizes.reduce((sizesAcc, size) => sizesAcc + size.userQty!, 0);
         const textileTotalPrice = itemQty * elem.item.price;
-        const printsToArr = getPreviewArrFunc(elem.prints!);
-        const printsTotalPrice = printsToArr.reduce((printsAcc, print) => printsAcc + print.cartParams?.price!, 0) * itemQty;
+        const printsToArr = elem.prints ? getPreviewArrFunc(elem.prints) : [];
+        const printsTotalPrice = printsToArr.length * itemQty * BASIC_PRINT_COST;
+
+        // Старый расчёт по cartParams.price из конструктора
+        // const printsToArr = getPreviewArrFunc(elem.prints!);
+        // const printsTotalPrice = printsToArr.reduce((printsAcc, print) => printsAcc + print.cartParams?.price!, 0) * itemQty;
 
         return acc + textileTotalPrice + printsTotalPrice;
     }, 0)
 
     return totalCartPrice;
+}
+
+export const orderHasPrints = (order: Array<ICartOrderElement> | undefined): boolean => {
+    if (!order) return false;
+    return order.some((elem) => elem.prints && getPreviewArrFunc(elem.prints).length > 0);
 }
 
 export const packagesWeightCalcFunc = (order: Array<ICartOrderElement>): Array<{weight: number}> => {
@@ -91,12 +102,16 @@ export const checkoutOrderObjectCreateFunc = (cart: TCartState, roistat: string)
         const itemQty = elem.item.sizes.reduce((acc, { userQty }) => (acc + userQty!), 0); 
         
         const printPriceF = (): number => {
-            let price = 0;
-                price = elem.prints?.front?.cartParams ?  price + elem.prints.front.cartParams.price : price + 0;
-                price = elem.prints?.back?.cartParams ?  price + elem.prints.back.cartParams.price : price + 0;
-                price = elem.prints?.lsleeve?.cartParams ?  price + elem.prints.lsleeve.cartParams.price : price + 0;
-                price = elem.prints?.rsleeve?.cartParams ?  price + elem.prints.rsleeve.cartParams.price : price + 0;
-            return price;
+            const printsToArr = elem.prints ? getPreviewArrFunc(elem.prints) : [];
+            return printsToArr.length * BASIC_PRINT_COST;
+
+            // Старый расчёт по cartParams.price из конструктора
+            // let price = 0;
+            //     price = elem.prints?.front?.cartParams ?  price + elem.prints.front.cartParams.price : price + 0;
+            //     price = elem.prints?.back?.cartParams ?  price + elem.prints.back.cartParams.price : price + 0;
+            //     price = elem.prints?.lsleeve?.cartParams ?  price + elem.prints.lsleeve.cartParams.price : price + 0;
+            //     price = elem.prints?.rsleeve?.cartParams ?  price + elem.prints.rsleeve.cartParams.price : price + 0;
+            // return price;
         }
 
         const printToStringF = (print: IPrintFile | undefined, title: string) => {

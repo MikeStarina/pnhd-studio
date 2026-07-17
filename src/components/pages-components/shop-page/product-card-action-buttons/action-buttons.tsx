@@ -42,16 +42,29 @@ const ActionButtons: React.FC<{ item: IProduct }> = ({ item }) => {
 
         const newItem = item;
         newItem.sizes = [...stateSizes!];
-
+        const hasPrints = totalPrintAmount > 0;
 
         const orderItem = {
             item: { ...newItem },
-            isItemWithPrint: false,
+            isItemWithPrint: hasPrints,
             itemCartId: uuidv4(),
+            ...(hasPrints && {
+                prints: {
+                    front: statePrints?.front,
+                    back: statePrints?.back,
+                    lsleeve: statePrints?.lsleeve,
+                    rsleeve: statePrints?.rsleeve,
+                },
+            }),
         };
 
         dispatch(ustilActions.resetStateSizes());
-        dispatch(cartActions.addToCartWithoutPrint(orderItem));
+        if (hasPrints) {
+            dispatch(cartActions.addToCartWithPrint(orderItem));
+            dispatch(ustilActions.resetPrints());
+        } else {
+            dispatch(cartActions.addToCartWithoutPrint(orderItem));
+        }
         router.push('/shop');
     };
 
