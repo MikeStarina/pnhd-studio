@@ -6,7 +6,7 @@ import {
   useGetAdminBannersQuery,
 } from "@/api/api";
 import { getErrorMessage } from "@/components/shared-components/auth/auth-utils";
-import styles from "@/app/admin/admin.module.css";
+import styles from "@/app/profile/profile.module.css";
 import { IBanner } from "@/app/utils/types";
 
 const AdminBannersList: React.FC = () => {
@@ -39,7 +39,7 @@ const AdminBannersList: React.FC = () => {
     <div>
       <div className={styles.admin_header}>
         <h1 className={styles.admin_title}>Баннеры</h1>
-        <Link href="/admin/banners/new" className={styles.admin_button}>
+        <Link href="/profile/banners/new" className={styles.admin_button}>
           Создать
         </Link>
       </div>
@@ -87,7 +87,7 @@ const AdminBannersList: React.FC = () => {
                 </td>
                 <td>
                   <Link
-                    href={`/admin/banners/${banner._id}`}
+                    href={`/profile/banners/${banner._id}`}
                     className={styles.admin_rowLink}
                   >
                     {banner.link}
@@ -108,7 +108,7 @@ const AdminBannersList: React.FC = () => {
                 <td>
                   <div className={styles.admin_actions}>
                     <Link
-                      href={`/admin/banners/${banner._id}`}
+                      href={`/profile/banners/${banner._id}`}
                       className={styles.admin_buttonSecondary}
                     >
                       Изменить

@@ -224,16 +224,32 @@ export type TOptionsData = {
 
 
 export type TBlogPosts = {
-  posts: Array<{
-    post_id: number;
-    title: string;
-    subtitle: string;
-    slug: string;
-    createdAt: string;
-    cover: string;
-    likes: number;
-    hashtags: Array<string>;
-    blog: {__html: string};
-    author: string
-  }>
+  posts: Array<IBlogPost>;
+};
+
+export interface IBlogPost {
+  _id: string;
+  post_id: number;
+  title: string;
+  subtitle: string;
+  slug: string;
+  createdAt: string;
+  cover: string;
+  likes: number;
+  hashtags: string[];
+  blog: { __html: string };
+  author: string;
+  isActive: boolean;
 }
+
+export type TBlogPostInput = {
+  title: string;
+  subtitle: string;
+  slug: string;
+  cover: string;
+  hashtags: string[];
+  blog: { __html: string };
+  author: string;
+  isActive: boolean;
+  createdAt?: string;
+};

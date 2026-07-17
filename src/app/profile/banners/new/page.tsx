@@ -1,5 +1,5 @@
 import React from "react";
-import AdminBannerForm from "@/components/shared-components/admin/admin-banner-form";
+import AdminBannerForm from "@/components/shared-components/profile/admin-banner-form";
 
 export const metadata = { title: "Новый баннер | Админ | PINHEAD STUDIO" };
 

@@ -15,7 +15,7 @@ import {
   getErrorMessage,
   textFieldSx,
 } from "@/components/shared-components/auth/auth-utils";
-import styles from "@/app/admin/admin.module.css";
+import styles from "@/app/profile/profile.module.css";
 
 type FormState = {
   imageUrl: string;
@@ -130,7 +130,7 @@ const AdminBannerForm: React.FC<AdminBannerFormProps> = ({ mode, banner }) => {
     try {
       if (mode === "create") {
         const res = await createBanner(body).unwrap();
-        router.push(`/admin/banners/${res.data._id}`);
+        router.push(`/profile/banners/${res.data._id}`);
         return;
       }
       if (!banner?._id) return;
@@ -180,7 +180,7 @@ const AdminBannerForm: React.FC<AdminBannerFormProps> = ({ mode, banner }) => {
         <h1 className={styles.admin_title}>
           {mode === "create" ? "Новый баннер" : "Редактирование баннера"}
         </h1>
-        <Link href="/admin/banners" className={styles.admin_buttonSecondary}>
+        <Link href="/profile/banners" className={styles.admin_buttonSecondary}>
           К списку
         </Link>
       </div>
@@ -247,7 +247,7 @@ const AdminBannerForm: React.FC<AdminBannerFormProps> = ({ mode, banner }) => {
           >
             {isSaving ? "Сохраняем..." : "Сохранить"}
           </button>
-          <Link href="/admin/banners" className={styles.admin_buttonSecondary}>
+          <Link href="/profile/banners" className={styles.admin_buttonSecondary}>
             Отмена
           </Link>
         </div>

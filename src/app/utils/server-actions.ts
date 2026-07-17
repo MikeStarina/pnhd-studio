@@ -34,3 +34,22 @@ export async function revalidateShopData(
     revalidatePath(`/shop/${previousSlug}`);
   }
 }
+
+/**
+ * Bust Next.js Data Cache for blog listing + post pages.
+ * Call after admin create / update / delete.
+ */
+export async function revalidateBlogData(
+  slug?: string,
+  previousSlug?: string
+) {
+  revalidateTag("blogTag");
+  revalidatePath("/blog");
+
+  if (slug) {
+    revalidatePath(`/blog/${slug}`);
+  }
+  if (previousSlug && previousSlug !== slug) {
+    revalidatePath(`/blog/${previousSlug}`);
+  }
+}

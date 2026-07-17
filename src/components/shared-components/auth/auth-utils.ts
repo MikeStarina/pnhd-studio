@@ -8,8 +8,8 @@ export const textFieldSx = {
   },
 };
 
-export const getPostAuthPath = (user: Pick<IAuthUser, "role">) =>
-  user.role === "admin" ? "/admin" : "/auth/account";
+export const getPostAuthPath = (_user?: Pick<IAuthUser, "role">) =>
+  "/profile";
 
 
 export const getErrorMessage = (

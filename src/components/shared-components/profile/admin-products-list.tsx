@@ -8,7 +8,7 @@ import {
 import { apiBaseUrl, CDN_URL } from "@/app/utils/constants";
 import { revalidateShopData } from "@/app/utils/server-actions";
 import { getErrorMessage } from "@/components/shared-components/auth/auth-utils";
-import styles from "@/app/admin/admin.module.css";
+import styles from "@/app/profile/profile.module.css";
 import { IProduct } from "@/app/utils/types";
 import { ImageComponent } from "@/components/pages-components/shop-page/product-photos/imageComponent";
 
@@ -49,7 +49,7 @@ const AdminProductsList: React.FC = () => {
     <div>
       <div className={styles.admin_header}>
         <h1 className={styles.admin_title}>Товары</h1>
-        <Link href="/admin/products/new" className={styles.admin_button}>
+        <Link href="/profile/products/new" className={styles.admin_button}>
           Создать
         </Link>
       </div>
@@ -94,7 +94,7 @@ const AdminProductsList: React.FC = () => {
               //   </td>
               //   <td>
               //     <Link
-              //       href={`/admin/products/${product._id}`}
+              //       href={`/profile/products/${product._id}`}
               //       className={styles.admin_rowLink}
               //     >
               //       {product.name}
@@ -107,7 +107,7 @@ const AdminProductsList: React.FC = () => {
               //   <td>
               //     <div className={styles.admin_actions}>
               //       <Link
-              //         href={`/admin/products/${product._id}`}
+              //         href={`/profile/products/${product._id}`}
               //         className={styles.admin_buttonSecondary}
               //       >
               //         Изменить
@@ -175,7 +175,7 @@ const ListItem: React.FC<IListItemProps> = ({ product, isDeleting, deleteHandler
       </td>
       <td>
         <Link
-          href={`/admin/products/${product._id}`}
+          href={`/profile/products/${product._id}`}
           className={styles.admin_rowLink}
         >
           {product.name}
@@ -188,7 +188,7 @@ const ListItem: React.FC<IListItemProps> = ({ product, isDeleting, deleteHandler
       <td>
         <div className={styles.admin_actions}>
           <Link
-            href={`/admin/products/${product._id}`}
+            href={`/profile/products/${product._id}`}
             className={styles.admin_buttonSecondary}
           >
             Изменить

@@ -32,10 +32,9 @@ const OtpForm: React.FC = () => {
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const res = await verifyOtp({ email: pendingEmail, code }).unwrap();
-      dispatch(authActions.setUser(res.user));
+      await verifyOtp({ email: pendingEmail, code }).unwrap();
       dispatch(authActions.resetAuthFlow());
-      router.push("/auth/account");
+      router.push("/auth/login");
     } catch {
       /* error is rendered from the mutation state */
     }

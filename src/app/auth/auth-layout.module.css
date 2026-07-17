@@ -1,10 +1,10 @@
 .auth_screen {
     box-sizing: border-box;
     width: 100%;
-    min-height: 60vh;
+    height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     padding: 40px 20px 80px 20px;
 }
 

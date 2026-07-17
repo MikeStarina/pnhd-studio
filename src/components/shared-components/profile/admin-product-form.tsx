@@ -16,7 +16,7 @@ import {
   textFieldSx,
 } from "@/components/shared-components/auth/auth-utils";
 import { revalidateShopData } from "@/app/utils/server-actions";
-import styles from "@/app/admin/admin.module.css";
+import styles from "@/app/profile/profile.module.css";
 
 const PRODUCT_TYPES = [
   { label: "Футболка", value: "tshirt" },
@@ -232,7 +232,7 @@ const AdminProductForm: React.FC<AdminProductFormProps> = ({
       if (mode === "create") {
         const res = await createProduct(body).unwrap();
         await revalidateShopData(body.slug);
-        router.push(`/admin/products/${res.data._id}`);
+        router.push(`/profile/products/${res.data._id}`);
         return;
       }
       if (!product?._id) return;
@@ -635,7 +635,7 @@ const AdminProductForm: React.FC<AdminProductFormProps> = ({
         <button
           type="button"
           className={styles.admin_buttonSecondary}
-          onClick={() => router.push("/admin/products")}
+          onClick={() => router.push("/profile/products")}
         >
           К списку
         </button>

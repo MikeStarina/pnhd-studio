@@ -10,6 +10,8 @@ import {
   TProductInput,
   IBanner,
   TBannerInput,
+  IBlogPost,
+  TBlogPostInput,
 } from "@/app/utils/types";
 
 export interface IAuthUser {
@@ -32,7 +34,7 @@ export type TOtpPurpose = "register" | "reset" | "change";
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({ baseUrl: apiBaseUrl, credentials: "include" }),
-  tagTypes: ["Auth", "Products", "Banners"],
+  tagTypes: ["Auth", "Products", "Banners", "Blog"],
   endpoints: (builder) => ({
     register: builder.mutation<
       { message: string; email: string },
@@ -45,21 +47,16 @@ export const api = createApi({
         headers: { "Content-Type": "application/json" },
       }),
     }),
-    verifyOtp: builder.mutation<IUserResponse, { email: string; code: string }>({
+    verifyOtp: builder.mutation<
+      { message: string },
+      { email: string; code: string }
+    >({
       query: (data) => ({
         url: "/api/auth/verify-otp",
         method: "POST",
         body: JSON.stringify(data),
         headers: { "Content-Type": "application/json" },
       }),
-      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-          dispatch(api.util.upsertQueryData("getMe", undefined, data));
-        } catch {
-          /* login/otp failure — leave cache alone */
-        }
-      },
     }),
     resendOtp: builder.mutation<
       { message: string },
@@ -116,7 +113,7 @@ export const api = createApi({
       }),
     }),
     resetPassword: builder.mutation<
-      IUserResponse,
+      { message: string },
       { email: string; code: string; newPassword: string }
     >({
       query: (data) => ({
@@ -125,14 +122,6 @@ export const api = createApi({
         body: JSON.stringify(data),
         headers: { "Content-Type": "application/json" },
       }),
-      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-          dispatch(api.util.upsertQueryData("getMe", undefined, data));
-        } catch {
-          /* reset failure — leave cache alone */
-        }
-      },
     }),
     requestChangePassword: builder.mutation<{ message: string }, void>({
       query: () => ({
@@ -401,6 +390,70 @@ export const api = createApi({
         body: data,
       }),
     }),
+    getAdminBlogs: builder.query<{ data: IBlogPost[] }, void>({
+      query: () => ({
+        url: "/api/blog/admin",
+        method: "GET",
+      }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.data.map(({ _id }) => ({
+                type: "Blog" as const,
+                id: _id,
+              })),
+              { type: "Blog", id: "LIST" },
+            ]
+          : [{ type: "Blog", id: "LIST" }],
+    }),
+    getBlogById: builder.query<{ data: IBlogPost }, string>({
+      query: (id) => ({
+        url: `/api/blog/${id}`,
+        method: "GET",
+      }),
+      providesTags: (_result, _error, id) => [{ type: "Blog", id }],
+    }),
+    createBlog: builder.mutation<{ data: IBlogPost }, TBlogPostInput>({
+      query: (body) => ({
+        url: "/api/blog",
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json" },
+      }),
+      invalidatesTags: [{ type: "Blog", id: "LIST" }],
+    }),
+    updateBlog: builder.mutation<
+      { data: IBlogPost },
+      { id: string; body: Partial<TBlogPostInput> }
+    >({
+      query: ({ id, body }) => ({
+        url: `/api/blog/${id}`,
+        method: "PATCH",
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json" },
+      }),
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: "Blog", id },
+        { type: "Blog", id: "LIST" },
+      ],
+    }),
+    deleteBlog: builder.mutation<
+      { message: string; data: IBlogPost },
+      string
+    >({
+      query: (id) => ({
+        url: `/api/blog/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [{ type: "Blog", id: "LIST" }],
+    }),
+    uploadBlogCover: builder.mutation<{ data: { url: string } }, FormData>({
+      query: (data) => ({
+        url: "/api/blog/upload-cover",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -435,4 +488,10 @@ export const {
   useUpdateBannerMutation,
   useDeleteBannerMutation,
   useUploadBannerImageMutation,
+  useGetAdminBlogsQuery,
+  useGetBlogByIdQuery,
+  useCreateBlogMutation,
+  useUpdateBlogMutation,
+  useDeleteBlogMutation,
+  useUploadBlogCoverMutation,
 } = api;

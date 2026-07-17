@@ -32,7 +32,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({
       return;
     }
     if (requireAdmin && user.role !== "admin") {
-      router.replace("/auth/account");
+      router.replace("/profile");
     }
   }, [isLoading, user, requireAdmin, router]);
 
