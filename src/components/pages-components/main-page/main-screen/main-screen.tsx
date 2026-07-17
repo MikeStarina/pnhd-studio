@@ -11,6 +11,7 @@ import Link from 'next/link';
 import Tee from '@/components/shared-components/3d-tee/3d-tee';
 import xmasimg from './xmas.svg'
 import LoyaltyBanner from './loyalty-banner'
+import { Carousel } from './carousel';
 
 
 
@@ -20,6 +21,7 @@ const MainScreen: React.FC = () => {
 
     return (
         <section className={styles.screen}>
+            <Carousel />
             <div className={styles.screen_cardsWrapper}>
                 <div className={styles.screen_blocksColumn}>
                     <div className={styles.screen_mediumBlock}>

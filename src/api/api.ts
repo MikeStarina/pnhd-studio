@@ -6,6 +6,10 @@ import {
   ICdekPointsResponse,
   ICdekPriceResponse,
   IOrderBody,
+  IProduct,
+  TProductInput,
+  IBanner,
+  TBannerInput,
 } from "@/app/utils/types";
 
 export interface IAuthUser {
@@ -28,7 +32,7 @@ export type TOtpPurpose = "register" | "reset" | "change";
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({ baseUrl: apiBaseUrl, credentials: "include" }),
-  tagTypes: ["Auth"],
+  tagTypes: ["Auth", "Products", "Banners"],
   endpoints: (builder) => ({
     register: builder.mutation<
       { message: string; email: string },
@@ -48,7 +52,14 @@ export const api = createApi({
         body: JSON.stringify(data),
         headers: { "Content-Type": "application/json" },
       }),
-      invalidatesTags: ["Auth"],
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(api.util.upsertQueryData("getMe", undefined, data));
+        } catch {
+          /* login/otp failure — leave cache alone */
+        }
+      },
     }),
     resendOtp: builder.mutation<
       { message: string },
@@ -71,7 +82,16 @@ export const api = createApi({
         body: JSON.stringify(data),
         headers: { "Content-Type": "application/json" },
       }),
-      invalidatesTags: ["Auth"],
+      // Seed getMe cache from login — do not invalidate/refetch /me immediately
+      // (cookie may not be readable yet / cross-site 401 would wipe the session).
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(api.util.upsertQueryData("getMe", undefined, data));
+        } catch {
+          /* login failure — leave cache alone */
+        }
+      },
     }),
     logout: builder.mutation<{ message: string }, void>({
       query: () => ({
@@ -105,7 +125,14 @@ export const api = createApi({
         body: JSON.stringify(data),
         headers: { "Content-Type": "application/json" },
       }),
-      invalidatesTags: ["Auth"],
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(api.util.upsertQueryData("getMe", undefined, data));
+        } catch {
+          /* reset failure — leave cache alone */
+        }
+      },
     }),
     requestChangePassword: builder.mutation<{ message: string }, void>({
       query: () => ({
@@ -239,8 +266,142 @@ export const api = createApi({
         },
       })
     }),
-
-  }),  
+    getProducts: builder.query<{ data: IProduct[] }, void>({
+      query: () => ({
+        url: "/api/products",
+        method: "GET",
+      }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.data.map(({ _id }) => ({
+                type: "Products" as const,
+                id: _id,
+              })),
+              { type: "Products", id: "LIST" },
+            ]
+          : [{ type: "Products", id: "LIST" }],
+    }),
+    getProductById: builder.query<{ data: IProduct }, string>({
+      query: (id) => ({
+        url: `/api/products/${id}`,
+        method: "GET",
+      }),
+      providesTags: (_result, _error, id) => [{ type: "Products", id }],
+    }),
+    createProduct: builder.mutation<{ data: IProduct }, TProductInput>({
+      query: (body) => ({
+        url: "/api/products",
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json" },
+      }),
+      invalidatesTags: [{ type: "Products", id: "LIST" }],
+    }),
+    updateProduct: builder.mutation<
+      { data: IProduct },
+      { id: string; body: Partial<TProductInput> }
+    >({
+      query: ({ id, body }) => ({
+        url: `/api/products/${id}`,
+        method: "PATCH",
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json" },
+      }),
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: "Products", id },
+        { type: "Products", id: "LIST" },
+      ],
+    }),
+    deleteProduct: builder.mutation<
+      { message: string; data: IProduct },
+      string
+    >({
+      query: (id) => ({
+        url: `/api/products/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [{ type: "Products", id: "LIST" }],
+    }),
+    getBanners: builder.query<{ data: IBanner[] }, void>({
+      query: () => ({
+        url: "/api/banners",
+        method: "GET",
+      }),
+      providesTags: [{ type: "Banners", id: "PUBLIC" }],
+    }),
+    getAdminBanners: builder.query<{ data: IBanner[] }, void>({
+      query: () => ({
+        url: "/api/banners/admin",
+        method: "GET",
+      }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.data.map(({ _id }) => ({
+                type: "Banners" as const,
+                id: _id,
+              })),
+              { type: "Banners", id: "LIST" },
+            ]
+          : [{ type: "Banners", id: "LIST" }],
+    }),
+    getBannerById: builder.query<{ data: IBanner }, string>({
+      query: (id) => ({
+        url: `/api/banners/${id}`,
+        method: "GET",
+      }),
+      providesTags: (_result, _error, id) => [{ type: "Banners", id }],
+    }),
+    createBanner: builder.mutation<{ data: IBanner }, TBannerInput>({
+      query: (body) => ({
+        url: "/api/banners",
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json" },
+      }),
+      invalidatesTags: [
+        { type: "Banners", id: "LIST" },
+        { type: "Banners", id: "PUBLIC" },
+      ],
+    }),
+    updateBanner: builder.mutation<
+      { data: IBanner },
+      { id: string; body: Partial<TBannerInput> }
+    >({
+      query: ({ id, body }) => ({
+        url: `/api/banners/${id}`,
+        method: "PATCH",
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json" },
+      }),
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: "Banners", id },
+        { type: "Banners", id: "LIST" },
+        { type: "Banners", id: "PUBLIC" },
+      ],
+    }),
+    deleteBanner: builder.mutation<
+      { message: string; data: IBanner },
+      string
+    >({
+      query: (id) => ({
+        url: `/api/banners/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [
+        { type: "Banners", id: "LIST" },
+        { type: "Banners", id: "PUBLIC" },
+      ],
+    }),
+    uploadBannerImage: builder.mutation<{ data: { url: string } }, FormData>({
+      query: (data) => ({
+        url: "/api/banners/upload",
+        method: "POST",
+        body: data,
+      }),
+    }),
+  }),
 });
 
 export const {
@@ -262,4 +423,16 @@ export const {
   useResetPasswordMutation,
   useRequestChangePasswordMutation,
   useChangePasswordMutation,
+  useGetProductsQuery,
+  useGetProductByIdQuery,
+  useCreateProductMutation,
+  useUpdateProductMutation,
+  useDeleteProductMutation,
+  useGetBannersQuery,
+  useGetAdminBannersQuery,
+  useGetBannerByIdQuery,
+  useCreateBannerMutation,
+  useUpdateBannerMutation,
+  useDeleteBannerMutation,
+  useUploadBannerImageMutation,
 } = api;

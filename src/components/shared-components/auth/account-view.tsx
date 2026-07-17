@@ -1,5 +1,5 @@
 "use client";
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import TextField from "@mui/material/TextField";
 import styles from "./auth.module.css";
@@ -7,7 +7,6 @@ import { textFieldSx, getErrorMessage } from "./auth-utils";
 import { useAppDispatch, useAppSelector } from "@/redux/redux-hooks";
 import { actions as authActions } from "@/redux/auth-slice/auth.slice";
 import {
-  useGetMeQuery,
   useLogoutMutation,
   useRequestChangePasswordMutation,
   useChangePasswordMutation,
@@ -17,7 +16,6 @@ const AccountView: React.FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const user = useAppSelector((store) => store.auth.user);
-  const { isLoading: isMeLoading } = useGetMeQuery();
   const [isChanging, setIsChanging] = useState(false);
   const [code, setCode] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -28,10 +26,6 @@ const AccountView: React.FC = () => {
     useRequestChangePasswordMutation();
   const [changePassword, { isLoading: isSaving, error }] =
     useChangePasswordMutation();
-
-  useEffect(() => {
-    if (!isMeLoading && !user) router.replace("/auth/login");
-  }, [isMeLoading, user, router]);
 
   const logoutHandler = async () => {
     try {

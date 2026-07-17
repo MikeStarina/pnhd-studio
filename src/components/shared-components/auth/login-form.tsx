@@ -3,7 +3,7 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import TextField from "@mui/material/TextField";
 import styles from "./auth.module.css";
-import { textFieldSx, getErrorMessage } from "./auth-utils";
+import { textFieldSx, getErrorMessage, getPostAuthPath } from "./auth-utils";
 import { useAppDispatch, useAppSelector } from "@/redux/redux-hooks";
 import { actions as authActions } from "@/redux/auth-slice/auth.slice";
 import { useLoginMutation } from "@/api/api";
@@ -17,7 +17,7 @@ const LoginForm: React.FC = () => {
   const [login, { isLoading, error }] = useLoginMutation();
 
   useEffect(() => {
-    if (user) router.replace("/auth/account");
+    if (user) router.replace(getPostAuthPath(user));
   }, [user, router]);
 
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
@@ -25,7 +25,7 @@ const LoginForm: React.FC = () => {
     try {
       const res = await login({ email: email.trim(), password }).unwrap();
       dispatch(authActions.setUser(res.user));
-      router.push("/auth/account");
+      router.push(getPostAuthPath(res.user));
     } catch {
       /* error is rendered from the mutation state */
     }
