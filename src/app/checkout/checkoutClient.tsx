@@ -8,8 +8,7 @@ import { useAppSelector, useAppDispatch } from "@/redux/redux-hooks";
 import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
 import MainUserData from "@/components/pages-components/checkout-page/main-user-data/main-user-data";
 import DeliveryData from "@/components/pages-components/checkout-page/delivery-data/delivery-data";
-import { cartSummaryFunc } from "../utils/cart-utils";
-import { checkoutOrderObjectCreateFunc } from "../utils/cart-utils";
+import { cartSummaryFunc, checkoutOrderObjectCreateFunc, orderHasPrints } from "../utils/cart-utils";
 import { useCreateOrderMutation, usePromocodeValidationMutation } from "@/api/api";
 import { useRouter } from "next/navigation";
 import { getCookie } from "../utils/constants";
@@ -51,6 +50,8 @@ const CheckoutPage: React.FC = () => {
     const { isDelivery, order, deliveryParams, paymentUrl, user_promocode, validPromoCode } = useAppSelector(store => store.cart);
     const cart = useAppSelector(store => store.cart);
     const totalOrderPrice = cartSummaryFunc(order!);
+    const hasPrints = orderHasPrints(order);
+    const pricePrefix = hasPrints ? 'от ' : '';
     const [ createOrder, { isLoading, isSuccess} ] = useCreateOrderMutation();
     const [ validatePromocode, { isLoading: isPromocodeLoading, isSuccess: isPromocodeValidationSuccess, reset } ] = usePromocodeValidationMutation();
 
@@ -158,12 +159,12 @@ const CheckoutPage: React.FC = () => {
                         <Image src={rightArrow} alt='стрелка вправо' />
                     </button>
                 </form>
-                <p className={styles.checkout_priceText}>Итого по заказу: {totalOrderPrice} Р.</p>
+                <p className={styles.checkout_priceText}>Итого по заказу: {pricePrefix}{totalOrderPrice.toLocaleString('ru-RU')} Р.</p>
                 <p className={styles.checkout_priceText}>Доставка: {deliveryParams.deliveryPrice} Р.</p>
                 {deliveryParams.validCityTo && deliveryParams.validCityTo.city && <p className={styles.checkout_priceText}>Доставка в: {deliveryParams.validCityTo.city}</p>}
                 {deliveryParams.validDeliveryPoint && deliveryParams.validDeliveryPoint.name && <p className={styles.checkout_priceText}>Пункт выдачи: {deliveryParams.validDeliveryPoint.name}</p>}
-                <p className={styles.checkout_finalPriceText} style={validPromoCode.name ? { textDecoration: 'line-through rgb(153,255,0)'} : {}}>= {totalOrderPrice + deliveryParams.deliveryPrice} Р.</p>
-                {validPromoCode.name && validPromoCode.discount_ratio && <p className={styles.checkout_finalPriceText} style={{ fontSize: '18px' }}>= {(totalOrderPrice * validPromoCode.discount_ratio) + deliveryParams.deliveryPrice} Р.</p>}
+                <p className={styles.checkout_finalPriceText} style={validPromoCode.name ? { textDecoration: 'line-through rgb(153,255,0)'} : {}}>= {pricePrefix}{(totalOrderPrice + deliveryParams.deliveryPrice).toLocaleString('ru-RU')} Р.</p>
+                {validPromoCode.name && validPromoCode.discount_ratio && <p className={styles.checkout_finalPriceText} style={{ fontSize: '18px' }}>= {pricePrefix}{((totalOrderPrice * validPromoCode.discount_ratio) + deliveryParams.deliveryPrice).toLocaleString('ru-RU')} Р.</p>}
                 <button type='submit' form='checkout' className={styles.form_submitButton} disabled={isDisabled || !checkDeliveryValidayion()}>{isDisabled ? 'Загрузка...':'Заказать'}</button>
                 <p className={styles.privacy}>Оформляя заказ вы соглашаетесь с <Link target="_blank" style={{color: 'black'}} href='/privacy'>политикой конфиденциальности</Link></p>
             </div>
