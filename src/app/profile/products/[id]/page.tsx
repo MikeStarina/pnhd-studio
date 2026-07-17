@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
 import { useParams } from "next/navigation";
-import AdminProductForm from "@/components/shared-components/admin/admin-product-form";
+import AdminProductForm from "@/components/shared-components/profile/admin-product-form";
 import { useGetProductByIdQuery } from "@/api/api";
 import { getErrorMessage } from "@/components/shared-components/auth/auth-utils";
-import styles from "@/app/admin/admin.module.css";
+import styles from "@/app/profile/profile.module.css";
 
 const AdminProductEditPage = () => {
   const params = useParams();

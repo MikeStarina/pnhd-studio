@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
 import { useParams } from "next/navigation";
-import AdminBannerForm from "@/components/shared-components/admin/admin-banner-form";
+import AdminBannerForm from "@/components/shared-components/profile/admin-banner-form";
 import { useGetBannerByIdQuery } from "@/api/api";
 import { getErrorMessage } from "@/components/shared-components/auth/auth-utils";
-import styles from "@/app/admin/admin.module.css";
+import styles from "@/app/profile/profile.module.css";
 
 const AdminBannerEditPage = () => {
   const params = useParams();

@@ -33,14 +33,13 @@ const ResetForm: React.FC = () => {
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const res = await resetPassword({
+      await resetPassword({
         email: pendingEmail,
         code,
         newPassword,
       }).unwrap();
-      dispatch(authActions.setUser(res.user));
       dispatch(authActions.resetAuthFlow());
-      router.push("/auth/account");
+      router.push("/auth/login");
     } catch {
       /* error is rendered from the mutation state */
     }

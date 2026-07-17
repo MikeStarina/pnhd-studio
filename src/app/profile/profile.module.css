@@ -3,7 +3,6 @@
   min-height: 60vh;
   width: 100%;
   max-width: 1400px;
-  min-width: 1200px;
   margin: 0 auto;
   padding: 24px 16px 48px;
   gap: 24px;
@@ -264,6 +263,86 @@
   gap: 12px;
   flex-wrap: wrap;
   padding-top: 8px;
+}
+
+.admin_editor {
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.admin_editorToolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px;
+  border-bottom: 1px solid #e5e5e5;
+  background: #fafafa;
+}
+
+.admin_editorBtn {
+  font-family: "Neue_machina", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.admin_editorBtn:hover:not(:disabled) {
+  border-color: #111;
+}
+
+.admin_editorBtn[data-active] {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+.admin_editorBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.admin_editorContent {
+  min-height: 240px;
+  padding: 12px 14px;
+  font-family: "Neue_machina", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.admin_editorContent :global(.tiptap) {
+  outline: none;
+  min-height: 220px;
+}
+
+.admin_editorContent :global(.tiptap h2) {
+  font-size: 20px;
+  margin: 0.8em 0 0.4em;
+}
+
+.admin_editorContent :global(.tiptap h3) {
+  font-size: 16px;
+  margin: 0.7em 0 0.35em;
+}
+
+.admin_editorContent :global(.tiptap p) {
+  margin: 0 0 0.75em;
+}
+
+.admin_editorContent :global(.tiptap ul),
+.admin_editorContent :global(.tiptap ol) {
+  margin: 0 0 0.75em;
+  padding-left: 1.4em;
+}
+
+.admin_editorContent :global(.tiptap a) {
+  color: #0a7;
+  text-decoration: underline;
 }
 
 @media (max-width: 768px) {

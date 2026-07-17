@@ -22,7 +22,7 @@ const RegisterForm: React.FC = () => {
   const [register, { isLoading, error }] = useRegisterMutation();
 
   useEffect(() => {
-    if (user) router.replace("/auth/account");
+    if (user) router.replace("/profile");
   }, [user, router]);
 
   const isValid =

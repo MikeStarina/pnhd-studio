@@ -4,19 +4,17 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "@/redux/redux-provider";
 import InfoBar from "@/components/shared-components/info-bar/info-bar";
-import Header from "@/components/shared-components/header/header";
-import Footer from "@/components/shared-components/footer/footer";
 import MobileMenu from "@/components/shared-components/mobile-menu/mobile-menu";
 import CartIcon from "@/components/shared-components/cart-icon/cart-icon";
 import Popup from "@/components/shared-components/popup/popup";
 import AuthInit from "@/components/shared-components/auth/auth-init";
 import Script from "next/script";
 import CookieBar from "@/components/shared-components/cookie-bar/cookie-bar";
-import { headers } from "next/headers";
 import { textileOptions } from "@/app/utils/textile-options-data";
 import { getCurrentPath } from '@/app/utils/constants';
 import { SITE_INFO } from "@/app/constants";
 import ContactsWidget from "@/components/shared-components/contactsWidget/contactsWidget";
+import SiteChrome from "@/components/shared-components/site-chrome";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -56,9 +54,7 @@ export default function RootLayout({
           <main>
             <CartIcon />
 
-            <Header />
-            {children}
-            <Footer />
+            <SiteChrome>{children}</SiteChrome>
           </main>
           <Script id='roistat'>
             {`(function(w, d, s, h, id) {

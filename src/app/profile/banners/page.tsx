@@ -1,5 +1,5 @@
 import React from "react";
-import AdminBannersList from "@/components/shared-components/admin/admin-banners-list";
+import AdminBannersList from "@/components/shared-components/profile/admin-banners-list";
 
 export const metadata = { title: "Баннеры | Админ | PINHEAD STUDIO" };
 

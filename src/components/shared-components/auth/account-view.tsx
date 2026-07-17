@@ -3,6 +3,7 @@ import React, { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import TextField from "@mui/material/TextField";
 import styles from "./auth.module.css";
+import adminStyles from "@/app/profile/profile.module.css";
 import { textFieldSx, getErrorMessage } from "./auth-utils";
 import { useAppDispatch, useAppSelector } from "@/redux/redux-hooks";
 import { actions as authActions } from "@/redux/auth-slice/auth.slice";
@@ -66,8 +67,11 @@ const AccountView: React.FC = () => {
   if (!user) return null;
 
   return (
-    <div className={styles.auth_account}>
-      <p className={styles.auth_title}>Аккаунт</p>
+    <div>
+      <h1 className={adminStyles.admin_title}>Профиль</h1>
+      <p className={adminStyles.admin_status}>
+        Данные аккаунта и смена пароля.
+      </p>
       <p className={styles.auth_accountRow}>
         <span>Имя: </span>
         {user.name}
@@ -92,7 +96,7 @@ const AccountView: React.FC = () => {
       )}
 
       {!isChanging ? (
-        <>
+        <div className={adminStyles.admin_formActions}>
           <button
             type="button"
             className={styles.auth_submitButton}
@@ -109,7 +113,7 @@ const AccountView: React.FC = () => {
           >
             {isLoggingOut ? "Выходим..." : "Выйти"}
           </button>
-        </>
+        </div>
       ) : (
         <form className={styles.auth_form} onSubmit={changeSubmitHandler}>
           <TextField
