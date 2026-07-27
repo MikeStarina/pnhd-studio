@@ -19,9 +19,12 @@ export const generateMetadata = ({ params }: { params: { slug: string, type: str
         title: option?.meta.metaTitle,
         description: option?.meta.metaDescription,
         keywords: option?.meta.metaKeywords,
+        alternates: {
+            canonical: `https://studio.pnhd.ru/methods/${slug}/${type}`,
+        },
         openGraph: {
             type: 'website',
-            url: `https://studio.pnhd.ru/${params.slug}`,
+            url: `https://studio.pnhd.ru/methods/${slug}/${type}`,
             title: option?.title,
             description: option?.subtitle,
             siteName: 'ПИНХЭД СТУДИЯ',

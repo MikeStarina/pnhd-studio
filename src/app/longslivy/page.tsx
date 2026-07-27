@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     title: 'Печать принта на лонгсливах - нанесение принтов и логотипов на заказ от 1 шт',
     description: 'Печать принта на лонгсливах на заказ в СПб✅Нанесение любого дизайна на одежду✅ Быстрое изготовление партий от 1 шт.✅Выгодные цены и доставка по всей России',
     metadataBase: new URL('https://studio.pnhd.ru'),
+    alternates: {
+        canonical: '/longslivy',
+    },
 };
 
 const Page: React.FC = async () => {

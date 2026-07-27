@@ -13,6 +13,9 @@ export const metadata: Metadata = {
     title: 'Печать принтов на футболках в СПб — нанесение принта на одежду на заказ от 1 шт',
     description: 'Печать принта на футболках на заказ в Санкт-Петербурге. Срочное нанесение любого дизайна по выгодным ценам от 1 шт за 15 минут. Доставка готовых заказов по СПб и всей России.',
     metadataBase: new URL('https://studio.pnhd.ru'),
+    alternates: {
+        canonical: '/futbolki',
+    },
 };
 
 const Page: React.FC = async () => {

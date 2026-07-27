@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     title: 'Кепки и бейсболки с логотипом на заказ - нанесение принтов от 1 штуки по выгодной цене',
     description: 'Кепки и бейсболки с логотипом на заказ. Печать и вышивка на кепках от 1 штуки. Оперативная доставка по Санкт-Петербургу и России. Выгодные цены и специальные условия для заказа оптом.',
     metadataBase: new URL('https://studio.pnhd.ru'),
+    alternates: {
+        canonical: '/kepki',
+    },
 };
 
 const Page: React.FC = async () => {

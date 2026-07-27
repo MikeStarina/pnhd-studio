@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -11,23 +11,21 @@ import AuthInit from "@/components/shared-components/auth/auth-init";
 import Script from "next/script";
 import CookieBar from "@/components/shared-components/cookie-bar/cookie-bar";
 import { textileOptions } from "@/app/utils/textile-options-data";
-import { getCurrentPath } from '@/app/utils/constants';
-import { SITE_INFO } from "@/app/constants";
 import ContactsWidget from "@/components/shared-components/contactsWidget/contactsWidget";
 import SiteChrome from "@/components/shared-components/site-chrome";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export async function generateMetadata(): Promise<Metadata> {
-  let path = getCurrentPath()
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
 
+export async function generateMetadata(): Promise<Metadata> {
   return {
     verification: {
       yandex: "35381404e7bfd3a4",
       //google: "M4lIu49eO2o_XQZ5jyQ3zNkORxQftkEpEvf0E04pRFU",
-    },
-    alternates: {
-      canonical: SITE_INFO.domain + '/' + path.join('/'),
     },
   }
 }

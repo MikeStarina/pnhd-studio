@@ -33,6 +33,8 @@ export async function revalidateShopData(
   if (previousSlug && previousSlug !== slug) {
     revalidatePath(`/shop/${previousSlug}`);
   }
+
+  revalidatePath("/sitemap.xml");
 }
 
 /**
@@ -53,4 +55,6 @@ export async function revalidateBlogData(
   if (previousSlug && previousSlug !== slug) {
     revalidatePath(`/blog/${previousSlug}`, "page");
   }
+
+  revalidatePath("/sitemap.xml");
 }

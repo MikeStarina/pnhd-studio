@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     title: 'Печать принта на худи в СПб - закажите толстовки с нанесением в Санкт-Петербурге | Pinhead Studio',
     description: 'Печать на худи на заказ в СПб. Нанесение принтов, логотипа и дизайна на текстиль от 15 минут. Закажите качественную печать на толстовках и худи от 1 шт по выгодной цене.',
     metadataBase: new URL('https://studio.pnhd.ru'),
+    alternates: {
+        canonical: '/hudi',
+    },
 };
 
 const Page: React.FC = async () => {

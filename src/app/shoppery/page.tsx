@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     title: 'Печать на шопперах и сумках в СПб - нанесение принтов на экоткани в Санкт-Петербурге',
     description: 'Закажите печать на шопперах и сумках в СПб! Создайте стильный промо-мерч с вашим логотипом или ярким принтом✅Печать от 1 шт.✅Срочное нанесение от 15 минут✅Доставка по всей России.',
     metadataBase: new URL('https://studio.pnhd.ru'),
+    alternates: {
+        canonical: '/shoppery',
+    },
 };
 
 const Page: React.FC = async () => {

@@ -32,6 +32,8 @@ export interface IProduct {
   editor_rsleeve_view: string;
   sizes: Array<{ name: string; qty: number; userQty?: number; _id?: string }>;
   friends: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export type TProductInput = Omit<IProduct, "_id" | "stageColor"> & {

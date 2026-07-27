@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     title: 'Печать на свитшотах в СПб - нанесение принтов на толстовки на заказ от 1 шт',
     description: 'Печать принта на свитшоте и толстовке на заказ ✅ Срочное нанесение дизайна на свитшот от 15 минут по низкой цене✅Изготовление от 1 шт✅Доставка по СПб и России.',
     metadataBase: new URL('https://studio.pnhd.ru'),
+    alternates: {
+        canonical: '/svitshoty',
+    },
 };
 
 const Page: React.FC = async () => {

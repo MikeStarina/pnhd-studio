@@ -5,6 +5,9 @@ export const metadata: Metadata = {
     title: "Корзина покупок | Оформление заказа",
     description: "Ваши товары в корзине. Проверьте выбранные товары перед оформлением заказа.",
     metadataBase: new URL("https://studio.pnhd.ru"),
+    alternates: {
+        canonical: "/cart",
+    },
 };
 
 export default function Page() {
