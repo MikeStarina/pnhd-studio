@@ -5,18 +5,12 @@ import {
   useDeleteProductMutation,
   useGetProductsQuery,
 } from "@/api/api";
-import { apiBaseUrl, CDN_URL } from "@/app/utils/constants";
+import { productPhotoSources } from "@/app/utils/product-photos";
 import { revalidateShopData } from "@/app/utils/server-actions";
 import { getErrorMessage } from "@/components/shared-components/auth/auth-utils";
 import styles from "@/app/profile/profile.module.css";
 import { IProduct } from "@/app/utils/types";
 import { ImageComponent } from "@/components/pages-components/shop-page/product-photos/imageComponent";
-
-const imageSrc = (url?: string) => {
-  if (!url) return "";
-  if (url.startsWith("http")) return url;
-  return `${CDN_URL}${url}`;
-};
 
 const AdminProductsList: React.FC = () => {
   const { data, isLoading, error } = useGetProductsQuery();
@@ -142,30 +136,10 @@ interface IListItemProps {
 
 const ListItem: React.FC<IListItemProps> = ({ product, isDeleting, deleteHandler }) => {
 
-  const photo = useMemo(
-    () =>
-      {return {
-        cdnPhoto: `${CDN_URL}/${product.slug}_${0}.jpg`,
-        apiPhoto: product?.galleryPhotos?.[0] ? `${apiBaseUrl}${product.galleryPhotos[0]}` : null,
-      }},
-    [product]
-  );
+  const photo = useMemo(() => productPhotoSources(product, 0), [product]);
   return (
     <tr key={product._id}>
       <td>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        {/* <img
-          className={styles.admin_thumb}
-          src={imageSrc(product.image_url)}
-          alt=""
-          onError={(e) => {
-            const el = e.currentTarget;
-            if (!product.image_url) return;
-            if (!el.src.startsWith(apiBaseUrl)) {
-              el.src = `${apiBaseUrl}${product.image_url}`;
-            }
-          }}
-        /> */}
         <ImageComponent
           src={photo}
           className={styles.admin_thumb}

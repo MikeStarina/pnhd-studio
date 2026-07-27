@@ -2,9 +2,7 @@
 import React from "react";
 import styles from './print-preview.module.css';
 import { ICartOrderElement } from "@/app/utils/types";
-import { getPreviewArrFunc } from "@/app/utils/cart-utils";
-import { ruPrintPlace } from "@/app/utils/cart-utils";
-import Link from "next/link";
+import { BASIC_PRINT_COST, getPreviewArrFunc, ruPrintPlace } from "@/app/utils/cart-utils";
 import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
 import { useAppDispatch } from "@/redux/redux-hooks";
 import { apiBaseUrl } from "@/app/utils/constants";
@@ -20,6 +18,9 @@ const PrintPreview: React.FC<{ elem: ICartOrderElement }> = ({ elem }) => {
         (accumulator, currentValue) => accumulator + currentValue.userQty!,
         0
     );
+    const printUnitPrice = BASIC_PRINT_COST;
+    const printTotalPrice = printUnitPrice * productQty;
+
     return (
         <div className={styles.cart_productPrintPreviews}>
               {previewArr &&
@@ -39,31 +40,25 @@ const PrintPreview: React.FC<{ elem: ICartOrderElement }> = ({ elem }) => {
                     />
                      <div className={styles.prints_info}>
                       <p className={styles.printsInfo_size}>
-                          {ruPrintPlace(item.cartParams!.place)}{' '}{item.cartParams?.size}
+                          {ruPrintPlace(item.cartParams!.place)}
                       </p>
-                      <p
+                      {/* <p className={styles.printsInfo_size}>
+                          {ruPrintPlace(item.cartParams!.place)}{' '}{item.cartParams?.size}
+                      </p> */}
+                      {/* <p
                         className={styles.printsInfo_format}
                       >
                         — формат
                         {' '}
                         {item.cartParams?.format}
-                      </p>
+                      </p> */}
                       <p className={styles.printsInfo_price}>
-                        {item.cartParams?.price}
-                        {' '}
-                        Р. х
-                        {productQty}
-                        {' '}
-                        шт
+                        {printUnitPrice.toLocaleString('ru-RU')} Р. х {productQty}
                       </p>
                       <p
                         className={styles.printsInfo_totalPrice}
                       >
-                        —
-                        {' '}
-                        {item.cartParams?.price! * productQty}
-                        {' '}
-                        Р.
+                        — от {printTotalPrice.toLocaleString('ru-RU')} Р.
                       </p>
                     </div>
                     <div className={styles.printsInfo_controlButtonsWrapper}>

@@ -24,6 +24,8 @@ export interface IProduct {
   isForPrinting: boolean;
   image_url: string;
   galleryPhotos: string[];
+  /** Full CDN URLs, ordered; photos[0] is the main photo. */
+  photos: string[];
   editor_front_view: string;
   editor_back_view: string;
   editor_lsleeve_view: string;

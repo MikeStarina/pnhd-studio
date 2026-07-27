@@ -312,6 +312,31 @@ export const api = createApi({
       }),
       invalidatesTags: [{ type: "Products", id: "LIST" }],
     }),
+    uploadProductPhoto: builder.mutation<
+      { data: { url: string } },
+      { id: string; body: FormData }
+    >({
+      query: ({ id, body }) => ({
+        url: `/api/products/${id}/photos`,
+        method: "POST",
+        body,
+      }),
+    }),
+    deleteProductPhoto: builder.mutation<
+      { data: IProduct },
+      { id: string; url: string }
+    >({
+      query: ({ id, url }) => ({
+        url: `/api/products/${id}/photos`,
+        method: "DELETE",
+        body: JSON.stringify({ url }),
+        headers: { "Content-Type": "application/json" },
+      }),
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: "Products", id },
+        { type: "Products", id: "LIST" },
+      ],
+    }),
     getBanners: builder.query<{ data: IBanner[] }, void>({
       query: () => ({
         url: "/api/banners",
@@ -481,6 +506,8 @@ export const {
   useCreateProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,
+  useUploadProductPhotoMutation,
+  useDeleteProductPhotoMutation,
   useGetBannersQuery,
   useGetAdminBannersQuery,
   useGetBannerByIdQuery,

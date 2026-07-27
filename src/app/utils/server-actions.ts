@@ -38,18 +38,19 @@ export async function revalidateShopData(
 /**
  * Bust Next.js Data Cache for blog listing + post pages.
  * Call after admin create / update / delete.
+ * Uses layout scope so /blog and all /blog/[slug] pages are regenerated.
  */
 export async function revalidateBlogData(
   slug?: string,
   previousSlug?: string
 ) {
   revalidateTag("blogTag");
-  revalidatePath("/blog");
+  revalidatePath("/blog", "layout");
 
   if (slug) {
-    revalidatePath(`/blog/${slug}`);
+    revalidatePath(`/blog/${slug}`, "page");
   }
   if (previousSlug && previousSlug !== slug) {
-    revalidatePath(`/blog/${previousSlug}`);
+    revalidatePath(`/blog/${previousSlug}`, "page");
   }
 }

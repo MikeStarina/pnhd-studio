@@ -4,7 +4,7 @@ import { getShopData } from "@/app/utils/constants";
 import { IProduct } from "@/app/utils/types";
 import ProductDescription from "@/components/pages-components/shop-page/product-description/product-description";
 import { Metadata } from 'next'
-import { apiBaseUrl } from "@/app/utils/constants";
+import { productMainPhotoUrl } from "@/app/utils/product-photos";
 import { SITE_INFO } from "@/app/constants";
 import ProductGallery from "@/components/pages-components/shop-page/product-gallery/product-gallery";
 
@@ -28,7 +28,7 @@ export async function generateMetadata({ params, searchParams }: TMetadataProps)
         description: `${currItem?.name} - ${currItem?.description}`,
         keywords: [currItem?.category!, currItem?.type!, currItem?.color!],
         openGraph: {
-            images: `${apiBaseUrl}${currItem?.image_url}`,
+            images: currItem ? productMainPhotoUrl(currItem) : undefined,
             type: 'website',
             url: `https://studio.pnhd.ru/shop/${params.slug}?id=${searchParams.id}`,
             description: currItem?.description,

@@ -2,7 +2,8 @@ import React, { Suspense } from 'react';
 import {Metadata} from 'next';
 import ProductCardsBlock from '@/components/pages-components/shop-page/product-cards-block/product-cards-block';
 import {IProduct} from '../utils/types';
-import {apiBaseUrl, getShopData} from '../utils/constants';
+import {getShopData} from '../utils/constants';
+import {productMainPhotoUrl} from '../utils/product-photos';
 import ProductFilterComp from '@/components/pages-components/shop-page/products-filter/products-filter';
 import MarkupScript from "@/components/shared-components/markup-script/markup-script";
 import {CatalogPageBreadCrumbsJsonLD, CatalogPageNavigationJsonLD} from "@/app/utils/markups";
@@ -46,7 +47,7 @@ const ShopPage: React.FC = async () => {
             "@type": "Product",
             "name": item.name,
             "url": `https://studio.pnhd.ru/shop/${item.slug}`,
-            "image": `${apiBaseUrl}${item.image_url}`
+            "image": productMainPhotoUrl(item)
           }
         }
       })

@@ -7,8 +7,9 @@ import Checkbox from "@mui/material/Checkbox";
 import MenuItem from "@mui/material/MenuItem";
 import {
   useCreateProductMutation,
+  useDeleteProductPhotoMutation,
   useUpdateProductMutation,
-  useUploadPrintImageMutation,
+  useUploadProductPhotoMutation,
 } from "@/api/api";
 import { IProduct, TProductInput } from "@/app/utils/types";
 import {
@@ -55,6 +56,7 @@ type FormState = {
   isForPrinting: boolean;
   image_url: string;
   galleryPhotos: string[];
+  photos: string[];
   editor_front_view: string;
   editor_back_view: string;
   editor_lsleeve_view: string;
@@ -62,6 +64,13 @@ type FormState = {
   sizes: Array<{ name: string; qty: string }>;
   friends: string;
 };
+
+const EDITOR_VIEWS = [
+  ["editor_front_view", "Перед"],
+  ["editor_back_view", "Спина"],
+  ["editor_lsleeve_view", "Левый рукав"],
+  ["editor_rsleeve_view", "Правый рукав"],
+] as const;
 
 const emptyForm = (): FormState => ({
   slug: "",
@@ -79,6 +88,7 @@ const emptyForm = (): FormState => ({
   isForPrinting: true,
   image_url: "",
   galleryPhotos: [],
+  photos: [],
   editor_front_view: "",
   editor_back_view: "",
   editor_lsleeve_view: "",
@@ -110,6 +120,7 @@ const productToForm = (product: IProduct): FormState => ({
   galleryPhotos: product.galleryPhotos?.length
     ? [...product.galleryPhotos]
     : [],
+  photos: product.photos?.length ? [...product.photos] : [],
   editor_front_view: product.editor_front_view ?? "",
   editor_back_view: product.editor_back_view ?? "",
   editor_lsleeve_view: product.editor_lsleeve_view ?? "",
@@ -150,6 +161,7 @@ const formToPayload = (form: FormState): TProductInput => {
     isForPrinting: form.isForPrinting,
     image_url: form.image_url.trim(),
     galleryPhotos: form.galleryPhotos.map((p) => p.trim()).filter(Boolean),
+    photos: form.photos.map((p) => p.trim()).filter(Boolean),
     editor_front_view: form.editor_front_view.trim(),
     editor_back_view: form.editor_back_view.trim(),
     editor_lsleeve_view: form.editor_lsleeve_view.trim(),
@@ -177,36 +189,106 @@ const AdminProductForm: React.FC<AdminProductFormProps> = ({
   const [successMessage, setSuccessMessage] = useState("");
   const [formError, setFormError] = useState("");
   const [uploadField, setUploadField] = useState<string | null>(null);
+  const [photoError, setPhotoError] = useState("");
 
   const [createProduct, { isLoading: isCreating, error: createError }] =
     useCreateProductMutation();
   const [updateProduct, { isLoading: isUpdating, error: updateError }] =
     useUpdateProductMutation();
-  const [uploadPrintImage, { isLoading: isUploading }] =
-    useUploadPrintImageMutation();
+  const [uploadProductPhoto, { isLoading: isUploading }] =
+    useUploadProductPhotoMutation();
+  const [deleteProductPhoto, { isLoading: isDeletingPhoto }] =
+    useDeleteProductPhotoMutation();
 
+  // Keyed by id only: photo actions refetch the product, and re-syncing on
+  // every refetch would wipe unsaved edits in the rest of the form.
   useEffect(() => {
     if (product) setForm(productToForm(product));
-  }, [product]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product?._id]);
 
   const setField = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
-  const uploadToField = async (
-    file: File,
-    apply: (url: string) => void
-  ) => {
+  const uploadToCdn = async (file: File): Promise<string | null> => {
+    if (!product?._id) return null;
     const data = new FormData();
     data.append("files", file);
+    const res = await uploadProductPhoto({
+      id: product._id,
+      body: data,
+    }).unwrap();
+    return res.data?.url ?? null;
+  };
+
+  // Photo operations hit the database right away: the CDN object already
+  // exists at that point, so leaving the form unsaved would orphan it.
+  const persistPhotos = async (photos: string[]) => {
+    if (!product?._id) return;
+    setField("photos", photos);
+    await updateProduct({ id: product._id, body: { photos } }).unwrap();
+    await revalidateShopData(product.slug);
+  };
+
+  const addPhotosHandler = async (files: FileList) => {
+    setPhotoError("");
+    setUploadField("photos");
     try {
-      const res = await uploadPrintImage(data).unwrap();
-      const url =
-        res.data?.url ??
-        (res as unknown as { url?: string }).url;
-      if (url) apply(url);
-    } catch {
-      /* ignore; user can paste URL */
+      const uploaded: string[] = [];
+      for (const file of Array.from(files)) {
+        const url = await uploadToCdn(file);
+        if (url) uploaded.push(url);
+      }
+      if (uploaded.length) {
+        await persistPhotos([...form.photos, ...uploaded]);
+      }
+    } catch (err) {
+      setPhotoError(getErrorMessage(err));
+    } finally {
+      setUploadField(null);
+    }
+  };
+
+  const removePhotoHandler = async (url: string) => {
+    if (!product?._id) return;
+    setPhotoError("");
+    try {
+      await deleteProductPhoto({ id: product._id, url }).unwrap();
+      setField(
+        "photos",
+        form.photos.filter((item) => item !== url)
+      );
+      await revalidateShopData(product.slug);
+    } catch (err) {
+      setPhotoError(getErrorMessage(err));
+    }
+  };
+
+  const movePhotoHandler = async (index: number, direction: -1 | 1) => {
+    const target = index + direction;
+    if (target < 0 || target >= form.photos.length) return;
+    const next = [...form.photos];
+    [next[index], next[target]] = [next[target], next[index]];
+    setPhotoError("");
+    try {
+      await persistPhotos(next);
+    } catch (err) {
+      setPhotoError(getErrorMessage(err));
+    }
+  };
+
+  const uploadEditorViewHandler = async (
+    file: File,
+    key: (typeof EDITOR_VIEWS)[number][0]
+  ) => {
+    setPhotoError("");
+    setUploadField(key);
+    try {
+      const url = await uploadToCdn(file);
+      if (url) setField(key, url);
+    } catch (err) {
+      setPhotoError(getErrorMessage(err));
     } finally {
       setUploadField(null);
     }
@@ -246,6 +328,7 @@ const AdminProductForm: React.FC<AdminProductFormProps> = ({
 
   const mutationError = createError || updateError;
   const isSaving = isCreating || isUpdating;
+  const isPhotoBusy = isUploading || isDeletingPhoto || isUpdating;
 
   return (
     <form className={styles.admin_form} onSubmit={submitHandler}>
@@ -444,85 +527,128 @@ const AdminProductForm: React.FC<AdminProductFormProps> = ({
       </div>
 
       <div className={styles.admin_formSection}>
-        {/* <p className={styles.admin_formSectionTitle}>Изображения</p> */}
-        {/* {(
-          [
-            ["image_url", "Главное фото"],
-            ["editor_front_view", "Editor front"],
-            ["editor_back_view", "Editor back"],
-            ["editor_lsleeve_view", "Editor left sleeve"],
-            ["editor_rsleeve_view", "Editor right sleeve"],
-          ] as const
-        ).map(([key, label]) => (
-          <div key={key} className={styles.admin_arrayRow}>
-            <TextField
-              label={label}
-              required={key === "image_url"}
-              fullWidth
-              size="small"
-              sx={textFieldSx}
-              value={form[key]}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setField(key, e.target.value)
-              }
-            />
+        <p className={styles.admin_formSectionTitle}>Фото товара</p>
+        {photoError && <p className={styles.admin_error}>{photoError}</p>}
+
+        {mode === "create" ? (
+          <p className={styles.admin_hint}>
+            Сохраните товар, затем добавьте фото.
+          </p>
+        ) : (
+          <>
+            {form.photos.length === 0 && (
+              <p className={styles.admin_hint}>
+                Фото не загружены. Добавьте их — они попадут на CDN и станут
+                источником изображений в каталоге.
+              </p>
+            )}
+
+            <div className={styles.admin_photoGrid}>
+              {form.photos.map((photo, index) => (
+                <div key={photo} className={styles.admin_photoCard}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img className={styles.admin_photoImg} src={photo} alt="" />
+                  {index === 0 && (
+                    <p className={styles.admin_photoBadge}>Главное фото</p>
+                  )}
+                  <div className={styles.admin_photoActions}>
+                    <button
+                      type="button"
+                      className={styles.admin_buttonSecondary}
+                      disabled={index === 0 || isPhotoBusy}
+                      onClick={() => void movePhotoHandler(index, -1)}
+                      aria-label="Сдвинуть влево"
+                    >
+                      ←
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.admin_buttonSecondary}
+                      disabled={index === form.photos.length - 1 || isPhotoBusy}
+                      onClick={() => void movePhotoHandler(index, 1)}
+                      aria-label="Сдвинуть вправо"
+                    >
+                      →
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.admin_buttonDanger}
+                      disabled={isPhotoBusy}
+                      onClick={() => void removePhotoHandler(photo)}
+                      aria-label="Удалить фото"
+                    >
+                      ×
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
             <label>
               <input
                 type="file"
                 accept="image/*"
+                multiple
                 hidden
+                disabled={isPhotoBusy}
                 onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (!file) return;
-                  setUploadField(key);
-                  void uploadToField(file, (url) => setField(key, url));
+                  const files = e.target.files;
+                  if (!files?.length) return;
+                  void addPhotosHandler(files);
+                  e.target.value = "";
                 }}
               />
               <span className={styles.admin_buttonSecondary}>
-                {isUploading && uploadField === key ? "..." : "Upload"}
+                {isUploading && uploadField === "photos"
+                  ? "Загружаем..."
+                  : "+ фото"}
               </span>
             </label>
-          </div>
-        ))} */}
+          </>
+        )}
+      </div>
 
-        {/* <p className={styles.admin_formSectionTitle}>Галерея</p> */}
-        {/* {form.galleryPhotos.map((photo, index) => (
-          <div key={`gallery-${index}`} className={styles.admin_arrayRow}>
-            <TextField
-              label={`Галерея ${index + 1}`}
-              fullWidth
-              size="small"
-              sx={textFieldSx}
-              value={photo}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                const next = [...form.galleryPhotos];
-                next[index] = e.target.value;
-                setField("galleryPhotos", next);
-              }}
-            />
-            <button
-              type="button"
-              className={styles.admin_buttonDanger}
-              onClick={() =>
-                setField(
-                  "galleryPhotos",
-                  form.galleryPhotos.filter((_, i) => i !== index)
-                )
-              }
-            >
-              −
-            </button>
-          </div>
-        ))} */}
-        {/* <button
-          type="button"
-          className={styles.admin_buttonSecondary}
-          onClick={() =>
-            setField("galleryPhotos", [...form.galleryPhotos, ""])
-          }
-        >
-          + фото галереи
-        </button> */}
+      <div className={styles.admin_formSection}>
+        {/* <p className={styles.admin_formSectionTitle}>
+          Изображения для конструктора
+        </p> */}
+        {/* {mode === "create" ? (
+          <p className={styles.admin_hint}>
+            Сохраните товар, затем загрузите виды для конструктора.
+          </p>
+        ) : (
+          EDITOR_VIEWS.map(([key, label]) => (
+            <div key={key} className={styles.admin_arrayRow}>
+              <TextField
+                label={label}
+                fullWidth
+                size="small"
+                sx={textFieldSx}
+                value={form[key]}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setField(key, e.target.value)
+                }
+              />
+              <label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  disabled={isPhotoBusy}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    void uploadEditorViewHandler(file, key);
+                    e.target.value = "";
+                  }}
+                />
+                <span className={styles.admin_buttonSecondary}>
+                  {isUploading && uploadField === key ? "..." : "Загрузить"}
+                </span>
+              </label>
+            </div>
+          ))
+        )} */}
       </div>
 
       <div className={styles.admin_formSection}>

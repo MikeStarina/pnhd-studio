@@ -68,11 +68,11 @@ const Blog = async () => {
                         <span className={'breadcrumb-item'}>{h1}</span>
                     </div>
                     <h1 className={cx('blogPage__title')}>{h1}</h1>
-                    <div className={cx('articles-tag-list')}>
+                    {/* <div className={cx('articles-tag-list')}>
                         {tagList.map((item, index) => (
                             <ArticleTagButton key={index} tag={item}/>
                         ))}
-                    </div>
+                    </div> */}
                     <div className={cx('blogPage__posts')}>
                         {posts.map((post, index) => (
                             <Link href={`/blog/${post.slug}`} className={cx('blogPage__card')} key={post.post_id}>
@@ -80,9 +80,9 @@ const Blog = async () => {
                                     <img src={post.cover} alt='Обложка поста' className={cx('blogPage__card-cover')}/>
                                     <div className={cx('blogPage__card-title-wrapper')}>
                                         <div className={cx('blogPage__card-subtext')}>
-                                            <div className={cx('blogPage__card-tag-list')}>
+                                            {/* <div className={cx('blogPage__card-tag-list')}>
                                                 <div className={cx('blogPage__card-tag')}>Пошив</div>
-                                            </div>
+                                            </div> */}
                                             <div className={cx('blogPage__card-plain-text')}>{post.createdAt}</div>
                                         </div>
                                         <h2 className={cx('blogPage__card-title')}>{post.title}</h2>

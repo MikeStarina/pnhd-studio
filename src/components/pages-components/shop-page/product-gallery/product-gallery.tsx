@@ -2,21 +2,14 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { IProduct } from '@/app/utils/types';
-import { apiBaseUrl, CDN_URL } from '@/app/utils/constants';
+import { productGallerySources } from '@/app/utils/product-photos';
 import { ImageComponent } from '@/components/pages-components/shop-page/product-photos/imageComponent';
 import styles from './product-gallery.module.css';
 
 const AUTO_SCROLL_DELAY = 4000;
 
 const ProductGallery: React.FC<{ item: IProduct }> = ({ item }) => {
-    const photosArray = useMemo(
-        () =>
-            [0, 1, 2, 3].map((index) => ({
-                cdnPhoto: `${CDN_URL}/${item.slug}_${index}.jpg`,
-                apiPhoto: item?.galleryPhotos?.[index] ? `${apiBaseUrl}${item.galleryPhotos[index]}` : null,
-            })),
-        [item]
-    );
+    const photosArray = useMemo(() => productGallerySources(item), [item]);
 
     const galleryRef = useRef<HTMLUListElement | null>(null);
     const [activeIndex, setActiveIndex] = useState(0);

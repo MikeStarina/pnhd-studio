@@ -2,7 +2,7 @@
 import React from "react";
 import { Image } from "react-konva";
 import useImage from "use-image";
-import { apiBaseUrl } from "@/app/utils/constants";
+import { absoluteMediaUrl } from "@/app/utils/product-photos";
 import { useAppDispatch, useAppSelector } from "@/redux/redux-hooks";
 import { IProduct } from "@/app/utils/types";
 
@@ -12,13 +12,13 @@ const Mockup: React.FC<{ item: IProduct}> = ({ item }) => {
     //console.log(activeView);
     const mockup =
         activeView === "front"
-            ? `${apiBaseUrl}${item.editor_front_view}`
+            ? absoluteMediaUrl(item.editor_front_view)
             : activeView === "back"
-                ? `${apiBaseUrl}${item.editor_back_view}`
+                ? absoluteMediaUrl(item.editor_back_view)
                 : activeView === "lsleeve"
-                    ? `${apiBaseUrl}${item.editor_lsleeve_view}`
+                    ? absoluteMediaUrl(item.editor_lsleeve_view)
                     : activeView === "rsleeve"
-                        ? `${apiBaseUrl}${item.editor_rsleeve_view}`
+                        ? absoluteMediaUrl(item.editor_rsleeve_view)
                         : null;
     //console.log(mockup);
     const [mockupImg] = useImage(mockup!, "anonymous");

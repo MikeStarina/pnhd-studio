@@ -1,13 +1,10 @@
 'use client'
-import { useState, useEffect } from "react";
-import { CDN_URL } from "@/app/utils/constants";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import { PHOTO_PLACEHOLDER, TPhotoSource } from "@/app/utils/product-photos";
 
 interface IImageComponentProps {
-    src: {
-        cdnPhoto: string;
-        apiPhoto: string | null;
-    };
+    src: TPhotoSource;
     className: string;
     width: number;
     height: number;
@@ -15,16 +12,16 @@ interface IImageComponentProps {
 
 export const ImageComponent: React.FC<IImageComponentProps> = ({ src, className, width, height }) => {
     const [imageSrc, setImageSrc] = useState(src.cdnPhoto);
-    const [imageError, setImageError] = useState(false);
+    const [triedApiFallback, setTriedApiFallback] = useState(false);
 
     useEffect(() => {
-        if (imageError) {
-            setImageSrc(`${CDN_URL}/no%20photo.png`);
-        }
-    }, [imageError]);
+        setImageSrc(src.cdnPhoto);
+        setTriedApiFallback(false);
+    }, [src.cdnPhoto]);
+
     return (
         <Image
-            src={imageSrc}
+            src={imageSrc || PHOTO_PLACEHOLDER}
             alt="card pic"
             className={className}
             width={width}
@@ -32,11 +29,14 @@ export const ImageComponent: React.FC<IImageComponentProps> = ({ src, className,
             loading="lazy"
             unoptimized
             onError={() => {
-                if (imageSrc.includes('cdn.pnhd.ru') && !imageError && src.apiPhoto) {
+                if (src.apiPhoto && !triedApiFallback) {
+                    setTriedApiFallback(true);
                     setImageSrc(src.apiPhoto);
                     return;
                 }
-                setImageError(true);
+                if (imageSrc !== PHOTO_PLACEHOLDER) {
+                    setImageSrc(PHOTO_PLACEHOLDER);
+                }
             }}
         />
     );
