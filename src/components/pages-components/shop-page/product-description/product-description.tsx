@@ -14,6 +14,7 @@ const ProductDescription: React.FC<{ item: IProduct }> = ({ item }) => {
     const { sizes } = useAppSelector((store) => store.utils);
     const hasSelectedSizes = sizes?.some((item) => item.userQty > 0);
     const dispatch = useAppDispatch();
+    console.log(item)
     return (
         <div className={styles.product_box}>
             <div className={styles.description}>
@@ -47,9 +48,11 @@ const ProductDescription: React.FC<{ item: IProduct }> = ({ item }) => {
                 <div className={styles.size_changer_box}>
                     <SizeChanger item={item} />
                 </div>
-                <div className={styles.row}>
-                    <PrintAddBlock item={item} />
-                </div>
+                {item.isForPrinting && (
+                    <div className={styles.row}>
+                        <PrintAddBlock item={item} />
+                    </div>
+                )}
             </div>
             <ActionButtons item={item} />
         </div>
