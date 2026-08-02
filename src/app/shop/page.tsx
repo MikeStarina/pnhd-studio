@@ -6,7 +6,7 @@ import {getShopData} from '../utils/constants';
 import {productMainPhotoUrl} from '../utils/product-photos';
 import ProductFilterComp from '@/components/pages-components/shop-page/products-filter/products-filter';
 import MarkupScript from "@/components/shared-components/markup-script/markup-script";
-import {CatalogPageBreadCrumbsJsonLD, CatalogPageNavigationJsonLD} from "@/app/utils/markups";
+import {CatalogPageNavigationJsonLD} from "@/app/utils/markups";
 import FaqScreen from '@/components/pages-components/main-page/faq-screen/faq-screen';
 import NoModelBlock from '@/components/shared-components/noModelBlock/NoModelBlock';
 
@@ -63,7 +63,6 @@ const ShopPage: React.FC = async () => {
       <ProductFilterComp shopData={shopData}>
         {shopData && shopData.length > 0 && <ProductCardsBlock shopData={shopData}/>}
         <MarkupScript jsonLd={jsonLdCatalog} />
-        <MarkupScript jsonLd={CatalogPageBreadCrumbsJsonLD} />
         <MarkupScript jsonLd={CatalogPageNavigationJsonLD} />
       </ProductFilterComp>
       <NoModelBlock />

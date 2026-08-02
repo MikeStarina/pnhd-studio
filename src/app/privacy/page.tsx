@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './page.module.css';
 import {Metadata} from "next";
+import Breadcrumbs from '@/components/shared-components/breadcrumbs/Breadcrumbs';
 
 export const metadata: Metadata = {
     title: "Политика конфиденциальности | Studio PNHD",
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
 function PrivacyPolicyPage() {
   return (
     <section className={styles.page}>
+      <Breadcrumbs items={[{label: 'Главная', href: '/'}, {label: 'Политика конфиденциальности', href: '/privacy'}]} />
         <h1>Политика конфиденциальности</h1>
       Общие положения
       <br />

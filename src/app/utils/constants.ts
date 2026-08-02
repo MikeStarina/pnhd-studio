@@ -1,4 +1,4 @@
-import { IProduct } from "./types";
+import { IProduct, ICategory } from "./types";
 import { TBlogPosts } from "./types";
 import { retry } from "@reduxjs/toolkit/query";
 
@@ -35,6 +35,16 @@ export const getShopData = async (searchParams?: { [n: string]: string }) => {
     }).then(checkResponse)
     console.log(shopData);
     return shopData.data;
+}
+
+export const getCategoriesData = async (): Promise<ICategory[]> => {
+    const res: { data: ICategory[] } = await fetch(`${apiBaseUrl}/api/categories`, {
+        next: { revalidate: 3600, tags: ['categoriesDataTag'] },
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }).then(checkResponse);
+    return res.data;
 }
 
 export const getPosts = async (): Promise<TBlogPosts> => {

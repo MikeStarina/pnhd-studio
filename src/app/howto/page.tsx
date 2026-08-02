@@ -7,6 +7,7 @@ import { Metadata } from "next";
 
 import FeedbackScreen from "@/components/pages-components/main-page/feedback-screen/feedback-screen";
 import MapScreen from "@/components/pages-components/main-page/map-screen/map-screen";
+import Breadcrumbs from '@/components/shared-components/breadcrumbs/Breadcrumbs';
 
 import tf from "../../../public/howto/tf.jpg";
 import tb from "../../../public/howto/tb.jpg";
@@ -36,6 +37,7 @@ export const generateMetadata = (): Metadata => {
 const Page: React.FC = () => {
   return (
     <>
+      <Breadcrumbs items={[{label: 'Главная', href: '/'}, {label: 'Как пользоваться конструктором', href: '/howto'}]} />
       <section className={styles.method_mainScreen}>
         <div className={styles.method_titleWrapper}>
           <h1 className={styles.method_title}>{`HOW TO > КОНСТРУКТОР`}</h1>

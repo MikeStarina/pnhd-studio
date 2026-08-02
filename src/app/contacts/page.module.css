@@ -13,6 +13,26 @@
     text-transform: uppercase;
     font-family: 'DrukTextWideCyr-Medium';
     font-size: 46px;
+    width: 100%;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+@media (max-width: 720px) {
+    .page_title {
+        font-size: 34px;
+    }
+}
+@media (max-width: 500px) {
+    .page_title {
+        font-size: 26px;
+    }
+}
+@media (max-width: 400px) {
+    .page_title {
+        font-size: 25px;
+    }
 }
 
 .main_text_wrapper {

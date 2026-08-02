@@ -3,6 +3,7 @@ import styles from "@/app/contacts/page.module.css";
 import {Metadata} from "next";
 import MapScreen from "@/components/pages-components/main-page/map-screen/map-screen";
 import MarkupScript from "@/components/shared-components/markup-script/markup-script";
+import Breadcrumbs from '@/components/shared-components/breadcrumbs/Breadcrumbs';
 
 export const metadata: Metadata = {
   title: 'Контактная информация студии печати на одежде ПИНХЭД СТУДИЯ',
@@ -45,27 +46,9 @@ const Page: React.FC = () => {
       "https://telegram.me/pnhd_studio_bot"
     ]
   }
-  const jsonLdBreadcrumbList = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Главная",
-        "item": "https://studio.pnhd.ru/"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Контакты",
-        "item": "https://studio.pnhd.ru/contacts"
-      }
-    ]
-  }
-
   return (
     <>
+      <Breadcrumbs items={[{label: 'Главная', href: '/'}, {label: 'Контакты', href: '/contacts'}]} />
       <div className={styles.title_wrapper}>
         <h1 className={styles.page_title}>Контакты</h1>
       </div>
@@ -81,7 +64,6 @@ const Page: React.FC = () => {
         </div>
       </section>
       <MarkupScript jsonLd={jsonLdOrganization}/>
-      <MarkupScript jsonLd={jsonLdBreadcrumbList}/>
     </>
   )
 }

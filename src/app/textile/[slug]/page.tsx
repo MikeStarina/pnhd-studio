@@ -8,6 +8,7 @@ import { Metadata } from "next";
 import DtfCalculator from "@/components/pages-components/method-page/dtf-calculator/dtf-calculator";
 import Link from "next/link";
 import { textileOptions } from "@/app/utils/textile-options-data";
+import Breadcrumbs from '@/components/shared-components/breadcrumbs/Breadcrumbs';
 
 export const generateMetadata = ({
     params,
@@ -44,6 +45,11 @@ const MethodPage: React.FC<{
         <>
             {textile && (
                 <>
+                    <Breadcrumbs items={[
+                        {label: 'Главная', href: '/'},
+                        {label: 'Текстиль', href: '/textile'},
+                        {label: `${textile.title} ${textile.subtitle}`, href: `/textile/${textile.slug}`},
+                    ]} />
                     <section className={styles.method_mainScreen}>
                         <div className={styles.method_titleWrapper}>
                             <h1

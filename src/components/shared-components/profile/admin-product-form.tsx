@@ -5,13 +5,19 @@ import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import MenuItem from "@mui/material/MenuItem";
+import ListItemText from "@mui/material/ListItemText";
+import Link from "next/link";
 import {
   useCreateProductMutation,
   useDeleteProductPhotoMutation,
+  useGetCategoriesQuery,
+  useGetTagsQuery,
   useUpdateProductMutation,
   useUploadProductPhotoMutation,
 } from "@/api/api";
 import { IProduct, TProductInput } from "@/app/utils/types";
+import { toCategoryArray } from "@/app/utils/product-categories";
+import { toTagArray } from "@/app/utils/product-tags";
 import {
   getErrorMessage,
   textFieldSx,
@@ -26,13 +32,6 @@ const PRODUCT_TYPES = [
   { label: "Худи", value: "hoodie" },
   { label: "Шоппер", value: "totebag" },
   { label: "Кепка", value: "cap" },
-];
-
-const PRODUCT_CATEGORIES = [
-  { label: "Мужское", value: "man" },
-  { label: "Женское", value: "woman" },
-  { label: "Детское", value: "kids" },
-  { label: "Аксессуары", value: "accesorize" },
 ];
 
 type FormState = {
@@ -51,8 +50,8 @@ type FormState = {
   };
   stock: string;
   color: string;
-  category: string;
-  isSale: boolean;
+  category: string[];
+  tags: string[];
   isForPrinting: boolean;
   image_url: string;
   galleryPhotos: string[];
@@ -83,8 +82,8 @@ const emptyForm = (): FormState => ({
   shippingParams: { weight: "", width: "", length: "", depth: "" },
   stock: "studio",
   color: "",
-  category: "man",
-  isSale: false,
+  category: [],
+  tags: [],
   isForPrinting: true,
   image_url: "",
   galleryPhotos: [],
@@ -113,8 +112,8 @@ const productToForm = (product: IProduct): FormState => ({
   },
   stock: product.stock ?? "studio",
   color: product.color ?? "",
-  category: product.category ?? "man",
-  isSale: Boolean(product.isSale),
+  category: toCategoryArray(product.category),
+  tags: toTagArray(product.tags),
   isForPrinting: product.isForPrinting !== false,
   image_url: product.image_url ?? "",
   galleryPhotos: product.galleryPhotos?.length
@@ -157,7 +156,7 @@ const formToPayload = (form: FormState): TProductInput => {
     stock: form.stock.trim() || "studio",
     color: form.color.trim(),
     category: form.category,
-    isSale: form.isSale,
+    tags: form.tags,
     isForPrinting: form.isForPrinting,
     image_url: form.image_url.trim(),
     galleryPhotos: form.galleryPhotos.map((p) => p.trim()).filter(Boolean),
@@ -199,6 +198,11 @@ const AdminProductForm: React.FC<AdminProductFormProps> = ({
     useUploadProductPhotoMutation();
   const [deleteProductPhoto, { isLoading: isDeletingPhoto }] =
     useDeleteProductPhotoMutation();
+  const { data: categoriesData, isLoading: isCategoriesLoading } =
+    useGetCategoriesQuery();
+  const categories = categoriesData?.data ?? [];
+  const { data: tagsData, isLoading: isTagsLoading } = useGetTagsQuery();
+  const tags = tagsData?.data ?? [];
 
   // Keyed by id only: photo actions refetch the product, and re-syncing on
   // every refetch would wipe unsaved edits in the rest of the form.
@@ -308,6 +312,10 @@ const AdminProductForm: React.FC<AdminProductFormProps> = ({
       setFormError("Добавьте хотя бы один размер");
       return;
     }
+    if (form.category.length < 1) {
+      setFormError("Выберите хотя бы одну категорию");
+      return;
+    }
 
     const body = formToPayload(form);
     try {
@@ -336,6 +344,12 @@ const AdminProductForm: React.FC<AdminProductFormProps> = ({
         <h1 className={styles.admin_title}>
           {mode === "create" ? "Новый товар" : "Редактирование товара"}
         </h1>
+        <Link href="/profile/categories" className={styles.admin_buttonSecondary}>
+          Управление категориями
+        </Link>
+        <Link href="/profile/tags" className={styles.admin_buttonSecondary}>
+          Управление тегами
+        </Link>
       </div>
 
       {successMessage && (
@@ -390,19 +404,71 @@ const AdminProductForm: React.FC<AdminProductFormProps> = ({
         </TextField>
         <TextField
           select
-          label="Категория"
+          label="Категории"
           required
           fullWidth
           size="small"
           sx={textFieldSx}
           value={form.category}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setField("category", e.target.value)
+          disabled={isCategoriesLoading}
+          helperText={
+            categories.length === 0 && !isCategoriesLoading
+              ? "Категорий пока нет — создайте их в разделе «Категории»"
+              : undefined
           }
+          SelectProps={{
+            multiple: true,
+            renderValue: (selected) =>
+              (selected as string[])
+                .map(
+                  (value) =>
+                    categories.find((opt) => opt._id === value)?.label ??
+                    value
+                )
+                .join(", "),
+          }}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            setField("category", e.target.value as unknown as string[]);
+          }}
         >
-          {PRODUCT_CATEGORIES.map((opt) => (
-            <MenuItem key={opt.value} value={opt.value}>
-              {opt.label}
+          {categories.map((opt) => (
+            <MenuItem key={opt._id} value={opt._id}>
+              <Checkbox checked={form.category.includes(opt._id)} />
+              <ListItemText primary={opt.label} />
+            </MenuItem>
+          ))}
+        </TextField>
+        <TextField
+          select
+          label="Теги"
+          fullWidth
+          size="small"
+          sx={textFieldSx}
+          value={form.tags}
+          disabled={isTagsLoading}
+          helperText={
+            tags.length === 0 && !isTagsLoading
+              ? "Тегов пока нет — создайте их в разделе «Теги»"
+              : undefined
+          }
+          SelectProps={{
+            multiple: true,
+            renderValue: (selected) =>
+              (selected as string[])
+                .map(
+                  (value) =>
+                    tags.find((opt) => opt._id === value)?.label ?? value
+                )
+                .join(", "),
+          }}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
+            setField("tags", e.target.value as unknown as string[]);
+          }}
+        >
+          {tags.map((opt) => (
+            <MenuItem key={opt._id} value={opt._id}>
+              <Checkbox checked={form.tags.includes(opt._id)} />
+              <ListItemText primary={opt.label} />
             </MenuItem>
           ))}
         </TextField>
@@ -476,15 +542,6 @@ const AdminProductForm: React.FC<AdminProductFormProps> = ({
       />
 
       <div className={styles.admin_checks}>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={form.isSale}
-              onChange={(e) => setField("isSale", e.target.checked)}
-            />
-          }
-          label="Sale"
-        />
         <FormControlLabel
           control={
             <Checkbox

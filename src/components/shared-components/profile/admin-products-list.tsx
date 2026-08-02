@@ -3,6 +3,7 @@ import React, { useMemo } from "react";
 import Link from "next/link";
 import {
   useDeleteProductMutation,
+  useGetCategoriesQuery,
   useGetProductsQuery,
 } from "@/api/api";
 import { productPhotoSources } from "@/app/utils/product-photos";
@@ -10,14 +11,27 @@ import { revalidateShopData } from "@/app/utils/server-actions";
 import { getErrorMessage } from "@/components/shared-components/auth/auth-utils";
 import styles from "@/app/profile/profile.module.css";
 import { IProduct } from "@/app/utils/types";
+import { toCategoryArray } from "@/app/utils/product-categories";
 import { ImageComponent } from "@/components/pages-components/shop-page/product-photos/imageComponent";
+
+const categoryLabels = (
+  category: unknown,
+  categoryMap: Map<string, string>
+): string =>
+  toCategoryArray(category)
+    .map((value) => categoryMap.get(value) ?? value)
+    .join(", ");
 
 const AdminProductsList: React.FC = () => {
   const { data, isLoading, error } = useGetProductsQuery();
+  const { data: categoriesData } = useGetCategoriesQuery();
   const [deleteProduct, { isLoading: isDeleting, error: deleteError }] =
     useDeleteProductMutation();
 
   const products = data?.data ?? [];
+  const categoryMap = new Map(
+    (categoriesData?.data ?? []).map((item) => [item._id, item.label])
+  );
 
   const deleteHandler = async (product: IProduct) => {
     if (!window.confirm(`Удалить товар «${product.name}»?`)) return;
@@ -69,7 +83,13 @@ const AdminProductsList: React.FC = () => {
           </thead>
           <tbody>
             {products.map((product) => (
-              <ListItem key={product._id} product={product} isDeleting={isDeleting} deleteHandler={deleteHandler} />
+              <ListItem
+                key={product._id}
+                product={product}
+                categoryMap={categoryMap}
+                isDeleting={isDeleting}
+                deleteHandler={deleteHandler}
+              />
               // <tr key={product._id}>
               //   <td>
               //     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -130,11 +150,17 @@ const AdminProductsList: React.FC = () => {
 
 interface IListItemProps {
   product: IProduct;
+  categoryMap: Map<string, string>;
   isDeleting: boolean;
   deleteHandler: (product: IProduct) => void;
 }
 
-const ListItem: React.FC<IListItemProps> = ({ product, isDeleting, deleteHandler }) => {
+const ListItem: React.FC<IListItemProps> = ({
+  product,
+  categoryMap,
+  isDeleting,
+  deleteHandler,
+}) => {
 
   const photo = useMemo(() => productPhotoSources(product, 0), [product]);
   return (
@@ -156,7 +182,7 @@ const ListItem: React.FC<IListItemProps> = ({ product, isDeleting, deleteHandler
         </Link>
       </td>
       <td>{product.type}</td>
-      <td>{product.category}</td>
+      <td>{categoryLabels(product.category, categoryMap)}</td>
       <td>{product.color}</td>
       <td>{product.price}</td>
       <td>

@@ -8,6 +8,7 @@ import { ssOptions } from '@/app/utils/method-options-data';
 import {prices} from "@/app/utils/constants";
 import MarkupScript from "@/components/shared-components/markup-script/markup-script";
 import AdvantagesComponent from "@/components/pages-components/method-page/advantages/advantages";
+import Breadcrumbs from '@/components/shared-components/breadcrumbs/Breadcrumbs';
 
 
 
@@ -109,42 +110,18 @@ const MethodOptionsPage: React.FC<{
         "areaServed": "Санкт-Петербург",
         "offers": offers
     }
-    const jsonLdBreadcrumbList = {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Главная",
-                "item": "https://studio.pnhd.ru/"
-            },
-            {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "Методы печати",
-                "item": "https://studio.pnhd.ru/methods"
-            },
-            {
-                "@type": "ListItem",
-                "position": 3,
-                "name": (option.title ?? "").replace(/>/g, '').trim(),
-                "item": `https://studio.pnhd.ru/methods/${option?.slug}`
-            },
-            {
-                "@type": "ListItem",
-                "position": 4,
-                "name": `${option.meta.metaTitle}`,
-                "item": `https://studio.pnhd.ru/methods/${option?.slug}/${option?.type}`
-            },
-
-        ]
-    }
+    const breadcrumbItems = [
+        {label: 'Главная', href: '/'},
+        {label: 'Методы печати', href: '/methods'},
+        {label: (option.title ?? "").replace(/>/g, '').trim(), href: `/methods/${option?.slug}`},
+        {label: option.subtitle, href: `/methods/${option?.slug}/${option?.type}`},
+    ];
 
     return (
         <>
             { option && (
                 <>
+                    <Breadcrumbs items={breadcrumbItems} />
                     <section className={styles.method_mainScreen}>
                         <div className={styles.method_titleWrapper}>
                             <h1
@@ -206,7 +183,6 @@ const MethodOptionsPage: React.FC<{
 
                     <MarkupScript jsonLd={jsonLdWebPage}/>
                     <MarkupScript jsonLd={jsonLdService}/>
-                    <MarkupScript jsonLd={jsonLdBreadcrumbList}/>
                 </>
         )}
         </>

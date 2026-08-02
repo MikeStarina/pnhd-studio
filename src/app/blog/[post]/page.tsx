@@ -5,6 +5,7 @@ import {getPosts} from '@/app/utils/constants';
 import {SITE_INFO} from "@/app/constants";
 import {Metadata} from "next";
 import {notFound} from "next/navigation";
+import Breadcrumbs from '@/components/shared-components/breadcrumbs/Breadcrumbs';
 
 const cx = classNames.bind(styles);
 
@@ -45,6 +46,7 @@ const PostPage = async ({params}: { params: { post: string } }) => {
 
     return (
         <section className={cx('postPage')}>
+            <Breadcrumbs items={[{label: 'Главная', href: '/'}, {label: 'Блог', href: '/blog'}, {label: post.title, href: '/blog/'+post.slug}]} />
             <div className={cx('postPage__head')}>
                 <div className={cx('postPage__head-block', 'postPage__head-block_left')}>
                     <div className="">

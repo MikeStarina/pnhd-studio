@@ -14,6 +14,7 @@ import PrintMethodsScreen from "@/components/pages-components/main-page/print-me
 import {type} from "node:os";
 import { SITE_INFO } from "@/app/constants";
 import AdvantagesComponent from "@/components/pages-components/method-page/advantages/advantages";
+import Breadcrumbs from '@/components/shared-components/breadcrumbs/Breadcrumbs';
 
 export const generateMetadata = ({params}: { params: { slug: string } }): Metadata => {
   const method = methodsData.find((item) => item.slug === params.slug);
@@ -110,35 +111,15 @@ const MethodPage: React.FC<{
     "areaServed": "Санкт-Петербург",
     "offers": offers
   }
-  const jsonLdBreadcrumbList = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Главная",
-        "item": "https://studio.pnhd.ru/"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Методы печати",
-        "item": "https://studio.pnhd.ru/methods"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": `${method?.main_title ?? ""}`,
-        "item": `https://studio.pnhd.ru/methods/${method?.slug ?? ""}`
-      }
-    ]
-  }
-
   return (
     <>
       {method && (
         <>
+          <Breadcrumbs items={[
+            {label: 'Главная', href: '/'},
+            {label: 'Методы печати', href: '/methods'},
+            {label: method.main_title, href: `/methods/${method.slug}`},
+          ]} />
           <section className={styles.method_mainScreen}>
             <div className={styles.method_titleWrapper}>
               <h1
@@ -227,7 +208,6 @@ const MethodPage: React.FC<{
           </section>
           <MarkupScript jsonLd={jsonLdWebPage}/>
           <MarkupScript jsonLd={jsonLdService}/>
-          <MarkupScript jsonLd={jsonLdBreadcrumbList}/>
         </>
       )}
     </>

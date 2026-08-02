@@ -12,6 +12,10 @@ import {
   TBannerInput,
   IBlogPost,
   TBlogPostInput,
+  ICategory,
+  TCategoryInput,
+  ITag,
+  TTagInput,
 } from "@/app/utils/types";
 
 export interface IAuthUser {
@@ -34,7 +38,7 @@ export type TOtpPurpose = "register" | "reset" | "change";
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({ baseUrl: apiBaseUrl, credentials: "include" }),
-  tagTypes: ["Auth", "Products", "Banners", "Blog"],
+  tagTypes: ["Auth", "Products", "Banners", "Blog", "Categories", "Tags"],
   endpoints: (builder) => ({
     register: builder.mutation<
       { message: string; email: string },
@@ -479,6 +483,120 @@ export const api = createApi({
         body: data,
       }),
     }),
+    getCategories: builder.query<{ data: ICategory[] }, void>({
+      query: () => ({
+        url: "/api/categories",
+        method: "GET",
+      }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.data.map(({ _id }) => ({
+                type: "Categories" as const,
+                id: _id,
+              })),
+              { type: "Categories", id: "LIST" },
+            ]
+          : [{ type: "Categories", id: "LIST" }],
+    }),
+    getCategoryById: builder.query<{ data: ICategory }, string>({
+      query: (id) => ({
+        url: `/api/categories/${id}`,
+        method: "GET",
+      }),
+      providesTags: (_result, _error, id) => [{ type: "Categories", id }],
+    }),
+    createCategory: builder.mutation<{ data: ICategory }, TCategoryInput>({
+      query: (body) => ({
+        url: "/api/categories",
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json" },
+      }),
+      invalidatesTags: [{ type: "Categories", id: "LIST" }],
+    }),
+    updateCategory: builder.mutation<
+      { data: ICategory },
+      { id: string; body: Partial<TCategoryInput> }
+    >({
+      query: ({ id, body }) => ({
+        url: `/api/categories/${id}`,
+        method: "PATCH",
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json" },
+      }),
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: "Categories", id },
+        { type: "Categories", id: "LIST" },
+      ],
+    }),
+    deleteCategory: builder.mutation<
+      { message: string; data: ICategory },
+      string
+    >({
+      query: (id) => ({
+        url: `/api/categories/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [{ type: "Categories", id: "LIST" }],
+    }),
+    getTags: builder.query<{ data: ITag[] }, void>({
+      query: () => ({
+        url: "/api/tags",
+        method: "GET",
+      }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.data.map(({ _id }) => ({
+                type: "Tags" as const,
+                id: _id,
+              })),
+              { type: "Tags", id: "LIST" },
+            ]
+          : [{ type: "Tags", id: "LIST" }],
+    }),
+    getTagById: builder.query<{ data: ITag }, string>({
+      query: (id) => ({
+        url: `/api/tags/${id}`,
+        method: "GET",
+      }),
+      providesTags: (_result, _error, id) => [{ type: "Tags", id }],
+    }),
+    createTag: builder.mutation<{ data: ITag }, TTagInput>({
+      query: (body) => ({
+        url: "/api/tags",
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json" },
+      }),
+      invalidatesTags: [{ type: "Tags", id: "LIST" }],
+    }),
+    updateTag: builder.mutation<
+      { data: ITag },
+      { id: string; body: Partial<TTagInput> }
+    >({
+      query: ({ id, body }) => ({
+        url: `/api/tags/${id}`,
+        method: "PATCH",
+        body: JSON.stringify(body),
+        headers: { "Content-Type": "application/json" },
+      }),
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: "Tags", id },
+        { type: "Tags", id: "LIST" },
+      ],
+    }),
+    deleteTag: builder.mutation<
+      { message: string; data: ITag },
+      string
+    >({
+      query: (id) => ({
+        url: `/api/tags/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [{ type: "Tags", id: "LIST" }],
+    }),
   }),
 });
 
@@ -521,4 +639,14 @@ export const {
   useUpdateBlogMutation,
   useDeleteBlogMutation,
   useUploadBlogCoverMutation,
+  useGetCategoriesQuery,
+  useGetCategoryByIdQuery,
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
+  useGetTagsQuery,
+  useGetTagByIdQuery,
+  useCreateTagMutation,
+  useUpdateTagMutation,
+  useDeleteTagMutation,
 } = api;

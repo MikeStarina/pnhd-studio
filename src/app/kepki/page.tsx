@@ -7,6 +7,7 @@ import {SITE_INFO} from "@/app/constants";
 import {IProduct} from "@/app/utils/types";
 import {getShopData} from "@/app/utils/constants";
 import ProductCardsBlock from "@/components/pages-components/shop-page/product-cards-block/product-cards-block";
+import Breadcrumbs from '@/components/shared-components/breadcrumbs/Breadcrumbs';
 
 export const metadata: Metadata = {
     title: 'Кепки и бейсболки с логотипом на заказ - нанесение принтов от 1 штуки по выгодной цене',
@@ -21,24 +22,6 @@ const Page: React.FC = async () => {
     const shopData: Array<IProduct> = await getShopData({type: 'cap'});
     const slug = 'kepki';
     const h1 = 'Кепки с логотипом';
-    const jsonLdBreadcrumbList = {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Главная",
-                "item": SITE_INFO.domain
-            },
-            {
-                "@type": "ListItem",
-                "position": 2,
-                "name": h1,
-                "item": SITE_INFO.domain+'/'+slug
-            }
-        ]
-    }
     const jsonLdWebpage = {
         "@context": "https://schema.org",
         "@type": "WebPage",
@@ -103,13 +86,9 @@ const Page: React.FC = async () => {
 
     return (
         <>
-            <MarkupScript jsonLd={jsonLdBreadcrumbList}/>
             <MarkupScript jsonLd={jsonLdWebpage}/>
             <MarkupScript jsonLd={jsonLdFaq}/>
-            <div className="breadcrumbs">
-                <a className={'breadcrumb-item'} href="/">Главная</a>
-                <span className={'breadcrumb-item'}>{h1}</span>
-            </div>
+            <Breadcrumbs items={[{label: 'Главная', href: '/'}, {label: h1, href: '/'+slug}]} />
             <div className={styles.title_wrapper}>
                 <h1 className={styles.page_title}>{h1}</h1>
             </div>

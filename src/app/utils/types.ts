@@ -19,8 +19,9 @@ export interface IProduct {
   stock: string;
   color: string;
   stageColor: string;
-  category: string;
-  isSale: boolean;
+  category: string[];
+  tags: string[];
+  isSale?: boolean;
   isForPrinting: boolean;
   image_url: string;
   galleryPhotos: string[];
@@ -57,6 +58,36 @@ export type TBannerInput = {
   link: string;
   order: number;
   isActive: boolean;
+};
+
+export interface ICategory {
+  _id: string;
+  label: string;
+  slug: string;
+  order: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export type TCategoryInput = {
+  label: string;
+  slug: string;
+  order: number;
+};
+
+export interface ITag {
+  _id: string;
+  label: string;
+  slug: string;
+  order: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export type TTagInput = {
+  label: string;
+  slug: string;
+  order: number;
 };
 
 export interface IPrintFile {

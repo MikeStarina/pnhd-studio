@@ -10,6 +10,7 @@ import {Metadata} from 'next';
 import button_arrow_right from "../../../public/button_arrow_right.svg";
 import ArticleTagButton from "@/components/pages-components/blog/article-tag/article-tag";
 import {SITE_INFO} from "@/app/constants";
+import Breadcrumbs from '@/components/shared-components/breadcrumbs/Breadcrumbs';
 
 const cx = classnames.bind(styles);
 
@@ -63,10 +64,7 @@ const Blog = async () => {
         <>
             {posts && posts.length > 0 &&
                 <section className={cx('blogPage')}>
-                    <div className="breadcrumbs">
-                        <a className={'breadcrumb-item'} href="/">Главная</a>
-                        <span className={'breadcrumb-item'}>{h1}</span>
-                    </div>
+                    <Breadcrumbs items={[{label: 'Главная', href: '/'}, {label: h1, href: '/blog'}]} />
                     <h1 className={cx('blogPage__title')}>{h1}</h1>
                     {/* <div className={cx('articles-tag-list')}>
                         {tagList.map((item, index) => (

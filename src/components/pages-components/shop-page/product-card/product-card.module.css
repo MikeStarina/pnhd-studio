@@ -14,12 +14,20 @@
     position: relative;
 }
 
-.no_stock_icon {
-    width: 130px;
-    height: 30px;
+.top_left_stack {
     position: absolute;
     left: 15px;
     top: 15px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.no_stock_icon {
+    width: 130px;
+    height: 30px;
     background-color: red;
     border-radius: 15px;
     color: white;

@@ -49,6 +49,7 @@ export const ProductCardsBlock: React.FC<{ shopData: Array<IProduct> }> = ({ sho
                   price={item.price}
                   photo={productPhotoSources(item, 0)}
                   sizes={item.sizes}
+                  tags={item.tags}
                 />
               </Link>
             );

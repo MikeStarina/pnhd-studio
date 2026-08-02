@@ -1,12 +1,14 @@
 import React from "react";
 import styles from "./page.module.css";
-import { getShopData } from "@/app/utils/constants";
+import { getShopData, getCategoriesData } from "@/app/utils/constants";
 import { IProduct } from "@/app/utils/types";
 import ProductDescription from "@/components/pages-components/shop-page/product-description/product-description";
 import { Metadata } from 'next'
 import { productMainPhotoUrl } from "@/app/utils/product-photos";
+import { toCategoryArray } from "@/app/utils/product-categories";
 import { SITE_INFO } from "@/app/constants";
 import ProductGallery from "@/components/pages-components/shop-page/product-gallery/product-gallery";
+import Breadcrumbs from '@/components/shared-components/breadcrumbs/Breadcrumbs';
 
 type TMetadataProps = {
     params: { slug: string },
@@ -22,11 +24,14 @@ export const generateStaticParams = async () => {
 
 export async function generateMetadata({ params, searchParams }: TMetadataProps): Promise<Metadata> {
     const [currItem]: Array<IProduct> = await getShopData({ slug: params.slug });
+    const categories = await getCategoriesData().catch(() => []);
+    const categoryLabels = toCategoryArray(currItem?.category)
+        .map((id) => categories.find((c) => c._id === id)?.label ?? id);
 
     return {
         title: `${currItem?.name} | PINHEAD STUDIO`,
         description: `${currItem?.name} - ${currItem?.description}`,
-        keywords: [currItem?.category!, currItem?.type!, currItem?.color!],
+        keywords: [...categoryLabels, currItem?.type!, currItem?.color!],
         openGraph: {
             images: currItem ? productMainPhotoUrl(currItem) : undefined,
             type: 'website',
@@ -49,10 +54,17 @@ const ProductPage: React.FC<{
 
     const [item]: Array<IProduct> = await getShopData({ slug: params.slug });
     return (
-        <section className={styles.screen}>
-            <ProductGallery item={item} />
-            <ProductDescription item={item} />
-        </section>
+        <>
+            <Breadcrumbs items={[
+                { label: 'Главная', href: '/' },
+                { label: 'Каталог', href: '/shop' },
+                { label: item?.name ?? '', href: `/shop/${params.slug}` },
+            ]} />
+            <section className={styles.screen}>
+                <ProductGallery item={item} />
+                <ProductDescription item={item} />
+            </section>
+        </>
     );
 };
 

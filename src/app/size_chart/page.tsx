@@ -9,6 +9,7 @@ import standartTee from "../../../public/sizeChart/tee_standart_sizes.png";
 import gildanTee from "../../../public/sizeChart/tee_gildan_sizes.png";
 import promoTee from "../../../public/sizeChart/tee_promo_sizes.png";
 import classicHood from "../../../public/sizeChart/hoodie_classic_sizes.png";
+import Breadcrumbs from '@/components/shared-components/breadcrumbs/Breadcrumbs';
 
 const itemsArr = [
     {
@@ -56,6 +57,7 @@ export const metadata: Metadata = {
 const SizeChartPage: React.FC = () => {
     return (
         <section className={styles.sizeChart}>
+            <Breadcrumbs items={[{label: 'Главная', href: '/'}, {label: 'Размеры', href: '/size_chart'}]} />
             <h1 className={styles.sizeChart_mainTitle}>РАЗМЕРЫ / SIZE CHART</h1>
             {itemsArr.map((item, index) => (
                 <div className={styles.sizeChart_item} key={index}>

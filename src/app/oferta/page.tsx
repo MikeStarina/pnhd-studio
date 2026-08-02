@@ -1,10 +1,12 @@
 import React from 'react';
 import styles from './page.module.css';
+import Breadcrumbs from '@/components/shared-components/breadcrumbs/Breadcrumbs';
 
 function Oferta() {
  
   return (
     <section className={styles.page}>
+      <Breadcrumbs items={[{label: 'Главная', href: '/'}, {label: 'Оферта', href: '/oferta'}]} />
       Правила согласования изображения и его печати в компании «ПИНХЭД СТУДИЯ»
       (ООО &quot;ПИНХЭД СТУДИО&quot;)
       <br />

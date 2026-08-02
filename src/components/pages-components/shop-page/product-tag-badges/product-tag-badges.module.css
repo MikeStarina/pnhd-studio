@@ -1,0 +1,30 @@
+.badge {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 60px;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 14px;
+  color: white;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-sizing: border-box;
+}
+
+.badge_sale {
+  background-color: red;
+}
+
+.badge_new {
+  background-color: rgb(153, 255, 0);
+  color: #111;
+}
+
+.badge_default {
+  background-color: #666;
+}

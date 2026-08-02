@@ -40,6 +40,26 @@ const AccountShell: React.FC<{ children: React.ReactNode }> = ({ children }) => 
               Товары
             </Link>
             <Link
+              href="/profile/categories"
+              className={
+                pathname?.startsWith("/profile/categories")
+                  ? styles.admin_navLinkActive
+                  : styles.admin_navLink
+              }
+            >
+              Категории
+            </Link>
+            <Link
+              href="/profile/tags"
+              className={
+                pathname?.startsWith("/profile/tags")
+                  ? styles.admin_navLinkActive
+                  : styles.admin_navLink
+              }
+            >
+              Теги
+            </Link>
+            <Link
               href="/profile/banners"
               className={
                 pathname?.startsWith("/profile/banners")

@@ -8,6 +8,7 @@ import {IProduct} from "@/app/utils/types";
 import {getShopData} from "@/app/utils/constants";
 import ProductCardsBlock from "@/components/pages-components/shop-page/product-cards-block/product-cards-block";
 import ProductFilterComp from '@/components/pages-components/shop-page/products-filter/products-filter';
+import Breadcrumbs from '@/components/shared-components/breadcrumbs/Breadcrumbs';
 
 export const metadata: Metadata = {
     title: 'Печать принтов на футболках в СПб — нанесение принта на одежду на заказ от 1 шт',
@@ -22,24 +23,6 @@ const Page: React.FC = async () => {
     const shopData: Array<IProduct> = await getShopData({type: 'tshirt'});
     const slug = 'futbolki';
     const h1 = 'Печать на футболках в Санкт-Петербурге';
-    const jsonLdBreadcrumbList = {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-            {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Главная",
-                "item": SITE_INFO.domain
-            },
-            {
-                "@type": "ListItem",
-                "position": 2,
-                "name": h1,
-                "item": SITE_INFO.domain+'/'+slug
-            }
-        ]
-    }
     const jsonLdWebpage = {
         "@context": "https://schema.org",
         "@type": "WebPage",
@@ -104,13 +87,9 @@ const Page: React.FC = async () => {
 
     return (
         <>
-            <MarkupScript jsonLd={jsonLdBreadcrumbList}/>
             <MarkupScript jsonLd={jsonLdWebpage}/>
             <MarkupScript jsonLd={jsonLdFaq}/>
-            <div className="breadcrumbs">
-                <a className={'breadcrumb-item'} href="/">Главная</a>
-                <span className={'breadcrumb-item'}>{h1}</span>
-            </div>
+            <Breadcrumbs items={[{label: 'Главная', href: '/'}, {label: h1, href: '/'+slug}]} />
             <div className={styles.title_wrapper}>
                 <h1 className={styles.page_title}>{h1}</h1>
             </div>

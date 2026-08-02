@@ -6,6 +6,7 @@ import MapScreen from "@/components/pages-components/main-page/map-screen/map-sc
 import { Metadata } from "next";
 import Link from "next/link";
 import { printsOptions } from "@/app/utils/prints-options-data";
+import Breadcrumbs from '@/components/shared-components/breadcrumbs/Breadcrumbs';
 
 export const generateMetadata = ({
     params,
@@ -42,6 +43,11 @@ const MethodPage: React.FC<{
         <>
             {print && (
                 <>
+                    <Breadcrumbs items={[
+                        {label: 'Главная', href: '/'},
+                        {label: 'Принты', href: '/prints'},
+                        {label: `${print.title} ${print.subtitle}`, href: `/prints/${print.slug}`},
+                    ]} />
                     <section className={styles.method_mainScreen}>
                         <div className={styles.method_titleWrapper}>
                             <h1

@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { IProduct } from '@/app/utils/types';
 import { productGallerySources } from '@/app/utils/product-photos';
 import { ImageComponent } from '@/components/pages-components/shop-page/product-photos/imageComponent';
+import ProductTagBadges from '@/components/pages-components/shop-page/product-tag-badges/product-tag-badges';
 import styles from './product-gallery.module.css';
 
 const AUTO_SCROLL_DELAY = 4000;
@@ -68,6 +69,10 @@ const ProductGallery: React.FC<{ item: IProduct }> = ({ item }) => {
                     </li>
                 ))}
             </ul>
+
+            <div className={styles.top_left_stack}>
+                <ProductTagBadges tagIds={item.tags} />
+            </div>
 
             <div className={styles.galleryDots} aria-label="Навигация по изображениям товара">
                 {photosArray.map((_, index) => (

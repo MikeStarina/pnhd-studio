@@ -5,6 +5,7 @@ import FeedbackScreen from "@/components/pages-components/main-page/feedback-scr
 import MapScreen from "@/components/pages-components/main-page/map-screen/map-screen";
 import Link from "next/link";
 import LoyaltyCarousel from "./loyalty-carousel";
+import Breadcrumbs from '@/components/shared-components/breadcrumbs/Breadcrumbs';
 
 export const metadata: Metadata = {
     title: "Программа лояльности Pinhead Studio — бонусы за заказы",
@@ -59,6 +60,7 @@ const levels = [
 const Page: React.FC = () => {
     return (
         <>
+            <Breadcrumbs items={[{label: 'Главная', href: '/'}, {label: 'Бонусы', href: '/loyalty'}]} />
             <section className={styles.hero}>
                 <div className={styles.hero_content}>
                     <p className={styles.hero_eyebrow}>Программа лояльности Pinhead Studio</p>
