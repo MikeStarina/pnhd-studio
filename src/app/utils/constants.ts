@@ -26,33 +26,48 @@ export const getShopData = async (searchParams?: { [n: string]: string }) => {
             return queryString += `&${key}=${searchParams[key]}`
         })
     }
-    const shopData = await fetch(`${apiBaseUrl}/api/products${queryString}`, {
-        next: { revalidate: 3600, tags: ['shopDataTag'] },
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    }).then(checkResponse)
-    console.log(shopData);
-    return shopData.data;
+    try {
+        const shopData = await fetch(`${apiBaseUrl}/api/products${queryString}`, {
+            next: { revalidate: 3600, tags: ['shopDataTag'] },
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(checkResponse)
+        console.log(shopData);
+        return shopData?.data ?? [];
+    } catch (err) {
+        // Docker/CI build must not fail when API is unreachable (e.g. first stage deploy)
+        console.warn('getShopData failed:', err);
+        return [];
+    }
 }
 
 export const getCategoriesData = async (): Promise<ICategory[]> => {
-    const res: { data: ICategory[] } = await fetch(`${apiBaseUrl}/api/categories`, {
-        next: { revalidate: 3600, tags: ['categoriesDataTag'] },
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    }).then(checkResponse);
-    return res.data;
+    try {
+        const res: { data: ICategory[] } = await fetch(`${apiBaseUrl}/api/categories`, {
+            next: { revalidate: 3600, tags: ['categoriesDataTag'] },
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(checkResponse);
+        return res?.data ?? [];
+    } catch (err) {
+        console.warn('getCategoriesData failed:', err);
+        return [];
+    }
 }
 
 export const getPosts = async (): Promise<TBlogPosts> => {
-    const posts = await fetch(`${apiBaseUrl}/api/blog`, {
-        next: { revalidate: 3600, tags: ['blogTag'] },
-    })
-        .then(checkResponse);
+    try {
+        const posts = await fetch(`${apiBaseUrl}/api/blog`, {
+            next: { revalidate: 3600, tags: ['blogTag'] },
+        }).then(checkResponse);
 
-    return posts;
+        return posts?.posts ? posts : { posts: [] };
+    } catch (err) {
+        console.warn('getPosts failed:', err);
+        return { posts: [] };
+    }
 }
 
 export const tumblers = ['DTG', 'DTF', 'ТЕРМОПЕРЕНОС', 'ВЫШИВКА'];

@@ -26,10 +26,7 @@ export async function generateMetadata({params}: {
 
 export const generateStaticParams = async () => {
     const {posts} = await getPosts();
-
-    return posts.map((item) => {
-        return {post: item.slug}
-    })
+    return (posts ?? []).filter((item) => item.slug).map((item) => ({ post: item.slug }));
 }
 
 // Allow on-demand generation for newly published posts (admin create).

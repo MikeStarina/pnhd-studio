@@ -17,9 +17,7 @@ type TMetadataProps = {
 
 export const generateStaticParams = async () => {
     const data = await getShopData();
-    // console.log(data)
-
-    return data.map((item: IProduct) => ({ slug: item.slug }))
+    return (data ?? []).filter((item: IProduct) => item.slug).map((item: IProduct) => ({ slug: item.slug }));
 }
 
 export async function generateMetadata({ params, searchParams }: TMetadataProps): Promise<Metadata> {
