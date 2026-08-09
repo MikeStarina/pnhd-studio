@@ -66,10 +66,11 @@ jobs:
           mkdir -p deploy-bundle
           cp deploy/docker-compose.yml deploy-bundle/docker-compose.yml
           cp "deploy/Caddyfile.${DEPLOY_ENV}" deploy-bundle/Caddyfile
-          umask 077
+          # 644 so appleboy/scp-action (Docker) can read the file; VM step chmods 600
           {
             echo "FE_IMAGE=${FE_IMAGE}"
           } > deploy-bundle/.env
+          chmod 644 deploy-bundle/.env
 
       - name: Upload deploy bundle to VM
         uses: appleboy/scp-action@v0.1.7
