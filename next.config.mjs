@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    output: 'standalone',
     transpilePackages: ['mui-tel-input'],
     webpack: (config) => {
         config.externals = [...config.externals, { canvas: 'canvas' }]; // required to make Konva & react-konva work
@@ -38,6 +39,16 @@ const nextConfig = {
             {
                 protocol: 'https',
                 hostname: 'pnhdstudioapi.ru',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'api.pnhd.ru',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'api-stage.pnhd.ru',
                 pathname: '/**',
             },
         ],

@@ -1,0 +1,101 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches:
+      - stage
+      - main
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Target environment
+        required: true
+        type: choice
+        options:
+          - stage
+          - prod
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || (github.ref_name == 'main' && 'prod' || 'stage') }}
+    env:
+      DEPLOY_ENV: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || (github.ref_name == 'main' && 'prod' || 'stage') }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve image refs
+        id: meta
+        run: |
+          echo "tag=${DEPLOY_ENV}" >> "$GITHUB_OUTPUT"
+          echo "sha_tag=sha-${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+          echo "image=cr.yandex/${{ vars.YCR_ID }}/studio-fe" >> "$GITHUB_OUTPUT"
+          if [ -n "${{ vars.NEXT_PUBLIC_API_URL }}" ]; then
+            echo "api_url=${{ vars.NEXT_PUBLIC_API_URL }}" >> "$GITHUB_OUTPUT"
+          elif [ "$DEPLOY_ENV" = "prod" ]; then
+            echo "api_url=https://api.pnhd.ru" >> "$GITHUB_OUTPUT"
+          else
+            echo "api_url=https://api-stage.pnhd.ru" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Login to Yandex Container Registry
+        uses: yc-actions/yc-cr-login@v1
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON }}
+
+      - name: Build and push
+        run: |
+          IMAGE="${{ steps.meta.outputs.image }}"
+          docker build \
+            --build-arg "NEXT_PUBLIC_API_URL=${{ steps.meta.outputs.api_url }}" \
+            -t "${IMAGE}:${{ steps.meta.outputs.tag }}" \
+            -t "${IMAGE}:${{ steps.meta.outputs.sha_tag }}" \
+            .
+          docker push "${IMAGE}:${{ steps.meta.outputs.tag }}"
+          docker push "${IMAGE}:${{ steps.meta.outputs.sha_tag }}"
+
+      - name: Prepare deploy bundle
+        env:
+          FE_IMAGE: ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.tag }}
+        run: |
+          set -euo pipefail
+          mkdir -p deploy-bundle
+          cp deploy/docker-compose.yml deploy-bundle/docker-compose.yml
+          cp "deploy/Caddyfile.${DEPLOY_ENV}" deploy-bundle/Caddyfile
+          umask 077
+          {
+            echo "FE_IMAGE=${FE_IMAGE}"
+          } > deploy-bundle/.env
+
+      - name: Upload deploy bundle to VM
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ vars.SSH_HOST }}
+          username: ${{ vars.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "deploy-bundle/*"
+          target: "/opt/studio-fe"
+          strip_components: 1
+          overwrite: true
+
+      - name: Pull image and restart stack
+        uses: appleboy/ssh-action@v1.2.0
+        env:
+          YC_SA_JSON: ${{ secrets.YC_SA_JSON }}
+        with:
+          host: ${{ vars.SSH_HOST }}
+          username: ${{ vars.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          envs: YC_SA_JSON
+          script: |
+            set -euo pipefail
+            cd /opt/studio-fe
+            chmod 600 .env
+            printf '%s\n' "$YC_SA_JSON" | docker login --username json_key --password-stdin cr.yandex
+            docker compose pull
+            docker compose up -d --remove-orphans
+            docker compose ps

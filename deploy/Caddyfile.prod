@@ -1,0 +1,8 @@
+studio.pnhd.ru {
+	reverse_proxy web:3000
+	encode gzip
+}
+
+www.studio.pnhd.ru {
+	redir https://studio.pnhd.ru{uri} permanent
+}

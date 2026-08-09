@@ -4,8 +4,7 @@ import { retry } from "@reduxjs/toolkit/query";
 
 
 
-export const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://pnhdstudioapi.ru';
-// export const apiBaseUrl = 'http://localhost:8000';
+export const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.pnhd.ru';
 export const CDN_URL = 'https://cdn.pnhd.ru';
 
 export const ACQUIRE_RATIO = 0.965 //комиссия эквайринга
@@ -295,7 +294,7 @@ export function getCurrentPath(): Array<string> {
   "subtitle": "Test subtitle",
   "slug": "test-slug",
   "createdAt": "27.07.2024",
-  "cover": "https://pnhdstudioapi.ru/images/classic_tee/white_main.jpg",
+  "cover": `${apiBaseUrl}/images/classic_tee/white_main.jpg`,
   "likes": 300,
   "hashtags": ["#test1","test2","test3"],
   "author": "Mike Starina",
