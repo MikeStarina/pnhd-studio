@@ -28,7 +28,7 @@ const priceOptions = [
 const printableOptions = [
     { name: 'Все', value: '' },
     { name: 'Для печати', value: 'print' },
-    { name: 'Бланк', value: 'blank' },
+    { name: 'Принты', value: 'blank' },
 ] as const;
 
 type FilterState = { category: string; tags: string[]; type: string; priceSort: string; printable: string };

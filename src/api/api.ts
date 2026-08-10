@@ -1,4 +1,10 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {
+  BaseQueryFn,
+  FetchArgs,
+  FetchBaseQueryError,
+  createApi,
+  fetchBaseQuery,
+} from "@reduxjs/toolkit/query/react";
 import { apiBaseUrl } from "@/app/utils/constants";
 import {
   IUploadPrintResponse,
@@ -17,6 +23,42 @@ import {
   ITag,
   TTagInput,
 } from "@/app/utils/types";
+
+const rawBaseQuery = fetchBaseQuery({
+  baseUrl: apiBaseUrl,
+  credentials: "include",
+});
+
+/** Auth form endpoints where 401 is a normal validation response. */
+const isExpectedAuth401 = (url: string) =>
+  /\/api\/auth\/(login|register|verify-otp|resend-otp|forgot-password|reset-password|change-password)/.test(
+    url
+  );
+
+/**
+ * On /profile, any unexpected 401 means the session is gone —
+ * clear the auth slice and send the user to login instead of
+ * leaving admin pages stuck on "Требуется авторизация".
+ */
+const baseQueryWithAuth: BaseQueryFn<
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError
+> = async (args, api, extraOptions) => {
+  const result = await rawBaseQuery(args, api, extraOptions);
+  if (result.error?.status !== 401) return result;
+
+  const url = typeof args === "string" ? args : args.url ?? "";
+  if (typeof window === "undefined") return result;
+  if (!window.location.pathname.startsWith("/profile")) return result;
+  if (isExpectedAuth401(url)) return result;
+
+  api.dispatch({ type: "auth/setUser", payload: null });
+  if (window.location.pathname !== "/auth/login") {
+    window.location.assign("/auth/login");
+  }
+  return result;
+};
 
 export interface IAuthUser {
   _id: string;
@@ -37,7 +79,7 @@ export type TOtpPurpose = "register" | "reset" | "change";
 
 export const api = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({ baseUrl: apiBaseUrl, credentials: "include" }),
+  baseQuery: baseQueryWithAuth,
   tagTypes: ["Auth", "Products", "Banners", "Blog", "Categories", "Tags"],
   endpoints: (builder) => ({
     register: builder.mutation<
