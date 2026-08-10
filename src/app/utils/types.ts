@@ -10,6 +10,8 @@ export interface IProduct {
   links: string[];
   type: string;
   price: number;
+  /** Lower value appears earlier in shop listing. */
+  order?: number;
   shippingParams: {
     weight: number;
     width: number;

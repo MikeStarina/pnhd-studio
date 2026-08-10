@@ -42,6 +42,7 @@ type FormState = {
   links: string[];
   type: string;
   price: string;
+  order: string;
   shippingParams: {
     weight: string;
     width: string;
@@ -79,6 +80,7 @@ const emptyForm = (): FormState => ({
   links: [],
   type: "tshirt",
   price: "",
+  order: "0",
   shippingParams: { weight: "", width: "", length: "", depth: "" },
   stock: "studio",
   color: "",
@@ -104,6 +106,7 @@ const productToForm = (product: IProduct): FormState => ({
   links: product.links?.length ? [...product.links] : [],
   type: product.type ?? "tshirt",
   price: String(product.price ?? ""),
+  order: String(product.order ?? 0),
   shippingParams: {
     weight: String(product.shippingParams?.weight ?? ""),
     width: String(product.shippingParams?.width ?? ""),
@@ -147,6 +150,7 @@ const formToPayload = (form: FormState): TProductInput => {
     links: form.links.map((l) => l.trim()).filter(Boolean),
     type: form.type,
     price: toNum(form.price),
+    order: Number(form.order) || 0,
     shippingParams: {
       weight: toNum(form.shippingParams.weight),
       width: toNum(form.shippingParams.width),
@@ -493,6 +497,18 @@ const AdminProductForm: React.FC<AdminProductFormProps> = ({
           value={form.price}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setField("price", e.target.value)
+          }
+        />
+        <TextField
+          label="Порядок"
+          type="number"
+          fullWidth
+          size="small"
+          sx={textFieldSx}
+          value={form.order}
+          helperText="Меньше — раньше в выдаче магазина"
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setField("order", e.target.value)
           }
         />
         <TextField

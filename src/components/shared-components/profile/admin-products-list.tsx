@@ -28,7 +28,18 @@ const AdminProductsList: React.FC = () => {
   const [deleteProduct, { isLoading: isDeleting, error: deleteError }] =
     useDeleteProductMutation();
 
-  const products = data?.data ?? [];
+  const products = useMemo(() => {
+    const list = [...(data?.data ?? [])];
+    list.sort((a, b) => {
+      const orderDiff = (a.order ?? 0) - (b.order ?? 0);
+      if (orderDiff !== 0) return orderDiff;
+      const aTime = a.createdAt ? Date.parse(a.createdAt) : 0;
+      const bTime = b.createdAt ? Date.parse(b.createdAt) : 0;
+      if (aTime !== bTime) return aTime - bTime;
+      return (a.name ?? "").localeCompare(b.name ?? "", "ru");
+    });
+    return list;
+  }, [data?.data]);
   const categoryMap = new Map(
     (categoriesData?.data ?? []).map((item) => [item._id, item.label])
   );
@@ -74,6 +85,7 @@ const AdminProductsList: React.FC = () => {
             <tr>
               <th />
               <th>Название</th>
+              <th>Порядок</th>
               <th>Тип</th>
               <th>Категория</th>
               <th>Цвет</th>
@@ -181,6 +193,7 @@ const ListItem: React.FC<IListItemProps> = ({
           {product.name}
         </Link>
       </td>
+      <td>{product.order ?? 0}</td>
       <td>{product.type}</td>
       <td>{categoryLabels(product.category, categoryMap)}</td>
       <td>{product.color}</td>
