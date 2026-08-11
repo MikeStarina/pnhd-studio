@@ -16,7 +16,6 @@ import {
 } from "@react-three/drei";
 import { easing } from "maath";
 import { useAppDispatch, useAppSelector } from "@/redux/redux-hooks";
-import { apiBaseUrl } from "@/app/utils/constants";
 import { ICartOrderElement } from "@/app/utils/types";
 import { useSearchParams } from "next/navigation";
 import { useUploadPrintImageMutation } from "@/api/api";

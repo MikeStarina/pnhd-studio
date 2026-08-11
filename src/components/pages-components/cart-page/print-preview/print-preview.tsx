@@ -5,7 +5,7 @@ import { ICartOrderElement } from "@/app/utils/types";
 import { BASIC_PRINT_COST, getPreviewArrFunc, ruPrintPlace } from "@/app/utils/cart-utils";
 import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
 import { useAppDispatch } from "@/redux/redux-hooks";
-import { apiBaseUrl } from "@/app/utils/constants";
+import { resolveMediaUrl } from "@/app/utils/product-photos";
 
 
 
@@ -35,7 +35,7 @@ const PrintPreview: React.FC<{ elem: ICartOrderElement }> = ({ elem }) => {
                   >
                     <img
                       className={styles.cart_previewImg}
-                      src={`${apiBaseUrl}${item.file?.url}`}
+                      src={resolveMediaUrl(item.file?.url)}
                       alt={item.file?.name || "Файл принта"}
                     />
                      <div className={styles.prints_info}>

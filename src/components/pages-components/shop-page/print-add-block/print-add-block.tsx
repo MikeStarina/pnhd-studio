@@ -7,7 +7,7 @@ import { photoProcessing } from '@/app/utils/constructor-utils';
 import { useAppDispatch, useAppSelector } from '@/redux/redux-hooks';
 import { actions as utilActions } from '@/redux/utils-slice/utils.slice';
 import { useUploadPrintImageMutation } from '@/api/api';
-import { apiBaseUrl } from '@/app/utils/constants';
+import { resolveMediaUrl } from '@/app/utils/product-photos';
 
 
 const TABS = [
@@ -87,7 +87,7 @@ export const PrintAddBlock: React.FC<{ item: IProduct }> = ({ item }) => {
                                 {!isPrintImageLoading && currentPrint && (
                                     <div className={styles.printInfo_wrapper}>
                                         <div className={styles.printInfo_image}>
-                                            <img src={`${apiBaseUrl}${currentPrint.file?.url}`} alt={currentPrint.file?.name} />
+                                            <img src={resolveMediaUrl(currentPrint.file?.url)} alt={currentPrint.file?.name} />
                                         </div>
                                         <span className={styles.printInfo_note} style={{ color: 'black' }}>{currentPrint.file?.name}</span>
                                         <div className={styles.printDeleteButton_wrapper}>

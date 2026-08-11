@@ -7,7 +7,7 @@ import {
 import { useAppDispatch, useAppSelector } from '@/redux/redux-hooks';
 import useImage from 'use-image';
 import { ICartOrderElement } from '@/app/utils/types';
-import { apiBaseUrl } from '@/app/utils/constants';
+import { resolveMediaUrl } from '@/app/utils/product-photos';
 //import styles from './constructor-page.module.css';
 // import circle50px from '../../components/images/circle50px.png';
 
@@ -44,7 +44,7 @@ const Print: React.FC<TPrintProps> = ({
   const dispatch = useAppDispatch();
   const { activeView } = useAppSelector((store) => store.printConstructor);
   //eslint-ignore-next-line
-  const [imageTwo] = file ? useImage(`${apiBaseUrl}${file}`, 'anonymous') : useImage('', 'anonymous'); // eslint-disable-line react-hooks/rules-of-hooks
+  const [imageTwo] = file ? useImage(resolveMediaUrl(file), 'anonymous') : useImage('', 'anonymous'); // eslint-disable-line react-hooks/rules-of-hooks
 
   useEffect(() => {
       imageTwo && scene(activeView);

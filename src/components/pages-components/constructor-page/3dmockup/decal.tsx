@@ -8,7 +8,7 @@ import {
   Decal,
 } from "@react-three/drei";
 import { useAppDispatch, useAppSelector } from "@/redux/redux-hooks";
-import { apiBaseUrl } from "@/app/utils/constants";
+import { resolveMediaUrl } from "@/app/utils/product-photos";
 import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
 import { useSearchParams } from "next/navigation";
 import { useUploadPrintImageMutation } from '@/api/api';
@@ -55,7 +55,7 @@ const DecalComp = () => {
     const [ pivotAxis, setPivotAxis ] = useState<number>(); 
    
    
-    const url = currPrint?.file?.url ? `${apiBaseUrl}${currPrint.file.url}` : '/whiteTexture.png';
+    const url = currPrint?.file?.url ? resolveMediaUrl(currPrint.file.url) : '/whiteTexture.png';
     const texture = useTexture(url, () => { if (currPrint && !currPrint.preview) {return document.querySelector('canvas')?.toBlob((blob) => {getScene(activeView, blob);});}});
     //const texture = useTexture(url);
    

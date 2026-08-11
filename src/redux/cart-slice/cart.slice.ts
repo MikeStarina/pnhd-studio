@@ -5,7 +5,7 @@ import { IUploadPrintResponse } from "@/app/utils/types";
 import { setCoords } from "@/app/utils/constructor-utils";
 import { getPrintFormatAndPriceFunc } from "@/app/utils/constructor-utils";
 import { IStageParams, ICdekCitySearchResponse } from "@/app/utils/types";
-import { apiBaseUrl } from "@/app/utils/constants";
+import { resolveMediaUrl } from "@/app/utils/product-photos";
 
 interface IInitialState {
     order?: Array<ICartOrderElement>,
@@ -145,11 +145,10 @@ const cartSlice = createSlice({
         },
         setPreview: (state, action: PayloadAction<{preview: IUploadPrintResponse, activeView: string, itemCartId: string }>) => {
             const { preview, activeView, itemCartId} = action.payload;
-            //console.log(`${apiBaseUrl}${preview.data.url}`);
             state.order?.forEach((elem) => {
                 if (elem.itemCartId === itemCartId) {
                     // @ts-ignore
-                    elem.prints![activeView].preview = `${apiBaseUrl}${preview.data.url}`;
+                    elem.prints![activeView].preview = resolveMediaUrl(preview.data.url);
                 }
             })
             sessionStorage.setItem('order', JSON.stringify(state.order));

@@ -14,7 +14,7 @@ import {
 } from "@react-three/drei";
 import { easing } from "maath";
 import { useAppSelector } from "@/redux/redux-hooks";
-import { apiBaseUrl } from "@/app/utils/constants";
+import { resolveMediaUrl } from "@/app/utils/product-photos";
 import { ICartOrderElement } from "@/app/utils/types";
 import { useSearchParams } from "next/navigation";
 import classNames from "classnames/bind";
@@ -165,10 +165,10 @@ const Prints = () => {
   //@ts-ignore
   const { front, back, lsleeve, rsleeve } = orderElement?.prints;
 
-  const frontPrint = useTexture(front?.file?.url ? `${apiBaseUrl}${front.file.url}` : '/whiteTexture.png');
-  const backPrint = useTexture(back?.file?.url ? `${apiBaseUrl}${back.file.url}` : '/whiteTexture.png');
-  const lsleevePrint = useTexture(lsleeve?.file?.url ? `${apiBaseUrl}${lsleeve.file.url}` : '/whiteTexture.png');
-  const rsleevePrint = useTexture(rsleeve?.file?.url ? `${apiBaseUrl}${rsleeve.file.url}` : '/whiteTexture.png');
+  const frontPrint = useTexture(front?.file?.url ? resolveMediaUrl(front.file.url) : '/whiteTexture.png');
+  const backPrint = useTexture(back?.file?.url ? resolveMediaUrl(back.file.url) : '/whiteTexture.png');
+  const lsleevePrint = useTexture(lsleeve?.file?.url ? resolveMediaUrl(lsleeve.file.url) : '/whiteTexture.png');
+  const rsleevePrint = useTexture(rsleeve?.file?.url ? resolveMediaUrl(rsleeve.file.url) : '/whiteTexture.png');
   return (
       
       
