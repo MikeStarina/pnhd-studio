@@ -37,6 +37,7 @@
   border: 1px solid #000;
   border-radius: 6px;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .preFilterTab {
@@ -82,7 +83,7 @@
 
 .filterBar {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 28px 48px;
   width: 100%;
@@ -200,10 +201,12 @@
 
   .preFilter {
     width: 100%;
+    box-sizing: border-box;
   }
 
   .preFilterTab {
     flex: 1 1 0;
+    min-width: 0;
     padding: 10px 8px;
     text-align: center;
   }

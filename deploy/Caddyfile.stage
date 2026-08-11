@@ -1,4 +1,5 @@
 studio-stage.pnhd.ru {
+	header X-Robots-Tag "noindex, nofollow"
 	reverse_proxy web:3000
 	encode gzip
 }

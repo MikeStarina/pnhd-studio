@@ -4,7 +4,9 @@
     margin: 120px 0 0 0;
     padding: 0 5px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    /* auto-fill keeps empty columns so a single card doesn't stretch full-width
+       (auto-fit collapses them and centers the image under a left-pinned badge). */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     grid-template-rows: auto;
     gap: 5px;
     overflow: hidden;
