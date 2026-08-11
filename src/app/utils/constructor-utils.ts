@@ -4,7 +4,7 @@ import { IPrintFile } from "./types";
 import { IInitialPrintParams } from "./types";
 import { IStageParams } from "./types";
 import { v4 as uuidv4 } from 'uuid';
-import { apiBaseUrl } from "./constants";
+import { resolveMediaUrl } from "./product-photos";
 import * as THREE from 'three';
 import { TParams } from "./types";
 
@@ -165,7 +165,7 @@ export const setCoords = (currentImage: IInitialPrintParams, activeView: string,
 
   let params = {
     
-      url: currentImage.url ? `${apiBaseUrl}${currentImage.url}` : undefined,
+      url: currentImage.url ? resolveMediaUrl(currentImage.url) : undefined,
       decalRotation: [0,0,0],
       //decalPosition: [0,0.1,0],
       decalPosition: [0,0.1,0.1],

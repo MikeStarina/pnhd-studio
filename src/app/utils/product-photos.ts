@@ -18,8 +18,11 @@ export type TProductPhotoInput = Partial<
 /** Media URLs are either full CDN addresses or legacy API paths like /images/... */
 export const absoluteMediaUrl = (url?: string | null): string => {
   if (!url) return "";
-  return url.startsWith("http") ? url : `${apiBaseUrl}${url}`;
+  return /^https?:\/\//i.test(url) ? url : `${apiBaseUrl}${url}`;
 };
+
+/** Alias for print / upload URLs (CDN absolute or legacy `/uploads/...`). */
+export const resolveMediaUrl = absoluteMediaUrl;
 
 /**
  * Resolves the photo at `index`: a migrated product serves it straight from
