@@ -1,6 +1,11 @@
 import { IProduct } from "./types";
 import { apiBaseUrl, CDN_URL } from "./constants";
 
+const LEGACY_MEDIA_HOSTS = new Set([
+  "pnhdstudioapi.ru",
+  "www.pnhdstudioapi.ru",
+]);
+
 export const PHOTO_PLACEHOLDER = `${CDN_URL}/no%20photo.png`;
 
 /** Number of gallery slots rendered for legacy products without `photos`. */
@@ -18,7 +23,18 @@ export type TProductPhotoInput = Partial<
 /** Media URLs are either full CDN addresses or legacy API paths like /images/... */
 export const absoluteMediaUrl = (url?: string | null): string => {
   if (!url) return "";
-  return /^https?:\/\//i.test(url) ? url : `${apiBaseUrl}${url}`;
+  if (/^https?:\/\//i.test(url)) {
+    try {
+      const parsed = new URL(url);
+      if (LEGACY_MEDIA_HOSTS.has(parsed.hostname)) {
+        return `${apiBaseUrl}${parsed.pathname}${parsed.search}`;
+      }
+    } catch {
+      return url;
+    }
+    return url;
+  }
+  return `${apiBaseUrl}${url.startsWith("/") ? url : `/${url}`}`;
 };
 
 /** Alias for print / upload URLs (CDN absolute or legacy `/uploads/...`). */
