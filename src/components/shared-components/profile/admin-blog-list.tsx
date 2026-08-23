@@ -8,6 +8,7 @@ import {
 import { getErrorMessage } from "@/components/shared-components/auth/auth-utils";
 import styles from "@/app/profile/profile.module.css";
 import { IBlogPost } from "@/app/utils/types";
+import { resolveMediaUrl } from "@/app/utils/product-photos";
 import { revalidateBlogData } from "@/app/utils/server-actions";
 
 const AdminBlogList: React.FC = () => {
@@ -69,7 +70,7 @@ const AdminBlogList: React.FC = () => {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     className={styles.admin_thumb}
-                    src={post.cover}
+                    src={resolveMediaUrl(post.cover)}
                     alt=""
                   />
                 </td>

@@ -6,6 +6,7 @@ import Image from 'next/image';
 import testPic from '../../../public/changelog.jpg';
 import {getPosts} from '../utils/constants';
 import {apiBaseUrl} from '../utils/constants';
+import {resolveMediaUrl} from '../utils/product-photos';
 import {Metadata} from 'next';
 import button_arrow_right from "../../../public/button_arrow_right.svg";
 import ArticleTagButton from "@/components/pages-components/blog/article-tag/article-tag";
@@ -75,7 +76,7 @@ const Blog = async () => {
                         {posts.map((post, index) => (
                             <Link href={`/blog/${post.slug}`} className={cx('blogPage__card')} key={post.post_id}>
                                 <div className={cx('blogPage__card-wrapper')}>
-                                    <img src={post.cover} alt='Обложка поста' className={cx('blogPage__card-cover')}/>
+                                    <img src={resolveMediaUrl(post.cover)} alt='Обложка поста' className={cx('blogPage__card-cover')}/>
                                     <div className={cx('blogPage__card-title-wrapper')}>
                                         <div className={cx('blogPage__card-subtext')}>
                                             {/* <div className={cx('blogPage__card-tag-list')}>

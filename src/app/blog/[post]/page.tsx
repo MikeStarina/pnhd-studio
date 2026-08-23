@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './page.module.scss';
 import classNames from 'classnames/bind';
 import {getPosts} from '@/app/utils/constants';
+import {resolveMediaUrl} from '@/app/utils/product-photos';
 import {SITE_INFO} from "@/app/constants";
 import {Metadata} from "next";
 import {notFound} from "next/navigation";
@@ -60,7 +61,7 @@ const PostPage = async ({params}: { params: { post: string } }) => {
                 </div>
                 <div className={cx('postPage__head-block', 'postPage__head-block_right')}>
                     <div>
-                        <img src={post.cover} alt='Обложка поста'/>
+                        <img src={resolveMediaUrl(post.cover)} alt='Обложка поста'/>
                     </div>
                 </div>
             </div>

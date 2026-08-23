@@ -11,6 +11,7 @@ import {
   useUploadBlogCoverMutation,
 } from "@/api/api";
 import { IBlogPost, TBlogPostInput } from "@/app/utils/types";
+import { resolveMediaUrl } from "@/app/utils/product-photos";
 import {
   getErrorMessage,
   textFieldSx,
@@ -183,7 +184,7 @@ const AdminBlogForm: React.FC<AdminBlogFormProps> = ({ mode, post }) => {
             // eslint-disable-next-line @next/next/no-img-element
             <img
               className={styles.admin_bannerPreview}
-              src={form.cover}
+              src={resolveMediaUrl(form.cover)}
               alt="Обложка"
             />
           ) : (
