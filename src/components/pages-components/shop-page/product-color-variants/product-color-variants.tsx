@@ -27,7 +27,7 @@ const ProductColorVariants: React.FC<ProductColorVariantsProps> = ({
           <ul className={styles.list}>
             {variants.map((variant) => {
               const isCurrent = variant._id === item._id;
-              const hex = resolveColorHex(variant.color);
+              const hex = variant.stageColor ?? resolveColorHex(variant.color);
               const photo = productPhotoSources(variant, 0);
               const className = [
                 styles.swatch,
