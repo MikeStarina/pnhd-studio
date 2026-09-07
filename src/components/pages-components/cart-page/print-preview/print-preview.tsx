@@ -1,6 +1,7 @@
 'use client'
 import React from "react";
 import styles from './print-preview.module.css';
+import Link from "next/link";
 import { ICartOrderElement } from "@/app/utils/types";
 import { BASIC_PRINT_COST, getPreviewArrFunc, ruPrintPlace } from "@/app/utils/cart-utils";
 import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
@@ -69,10 +70,10 @@ const PrintPreview: React.FC<{ elem: ICartOrderElement }> = ({ elem }) => {
                       >
                         Удалить
                       </button>
-                      {/* <Link
+                      <Link
                         href={{
-                          pathname: `/shop/${elem.item.slug}/constructor`,
-                          query: { itemCartId: elem.itemCartId},
+                          pathname: `/shop/${elem.item.slug}`,
+                          query: { id: elem.item._id, itemCartId: elem.itemCartId },
                         }}
                         className={styles.printInfo_link}
                       >
@@ -82,7 +83,7 @@ const PrintPreview: React.FC<{ elem: ICartOrderElement }> = ({ elem }) => {
                         >
                           Изменить
                         </button>
-                      </Link>  */}
+                      </Link>
                     </div>
                   </div>
                 ))}

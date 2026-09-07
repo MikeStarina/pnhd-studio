@@ -1,10 +1,10 @@
 "use client";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "./action-buttons.module.css";
-import { IProduct } from "@/app/utils/types";
+import { ICartOrderElement, IProduct } from "@/app/utils/types";
 import { useAppDispatch, useAppSelector } from "@/redux/redux-hooks";
 import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { v4 as uuidv4 } from 'uuid';
 import { actions as ustilActions } from "@/redux/utils-slice/utils.slice";
 
@@ -13,9 +13,17 @@ const BASIC_PRINT_COST = 400;
 const ActionButtons: React.FC<{ item: IProduct }> = ({ item }) => {
     const currItem = { ...item };
     const router = useRouter();
+    const itemCartId = useSearchParams().get('itemCartId');
     const dispatch = useAppDispatch();
     const { sizes: stateSizes, prints: statePrints } = useAppSelector((store) => store.utils);
     const { prints } = useAppSelector((store) => store.utils);
+    const { order } = useAppSelector((store) => store.cart);
+    const editingItem = order?.find((orderItem) => orderItem.itemCartId === itemCartId);
+    const [isClient, setIsClient] = useState(false);
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+    const isEditing = isClient && Boolean(editingItem);
     const totalPrintAmount = useMemo(() => {
         if (!prints) return 0;
         return Object.values(prints).reduce((acc, value) => {
@@ -40,22 +48,33 @@ const ActionButtons: React.FC<{ item: IProduct }> = ({ item }) => {
 
     const addToCartClickHandler = () => {
 
-        const newItem = item;
-        newItem.sizes = [...stateSizes!];
+        const newItem = { ...item, sizes: [...stateSizes!] };
         const hasPrints = totalPrintAmount > 0;
+        const printsPayload = hasPrints ? {
+            front: statePrints?.front,
+            back: statePrints?.back,
+            lsleeve: statePrints?.lsleeve,
+            rsleeve: statePrints?.rsleeve,
+        } as ICartOrderElement['prints'] : undefined;
+
+        if (isEditing && editingItem) {
+            dispatch(cartActions.updateCartItem({
+                itemCartId: editingItem.itemCartId,
+                sizes: newItem.sizes,
+                prints: printsPayload,
+                isItemWithPrint: hasPrints,
+            }));
+            dispatch(ustilActions.resetStateSizes());
+            dispatch(ustilActions.resetPrints());
+            router.push('/cart');
+            return;
+        }
 
         const orderItem = {
-            item: { ...newItem },
+            item: newItem,
             isItemWithPrint: hasPrints,
             itemCartId: uuidv4(),
-            ...(hasPrints && {
-                prints: {
-                    front: statePrints?.front,
-                    back: statePrints?.back,
-                    lsleeve: statePrints?.lsleeve,
-                    rsleeve: statePrints?.rsleeve,
-                },
-            }),
+            ...(hasPrints && { prints: printsPayload }),
         };
 
         dispatch(ustilActions.resetStateSizes());
@@ -127,7 +146,7 @@ const ActionButtons: React.FC<{ item: IProduct }> = ({ item }) => {
                 </>
             )}
             <button type="button" disabled={sizeChecker} className={styles.mainButton} title={sizeChecker ? 'Выберите размер' : ''} onClick={addToCartClickHandler}>
-                В корзину
+                {isEditing ? 'Сохранить' : 'В корзину'}
             </button>
             {/* <button type="button" disabled={sizeChecker || !currItem.isForPrinting} className={styles.button} onClick={addPrintClickHandler}>
                 Добавить принт

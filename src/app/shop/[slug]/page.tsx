@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import styles from "./page.module.css";
 import { getShopData, getCategoriesData } from "@/app/utils/constants";
 import { IProduct } from "@/app/utils/types";
@@ -60,7 +60,9 @@ const ProductPage: React.FC<{
             ]} />
             <section className={styles.screen}>
                 <ProductGallery item={item} />
-                <ProductDescription item={item} />
+                <Suspense>
+                    <ProductDescription item={item} />
+                </Suspense>
             </section>
         </>
     );

@@ -33,6 +33,10 @@
     margin: 0 20px 0 0;
 }
 
+.printInfo_link {
+    text-decoration: none;
+}
+
 .printsInfo_controlButton {
     margin: 0;
     padding: 6px 10px;

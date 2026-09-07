@@ -161,6 +161,26 @@ const cartSlice = createSlice({
             order: newStateOrder
            };
         },
+        updateCartItem: (state, action: PayloadAction<{
+            itemCartId: string,
+            sizes: IProduct['sizes'],
+            prints?: ICartOrderElement['prints'],
+            isItemWithPrint: boolean,
+        }>) => {
+            const { itemCartId, sizes, prints, isItemWithPrint } = action.payload;
+            state.order?.forEach((elem) => {
+                if (elem.itemCartId === itemCartId) {
+                    elem.item.sizes = sizes;
+                    elem.isItemWithPrint = isItemWithPrint;
+                    if (isItemWithPrint && prints) {
+                        elem.prints = prints;
+                    } else {
+                        elem.prints = undefined;
+                    }
+                }
+            });
+            sessionStorage.setItem('order', JSON.stringify(state.order));
+        },
         setDelivery: (state, action: PayloadAction<boolean>) => {
             return {
                 ...state,
