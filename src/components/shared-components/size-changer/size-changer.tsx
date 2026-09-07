@@ -50,7 +50,7 @@ const SizeChanger: React.FC<{ item: IProduct }> = ({ item }) => {
             return {
                 name: item.name,
                 qty: item.qty,
-                userQty: 0,
+                userQty: item.userQty ?? 0,
             };
 
         });

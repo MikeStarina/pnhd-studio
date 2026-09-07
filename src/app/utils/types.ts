@@ -6,6 +6,7 @@ export interface IProduct {
   slug: string;
   name: string;
   oneCCode?: string;
+  internal_id?: string;
   description: string;
   links: string[];
   type: string;

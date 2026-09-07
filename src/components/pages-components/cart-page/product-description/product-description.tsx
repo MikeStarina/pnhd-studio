@@ -29,17 +29,15 @@ const ProductDescription: React.FC<{ elem: ICartOrderElement }> = ({ elem }) => 
             {/* <p className={styles.cart_productSum}>
                 — {elem.item.price * productPrice} Р.
             </p> */}
-            <button
-                type="button"
-                className={styles.cart_editSizeButton}
-                onClick={(e) => {
-                    //setModalSizeActive(true);
-                    //setModalSizeId(e.target.id);
+            <Link
+                href={{
+                    pathname: `/shop/${elem.item.slug}`,
+                    query: { id: elem.item._id, itemCartId: elem.itemCartId },
                 }}
-                id={elem.itemCartId}
+                className={styles.cart_editSizeButton}
             >
-                Изменить&nbsp;размер
-            </button>
+                Редактировать
+            </Link>
             <p className={styles.cart_productDescription}>{elem.item.description}</p>
             {elem.item.sizes.map((item, index) => {
                 return item.userQty! > 0 && <p className={styles.cart_productDescription} key={index}>{`${item.name}: ${item.userQty} шт.`}</p>

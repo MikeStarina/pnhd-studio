@@ -1,0 +1,49 @@
+.block {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.current,
+.label {
+  font-family: "Neue_machina";
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 400;
+  color: gray;
+  margin: 0;
+  padding: 0;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.swatch {
+  display: block;
+  width: 28px;
+  height: 28px;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  background-color: #ddd;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+}
+
+.swatch_light {
+  border-color: #d0d0d0;
+}
+
+.swatch_current {
+  border-color: black;
+  box-shadow: inset 0 0 0 2px white;
+  cursor: default;
+}

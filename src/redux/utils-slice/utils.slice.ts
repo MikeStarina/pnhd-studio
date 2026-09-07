@@ -112,6 +112,14 @@ const utilsSlice = createSlice({
         resetPrints: (state) => {
             state.prints = {};
         },
+        restorePrints: (state, action: PayloadAction<NonNullable<IInitialState['prints']>>) => {
+            state.prints = {
+                front: action.payload.front,
+                back: action.payload.back,
+                lsleeve: action.payload.lsleeve,
+                rsleeve: action.payload.rsleeve,
+            };
+        },
         printImageLoaderToggler: (state) => {
             state.isPrintImageLoading = !state.isPrintImageLoading;
         }

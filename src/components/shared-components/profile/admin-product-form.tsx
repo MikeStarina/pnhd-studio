@@ -38,6 +38,7 @@ type FormState = {
   slug: string;
   name: string;
   oneCCode: string;
+  internal_id: string;
   description: string;
   links: string[];
   type: string;
@@ -76,6 +77,7 @@ const emptyForm = (): FormState => ({
   slug: "",
   name: "",
   oneCCode: "",
+  internal_id: "",
   description: "",
   links: [],
   type: "tshirt",
@@ -102,6 +104,7 @@ const productToForm = (product: IProduct): FormState => ({
   slug: product.slug ?? "",
   name: product.name ?? "",
   oneCCode: product.oneCCode ?? "",
+  internal_id: product.internal_id ?? "",
   description: product.description ?? "",
   links: product.links?.length ? [...product.links] : [],
   type: product.type ?? "tshirt",
@@ -146,6 +149,7 @@ const formToPayload = (form: FormState): TProductInput => {
     slug: form.slug.trim(),
     name: form.name.trim(),
     oneCCode: form.oneCCode.trim() || undefined,
+    internal_id: form.internal_id.trim() || undefined,
     description: form.description.trim(),
     links: form.links.map((l) => l.trim()).filter(Boolean),
     type: form.type,
@@ -519,6 +523,17 @@ const AdminProductForm: React.FC<AdminProductFormProps> = ({
           value={form.oneCCode}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setField("oneCCode", e.target.value)
+          }
+        />
+        <TextField
+          label="Внутренний артикул"
+          fullWidth
+          size="small"
+          sx={textFieldSx}
+          value={form.internal_id}
+          helperText="Общий ключ для группировки товаров, например по цвету"
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setField("internal_id", e.target.value)
           }
         />
         <TextField

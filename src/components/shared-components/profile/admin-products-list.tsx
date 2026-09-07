@@ -89,6 +89,7 @@ const AdminProductsList: React.FC = () => {
               <th>Тип</th>
               <th>Категория</th>
               <th>Цвет</th>
+              <th>Артикул</th>
               <th>Цена</th>
               <th />
             </tr>
@@ -197,6 +198,7 @@ const ListItem: React.FC<IListItemProps> = ({
       <td>{product.type}</td>
       <td>{categoryLabels(product.category, categoryMap)}</td>
       <td>{product.color}</td>
+      <td>{product.internal_id ?? ""}</td>
       <td>{product.price}</td>
       <td>
         <div className={styles.admin_actions}>

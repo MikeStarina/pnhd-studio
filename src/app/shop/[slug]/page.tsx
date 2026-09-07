@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import styles from "./page.module.css";
 import { getShopData, getCategoriesData } from "@/app/utils/constants";
 import { IProduct } from "@/app/utils/types";
@@ -51,6 +51,9 @@ const ProductPage: React.FC<{
 }> = async ({ params }) => {
 
     const [item]: Array<IProduct> = await getShopData({ slug: params.slug });
+    const variants = item?.internal_id
+        ? await getShopData({ internal_id: item.internal_id })
+        : [];
     return (
         <>
             <Breadcrumbs items={[
@@ -60,7 +63,9 @@ const ProductPage: React.FC<{
             ]} />
             <section className={styles.screen}>
                 <ProductGallery item={item} />
-                <ProductDescription item={item} />
+                <Suspense>
+                    <ProductDescription item={item} variants={variants} />
+                </Suspense>
             </section>
         </>
     );
