@@ -8,6 +8,7 @@ import ProductTagBadges from '@/components/pages-components/shop-page/product-ta
 import styles from './product-gallery.module.css';
 
 const AUTO_SCROLL_DELAY = 4000;
+const MOBILE_QUERY = '(max-width: 800px)';
 
 const ProductGallery: React.FC<{ item: IProduct }> = ({ item }) => {
     const photosArray = useMemo(() => productGallerySources(item), [item]);
@@ -15,6 +16,15 @@ const ProductGallery: React.FC<{ item: IProduct }> = ({ item }) => {
     const galleryRef = useRef<HTMLUListElement | null>(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [isHovered, setIsHovered] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const mq = window.matchMedia(MOBILE_QUERY);
+        const update = () => setIsMobile(mq.matches);
+        update();
+        mq.addEventListener('change', update);
+        return () => mq.removeEventListener('change', update);
+    }, []);
 
     const scrollToIndex = useCallback((index: number) => {
         const gallery = galleryRef.current;
@@ -28,7 +38,7 @@ const ProductGallery: React.FC<{ item: IProduct }> = ({ item }) => {
     }, []);
 
     useEffect(() => {
-        if (photosArray.length <= 1 || isHovered) return;
+        if (!isMobile || photosArray.length <= 1 || isHovered) return;
 
         const timer = window.setInterval(() => {
             setActiveIndex((prevIndex) => {
@@ -39,7 +49,7 @@ const ProductGallery: React.FC<{ item: IProduct }> = ({ item }) => {
         }, AUTO_SCROLL_DELAY);
 
         return () => window.clearInterval(timer);
-    }, [isHovered, photosArray.length, scrollToIndex]);
+    }, [isHovered, isMobile, photosArray.length, scrollToIndex]);
 
     return (
         <div
@@ -51,6 +61,7 @@ const ProductGallery: React.FC<{ item: IProduct }> = ({ item }) => {
                 ref={galleryRef}
                 className={styles.gallery}
                 onScroll={(event) => {
+                    if (!isMobile) return;
                     const target = event.currentTarget;
                     const nextIndex = Math.round(target.scrollLeft / target.clientWidth);
                     if (nextIndex !== activeIndex) {

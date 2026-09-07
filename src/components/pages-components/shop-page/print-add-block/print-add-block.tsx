@@ -11,7 +11,7 @@ import { resolveMediaUrl } from '@/app/utils/product-photos';
 
 
 const TABS = [
-    { id: 'noPrint', name: 'Без принта' },
+    // { id: 'noPrint', name: 'Без принта' },
     { id: 'front', name: 'На груди' },
     { id: 'back', name: 'На спине' },
     { id: 'lsleeve', name: 'Левый рукав' },

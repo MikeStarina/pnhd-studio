@@ -22,8 +22,9 @@ export const getShopData = async (searchParams?: { [n: string]: string }) => {
     if (searchParams) {
         const keys = Object.keys(searchParams);
         keys.forEach((key, index) => {
-            if (index === 0) return queryString += `?${key}=${searchParams[key]}`;
-            return queryString += `&${key}=${searchParams[key]}`
+            const part = `${encodeURIComponent(key)}=${encodeURIComponent(searchParams[key])}`;
+            if (index === 0) return queryString += `?${part}`;
+            return queryString += `&${part}`;
         })
     }
     try {
