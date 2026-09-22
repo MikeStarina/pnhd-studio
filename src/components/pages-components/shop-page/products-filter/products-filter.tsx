@@ -7,6 +7,7 @@ import { IProduct } from "@/app/utils/types";
 import { toCategoryArray } from "@/app/utils/product-categories";
 import { toTagArray } from "@/app/utils/product-tags";
 import { getShopColorOptions, isLightHex, normalizeColorKey } from "@/app/utils/product-colors";
+import { getShopSizeOptions, normalizeSizeKey, productHasSize } from "@/app/utils/product-sizes";
 import { useGetCategoriesQuery, useGetTagsQuery } from "@/api/api";
 import Breadcrumbs from '@/components/shared-components/breadcrumbs/Breadcrumbs';
 
@@ -32,7 +33,7 @@ const printableOptions = [
     { name: 'Принты', value: 'blank' },
 ] as const;
 
-type FilterState = { categories: string[]; colors: string[]; tags: string[]; types: string[]; priceSort: string; printable: string };
+type FilterState = { categories: string[]; colors: string[]; tags: string[]; types: string[]; sizes: string[]; priceSort: string; printable: string };
 
 function parseListParam(value: string | null): string[] {
     return (value || '').split(',').filter(Boolean);
@@ -48,6 +49,7 @@ function buildQueryString(state: FilterState): string {
     if (state.colors.length) parts.push(`color=${encodeURIComponent(state.colors.join(','))}`);
     if (state.tags.length) parts.push(`tags=${encodeURIComponent(state.tags.join(','))}`);
     if (state.types.length) parts.push(`type=${encodeURIComponent(state.types.join(','))}`);
+    if (state.sizes.length) parts.push(`size=${encodeURIComponent(state.sizes.join(','))}`);
     if (state.priceSort) parts.push(`priceSort=${encodeURIComponent(state.priceSort)}`);
     if (state.printable) parts.push(`printable=${encodeURIComponent(state.printable)}`);
     return parts.length ? `?${parts.join('&')}` : '';
@@ -59,6 +61,7 @@ function countActiveFilters(state: FilterState): number {
         state.colors.length +
         state.tags.length +
         state.types.length +
+        state.sizes.length +
         (state.priceSort ? 1 : 0) +
         (state.printable ? 1 : 0)
     );
@@ -70,6 +73,7 @@ function applyFilters(shopData: IProduct[], state: FilterState): IProduct[] {
     if (state.colors.length) data = data.filter((item) => state.colors.includes(normalizeColorKey(item.color)));
     if (state.tags.length) data = data.filter((item) => toTagArray(item.tags).some((tagId) => state.tags.includes(tagId)));
     if (state.types.length) data = data.filter((item) => state.types.includes(item.type));
+    if (state.sizes.length) data = data.filter((item) => productHasSize(item, state.sizes));
     if (state.printable === 'print') data = data.filter((item) => item.isForPrinting);
     if (state.printable === 'blank') data = data.filter((item) => !item.isForPrinting);
     if (state.priceSort === 'ASC') data.sort((a, b) => a.price - b.price);
@@ -94,12 +98,14 @@ const ProductFilterComp: React.FC<{ children?: React.ReactNode; shopData: Array<
         value: item._id,
     }));
     const colorOptions = getShopColorOptions(shopData);
+    const sizeOptions = getShopSizeOptions(shopData);
 
     const [filterState, setFilterState] = useState<FilterState>({
         categories: [],
         colors: [],
         tags: [],
         types: [],
+        sizes: [],
         priceSort: '',
         printable: '',
     });
@@ -112,13 +118,14 @@ const ProductFilterComp: React.FC<{ children?: React.ReactNode; shopData: Array<
         const colors = parseListParam(searchParams.get('color')).map(normalizeColorKey).filter(Boolean);
         const tags = parseListParam(searchParams.get('tags'));
         const types = parseListParam(searchParams.get('type'));
+        const sizes = parseListParam(searchParams.get('size')).map(normalizeSizeKey).filter(Boolean);
         const priceSort = searchParams.get('priceSort') || '';
         const printable = searchParams.get('printable') || '';
 
-        setFilterState({ categories, colors, tags, types, priceSort, printable });
+        setFilterState({ categories, colors, tags, types, sizes, priceSort, printable });
 
-        if (categories.length || colors.length || tags.length || types.length || priceSort || printable) {
-            setFilteredData(applyFilters(shopData, { categories, colors, tags, types, priceSort, printable }));
+        if (categories.length || colors.length || tags.length || types.length || sizes.length || priceSort || printable) {
+            setFilteredData(applyFilters(shopData, { categories, colors, tags, types, sizes, priceSort, printable }));
             setIsFiltered(true);
         } else {
             setIsFiltered(false);
@@ -147,6 +154,10 @@ const ProductFilterComp: React.FC<{ children?: React.ReactNode; shopData: Array<
 
     const onTypePill = (value: string) => {
         navigateWithState({ ...filterState, types: toggleListValue(filterState.types, value) });
+    };
+
+    const onSizePill = (value: string) => {
+        navigateWithState({ ...filterState, sizes: toggleListValue(filterState.sizes, value) });
     };
 
     const onPricePill = (sort: 'ASC' | 'DESC') => {
@@ -252,8 +263,8 @@ const ProductFilterComp: React.FC<{ children?: React.ReactNode; shopData: Array<
                     <div className={styles.filters}>
                         <div className={styles.filterBar} role="group" aria-label="Фильтры каталога">
                             <div className={styles.filterGroup}>
-                                <details>
-                                    <summary >
+                                <details open>
+                                    <summary>
                                         <span className={styles.groupLabel}>Категория</span>
                                     </summary>
                                     <div className={styles.pills}>
@@ -281,7 +292,7 @@ const ProductFilterComp: React.FC<{ children?: React.ReactNode; shopData: Array<
                             </div>
 
                             <div className={`${styles.filterGroup} ${styles.filterGroupTypes}`}>
-                                <details>
+                                <details open>
                                     <summary >
                                         <span className={styles.groupLabel}>Тип</span>
                                     </summary>
@@ -309,9 +320,40 @@ const ProductFilterComp: React.FC<{ children?: React.ReactNode; shopData: Array<
                                 </details>
                             </div>
 
+                            {sizeOptions.length > 0 && (
+                                <div className={styles.filterGroup}>
+                                    <details open>
+                                        <summary >
+                                            <span className={styles.groupLabel}>Размер</span>
+                                        </summary>
+                                        <div className={styles.pills}>
+                                            {sizeOptions.map((item) => {
+                                                const active = filterState.sizes.includes(item.value);
+                                                return (
+                                                    <button
+                                                        key={item.value}
+                                                        type="button"
+                                                        className={`${styles.pill} ${active ? styles.pillActive : ''}`}
+                                                        onClick={() => onSizePill(item.value)}
+                                                        aria-pressed={active}
+                                                    >
+                                                        {item.name}
+                                                        {active && (
+                                                            <span className={styles.pillClear} aria-hidden>
+                                                                ×
+                                                            </span>
+                                                        )}
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    </details>
+                                </div>
+                            )}
+
                             {colorOptions.length > 0 && (
                                 <div className={styles.filterGroup}>
-                                    <details>
+                                    <details open>
                                         <summary >
                                             <span className={styles.groupLabel}>Цвет</span>
                                         </summary>
@@ -348,7 +390,7 @@ const ProductFilterComp: React.FC<{ children?: React.ReactNode; shopData: Array<
                            
 
                             <div className={styles.filterGroup}>
-                                <details>
+                                <details open>
                                     <summary >
                                         <span className={styles.groupLabel}>Теги</span>
                                     </summary>

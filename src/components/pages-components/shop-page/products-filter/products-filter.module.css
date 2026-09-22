@@ -138,7 +138,7 @@
 
 .groupLabel {
   font-family: 'Neue_machina', sans-serif;
-  font-size: 11px;
+  font-size: 14px;
   line-height: 1;
   font-weight: 400;
   color: #9a9a9a;
@@ -164,7 +164,9 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  white-space: nowrap;
+  white-space: normal;
+  text-align: left;
+  max-width: 100%;
   background: transparent;
   border: none;
 }
