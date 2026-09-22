@@ -8,23 +8,50 @@ import styles from "./product-color-variants.module.css";
 type ProductColorVariantsProps = {
   item: IProduct;
   variants: IProduct[];
+  hasCurrentColorText?: boolean;
+  hasOtherColorsText?: boolean;
+  hasCurrentByDefault?: boolean;
+  showSwatchesType?: 'auto' | 'always';
 };
 
 const ProductColorVariants: React.FC<ProductColorVariantsProps> = ({
   item,
   variants,
+  hasCurrentColorText = true,
+  hasOtherColorsText = true,
+  hasCurrentByDefault = false,
+  showSwatchesType = 'auto',
 }) => {
-  const showSwatches = variants.length > 1;
+  const showSwatches = showSwatchesType === 'auto' ? variants.length > 1 : true;
+  const currentHex = item.stageColor ?? resolveColorHex(item.color);
+  const currSwatchStyle = currentHex
+    ? { backgroundColor: currentHex }
+    : { backgroundImage: `url(${productPhotoSources(item, 0).cdnPhoto})` };
+  const currContent = (
+    <span
+      className={isLightHex(currentHex) ? `${styles.swatch} ${styles.swatch_current} ${styles.swatch_light}` : `${styles.swatch} ${styles.swatch_current}`}
+      style={{...currSwatchStyle}}
+      title={item.color}
+      aria-label={item.color}
+      aria-current={"true"}
+    />
+  );
+
 
   return (
     <div className={styles.block}>
-      <p className={styles.current}>
+      {hasCurrentColorText && <p className={styles.current}>
         Текущий цвет: {item.color || "—"}
-      </p>
+      </p>}
       {showSwatches && (
         <>
-          <p className={styles.label}>другие цвета</p>
+          {hasOtherColorsText && <p className={styles.label}>другие цвета</p>}
           <ul className={styles.list}>
+            {hasCurrentByDefault &&
+              <li>
+                <Link href={`/shop/${item.slug}`} aria-label={item.color}>{currContent}</Link>
+              </li>
+            }
             {variants.map((variant) => {
               const isCurrent = variant._id === item._id;
               const hex = variant.stageColor ?? resolveColorHex(variant.color);
@@ -54,7 +81,7 @@ const ProductColorVariants: React.FC<ProductColorVariantsProps> = ({
               return (
                 <li key={variant._id}>
                   {isCurrent ? (
-                    content
+                    !hasCurrentByDefault ? content : <></>
                   ) : (
                     <Link href={`/shop/${variant.slug}`} aria-label={variant.color}>
                       {content}

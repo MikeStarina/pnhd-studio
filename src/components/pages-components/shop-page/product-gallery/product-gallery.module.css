@@ -82,6 +82,33 @@
     pointer-events: none;
   }
 
+  .galleryWrapper_carousel {
+    aspect-ratio: unset;
+    border-radius: 0;
+    gap: 0;
+  }
+
+  .gallery_carousel {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    gap: 1px;
+  }
+
+  .gallery_carousel .gallery__item {
+    min-width: 100%;
+    height: 100%;
+    aspect-ratio: unset;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
   .galleryDots {
     display: none;
     position: absolute;
@@ -96,6 +123,10 @@
     @media (max-width: 800px) {
       display: flex;
     }
+  }
+
+  .galleryDots_carousel {
+    display: flex;
   }
 
   .galleryDot {

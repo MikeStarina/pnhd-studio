@@ -6,6 +6,7 @@ import ProductCardsBlock from "../product-cards-block/product-cards-block";
 import { IProduct } from "@/app/utils/types";
 import { toCategoryArray } from "@/app/utils/product-categories";
 import { toTagArray } from "@/app/utils/product-tags";
+import { getShopColorOptions, isLightHex, normalizeColorKey } from "@/app/utils/product-colors";
 import { useGetCategoriesQuery, useGetTagsQuery } from "@/api/api";
 import Breadcrumbs from '@/components/shared-components/breadcrumbs/Breadcrumbs';
 
@@ -31,23 +32,44 @@ const printableOptions = [
     { name: 'Принты', value: 'blank' },
 ] as const;
 
-type FilterState = { category: string; tags: string[]; type: string; priceSort: string; printable: string };
+type FilterState = { categories: string[]; colors: string[]; tags: string[]; types: string[]; priceSort: string; printable: string };
+
+function parseListParam(value: string | null): string[] {
+    return (value || '').split(',').filter(Boolean);
+}
+
+function toggleListValue(list: string[], value: string): string[] {
+    return list.includes(value) ? list.filter((item) => item !== value) : [...list, value];
+}
 
 function buildQueryString(state: FilterState): string {
     const parts: string[] = [];
-    if (state.category) parts.push(`category=${encodeURIComponent(state.category)}`);
+    if (state.categories.length) parts.push(`category=${encodeURIComponent(state.categories.join(','))}`);
+    if (state.colors.length) parts.push(`color=${encodeURIComponent(state.colors.join(','))}`);
     if (state.tags.length) parts.push(`tags=${encodeURIComponent(state.tags.join(','))}`);
-    if (state.type) parts.push(`type=${encodeURIComponent(state.type)}`);
+    if (state.types.length) parts.push(`type=${encodeURIComponent(state.types.join(','))}`);
     if (state.priceSort) parts.push(`priceSort=${encodeURIComponent(state.priceSort)}`);
     if (state.printable) parts.push(`printable=${encodeURIComponent(state.printable)}`);
     return parts.length ? `?${parts.join('&')}` : '';
 }
 
+function countActiveFilters(state: FilterState): number {
+    return (
+        state.categories.length +
+        state.colors.length +
+        state.tags.length +
+        state.types.length +
+        (state.priceSort ? 1 : 0) +
+        (state.printable ? 1 : 0)
+    );
+}
+
 function applyFilters(shopData: IProduct[], state: FilterState): IProduct[] {
     let data = [...shopData];
-    if (state.category) data = data.filter((item) => toCategoryArray(item.category).includes(state.category));
+    if (state.categories.length) data = data.filter((item) => toCategoryArray(item.category).some((id) => state.categories.includes(id)));
+    if (state.colors.length) data = data.filter((item) => state.colors.includes(normalizeColorKey(item.color)));
     if (state.tags.length) data = data.filter((item) => toTagArray(item.tags).some((tagId) => state.tags.includes(tagId)));
-    if (state.type) data = data.filter((item) => item.type === state.type);
+    if (state.types.length) data = data.filter((item) => state.types.includes(item.type));
     if (state.printable === 'print') data = data.filter((item) => item.isForPrinting);
     if (state.printable === 'blank') data = data.filter((item) => !item.isForPrinting);
     if (state.priceSort === 'ASC') data.sort((a, b) => a.price - b.price);
@@ -71,28 +93,32 @@ const ProductFilterComp: React.FC<{ children?: React.ReactNode; shopData: Array<
         name: item.label,
         value: item._id,
     }));
+    const colorOptions = getShopColorOptions(shopData);
 
     const [filterState, setFilterState] = useState<FilterState>({
-        category: '',
+        categories: [],
+        colors: [],
         tags: [],
-        type: '',
+        types: [],
         priceSort: '',
         printable: '',
     });
     const [isFiltered, setIsFiltered] = useState(false);
     const [filteredData, setFilteredData] = useState<Array<IProduct> | null>(null);
+    const [isFiltersOpen, setIsFiltersOpen] = useState(false);
 
     useEffect(() => {
-        const category = searchParams.get('category') || '';
-        const tags = (searchParams.get('tags') || '').split(',').filter(Boolean);
-        const type = searchParams.get('type') || '';
+        const categories = parseListParam(searchParams.get('category'));
+        const colors = parseListParam(searchParams.get('color')).map(normalizeColorKey).filter(Boolean);
+        const tags = parseListParam(searchParams.get('tags'));
+        const types = parseListParam(searchParams.get('type'));
         const priceSort = searchParams.get('priceSort') || '';
         const printable = searchParams.get('printable') || '';
 
-        setFilterState({ category, tags, type, priceSort, printable });
+        setFilterState({ categories, colors, tags, types, priceSort, printable });
 
-        if (category || tags.length || type || priceSort || printable) {
-            setFilteredData(applyFilters(shopData, { category, tags, type, priceSort, printable }));
+        if (categories.length || colors.length || tags.length || types.length || priceSort || printable) {
+            setFilteredData(applyFilters(shopData, { categories, colors, tags, types, priceSort, printable }));
             setIsFiltered(true);
         } else {
             setIsFiltered(false);
@@ -108,26 +134,19 @@ const ProductFilterComp: React.FC<{ children?: React.ReactNode; shopData: Array<
     );
 
     const onCategoryPill = (value: string) => {
-        if (filterState.category === value) {
-            navigateWithState({ ...filterState, category: '' });
-            return;
-        }
-        navigateWithState({ ...filterState, category: value });
+        navigateWithState({ ...filterState, categories: toggleListValue(filterState.categories, value) });
+    };
+
+    const onColorPill = (value: string) => {
+        navigateWithState({ ...filterState, colors: toggleListValue(filterState.colors, value) });
     };
 
     const onTagPill = (value: string) => {
-        const nextTags = filterState.tags.includes(value)
-            ? filterState.tags.filter((t) => t !== value)
-            : [...filterState.tags, value];
-        navigateWithState({ ...filterState, tags: nextTags });
+        navigateWithState({ ...filterState, tags: toggleListValue(filterState.tags, value) });
     };
 
     const onTypePill = (value: string) => {
-        if (filterState.type === value) {
-            navigateWithState({ ...filterState, type: '' });
-            return;
-        }
-        navigateWithState({ ...filterState, type: value });
+        navigateWithState({ ...filterState, types: toggleListValue(filterState.types, value) });
     };
 
     const onPricePill = (sort: 'ASC' | 'DESC') => {
@@ -146,10 +165,37 @@ const ProductFilterComp: React.FC<{ children?: React.ReactNode; shopData: Array<
         router.push('/shop');
     };
 
+    const openFilters = () => setIsFiltersOpen(true);
+    const closeFilters = () => setIsFiltersOpen(false);
+
+    useEffect(() => {
+        if (!isFiltersOpen) return;
+        const prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+
+        const onKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') closeFilters();
+        };
+        const onResize = () => {
+            if (window.innerWidth > 900) closeFilters();
+        };
+
+        window.addEventListener('keydown', onKeyDown);
+        window.addEventListener('resize', onResize);
+        return () => {
+            document.body.style.overflow = prevOverflow;
+            window.removeEventListener('keydown', onKeyDown);
+            window.removeEventListener('resize', onResize);
+        };
+    }, [isFiltersOpen]);
+
+    const activeFilterCount = countActiveFilters(filterState);
+    const hasActiveFilters = activeFilterCount > 0;
+
     return (
         <section className={styles.main}>
             <header className={styles.header}>
-                <Breadcrumbs items={[{label: 'Главная', href: '/'}, {label: 'Каталог', href: '/shop'}]} />
+                <Breadcrumbs items={[{ label: 'Главная', href: '/' }, { label: 'Каталог', href: '/shop' }]} />
                 <h1 className={styles.title}>Каталог</h1>
             </header>
 
@@ -171,124 +217,219 @@ const ProductFilterComp: React.FC<{ children?: React.ReactNode; shopData: Array<
                 })}
             </div>
 
-            <div className={styles.filters}>
-                <div className={styles.filterBar} role="group" aria-label="Фильтры каталога">
-                    <div className={styles.filterGroup}>
-                        <span className={styles.groupLabel}>Категория</span>
-                        <div className={styles.pills}>
-                            {categoryOptions.map((item) => {
-                                const active = filterState.category === item.value;
-                                return (
-                                    <button
-                                        key={item.value}
-                                        type="button"
-                                        className={`${styles.pill} ${active ? styles.pillActive : ''}`}
-                                        onClick={() => onCategoryPill(item.value)}
-                                        aria-pressed={active}
-                                    >
-                                        {item.name}
-                                        {active && (
-                                            <span className={styles.pillClear} aria-hidden>
-                                                ×
-                                            </span>
-                                        )}
-                                    </button>
-                                );
-                            })}
-                        </div>
-                    </div>
+            <button
+                type="button"
+                className={styles.filtersOpenButton}
+                onClick={openFilters}
+                aria-expanded={isFiltersOpen}
+                aria-controls="catalog-filters"
+            >
+                фильтры
+                {hasActiveFilters && (
+                    <span className={styles.resetCount} aria-hidden>
+                        {activeFilterCount}
+                    </span>
+                )}
+            </button>
 
-                    <div className={styles.filterGroup}>
-                        <span className={styles.groupLabel}>Теги</span>
-                        <div className={styles.pills}>
-                            {tagOptions.map((item) => {
-                                const active = filterState.tags.includes(item.value);
-                                return (
-                                    <button
-                                        key={item.value}
-                                        type="button"
-                                        className={`${styles.pill} ${active ? styles.pillActive : ''}`}
-                                        onClick={() => onTagPill(item.value)}
-                                        aria-pressed={active}
-                                    >
-                                        {item.name}
-                                        {active && (
-                                            <span className={styles.pillClear} aria-hidden>
-                                                ×
-                                            </span>
-                                        )}
-                                    </button>
-                                );
-                            })}
-                        </div>
+            <div className={styles.catalogLayout}>
+                <div
+                    id="catalog-filters"
+                    className={`${styles.filtersWrapper} ${isFiltersOpen ? styles.filtersDialogOpen : ''}`}
+                >
+                    <div className={styles.filtersDialogHeader}>
+                        <span className={styles.filtersDialogTitle}>Фильтры</span>
+                        <button
+                            type="button"
+                            className={styles.filtersCloseButton}
+                            onClick={closeFilters}
+                            aria-label="Закрыть фильтры"
+                        >
+                            <span className={styles.closeLine} />
+                            <span className={styles.closeLine} />
+                        </button>
                     </div>
+                    <div className={styles.filters}>
+                        <div className={styles.filterBar} role="group" aria-label="Фильтры каталога">
+                            <div className={styles.filterGroup}>
+                                <details>
+                                    <summary >
+                                        <span className={styles.groupLabel}>Категория</span>
+                                    </summary>
+                                    <div className={styles.pills}>
+                                        {categoryOptions.map((item) => {
+                                            const active = filterState.categories.includes(item.value);
+                                            return (
+                                                <button
+                                                    key={item.value}
+                                                    type="button"
+                                                    className={`${styles.pill} ${active ? styles.pillActive : ''}`}
+                                                    onClick={() => onCategoryPill(item.value)}
+                                                    aria-pressed={active}
+                                                >
+                                                    {item.name}
+                                                    {active && (
+                                                        <span className={styles.pillClear} aria-hidden>
+                                                            ×
+                                                        </span>
+                                                    )}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </details>
+                            </div>
 
-                    <div className={`${styles.filterGroup} ${styles.filterGroupTypes}`}>
-                        <span className={styles.groupLabel}>Тип</span>
-                        <div className={styles.pills}>
-                            {filterParams.type.map((item) => {
-                                const active = filterState.type === item.value;
-                                return (
-                                    <button
-                                        key={item.value}
-                                        type="button"
-                                        className={`${styles.pill} ${active ? styles.pillActive : ''}`}
-                                        onClick={() => onTypePill(item.value)}
-                                        aria-pressed={active}
-                                    >
-                                        {item.name}
-                                        {active && (
-                                            <span className={styles.pillClear} aria-hidden>
-                                                ×
-                                            </span>
-                                        )}
-                                    </button>
-                                );
-                            })}
+                            <div className={`${styles.filterGroup} ${styles.filterGroupTypes}`}>
+                                <details>
+                                    <summary >
+                                        <span className={styles.groupLabel}>Тип</span>
+                                    </summary>
+                                    <div className={styles.pills}>
+                                        {filterParams.type.map((item) => {
+                                            const active = filterState.types.includes(item.value);
+                                            return (
+                                                <button
+                                                    key={item.value}
+                                                    type="button"
+                                                    className={`${styles.pill} ${active ? styles.pillActive : ''}`}
+                                                    onClick={() => onTypePill(item.value)}
+                                                    aria-pressed={active}
+                                                >
+                                                    {item.name}
+                                                    {active && (
+                                                        <span className={styles.pillClear} aria-hidden>
+                                                            ×
+                                                        </span>
+                                                    )}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </details>
+                            </div>
+
+                            {colorOptions.length > 0 && (
+                                <div className={styles.filterGroup}>
+                                    <details>
+                                        <summary >
+                                            <span className={styles.groupLabel}>Цвет</span>
+                                        </summary>
+                                        <div className={styles.pills}>
+                                            {colorOptions.map((item) => {
+                                                const active = filterState.colors.includes(item.value);
+                                                return (
+                                                    <button
+                                                        key={item.value}
+                                                        type="button"
+                                                        className={`${styles.pill} ${active ? styles.pillActive : ''}`}
+                                                        onClick={() => onColorPill(item.value)}
+                                                        aria-pressed={active}
+                                                    >
+                                                        <span
+                                                            className={`${styles.colorSwatch} ${item.hex && isLightHex(item.hex) ? styles.colorSwatchLight : ''}`}
+                                                            style={item.hex ? { backgroundColor: item.hex } : undefined}
+                                                            aria-hidden
+                                                        />
+                                                        {item.name}
+                                                        {active && (
+                                                            <span className={styles.pillClear} aria-hidden>
+                                                                ×
+                                                            </span>
+                                                        )}
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    </details>
+                                </div>
+                            )}
+
+                           
+
+                            <div className={styles.filterGroup}>
+                                <details>
+                                    <summary >
+                                        <span className={styles.groupLabel}>Теги</span>
+                                    </summary>
+                                    <div className={styles.pills}>
+                                        {tagOptions.map((item) => {
+                                            const active = filterState.tags.includes(item.value);
+                                            return (
+                                                <button
+                                                    key={item.value}
+                                                    type="button"
+                                                    className={`${styles.pill} ${active ? styles.pillActive : ''}`}
+                                                    onClick={() => onTagPill(item.value)}
+                                                    aria-pressed={active}
+                                                >
+                                                    {item.name}
+                                                    {active && (
+                                                        <span className={styles.pillClear} aria-hidden>
+                                                            ×
+                                                        </span>
+                                                    )}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </details>
+                            </div>
+
+
+
+                            <div className={`${styles.filterGroup} ${styles.filterGroupPrice}`}>
+                                <span className={styles.groupLabel}>Цена</span>
+                                <div className={styles.pills}>
+                                    {priceOptions.map((item) => {
+                                        const active = filterState.priceSort === item.value;
+                                        return (
+                                            <button
+                                                key={item.value}
+                                                type="button"
+                                                className={`${styles.pill} ${active ? styles.pillActive : ''}`}
+                                                onClick={() => onPricePill(item.value)}
+                                                aria-pressed={active}
+                                            >
+                                                {item.name}
+                                                {active && (
+                                                    <span className={styles.pillClear} aria-hidden>
+                                                        ×
+                                                    </span>
+                                                )}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div className={`${styles.filterGroup} ${styles.filterGroupPrice}`}>
-                        <span className={styles.groupLabel}>Цена</span>
-                        <div className={styles.pills}>
-                            {priceOptions.map((item) => {
-                                const active = filterState.priceSort === item.value;
-                                return (
-                                    <button
-                                        key={item.value}
-                                        type="button"
-                                        className={`${styles.pill} ${active ? styles.pillActive : ''}`}
-                                        onClick={() => onPricePill(item.value)}
-                                        aria-pressed={active}
-                                    >
-                                        {item.name}
-                                        {active && (
-                                            <span className={styles.pillClear} aria-hidden>
-                                                ×
-                                            </span>
-                                        )}
-                                    </button>
-                                );
-                            })}
+                        <div className={styles.formActions}>
+                            <button
+                                type="button"
+                                className={styles.filters_submitButton}
+                                onClick={resetFilterButtonClickHandler}
+                                disabled={!hasActiveFilters}
+                                aria-label={hasActiveFilters ? `Сбросить фильтры, выбрано ${activeFilterCount}` : 'Сбросить фильтры'}
+                            >
+                                сбросить
+                                {hasActiveFilters && (
+                                    <span className={styles.resetCount} aria-hidden>
+                                        {activeFilterCount}
+                                    </span>
+                                )}
+                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className={styles.formActions}>
-                <button
-                    type="button"
-                    className={styles.filters_submitButton}
-                    onClick={resetFilterButtonClickHandler}
-                >
-                    сбросить
-                </button>
-            </div>
 
-            {isFiltered && filteredData ? (
-                <ProductCardsBlock shopData={filteredData} />
-            ) : (
-                <>{children}</>
-            )}
+
+                {isFiltered && filteredData ? (
+                    <ProductCardsBlock shopData={filteredData} />
+                ) : (
+                    <>{children}</>
+                )}
+            </div>
         </section>
     );
 };
