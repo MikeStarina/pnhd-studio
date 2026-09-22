@@ -46,6 +46,35 @@ export const resolveColorHex = (color?: string): string | null => {
   return COLOR_MAP[color.trim().toLowerCase()] ?? null;
 };
 
+export const normalizeColorKey = (color?: string): string => {
+  if (!color) return '';
+  return color.trim().toLowerCase().replace(/ё/g, 'е');
+};
+
+export type ShopColorOption = {
+  name: string;
+  value: string;
+  hex: string | null;
+};
+
+export const getShopColorOptions = (
+  products: Array<{ color?: string; stageColor?: string }>
+): ShopColorOption[] => {
+  const seen = new Map<string, ShopColorOption>();
+  for (const item of products) {
+    const name = item.color?.trim();
+    if (!name) continue;
+    const value = normalizeColorKey(name);
+    if (!value || seen.has(value)) continue;
+    seen.set(value, {
+      name,
+      value,
+      hex: item.stageColor || resolveColorHex(name),
+    });
+  }
+  return Array.from(seen.values()).sort((a, b) => a.name.localeCompare(b.name, 'ru'));
+};
+
 export const isLightHex = (hex: string): boolean => {
   const value = hex.replace("#", "");
   if (value.length !== 6) return false;

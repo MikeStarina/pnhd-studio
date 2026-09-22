@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import classNames from 'classnames';
 import { IProduct } from '@/app/utils/types';
 import { productGallerySources } from '@/app/utils/product-photos';
 import { ImageComponent } from '@/components/pages-components/shop-page/product-photos/imageComponent';
@@ -10,13 +11,30 @@ import styles from './product-gallery.module.css';
 const AUTO_SCROLL_DELAY = 4000;
 const MOBILE_QUERY = '(max-width: 800px)';
 
-const ProductGallery: React.FC<{ item: IProduct }> = ({ item }) => {
+type TProductGalleryProps = {
+    item: IProduct;
+    variant?: 'grid' | 'carousel';
+    showBadges?: boolean;
+    className?: string;
+    hasAutoScroll?: boolean;
+};
+
+const ProductGallery: React.FC<TProductGalleryProps> = ({
+    item,
+    variant = 'grid',
+    showBadges = true,
+    className,
+    hasAutoScroll = true,
+}) => {
     const photosArray = useMemo(() => productGallerySources(item), [item]);
+    const isCarousel = variant === 'carousel';
 
     const galleryRef = useRef<HTMLUListElement | null>(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [isHovered, setIsHovered] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
+
+    const isSwipeable = isCarousel || isMobile;
 
     useEffect(() => {
         const mq = window.matchMedia(MOBILE_QUERY);
@@ -38,7 +56,10 @@ const ProductGallery: React.FC<{ item: IProduct }> = ({ item }) => {
     }, []);
 
     useEffect(() => {
-        if (!isMobile || photosArray.length <= 1 || isHovered) return;
+        if (photosArray.length <= 1) return;
+
+        const shouldAutoScroll = hasAutoScroll ? isCarousel ? isHovered : (isMobile && !isHovered) : false;
+        if (!shouldAutoScroll) return;
 
         const timer = window.setInterval(() => {
             setActiveIndex((prevIndex) => {
@@ -49,19 +70,19 @@ const ProductGallery: React.FC<{ item: IProduct }> = ({ item }) => {
         }, AUTO_SCROLL_DELAY);
 
         return () => window.clearInterval(timer);
-    }, [isHovered, isMobile, photosArray.length, scrollToIndex]);
+    }, [isCarousel, isHovered, isMobile, photosArray.length, scrollToIndex]);
 
     return (
         <div
-            className={styles.galleryWrapper}
+            className={classNames(styles.galleryWrapper, isCarousel && styles.galleryWrapper_carousel, className)}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
             <ul
                 ref={galleryRef}
-                className={styles.gallery}
+                className={classNames(styles.gallery, isCarousel && styles.gallery_carousel)}
                 onScroll={(event) => {
-                    if (!isMobile) return;
+                    if (!isSwipeable) return;
                     const target = event.currentTarget;
                     const nextIndex = Math.round(target.scrollLeft / target.clientWidth);
                     if (nextIndex !== activeIndex) {
@@ -81,21 +102,36 @@ const ProductGallery: React.FC<{ item: IProduct }> = ({ item }) => {
                 ))}
             </ul>
 
-            <div className={styles.top_left_stack}>
-                <ProductTagBadges tagIds={item.tags} />
-            </div>
+            {showBadges && (
+                <div className={styles.top_left_stack}>
+                    <ProductTagBadges tagIds={item.tags} />
+                </div>
+            )}
 
-            <div className={styles.galleryDots} aria-label="Навигация по изображениям товара">
-                {photosArray.map((_, index) => (
-                    <button
-                        key={index}
-                        type="button"
-                        className={`${styles.galleryDot} ${index === activeIndex ? styles.galleryDot_active : ''}`}
-                        onClick={() => scrollToIndex(index)}
-                        aria-label={`Перейти к фото ${index + 1}`}
-                    />
-                ))}
-            </div>
+            {photosArray.length > 1 && (
+                <div
+                    className={classNames(styles.galleryDots, isCarousel && styles.galleryDots_carousel)}
+                    aria-label="Навигация по изображениям товара"
+                    onClick={(event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }}
+                >
+                    {photosArray.map((_, index) => (
+                        <button
+                            key={index}
+                            type="button"
+                            className={classNames(styles.galleryDot, index === activeIndex && styles.galleryDot_active)}
+                            onClick={(event) => {
+                                event.preventDefault();
+                                event.stopPropagation();
+                                scrollToIndex(index);
+                            }}
+                            aria-label={`Перейти к фото ${index + 1}`}
+                        />
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
