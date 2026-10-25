@@ -3,27 +3,20 @@ name: Deploy Frontend
 on:
   push:
     branches:
-      - stage
       - main
   workflow_dispatch:
-    inputs:
-      environment:
-        description: Target environment
-        required: true
-        type: choice
-        options:
-          - stage
-          - prod
 
 permissions:
   contents: read
+  packages: write
 
 jobs:
   deploy:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    environment: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || (github.ref_name == 'main' && 'prod' || 'stage') }}
+    environment: prod
     env:
-      DEPLOY_ENV: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || (github.ref_name == 'main' && 'prod' || 'stage') }}
+      DEPLOY_ENV: prod
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,19 +26,16 @@ jobs:
         run: |
           echo "tag=${DEPLOY_ENV}" >> "$GITHUB_OUTPUT"
           echo "sha_tag=sha-${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
-          echo "image=cr.yandex/${{ vars.YCR_ID }}/studio-fe" >> "$GITHUB_OUTPUT"
+          repo=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          echo "image=ghcr.io/${repo}" >> "$GITHUB_OUTPUT"
           if [ -n "${{ vars.NEXT_PUBLIC_API_URL }}" ]; then
             echo "api_url=${{ vars.NEXT_PUBLIC_API_URL }}" >> "$GITHUB_OUTPUT"
-          elif [ "$DEPLOY_ENV" = "prod" ]; then
-            echo "api_url=https://api.pnhd.ru" >> "$GITHUB_OUTPUT"
           else
-            echo "api_url=https://api-stage.pnhd.ru" >> "$GITHUB_OUTPUT"
+            echo "api_url=https://api.pnhd.ru" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Login to Yandex Container Registry
-        uses: yc-actions/yc-cr-login@v1
-        with:
-          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON }}
+      - name: Login to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
       - name: Build and push
         run: |
@@ -57,6 +47,18 @@ jobs:
             .
           docker push "${IMAGE}:${{ steps.meta.outputs.tag }}"
           docker push "${IMAGE}:${{ steps.meta.outputs.sha_tag }}"
+
+      - name: Make package public
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          name=$(echo "${{ github.event.repository.name }}" | tr '[:upper:]' '[:lower:]')
+          curl -fsS -X PATCH \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/users/${{ github.repository_owner }}/packages/container/${name}" \
+            -d '{"visibility":"public"}'
 
       - name: Prepare deploy bundle
         env:
@@ -85,18 +87,14 @@ jobs:
 
       - name: Pull image and restart stack
         uses: appleboy/ssh-action@v1.2.0
-        env:
-          YC_SA_JSON: ${{ secrets.YC_SA_JSON }}
         with:
           host: ${{ vars.SSH_HOST }}
           username: ${{ vars.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          envs: YC_SA_JSON
           script: |
             set -euo pipefail
             cd /opt/studio-fe
             chmod 600 .env
-            printf '%s\n' "$YC_SA_JSON" | docker login --username json_key --password-stdin cr.yandex
             docker compose pull
             docker compose up -d --remove-orphans
             docker compose ps
