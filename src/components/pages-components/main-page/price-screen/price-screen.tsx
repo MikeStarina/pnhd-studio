@@ -5,7 +5,7 @@ import shape from '../../../../../public/price_screen_shape.svg';
 import shape2 from '../../../../../public/price_screen_shape2.svg';
 import LeadButton from "@/components/shared-components/lead-button/lead-button";
 import PriceBlock from "./price-block";
-import Link from "next/link";
+import TelegramLink from "@/components/shared-components/telegram-link/telegram-link";
 
 const PriceScreen: React.FC = () => {
 
@@ -29,7 +29,7 @@ const PriceScreen: React.FC = () => {
                         у менеджеров
                     </p>
                     {/* <LeadButton styleType="green" /> */}
-                    <Link href='https://telegram.me/pnhd_studio' target='blank' className={styles.leadButton__green}>Заказать срочную печать</Link>
+                    <TelegramLink className={styles.leadButton__green}>Заказать срочную печать</TelegramLink>
                     <Image src={shape} alt='графическая форма' className={styles.mainBlock_shape} />
                 </div>
 

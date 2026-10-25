@@ -2,6 +2,7 @@
 import React, { useState } from "react"
 import styles from './contactsWidget.module.css'
 import Link from "next/link"
+import TelegramLink from "../telegram-link/telegram-link"
 import Image from "next/image"
 // import vk from '../../../../public/vk_logo.svg';
 import tg from '../../../../public/tg_logo.svg';
@@ -30,10 +31,10 @@ const ContactsWidget = () => {
                     </Link>
                 </li> */}
                     <li className={styles.contactsWidget_menuItem}>
-                        <Link href='https://telegram.me/pnhd_studio' target="blank" className={styles.contactsWidget_menuItemLink}>
+                        <TelegramLink className={styles.contactsWidget_menuItemLink}>
                             <Image src={tg} alt='логотип телеграм' width={20} height={20} />
                             Написать в Телеграм
-                        </Link>
+                        </TelegramLink>
                     </li>
                     {/* <li className={styles.contactsWidget_menuItem}>
                     <Link href='https://instagram.com/pnhd.studio/' target="blank">
