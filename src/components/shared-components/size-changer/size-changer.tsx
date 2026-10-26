@@ -1,5 +1,5 @@
 "use client";
-import React, { SyntheticEvent, useEffect } from "react";
+import React, { SyntheticEvent, useEffect, useState } from "react";
 import styles from "./size-changer.module.css";
 import { IProduct } from "@/app/utils/types";
 import { useAppDispatch, useAppSelector } from "@/redux/redux-hooks";
@@ -44,6 +44,7 @@ const SizeChanger: React.FC<{ item: IProduct }> = ({ item }) => {
     const { sizes: itemSizes } = currentItem;
     const dispatch = useAppDispatch();
     const { sizes } = useAppSelector((store) => store.utils);
+    const [activeSize, setActiveSize] = useState<string | null>(null);
     useEffect(() => {
         let stateSizes = itemSizes.map((item) => {
 
@@ -59,6 +60,14 @@ const SizeChanger: React.FC<{ item: IProduct }> = ({ item }) => {
             dispatch(ustilActions.resetStateSizes());
         };
     }, []);
+
+    useEffect(() => {
+        if (!sizes?.length) return;
+        setActiveSize((current) => {
+            if (current && sizes.some((size) => size.name === current)) return current;
+            return sizes.find((size) => size.userQty > 0)?.name ?? null;
+        });
+    }, [sizes]);
 
     const sizeControlButtonClickHandler = (
         e: SyntheticEvent<HTMLButtonElement>
@@ -120,69 +129,64 @@ const SizeChanger: React.FC<{ item: IProduct }> = ({ item }) => {
         );
     }
 
+    const active = sortedSizes.find((size) => size.name === activeSize) ?? null;
+
+    const selectSize = (name: string) => {
+        const size = sortedSizes.find((item) => item.name === name);
+        if (!size || size.qty <= 0) return;
+        setActiveSize(name);
+        if (size.userQty === 0) {
+            dispatch(ustilActions.updateSizes({ id: 'increase', name }));
+        }
+    };
+
     return (
-        <div className={styles.sizeChangerNew}>
-            {sortedSizes.map((item, index) => {
-                return (
-                    <SizeCard
-                        {...item}
-                        key={index}
-                        onCardClick={(id: string, name: string) => dispatch(ustilActions.updateSizes({ id, name }))}
-                    />
-                );
-            })}
+        <div className={styles.sizePicker}>
+            <div className={styles.sizeRow} role="group" aria-label="Размер">
+                {sortedSizes.map((size) => {
+                    const inStock = size.qty > 0;
+                    const selected = size.userQty > 0;
+                    return (
+                        <button
+                            key={size.name}
+                            type="button"
+                            className={[
+                                styles.sizeOption,
+                                selected ? styles.sizeOptionSelected : '',
+                                !inStock ? styles.sizeOptionDisabled : '',
+                            ].join(' ')}
+                            aria-pressed={selected}
+                            disabled={!inStock}
+                            onClick={() => selectSize(size.name)}
+                        >
+                            {size.name.toUpperCase()}
+                        </button>
+                    );
+                })}
+            </div>
+            <div className={styles.qtyControl}>
+                <button
+                    type="button"
+                    className={styles.qtyCell}
+                    aria-label="Уменьшить количество"
+                    disabled={!active || active.userQty <= 0}
+                    onClick={() => active && dispatch(ustilActions.updateSizes({ id: 'decrease', name: active.name }))}
+                >
+                    −
+                </button>
+                <span className={styles.qtyCell}>{active?.userQty ?? 0}</span>
+                <button
+                    type="button"
+                    className={styles.qtyCell}
+                    aria-label="Увеличить количество"
+                    disabled={!active || active.userQty >= active.qty}
+                    onClick={() => active && dispatch(ustilActions.updateSizes({ id: 'increase', name: active.name }))}
+                >
+                    +
+                </button>
+            </div>
         </div>
     );
 };
-
-
-type TSizeCardProps = {
-    name: string;
-    qty: number;
-    userQty: number;
-    onCardClick: (id: string, name: string) => void;
-}
-const SizeCard: React.FC<TSizeCardProps> = ({ name, qty, userQty, onCardClick }) => {
-    const isInStock = qty > 0;
-    const isActive = userQty > 0;
-    return (
-        <div
-            className={[styles.sizeCard, isActive ? styles.sizeCard__active : ''].join(' ')}
-            style={!isInStock ? { opacity: 0.25, cursor: 'not-allowed', backgroundColor: 'lightgray' } : {}}
-            data-in-stock={isInStock}
-            onClick={() => onCardClick('increase', name)}
-        >
-            <div className={styles.sizeCard_header}>
-                <p className={styles.sizeCard_title} title={name}>{name}</p>
-            </div>
-            <div className={styles.sizeCard__footer}>
-                {isInStock ? (
-                    <>
-                        <span>Осталось {qty - userQty}</span>
-                        <span style={{ opacity: 0.5 }}>Из {qty}</span>
-                    </>
-                ) : (
-                    <span>Нет в наличии</span>
-                )}
-
-            </div>
-            {!isActive && isInStock && <span className={styles.sizeCard__plusIcon}>+</span>}
-            {isActive && isInStock &&
-                <div className={styles.sizeCard__minusIcon}
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        onCardClick('decrease', name)
-                    }}
-                >
-                    <button
-                        className={styles.sizeCard__minusButton}
-                    >-</button>
-                    <span>{userQty}</span>
-                </div>
-            }
-        </div>
-    );
-}
 
 export default SizeChanger;

@@ -5,6 +5,7 @@ import MapComponent from "./map-component";
 import Link from "next/link";
 import Image from "next/image";
 import shape from '../../../../../public/map_shape.svg';
+import TelegramLink from "@/components/shared-components/telegram-link/telegram-link";
 import UtmLink from "@/components/shared-components/utm-link/utm-link";
 // import vk from '../../../../../public/vk_logo.svg';
 import tg from '../../../../../public/tg_logo.svg';
@@ -48,11 +49,11 @@ const MapScreen: React.FC = () => {
                                 <Image src={vk} alt='логотип вконтакте' />
                             </button>
                         </Link> */}
-                        <Link href='https://telegram.me/pnhd_studio' target="blank">
+                        <TelegramLink>
                             <button type='button' className={styles.contacts_socialButton}>
                                 <Image src={tg} alt='логотип телеграм' />
                             </button>
-                        </Link>
+                        </TelegramLink>
                         {/* <Link href='https://instagram.com/pnhd.studio/' target="blank">
                             <button type='button' className={styles.contacts_socialButton}>
                                 <Image src={inst} alt='логотип инстаграм' />

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import MenuButton from '../mobile-menu/menu-button';
 //import pnhd_studio_header_logo from '../../../../public/pnhd_studio_header_logo.svg';
 import LeadButton from '../lead-button/lead-button';
+import TelegramLink from '../telegram-link/telegram-link';
 import UtmLink from '../utm-link/utm-link';
 // import AuthButton from '../auth/auth-button';
 
@@ -38,7 +39,7 @@ const Header: React.FC = () => {
                 <div className={styles.header_buttonsWrapper}>
                     <Link href='tel:+78129046156' className={styles.header_phoneButton}>+7 (812) 904 61 56</Link>
                     {/* <LeadButton styleType='green' /> */}
-                    <Link href='https://telegram.me/pnhd_studio' target='blank' className={styles.header_priceButton}>Сделать заказ</Link>
+                    <TelegramLink className={styles.header_priceButton}>Сделать заказ</TelegramLink>
                     {/* <AuthButton /> временно скрыт */}
                 </div>
                 <MenuButton />

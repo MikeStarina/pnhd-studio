@@ -43,7 +43,7 @@ const Page: React.FC = () => {
     },
     "sameAs": [
       "https://vk.com/pinheadspb",
-      "https://telegram.me/pnhd_studio_bot"
+      "https://t.me/pnhd_studio_bot"
     ]
   }
   return (

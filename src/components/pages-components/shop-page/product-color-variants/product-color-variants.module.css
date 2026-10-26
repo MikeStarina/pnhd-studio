@@ -32,20 +32,10 @@
   min-width: 28px;
   height: 28px;
   box-sizing: border-box;
-  border: 1px solid transparent;
+  border: 1px solid black;
+  box-shadow: inset 0 0 0 1px white;
   background-color: #ddd;
   background-size: cover;
   background-position: center;
   cursor: pointer;
-}
-
-.swatch_light {
-  border-color: #d0d0d0;
-}
-
-.swatch_current {
-  border-color: black;
-  box-shadow: inset 0 0 0 2px white;
-  cursor: default;
-  width: 23px;
 }

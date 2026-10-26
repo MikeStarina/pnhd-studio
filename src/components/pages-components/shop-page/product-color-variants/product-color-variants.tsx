@@ -30,7 +30,7 @@ const ProductColorVariants: React.FC<ProductColorVariantsProps> = ({
   const currContent = (
     <span
       className={isLightHex(currentHex) ? `${styles.swatch} ${styles.swatch_current} ${styles.swatch_light}` : `${styles.swatch} ${styles.swatch_current}`}
-      style={{...currSwatchStyle}}
+      style={{ ...currSwatchStyle }}
       title={item.color}
       aria-label={item.color}
       aria-current={"true"}
@@ -59,7 +59,6 @@ const ProductColorVariants: React.FC<ProductColorVariantsProps> = ({
               const className = [
                 styles.swatch,
                 isCurrent ? styles.swatch_current : "",
-                hex && isLightHex(hex) ? styles.swatch_light : "",
               ]
                 .filter(Boolean)
                 .join(" ");
@@ -78,17 +77,23 @@ const ProductColorVariants: React.FC<ProductColorVariantsProps> = ({
                 />
               );
 
-              return (
-                <li key={variant._id}>
-                  {isCurrent ? (
-                    !hasCurrentByDefault ? content : <></>
-                  ) : (
+              if (isCurrent) {
+                return  !hasCurrentByDefault && (
+                  <li key={variant._id}>
+                    {content}
+                  </li>
+                );
+              } else {
+                return (
+                  <li key={variant._id}>
                     <Link href={`/shop/${variant.slug}`} aria-label={variant.color}>
                       {content}
                     </Link>
-                  )}
-                </li>
-              );
+                  </li>
+                );
+              }
+
+
             })}
           </ul>
         </>

@@ -88,9 +88,7 @@
   flex-direction: column;
   gap: 20px;
   overflow: visible;
-  position: sticky;
   height: fit-content;
-  top: 20px;
 }
 
 .filterBar {
