@@ -2,17 +2,8 @@ import { ICartOrderElement, IPrintFile, ICdekCitySearchResponse, ICdekPointsResp
 import { TCartState } from "@/redux/cart-slice/cart.slice";
 import { v4 as uuidv4 } from 'uuid';
 
-export const getPreviewArrFunc = (prints: {
-    front: IPrintFile, back: IPrintFile, lsleeve: IPrintFile, rsleeve: IPrintFile 
-}): Array<IPrintFile> => {
-    const previewArr = [];
-
-    prints?.front?.file && previewArr.push(prints.front);
-    prints?.back?.file && previewArr.push(prints.back);
-    prints?.lsleeve?.file && previewArr.push(prints.lsleeve);
-    prints?.rsleeve?.file && previewArr.push(prints.rsleeve);
-
-    return previewArr;
+export const getPreviewArrFunc = (prints?: IPrintFile[]): IPrintFile[] => {
+    return (prints ?? []).filter((print) => print?.file?.url);
 }
 
 
@@ -27,18 +18,22 @@ export const ruPrintPlace = (format: string): string => {
 }
 
 
-export const BASIC_PRINT_COST = 400;
+export const itemPrintUnitPrice = (elem: ICartOrderElement): number => {
+    return (elem.prints ?? []).reduce((acc, print) => {
+        if (!print?.file?.url) return acc;
+        return acc + (print.cartParams?.price ?? 0);
+    }, 0);
+};
+
+export const itemMissingPreview = (_elem: ICartOrderElement): boolean => false;
+
+export const orderMissingPreview = (_order?: Array<ICartOrderElement>): boolean => false;
 
 export const cartSummaryFunc = (order: Array<ICartOrderElement>): number => {
     const totalCartPrice = order?.reduce((acc, elem) => {
         const itemQty = elem.item.sizes.reduce((sizesAcc, size) => sizesAcc + size.userQty!, 0);
         const textileTotalPrice = itemQty * elem.item.price;
-        const printsToArr = elem.prints ? getPreviewArrFunc(elem.prints) : [];
-        const printsTotalPrice = printsToArr.length * itemQty * BASIC_PRINT_COST;
-
-        // Старый расчёт по cartParams.price из конструктора
-        // const printsToArr = getPreviewArrFunc(elem.prints!);
-        // const printsTotalPrice = printsToArr.reduce((printsAcc, print) => printsAcc + print.cartParams?.price!, 0) * itemQty;
+        const printsTotalPrice = itemPrintUnitPrice(elem) * itemQty;
 
         return acc + textileTotalPrice + printsTotalPrice;
     }, 0)
@@ -101,28 +96,16 @@ export const checkoutOrderObjectCreateFunc = (cart: TCartState, roistat: string)
         const stringSizes = sizesToString();
         const itemQty = elem.item.sizes.reduce((acc, { userQty }) => (acc + userQty!), 0); 
         
-        const printPriceF = (): number => {
-            const printsToArr = elem.prints ? getPreviewArrFunc(elem.prints) : [];
-            return printsToArr.length * BASIC_PRINT_COST;
-
-            // Старый расчёт по cartParams.price из конструктора
-            // let price = 0;
-            //     price = elem.prints?.front?.cartParams ?  price + elem.prints.front.cartParams.price : price + 0;
-            //     price = elem.prints?.back?.cartParams ?  price + elem.prints.back.cartParams.price : price + 0;
-            //     price = elem.prints?.lsleeve?.cartParams ?  price + elem.prints.lsleeve.cartParams.price : price + 0;
-            //     price = elem.prints?.rsleeve?.cartParams ?  price + elem.prints.rsleeve.cartParams.price : price + 0;
-            // return price;
-        }
-
-        const printToStringF = (print: IPrintFile | undefined, title: string) => {
-            if (print) {
-                return `${title}. Файл: ${print.file?.url}, Превью: ${print.preview}; Размер: ${print.cartParams?.size}`;
-            } else {
-                return '';
-            }
-        } 
-        const printPrice = printPriceF() * itemQty;
-        //console.log(printPrice);
+        const printPrice = itemPrintUnitPrice(elem) * itemQty;
+        const prints = (elem.prints ?? [])
+            .filter((print) => print.file?.url)
+            .map((print) => ({
+                file: print.file!.url,
+                name: print.file!.name,
+                size: print.cartParams?.size ?? "",
+                format: print.cartParams?.format ?? "",
+                price: print.cartParams?.price ?? 0,
+            }));
             itemToAdd = {
                 ...itemToAdd,
                 textile: elem.item.name.concat(stringSizes),
@@ -130,10 +113,11 @@ export const checkoutOrderObjectCreateFunc = (cart: TCartState, roistat: string)
                 printPrice: printPrice,
                 qty: elem.item.sizes,
                 qtyAll: itemQty,
-                front_print: printToStringF(elem.prints?.front, 'Печать на груди'),
-                back_print: printToStringF(elem.prints?.back, 'Печать на спине'),
-                lsleeve_print: printToStringF(elem.prints?.lsleeve, 'Печать на левом рукаве'),
-                rsleeve_print: printToStringF(elem.prints?.rsleeve, 'Печать на правом рукаве'),
+                front_print: "",
+                back_print: "",
+                lsleeve_print: "",
+                rsleeve_print: "",
+                prints,
             }
             data.items.push(itemToAdd)
             data.packages.push({

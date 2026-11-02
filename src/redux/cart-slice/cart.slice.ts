@@ -5,7 +5,7 @@ import { IUploadPrintResponse } from "@/app/utils/types";
 import { setCoords } from "@/app/utils/constructor-utils";
 import { getPrintFormatAndPriceFunc } from "@/app/utils/constructor-utils";
 import { IStageParams, ICdekCitySearchResponse } from "@/app/utils/types";
-import { resolveMediaUrl } from "@/app/utils/product-photos";
+import { normalizeCartOrder } from "@/app/utils/cart-normalize";
 
 interface IInitialState {
     order?: Array<ICartOrderElement>,
@@ -83,28 +83,29 @@ const cartSlice = createSlice({
             state.order?.push(action.payload)
             sessionStorage.setItem('order', JSON.stringify(state.order));
         },
-        deletePrint: (state, action: PayloadAction<{activeView: string, itemCartId: string}>) => {
-
-            state.order?.forEach((item) => {
-                if (item.itemCartId === action.payload.itemCartId) {
-                    //@ts-ignore
-                    item.prints![action.payload.activeView] = undefined;
-                }
-            })
+        deletePrint: (state, action: PayloadAction<{printId?: string, itemCartId: string}>) => {
+            state.order = normalizeCartOrder(state.order ?? []);
+            state.order.forEach((item) => {
+                if (item.itemCartId !== action.payload.itemCartId || !action.payload.printId) return;
+                item.prints = (item.prints ?? []).filter((print) => print.id !== action.payload.printId);
+            });
             sessionStorage.setItem('order', JSON.stringify(state.order));
         },
-        setPrint: (state, action: PayloadAction<{print: IUploadPrintResponse, activeView: string, itemCartId: string, itemType: string, itemColor: string }>) => {
-            const { print, activeView, itemCartId, itemType, itemColor } = action.payload;
+        setPrint: (state, action: PayloadAction<{print: IUploadPrintResponse, id?: string, itemCartId: string, itemType: string, itemColor: string }>) => {
+            const { print, itemCartId, itemType, itemColor } = action.payload;
+            const id = action.payload.id || `print-${Date.now()}`;
             const coordsData = {
                     name: print.data.name,
                     url: print.data.url,
                     width: print.data.width,
                     height: print.data.height
             }
-            const initStageParams = setCoords(coordsData, activeView, itemType);
-            const initCartParams = getPrintFormatAndPriceFunc(initStageParams, activeView, itemColor)
-            const printToAdd = 
-            {
+            const initStageParams = setCoords(coordsData, 'front', itemType);
+            initStageParams.deltaZ = 0.12;
+            initStageParams.decalScale = [initStageParams.decalScale[0], initStageParams.decalScale[1], 0.12];
+            const initCartParams = getPrintFormatAndPriceFunc(initStageParams, itemColor)
+            const printToAdd = {
+                id,
                 file: {
                     name: print.data.name,
                     url: print.data.url,
@@ -113,45 +114,44 @@ const cartSlice = createSlice({
                 },
                 stageParams: initStageParams,
                 cartParams: initCartParams,
+                needsPlacement: true,
             }
 
-            state.order?.forEach((elem) => {
+            state.order = normalizeCartOrder(state.order ?? []);
+            state.order.forEach((elem) => {
                 if (elem.itemCartId === itemCartId) {
-                    // @ts-ignore
-                    elem.prints![activeView] = printToAdd;
-                }
-            })
-        },
-        updateStageParams: (state, action: PayloadAction<{newAttrs: TParams, activeView: string, itemCartId: string}>) => {
-            const { newAttrs, activeView, itemCartId } = action.payload;
-            state.order?.forEach((elem) => {
-                if (elem.itemCartId === itemCartId) {
-                    // @ts-ignore
-                    elem.prints[activeView].stageParams = newAttrs;
+                    elem.prints = [...(elem.prints ?? []), printToAdd];
+                    elem.isItemWithPrint = true;
                 }
             })
             sessionStorage.setItem('order', JSON.stringify(state.order));
         },
-        updateCartParams: (state, action: PayloadAction<{newAttrs: TParams, activeView: string, itemColor: string, itemCartId: string}>) => {
-            const { newAttrs, activeView, itemColor, itemCartId } = action.payload;
-            const newCartParams = getPrintFormatAndPriceFunc(newAttrs, activeView, itemColor);
-            state.order?.forEach((elem) => {
-                if (elem.itemCartId === itemCartId) {
-                    // @ts-ignore
-                    elem.prints[activeView].cartParams = newCartParams;
-                }
+        updateStageParams: (state, action: PayloadAction<{newAttrs: TParams, printId: string, itemCartId: string}>) => {
+            const { newAttrs, printId, itemCartId } = action.payload;
+            state.order = normalizeCartOrder(state.order ?? []);
+            state.order.forEach((elem) => {
+                if (elem.itemCartId !== itemCartId) return;
+                const print = elem.prints?.find((item) => item.id === printId);
+                if (!print) return;
+                print.stageParams = newAttrs;
+                print.needsPlacement = false;
             })
             sessionStorage.setItem('order', JSON.stringify(state.order));
         },
-        setPreview: (state, action: PayloadAction<{preview: IUploadPrintResponse, activeView: string, itemCartId: string }>) => {
-            const { preview, activeView, itemCartId} = action.payload;
-            state.order?.forEach((elem) => {
-                if (elem.itemCartId === itemCartId) {
-                    // @ts-ignore
-                    elem.prints![activeView].preview = resolveMediaUrl(preview.data.url);
-                }
+        updateCartParams: (state, action: PayloadAction<{newAttrs: TParams, printId: string, itemColor: string, itemCartId: string}>) => {
+            const { newAttrs, printId, itemColor, itemCartId } = action.payload;
+            const newCartParams = getPrintFormatAndPriceFunc(newAttrs, itemColor);
+            state.order = normalizeCartOrder(state.order ?? []);
+            state.order.forEach((elem) => {
+                if (elem.itemCartId !== itemCartId) return;
+                const print = elem.prints?.find((item) => item.id === printId);
+                if (!print) return;
+                print.cartParams = newCartParams;
             })
             sessionStorage.setItem('order', JSON.stringify(state.order));
+        },
+        setPreview: (state, action: PayloadAction<{preview: IUploadPrintResponse, activeView?: string, itemCartId: string }>) => {
+            if (!action.payload.preview?.data?.url || !state.order) return;
         },
         deleteItemFromCart: (state, action: PayloadAction<{ itemCartId: string }>) => {
            let newStateOrder = state.order?.filter(item => item.itemCartId !== action.payload.itemCartId);
@@ -171,11 +171,14 @@ const cartSlice = createSlice({
             state.order?.forEach((elem) => {
                 if (elem.itemCartId === itemCartId) {
                     elem.item.sizes = sizes;
-                    elem.isItemWithPrint = isItemWithPrint;
-                    if (isItemWithPrint && prints) {
+                    if (prints) {
                         elem.prints = prints;
-                    } else {
+                        elem.isItemWithPrint = true;
+                    } else if (!isItemWithPrint) {
                         elem.prints = undefined;
+                        elem.isItemWithPrint = false;
+                    } else {
+                        elem.isItemWithPrint = true;
                     }
                 }
             });
@@ -227,9 +230,11 @@ const cartSlice = createSlice({
             return {...initialState};
         },
         restoreCart: (state, action: PayloadAction<Array<ICartOrderElement>>) => {
+            const order = normalizeCartOrder(action.payload);
+            sessionStorage.setItem('order', JSON.stringify(order));
             return {
                 ...state,
-                order: action.payload
+                order,
             }
         },
         setUserPromocode: (state, action: PayloadAction<string>) => {

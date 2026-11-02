@@ -1,23 +1,22 @@
 "use client";
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useCallback, useLayoutEffect, useRef, useState } from "react";
 import styles from './preview.module.scss';
-import { useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
   useGLTF,
   useTexture,
-  AccumulativeShadows,
-  RandomizedLight,
-  Decal,
   Environment,
   OrbitControls,
 } from "@react-three/drei";
 import { easing } from "maath";
 import { useAppSelector } from "@/redux/redux-hooks";
-import { resolveMediaUrl } from "@/app/utils/product-photos";
 import { ICartOrderElement } from "@/app/utils/types";
+import SurfaceDecal from "./surface-decal";
 import { useSearchParams } from "next/navigation";
 import classNames from "classnames/bind";
+import ModelLoader from "./model-loader";
+import SceneWarmup from "./scene-warmup";
+import StudioSet from "./studio-set";
 const cx = classNames.bind(styles)
 
 
@@ -36,21 +35,30 @@ type TPrintProps = {
 
 const Preview: React.FC<{ children?: React.ReactNode}> = ({ children }) => {
     const { activeView } = useAppSelector((store) => store.printConstructor);
+    const [sceneReady, setSceneReady] = useState(false);
+    const markReady = useCallback(() => setSceneReady(true), []);
   return (
     <div
       className={cx('container')}
     >
+      <ModelLoader hold={!sceneReady} />
       <Suspense fallback={null}>
         <Canvas
           shadows
-          orthographic
           gl={{ preserveDrawingBuffer: true }}
-          camera={{ position: [0, 12, 100], zoom: 500 }}
+          camera={{ position: [0, 0.72, 2.55], fov: 27 }}
+          onCreated={({ camera, gl }) => {
+            camera.lookAt(0, 0.02, 0);
+            camera.layers.enable(1);
+            gl.setClearColor("#e6e6e6", 1);
+          }}
+          style={{ visibility: sceneReady ? "visible" : "hidden" }}
         >
-          {/* <ambientLight intensity={0.5 * Math.PI} /> */}
-          <ambientLight intensity={0.5} />
-          <directionalLight intensity={0.5} position={[10, 10, 10]} />
-          <Environment files="/potsdamer_platz_1k.hdr" />
+          <SceneWarmup onDone={markReady} />
+          <ambientLight intensity={0.7} />
+          <directionalLight intensity={0.85} position={[2, 4, 3]} />
+          <StudioSet />
+          <Environment files="/potsdamer_platz_1k.hdr" background={false} />
           
           
 
@@ -60,24 +68,15 @@ const Preview: React.FC<{ children?: React.ReactNode}> = ({ children }) => {
               
 
          
-          <AccumulativeShadows
-            temporal
-            frames={100}
-            alphaTest={0.95}
-            opacity={1}
-            scale={25}
-            position={[0, -1, 0]}
-          >
-            <RandomizedLight
-              amount={8}
-              radius={10}
-              ambient={0.7}
-              position={[10, 10, -5]}
-              bias={0.01}
-              size={10}
-            />
-          </AccumulativeShadows>
-          <OrbitControls maxPolarAngle={Math.PI / 2} minPolarAngle={Math.PI / 2} autoRotate autoRotateSpeed={10} enablePan={true} enableZoom={true} />
+          <OrbitControls
+            target={[0, 0.02, 0]}
+            autoRotate
+            autoRotateSpeed={1.2}
+            enablePan={false}
+            minDistance={1.35}
+            maxDistance={6}
+            maxPolarAngle={Math.PI / 1.85}
+          />
         </Canvas>
       </Suspense>
     </div>
@@ -88,13 +87,13 @@ const Preview: React.FC<{ children?: React.ReactNode}> = ({ children }) => {
 
 
 
-function Shirt({ activeView, children }: { children: React.ReactNode, activeView: string}) {
+function Shirt({ activeView, children }: { children: React.ReactNode, activeView: string }) {
 
     const itemCartId = useSearchParams().get("itemCartId");
     const { order } = useAppSelector((store) => store.cart);
     const orderElement = order?.filter((item) => item.itemCartId === itemCartId)[0];
-    //@ts-ignore
-    const { type, stageColor } = orderElement?.item;
+    const type = orderElement?.item?.type;
+    const stageColor = orderElement?.item?.stageColor ?? "#ffffff";
 
 
     let params: any = {
@@ -106,13 +105,18 @@ function Shirt({ activeView, children }: { children: React.ReactNode, activeView
       meshRotation: [0,0,0],
   };       
   const ref = useRef(null);
-  const { nodes, materials } = useGLTF(`/${type}.glb`);
+  const { nodes, materials } = useGLTF(type ? `/${type}.glb` : "/tshirt.glb");
 
-    
+  useLayoutEffect(() => {
+    const material = materials?.mat as { color?: { set: (color: string) => void } } | undefined;
+    material?.color?.set(stageColor);
+  }, [materials, stageColor]);
+
   //@ts-ignore
   useFrame((state, delta) => {
     //@ts-ignore
-    //return easing.dampC(materials.lambert1.color, "#fff", 0.25, delta);
+    if (!materials?.mat?.color) return;
+    //@ts-ignore
     return easing.dampC(materials.mat.color, stageColor, 0.25, delta);
   });
   const [ meshParams, setMeshParams ] = useState(params); 
@@ -135,6 +139,8 @@ function Shirt({ activeView, children }: { children: React.ReactNode, activeView
    * "stageColor": "#194798", - василек
    * "stageColor": "#adadad", - серый
    */
+
+  if (!type || !nodes?.item || !materials?.mat) return null;
 
   return (
     
@@ -162,29 +168,13 @@ const Prints = () => {
   const itemCartId = useSearchParams().get("itemCartId");
   const { order } = useAppSelector((store) => store.cart);
   const orderElement = order?.filter((item) => item.itemCartId === itemCartId)[0];
-  //@ts-ignore
-  const { front, back, lsleeve, rsleeve } = orderElement?.prints;
+  const prints = orderElement?.prints ?? [];
 
-  const frontPrint = useTexture(front?.file?.url ? resolveMediaUrl(front.file.url) : '/whiteTexture.png');
-  const backPrint = useTexture(back?.file?.url ? resolveMediaUrl(back.file.url) : '/whiteTexture.png');
-  const lsleevePrint = useTexture(lsleeve?.file?.url ? resolveMediaUrl(lsleeve.file.url) : '/whiteTexture.png');
-  const rsleevePrint = useTexture(rsleeve?.file?.url ? resolveMediaUrl(rsleeve.file.url) : '/whiteTexture.png');
   return (
-      
-      
       <>
-      {front && front.stageParams && front.file &&
-        <Decal position={front.stageParams.decalPosition} rotation={front.stageParams.decalRotation} scale={front ? front.stageParams.decalScale : 0} matrixAutoUpdate map={frontPrint} />
-      }
-      {back && back.stageParams && back.file &&
-        <Decal position={back.stageParams.decalPosition} rotation={back.stageParams.decalRotation} scale={back ? back.stageParams.decalScale : 0} matrixAutoUpdate map={backPrint} />
-      }
-      {lsleeve && lsleeve.stageParams && lsleeve.file &&
-        <Decal position={lsleeve.stageParams.decalPosition} rotation={lsleeve.stageParams.decalRotation} scale={lsleeve ? lsleeve.stageParams.decalScale : 0} matrixAutoUpdate map={lsleevePrint} />
-      }
-      {rsleeve && rsleeve.stageParams && rsleeve.file &&
-        <Decal position={rsleeve.stageParams.decalPosition} rotation={rsleeve.stageParams.decalRotation} scale={rsleeve ? rsleeve.stageParams.decalScale : 0} matrixAutoUpdate map={rsleevePrint} />
-      }
+      {prints.map((print, index) => (
+        <SurfaceDecal key={print.id || index} print={print} />
+      ))}
       </>
   )
 }

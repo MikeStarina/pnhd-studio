@@ -1,10 +1,26 @@
 .cart_productPrintPreviews {
     display: grid;
-    grid-template-rows: repeat(4, auto);
-    align-items: baseline;
+    grid-template-columns: 90px minmax(0, 1fr);
+    align-items: start;
     justify-items: end;
     padding-top: 4%;
     gap: 10px;
+}
+
+.mini {
+    width: 90px;
+    height: 110px;
+    grid-row: 1 / -1;
+    justify-self: end;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #e6e6e6;
+}
+
+.mini canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
 }
 .cart_preview {
     display: grid;

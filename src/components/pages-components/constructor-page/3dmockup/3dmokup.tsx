@@ -1,25 +1,27 @@
 "use client";
-import React, { Suspense, useEffect, useState, useRef } from "react";
+import React, { Suspense, useCallback, useEffect, useLayoutEffect, useState, useRef } from "react";
 import styles from './3dmockup.module.css';
-import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
   useGLTF,
   useTexture,
-  AccumulativeShadows,
-  RandomizedLight,
-  PivotControls,
-  Decal,
   Environment,
-  Center,
   OrbitControls,
 } from "@react-three/drei";
 import { easing } from "maath";
 import { useAppDispatch, useAppSelector } from "@/redux/redux-hooks";
 import { ICartOrderElement } from "@/app/utils/types";
 import { useSearchParams } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
 import { useUploadPrintImageMutation } from "@/api/api";
 import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
+import { actions as constructorActions } from "@/redux/constructor-slice/constructor.slice";
+import { photoProcessing } from "@/app/utils/constructor-utils";
+import { printUploadFormData, readPrintUpload, rememberLocalPrint } from "@/app/utils/print-upload";
+import { markSceneRevealed, resetSceneRevealed } from "@/app/utils/preview-capture";
+import ModelLoader from "./model-loader";
+import SceneWarmup from "./scene-warmup";
+import StudioSet from "./studio-set";
 
 
 
@@ -38,25 +40,45 @@ type TPrintProps = {
 
 const Stage: React.FC<{ children: React.ReactNode}> = ({ children }) => {
     //console.log('stage render')
-    const { activeView } = useAppSelector((store) => store.printConstructor);
-    const { width } = window.screen;
+    const dispatch = useAppDispatch();
+    const { order } = useAppSelector((store) => store.cart);
+    const itemCartId = useSearchParams().get("itemCartId");
+    const orderElement = order?.find((item) => item.itemCartId === itemCartId);
+    const [sceneReady, setSceneReady] = useState(false);
+    const markReady = useCallback(() => {
+        setSceneReady(true);
+        markSceneRevealed();
+    }, []);
+
+    useEffect(() => {
+        resetSceneRevealed();
+        return () => resetSceneRevealed();
+    }, []);
     const [ uploadPrint ] = useUploadPrintImageMutation();
 
-   const handleDrag = async (e: any) => {
+   const handleDrag = async (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    
-    //console.log(e.type);
-    //console.log(e.target);
-    //console.log(e.currentTarget);
-    //console.log(e.dataTransfer?.files);
-    if (e.currentTarget.id === 'dropzone' && e.type === 'drop') {
-      alert(e.dataTransfer.files[0].name + ' ' + e.dataTransfer.files[0].type);
-      //setState(e.dataTransfer.files[0].toString());
-      //const data = new FormData;
-      //data.append("files", e.dataTransfer.files[0], `test`);   
-      //const uploadedPrint = await uploadPrint(data);
-      //uploadedPrint && dispatch(cartActions.setPrint({ print: uploadedPrint, activeView, itemCartId: orderElement.itemCartId, itemType: orderElement.item.type, itemColor: orderElement.item.color }))
+    if (e.type !== "drop" || !orderElement) return;
+    const file = e.dataTransfer.files?.[0];
+    const print = file ? photoProcessing(file) : false;
+    if (!print) return;
+    dispatch(constructorActions.imageLoaderToggler());
+    try {
+      const uploaded = readPrintUpload(await uploadPrint(printUploadFormData(print, `${uuidv4()}_${print.name}`)));
+      if (!uploaded) return;
+      rememberLocalPrint(uploaded.url, print);
+      const id = uuidv4();
+      dispatch(cartActions.setPrint({
+        print: { data: uploaded },
+        id,
+        itemCartId: orderElement.itemCartId,
+        itemType: orderElement.item.type,
+        itemColor: orderElement.item.color,
+      }));
+      dispatch(constructorActions.setSelectedPrintId(id));
+    } finally {
+      dispatch(constructorActions.imageLoaderToggler());
     }
    }
   return (
@@ -70,155 +92,65 @@ const Stage: React.FC<{ children: React.ReactNode}> = ({ children }) => {
       onDragEnd={handleDrag}
      
     >
+      <ModelLoader hold={!sceneReady} />
       <Suspense fallback={null}>
         <Canvas
           id='canvas'
           shadows
-          orthographic
           gl={{ preserveDrawingBuffer: true }}
-          camera={{ position: [0, 12, 100], zoom: 500 }}
+          camera={{ position: [0, 0.72, 2.55], fov: 27 }}
+          onCreated={({ camera, gl }) => {
+            camera.lookAt(0, 0.02, 0);
+            camera.layers.enable(1);
+            gl.setClearColor("#e6e6e6", 1);
+          }}
+          style={{ visibility: sceneReady ? "visible" : "hidden" }}
         >
-          {/* <ambientLight intensity={0.5 * Math.PI} /> */}
-          <ambientLight intensity={0.5} />
-          <directionalLight intensity={0.5} position={[10, 10, 10]} />
-          <Environment files="/potsdamer_platz_1k.hdr" />
-          
-          <CameraRig>
-            <Backdrop>
-              <Shirt activeView={activeView}>
-                { children }
-              </Shirt>
-              
-            </Backdrop>
-          </CameraRig>
-          <AccumulativeShadows
-            temporal
-            frames={100}
-            alphaTest={0.95}
-            opacity={1}
-            scale={25}
-            position={[0, -1, 0]}
-          >
-            <RandomizedLight
-              amount={8}
-              radius={10}
-              ambient={0.7}
-              position={[10, 10, -5]}
-              bias={0.01}
-              size={10}
-            />
-          </AccumulativeShadows>
-          {width && width < 1000 && <OrbitControls maxPolarAngle={Math.PI / 2} minPolarAngle={Math.PI / 2} minAzimuthAngle={0} maxAzimuthAngle={0} />}
-          {width && width >= 1000 && <OrbitControls makeDefault />}
+          <SceneWarmup onDone={markReady} />
+          <ambientLight intensity={0.7} />
+          <directionalLight intensity={0.85} position={[2, 4, 3]} />
+          <StudioSet />
+          <Environment files="/potsdamer_platz_1k.hdr" background={false} />
+          <Shirt>
+            { children }
+          </Shirt>
+          <OrbitControls
+            makeDefault
+            target={[0, 0.02, 0]}
+            enablePan={false}
+            minDistance={1.35}
+            maxDistance={6}
+            maxPolarAngle={Math.PI / 1.85}
+          />
         </Canvas>
       </Suspense>
     </div>
   );
 };
 
-function Backdrop({ children }: { children: React.ReactNode}) {
-    //console.log('backdrop render')
-  const shadows = useRef(null)
-  useFrame((state, delta) => {
-    //@ts-ignore
-    return easing.dampC(shadows.current.getMesh().material.color, '', 0.25, delta)})
-  return (
-    <>
-    {/* //@ts-ignore */}
-    <AccumulativeShadows ref={shadows} temporal frames={60} alphaTest={0.85} scale={5} rotation={[Math.PI / 2, 0, 0]} position={[0, 0, -0.14]}>
-      <RandomizedLight amount={4} radius={9} intensity={2} ambient={0.25} position={[5, 5, -10]} />
-      <RandomizedLight amount={4} radius={5} intensity={1.25} ambient={0.55} position={[-5, 5, -9]} />
-    </AccumulativeShadows>
-    { children }
-    </>
-  )
-}
-
-function CameraRig({ children }: any) {
-  const group = useRef()
-  useFrame((state, delta) => {
-    //console.log(state);
-    window?.screen?.width >= 1000 && easing.damp3(state.camera.position, [0, 0, 2], 0.25, delta)
-
-    //@ts-ignore
-    window?.screen?.width >= 1000 && easing.dampE(group.current.rotation, [state.pointer.y / 10, -state.pointer.x / 5, 0], 0.25, delta)
-
-    //@ts-ignore
-  })
-  //@ts-ignore
-  return <group ref={group}>{children}</group>
-}
-
-
-function Shirt({ activeView, children }: { children: React.ReactNode, activeView: string}) {
+function Shirt({ children }: { children: React.ReactNode }) {
 
     const itemCartId = useSearchParams().get("itemCartId");
     const { order } = useAppSelector((store) => store.cart);
     const orderElement = order?.filter((item) => item.itemCartId === itemCartId)[0];
-    //@ts-ignore
-    const { type, stageColor } = orderElement?.item;
+    const type = orderElement?.item?.type;
+    const stageColor = orderElement?.item?.stageColor ?? "#ffffff";
 
-    const dispatch = useAppDispatch();
-    //@ts-ignore
-    //let currPrint = orderElement?.prints[activeView] ? orderElement.prints[activeView] : undefined;
-
-    useEffect(() => {
-        setMeshParams(getInitialMeshParams(activeView));
-    }, [activeView]);
-
-    const getInitialMeshParams = (activeView: string) => {
-        let params: any = {
-            pivotVisibility: false,
-            pivotRotation: [0,0,0],
-            pivotPosition: [0,0,0.3],
-            pivotScale: 0.15,
-            dragAxis: [true, true, false],
-            meshRotation: [0,0,0],
-        };
-
-
-        if (activeView === 'rsleeve') {
-            return {
-                ...params,
-                meshRotation: [0,Math.PI / 2, 0],
-                pivotPosition: [-0.4, 0.06, -0.025],
-                dragAxis: [false, true, true],
-            }
-        }
-        if (activeView === 'lsleeve') {
-            return {
-                ...params,
-                meshRotation: [0,Math.PI / -2, 0],
-                pivotPosition: [0.4, 0.06, -0.025],
-                dragAxis: [false, true, true],
-            }
-        }
-        if (activeView === 'back') {
-            return {
-                ...params,
-                meshRotation: [0,Math.PI, 0],
-                pivotPosition: [0, 0, -0.3],
-                pivotRotation: [0,Math.PI,0],
-                dragAxis: [true, true, false],
-            }
-        }
-
-       
-
-        return params;
-    }
-
-    
   const ref = useRef(null);
-  const { nodes, materials } = useGLTF(`/${type}.glb`);
+  const { nodes, materials } = useGLTF(type ? `/${type}.glb` : "/tshirt.glb");
 
-    
+  useLayoutEffect(() => {
+    const material = materials?.mat as { color?: { set: (color: string) => void } } | undefined;
+    material?.color?.set(stageColor);
+  }, [materials, stageColor]);
+
   //@ts-ignore
   useFrame((state, delta) => {
     //@ts-ignore
+    if (!materials?.mat?.color) return;
+    //@ts-ignore
     return easing.dampC(materials.mat.color, stageColor, 0.25, delta);
   });
-  const [ meshParams, setMeshParams ] = useState(getInitialMeshParams(activeView)); 
 
   /**
    * 
@@ -237,6 +169,8 @@ function Shirt({ activeView, children }: { children: React.ReactNode, activeView
    * "stageColor": "#adadad", - серый
    */
 
+  if (!type || !nodes?.item || !materials?.mat) return null;
+
   return (
     
       <mesh
@@ -249,7 +183,6 @@ function Shirt({ activeView, children }: { children: React.ReactNode, activeView
         material-aoMapIntensity={1}
         material-roughness={2}
         dispose={null}
-        rotation={meshParams.meshRotation}
       >
       { children }
       </mesh>

@@ -1,76 +1,66 @@
 "use client";
-import React, { SyntheticEvent } from "react";
+import React, { SyntheticEvent, useState } from "react";
 import styles from "./file-uploader.module.css";
 import { ICartOrderElement } from "@/app/utils/types";
 import { v4 as uuidv4 } from "uuid";
 import { photoProcessing } from "@/app/utils/constructor-utils";
+import { printUploadFormData, readPrintUpload, rememberLocalPrint } from "@/app/utils/print-upload";
 import { useAppSelector, useAppDispatch } from "@/redux/redux-hooks";
 import { actions as constructorActions } from "@/redux/constructor-slice/constructor.slice";
 import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
 import { useUploadPrintImageMutation } from "@/api/api";
-import Link from "next/link";
 
-const FileUploader: React.FC<{ orderElement: ICartOrderElement }> = ({
+const FileUploader: React.FC<{ orderElement: ICartOrderElement; dock?: boolean }> = ({
     orderElement,
+    dock = false,
 }) => {
-    //console.log(orderElement);
     const dispatch = useAppDispatch();
-    const { order } = useAppSelector(store => store.cart);
-    //console.log(order)
-    const { isImageLoading, activeView } = useAppSelector(
+    const { isImageLoading } = useAppSelector(
         (store) => store.printConstructor
     );
-    const { prints } = orderElement;
-    // @ts-ignore
-    const currentPrint = prints && prints[activeView];
-    //console.log(currentPrint);
-
-    const [ uploadPrint, print ] = useUploadPrintImageMutation();
-    //console.log(print);
-
-
-
-
-
+    const [ uploadPrint ] = useUploadPrintImageMutation();
+    const [ uploadError, setUploadError ] = useState("");
 
     const onChange = async (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch(constructorActions.imageLoaderToggler());
-        const data = new FormData();
-        // @ts-ignore
-        const print = photoProcessing(e.target.files[0]);
-        if (print === undefined) {
-            //dispatch(openPopup(['Не тот формат файла']));
-        } else {            
-            data.append("files", print, `${uuidv4()}_${print.name}`);           
-            const uploadedPrint = await uploadPrint(data);
-            //console.log(uploadPrint);
-            // @ts-ignore
-            uploadedPrint && dispatch(cartActions.setPrint({ print: uploadedPrint, activeView, itemCartId: orderElement.itemCartId, itemType: orderElement.item.type, itemColor: orderElement.item.color }));
-            
-            
-            /* printUploadFunc - так-же вызывает ф-цию setCoords
-                - которая задает позицию появления привью изображения */
-            //dispatch(printUploadFunc(data, activeView, item.type, item.color));
-
+        const input = e.target instanceof HTMLInputElement ? e.target : null;
+        const selected = input?.files?.[0];
+        const print = selected ? photoProcessing(selected) : false;
+        if (!print) {
+            setUploadError("Нужен файл jpg или png");
+            return;
         }
+        setUploadError("");
         dispatch(constructorActions.imageLoaderToggler());
-        // @ts-ignore
-        //e.target.reset();
-    };
-
-    const deletePrint = () => {
-       dispatch(cartActions.deletePrint({ activeView, itemCartId: orderElement.itemCartId }))
+        try {
+            const uploaded = readPrintUpload(await uploadPrint(printUploadFormData(print, `${uuidv4()}_${print.name}`)));
+            if (!uploaded) {
+                setUploadError("Не удалось загрузить файл");
+                return;
+            }
+            rememberLocalPrint(uploaded.url, print);
+            const id = uuidv4();
+            dispatch(cartActions.setPrint({
+                print: { data: uploaded },
+                id,
+                itemCartId: orderElement.itemCartId,
+                itemType: orderElement.item.type,
+                itemColor: orderElement.item.color,
+            }));
+            dispatch(constructorActions.setSelectedPrintId(id));
+        } finally {
+            dispatch(constructorActions.imageLoaderToggler());
+            if (input) input.value = "";
+        }
     };
 
     return (
-        <div className={styles.input_container}>
+        <div className={dock ? `${styles.input_container} ${styles.input_container_dock}` : styles.input_container}>
             <form
                 className={styles.input_form}
                 onChange={onChange}
                 encType="multipart/form-data"
             >
-                {/* isImageLoading */}
                 <div className={styles.printInfo_wrapper}>
                     {isImageLoading && (
                         <div className={styles.loader_wrapper}>
@@ -81,24 +71,8 @@ const FileUploader: React.FC<{ orderElement: ICartOrderElement }> = ({
                             </div>
                         </div>
                     )}
-                    {!isImageLoading && currentPrint && (
-                        <p className={styles.printInfo}>{currentPrint.file?.name}</p>
-                    )}
                 </div>
-               
-               
-                {!isImageLoading && currentPrint ? (
-                    <div className={styles.printDeleteButton_wrapper}>
-                        <button
-                            type="button"
-                            className={styles.print_delete_button}
-                            onClick={deletePrint}
-                        >
-                        X
-                        </button>
-                    </div>
-                ) : (
-                    <>               
+                {!isImageLoading && (
                     <div className={styles.input_wrapper}>
                         <input
                             type="file"
@@ -112,10 +86,9 @@ const FileUploader: React.FC<{ orderElement: ICartOrderElement }> = ({
                             </p>
                         </label>
                     </div>
-                    </>
                 )}
             </form>
-            
+            {uploadError && <p className={styles.upload_error}>{uploadError}</p>}
         </div>
     );
 };

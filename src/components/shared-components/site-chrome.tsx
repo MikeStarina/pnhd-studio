@@ -6,9 +6,9 @@ import Footer from "@/components/shared-components/footer/footer";
 
 const SiteChrome: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const pathname = usePathname();
-  const isAuthPage = pathname?.startsWith("/auth");
+  const bare = pathname?.startsWith("/auth") || pathname?.includes("/constructor");
 
-  if (isAuthPage) {
+  if (bare) {
     return <>{children}</>;
   }
 

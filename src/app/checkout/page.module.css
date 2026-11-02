@@ -23,6 +23,48 @@
     gap: 20px;
 }
 
+.checkout_items {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 8px;
+}
+
+.checkout_item {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.checkout_itemTitle,
+.checkout_print p,
+.checkout_note {
+    margin: 0;
+    font-family: 'Neue_machina';
+    font-size: 14px;
+    line-height: 18px;
+    text-align: right;
+}
+
+.checkout_print {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.checkout_print img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    background: white;
+    border: 1px solid black;
+}
+
 .checkout_priceWrapper {
     width: 50%;
     display: flex;

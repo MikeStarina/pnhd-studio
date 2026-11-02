@@ -1,22 +1,19 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./action-buttons.module.css";
-import { ICartOrderElement, IProduct } from "@/app/utils/types";
+import { IProduct } from "@/app/utils/types";
 import { useAppDispatch, useAppSelector } from "@/redux/redux-hooks";
 import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
 import { useRouter, useSearchParams } from "next/navigation";
 import { v4 as uuidv4 } from 'uuid';
 import { actions as ustilActions } from "@/redux/utils-slice/utils.slice";
 
-const BASIC_PRINT_COST = 400;
-
 const ActionButtons: React.FC<{ item: IProduct }> = ({ item }) => {
     const currItem = { ...item };
     const router = useRouter();
     const itemCartId = useSearchParams().get('itemCartId');
     const dispatch = useAppDispatch();
-    const { sizes: stateSizes, prints: statePrints } = useAppSelector((store) => store.utils);
-    const { prints } = useAppSelector((store) => store.utils);
+    const { sizes: stateSizes } = useAppSelector((store) => store.utils);
     const { order } = useAppSelector((store) => store.cart);
     const editingItem = order?.find((orderItem) => orderItem.itemCartId === itemCartId);
     const [isClient, setIsClient] = useState(false);
@@ -24,12 +21,6 @@ const ActionButtons: React.FC<{ item: IProduct }> = ({ item }) => {
         setIsClient(true);
     }, []);
     const isEditing = isClient && Boolean(editingItem);
-    const totalPrintAmount = useMemo(() => {
-        if (!prints) return 0;
-        return Object.values(prints).reduce((acc, value) => {
-            return acc + (value ? 1 : 0);
-        }, 0);
-    }, [prints]);
 
     const sizeChecker =
         stateSizes?.reduce((acc, item) => {
@@ -41,116 +32,72 @@ const ActionButtons: React.FC<{ item: IProduct }> = ({ item }) => {
     }, 0) || 0;
 
     const totalPrice = totalSizesQty * currItem.price || 0;
-    const totalPrintsAmount = totalSizesQty * totalPrintAmount;
-    const totalPrintCost = totalPrintsAmount * BASIC_PRINT_COST;
-    const basicPrintCost = totalSizesQty * totalPrintAmount * BASIC_PRINT_COST;
-    const totalCost = totalPrice + basicPrintCost;
 
     const addToCartClickHandler = () => {
-
         const newItem = { ...item, sizes: [...stateSizes!] };
-        const hasPrints = totalPrintAmount > 0;
-        const printsPayload = hasPrints ? {
-            front: statePrints?.front,
-            back: statePrints?.back,
-            lsleeve: statePrints?.lsleeve,
-            rsleeve: statePrints?.rsleeve,
-        } as ICartOrderElement['prints'] : undefined;
 
         if (isEditing && editingItem) {
             dispatch(cartActions.updateCartItem({
                 itemCartId: editingItem.itemCartId,
                 sizes: newItem.sizes,
-                prints: printsPayload,
-                isItemWithPrint: hasPrints,
+                prints: editingItem.prints,
+                isItemWithPrint: editingItem.isItemWithPrint,
             }));
             dispatch(ustilActions.resetStateSizes());
-            dispatch(ustilActions.resetPrints());
             router.push('/cart');
             return;
         }
 
-        const orderItem = {
-            item: newItem,
-            isItemWithPrint: hasPrints,
-            itemCartId: uuidv4(),
-            ...(hasPrints && { prints: printsPayload }),
-        };
-
         dispatch(ustilActions.resetStateSizes());
-        if (hasPrints) {
-            dispatch(cartActions.addToCartWithPrint(orderItem));
-            dispatch(ustilActions.resetPrints());
-        } else {
-            dispatch(cartActions.addToCartWithoutPrint(orderItem));
-        }
+        dispatch(cartActions.addToCartWithoutPrint({
+            item: newItem,
+            isItemWithPrint: false,
+            itemCartId: uuidv4(),
+        }));
         router.push('/shop');
     };
 
 
     const addPrintClickHandler = () => {
-        const newItem = { ...currItem };
-        newItem.sizes = stateSizes!;
-        const itemCartId = uuidv4();
+        const newItem = { ...currItem, sizes: stateSizes! };
+        if (isEditing && editingItem) {
+            dispatch(cartActions.updateCartItem({
+                itemCartId: editingItem.itemCartId,
+                sizes: newItem.sizes,
+                prints: editingItem.prints,
+                isItemWithPrint: true,
+            }));
+            router.push(`/shop/${item.slug}/constructor?itemCartId=${editingItem.itemCartId}`);
+            return;
+        }
 
-        const orderItem = {
+        const nextItemCartId = uuidv4();
+        dispatch(cartActions.addToCartWithPrint({
             item: newItem,
             isItemWithPrint: true,
-            itemCartId,
-            prints: {
-                'front': statePrints?.front,
-                'back': statePrints?.back,
-                'lsleeve': statePrints?.lsleeve,
-                'rsleeve': statePrints?.rsleeve,
-            }
-        };
-
-        dispatch(cartActions.addToCartWithPrint(orderItem));
-        dispatch(ustilActions.resetPrints());
-        router.push(`/shop/${item.slug}/constructor?itemCartId=${itemCartId}`)
+            itemCartId: nextItemCartId,
+        }));
+        dispatch(ustilActions.resetStateSizes());
+        router.push(`/shop/${item.slug}/constructor?itemCartId=${nextItemCartId}`);
     }
 
     return (
         <div className={styles.buttons_wrapper}>
-            {totalPrintAmount === 0 ? (
-                <div className={styles.calculations}>
-                    <span className={styles.calculations_text}>Итого</span>
-                    <div className={styles.totalBlock}>
-                        <span className={styles.total}>{totalSizesQty}&nbsp;шт.</span>
-                        <span className={styles.totalBlock_text}>{totalPrice.toLocaleString('ru-RU')}&nbsp;Р.</span>
-                    </div>
+            <div className={styles.calculations}>
+                <span className={styles.calculations_text}>Итого</span>
+                <div className={styles.totalBlock}>
+                    <span className={styles.total}>{totalSizesQty}&nbsp;шт.</span>
+                    <span className={styles.totalBlock_text}>{totalPrice.toLocaleString('ru-RU')}&nbsp;Р.</span>
                 </div>
-            ) : (
-                <>
-                    <div className={styles.calculations}>
-                        <span className={styles.calculations_text}>Текстиль</span>
-                        <div className={styles.totalBlock}>
-                            <span className={styles.total}>{totalSizesQty}&nbsp;шт.</span>
-                            <span className={styles.totalBlock_text}>{totalPrice.toLocaleString('ru-RU')}&nbsp;Р.</span>
-                        </div>
-                    </div>
-                    <div className={styles.calculations}>
-                        <span className={styles.calculations_text}>Печать</span>
-                        <div className={styles.totalBlock}>
-                            <span className={styles.total}>{totalPrintsAmount}&nbsp;шт.</span>
-                            <span className={styles.totalBlock_text}>от {totalPrintCost.toLocaleString('ru-RU')}&nbsp;Р.</span>
-                        </div>
-                    </div>
-                    <div className={styles.calculations}>
-                        <span className={styles.calculations_text}>Итого</span>
-                        <div className={styles.totalBlock}>
-                            <span className={styles.total}>{totalSizesQty}&nbsp;шт.</span>
-                            <span className={styles.totalBlock_text}>от {totalCost.toLocaleString('ru-RU')}&nbsp;Р.</span>
-                        </div>
-                    </div>
-                </>
-            )}
+            </div>
             <button type="button" disabled={sizeChecker} className={styles.mainButton} title={sizeChecker ? 'Выберите размер' : ''} onClick={addToCartClickHandler}>
                 {isEditing ? 'Сохранить' : 'В корзину'}
             </button>
-            {/* <button type="button" disabled={sizeChecker || !currItem.isForPrinting} className={styles.button} onClick={addPrintClickHandler}>
-                Добавить принт
-            </button> */}
+            {currItem.isForPrinting && (
+                <button type="button" disabled={sizeChecker} className={styles.button} title={sizeChecker ? 'Выберите размер' : ''} onClick={addPrintClickHandler}>
+                    Добавить принт
+                </button>
+            )}
         </div>
     );
 };

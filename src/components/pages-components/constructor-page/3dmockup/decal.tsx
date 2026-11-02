@@ -1,402 +1,137 @@
 "use client";
-import React, { useRef, useEffect } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
-import { useState } from "react";
-import {
-  useTexture,
-  PivotControls,
-  Decal,
-} from "@react-three/drei";
+import { useFrame, useThree } from "@react-three/fiber";
+import PrintCircle from "./print-circle";
+import SurfaceDecal from "./surface-decal";
+import { poseOnSurface, worldNormalFromHit } from "./print-pose";
 import { useAppDispatch, useAppSelector } from "@/redux/redux-hooks";
-import { resolveMediaUrl } from "@/app/utils/product-photos";
 import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
+import { actions as constructorActions } from "@/redux/constructor-slice/constructor.slice";
 import { useSearchParams } from "next/navigation";
-import { useUploadPrintImageMutation } from '@/api/api';
-import { v4 as uuidv4 } from "uuid";
+import { IPrintFile, TParams } from "@/app/utils/types";
 
+const Placement = ({
+    print,
+    index,
+    onPlace,
+}: {
+    print: IPrintFile;
+    index: number;
+    onPlace: (printId: string, next: TParams) => void;
+}) => {
+    const camera = useThree((state) => state.camera);
+    const raycaster = useMemo(() => new THREE.Raycaster(), []);
+    const anchor = useRef<THREE.Group>(null);
+    const done = useRef(false);
 
+    useFrame(() => {
+        if (done.current || !print.needsPlacement || !print.id || !print.stageParams) return;
+        const shirt = anchor.current?.parent;
+        if (!(shirt instanceof THREE.Mesh)) return;
+        const step = Math.ceil(index / 2) * 0.16;
+        const x = index === 0 ? 0 : (index % 2 === 0 ? step : -step);
+        raycaster.setFromCamera(new THREE.Vector2(x, 0), camera);
+        const hit = raycaster.intersectObject(shirt, false)[0];
+        if (!hit) return;
+        const pose = poseOnSurface(hit.point, worldNormalFromHit(hit, shirt), 0, shirt);
+        done.current = true;
+        onPlace(print.id, {
+            ...print.stageParams,
+            decalPosition: pose.decalPosition,
+            decalRotation: pose.decalRotation,
+        });
+    });
 
-
+    return <group ref={anchor} />;
+};
 
 const DecalComp = () => {
-    //console.log('decal render');
-    const pivotRef = useRef(null)
     const dispatch = useAppDispatch();
+    const gl = useThree((state) => state.gl);
     const itemCartId = useSearchParams().get("itemCartId");
-    const { activeView } = useAppSelector((store) => store.printConstructor);
+    const { selectedPrintId } = useAppSelector((store) => store.printConstructor);
     const { order } = useAppSelector((store) => store.cart);
-    const orderElement = order?.filter((item) => item.itemCartId === itemCartId)[0];
-    //@ts-ignore
-    let currPrint = orderElement && orderElement.prints && orderElement.prints[activeView] ? orderElement.prints[activeView] : undefined;
-    const [ uploadPreview ] = useUploadPrintImageMutation();
+    const orderElement = order?.find((item) => item.itemCartId === itemCartId);
+    const prints = orderElement?.prints ?? [];
+    const engaged = useRef(false);
+    const itemIdRef = useRef(itemCartId);
+    itemIdRef.current = itemCartId;
 
-    
-    
+    useEffect(() => {
+        const canvas = gl.domElement;
+        const onCanvasDown = () => {
+            window.setTimeout(() => {
+                if (!engaged.current) dispatch(constructorActions.setSelectedPrintId(null));
+                engaged.current = false;
+            }, 0);
+        };
+        const onWindowDown = (event: PointerEvent) => {
+            const target = event.target;
+            if (!(target instanceof Element)) return;
+            if (canvas.contains(target) || target.closest("[data-print-row]")) return;
+            dispatch(constructorActions.setSelectedPrintId(null));
+        };
+        canvas.addEventListener("pointerdown", onCanvasDown);
+        window.addEventListener("pointerdown", onWindowDown);
+        return () => {
+            canvas.removeEventListener("pointerdown", onCanvasDown);
+            window.removeEventListener("pointerdown", onWindowDown);
+        };
+    }, [dispatch, gl]);
 
-    const getScene = async (activeView: string, scene: Blob | null) => {
-        // @ts-ignore
-        //const preview = await stageRef.current.toDataURL();
-        // @ts-ignore
-        //const scene = await stageRef?.current?.toBlob();  
-        const data = new FormData();
-        scene && data.append('files', scene, `${activeView}_preview_${uuidv4()}.jpg`);
-  
-  
-        const preview = await uploadPreview(data);
-        // @ts-ignore
-        dispatch(cartActions.setPreview({ preview, activeView, itemCartId: orderElement.itemCartId }))
-  
-      }
+    const placePrint = (printId: string, next: TParams) => {
+        const cartId = itemIdRef.current;
+        if (!cartId) return;
+        dispatch(cartActions.updateStageParams({ newAttrs: next, printId, itemCartId: cartId }));
+    };
 
+    const changePrint = (printId: string, next: TParams) => {
+        if (!orderElement) return;
+        dispatch(cartActions.updateStageParams({ newAttrs: next, printId, itemCartId: orderElement.itemCartId }));
+        dispatch(cartActions.updateCartParams({
+            newAttrs: next,
+            printId,
+            itemCartId: orderElement.itemCartId,
+            itemColor: orderElement.item.color,
+        }));
+    };
 
-    const [ pivotVisibility, setpivotVisibility ] = useState<boolean>(false); 
-    const [ pivotOpacity, setPivotOpacity ] = useState<number>(1); 
-    const [ pivotComp, setPivotComp ] = useState<string>(); 
-    const [ pivotAxis, setPivotAxis ] = useState<number>(); 
-   
-   
-    const url = currPrint?.file?.url ? resolveMediaUrl(currPrint.file.url) : '/whiteTexture.png';
-    const texture = useTexture(url, () => { if (currPrint && !currPrint.preview) {return document.querySelector('canvas')?.toBlob((blob) => {getScene(activeView, blob);});}});
-    //const texture = useTexture(url);
-   
-    // useEffect(() => {
-    //   document.querySelector('canvas')?.toBlob((blob) => {
-    //     console.log('screenshot')
-    //     getScene(activeView, blob);
-    //   });
+    const selectPrint = (printId: string) => {
+        engaged.current = true;
+        dispatch(constructorActions.setSelectedPrintId(printId));
+    };
 
-    //   return () => {
-    //     document.querySelector('canvas')?.toBlob((blob) => {
-    //       getScene(activeView, blob);
-    //     });
-    //   }
+    if (!prints.length) return null;
 
-    // }, [pivotVisibility, pivotOpacity])
-   
     return (
-        
-        
         <>
-        {currPrint && currPrint.stageParams && activeView === 'front' &&
-        <>
-        <PivotControls
-          //disableScaling
-          disableAxes
-          rotation={currPrint.stageParams.pivotRotation}
-          offset={currPrint.stageParams.pivotPosition}
-          scale={currPrint.stageParams.pivotScale}
-          activeAxes={currPrint.stageParams.dragAxis}
-          visible={pivotVisibility}
-          axisColors={['rgb(153,255,0)','rgb(153,255,0)','rgb(153,255,0)']}
-          userData={{ rotation: 0 }}
-          ref={pivotRef}
-          opacity={pivotOpacity}
-          onDragStart={(props) => {
-            setPivotComp(props.component);
-            setPivotAxis(props.axis);
-          }}
-          onDrag={(local) => {
-           
-            const position = new THREE.Vector3();
-            const scale = new THREE.Vector3();
-            const quaternion = new THREE.Quaternion(currPrint.stageParams.pivotRotation);
-            local.decompose(position, quaternion, scale);
-            const rotation = new THREE.Euler().setFromQuaternion(quaternion);
-            let newAttrs = currPrint.stageParams;
-
-            if (pivotComp === 'Slider' || pivotComp === 'Arrow') {    
-                
-                if (orderElement?.item.type !== 'totebag') {
-                newAttrs = {
-                        ...newAttrs,
-                        decalPosition: [position.x, position.y, position.z + 0.1],
-                       //pivotPosition: [position.x, position.y, 0.2],
-                        pivotPosition: [0, 0, 0.2]          
-                }}
-
-                if (orderElement?.item.type === 'totebag') {
-                    newAttrs = {
-                        ...newAttrs,
-                        decalPosition: [position.x, position.y, position.z + 0.1], 
-                        pivotPosition: [0, 0, 0.2]               
-                }
-                }
-            }
-            if (pivotComp === 'Rotator') {            
-                newAttrs = {
-                        ...newAttrs,
-                        decalRotation: [0, 0, rotation.z],
-                        pivotPosition: [0, 0, 0.2]
-                    
-                }
-            }
-            if (pivotComp === 'Sphere') {            
-               
-                if (pivotAxis === 1) newAttrs = {...newAttrs,decalScale:[newAttrs.deltaX * scale.y, newAttrs.deltaY * scale.y, newAttrs.deltaZ * scale.z], pivotPosition: [0, 0, 0.2]};                    
-            }
-            
-           //@ts-ignore
-            dispatch(cartActions.updateStageParams({ newAttrs, activeView, itemCartId: orderElement.itemCartId }));
-            //@ts-ignore
-            dispatch(cartActions.updateCartParams({ newAttrs, activeView, itemCartId: orderElement.itemCartId, itemColor: orderElement.item.color }));
-            //setpivotVisibility(false)
-          }}
-          onDragEnd={async () => {     
-            setpivotVisibility(false)  
-            setPivotOpacity(0)  
-            setPivotComp('');            
-            const to = setTimeout(() => {
-              document.querySelector('canvas')?.toBlob((blob) => {                
-                getScene(activeView, blob);
-            });
-            }, 100)
-            
-            return () => {clearTimeout(to)}
-            
-           
-          }}
-        />
-
-      <Decal onClick={() => {setpivotVisibility(!pivotVisibility), setPivotOpacity(1)}} position={currPrint.stageParams.decalPosition} rotation={currPrint.stageParams.decalRotation} scale={currPrint ? currPrint.stageParams.decalScale : 0} matrixAutoUpdate map={texture} />
+            {prints.map((print, index) => (
+                <React.Fragment key={print.id || index}>
+                    {print.needsPlacement && (
+                        <Placement print={print} index={index} onPlace={placePrint} />
+                    )}
+                    <SurfaceDecal
+                        print={print}
+                        onPointerDown={(event) => {
+                            if (!print.id) return;
+                            event.stopPropagation();
+                            selectPrint(print.id);
+                        }}
+                    />
+                    {print.id && print.stageParams && selectedPrintId === print.id && (
+                        <PrintCircle
+                            params={print.stageParams}
+                            visible
+                            onEngage={() => selectPrint(print.id!)}
+                            onChange={(next) => changePrint(print.id!, next)}
+                            onDragEnd={() => undefined}
+                        />
+                    )}
+                </React.Fragment>
+            ))}
         </>
-        }
-        {currPrint && currPrint.stageParams && activeView === 'back' &&
-        <>
-        <PivotControls
-          disableAxes
-          rotation={currPrint.stageParams.pivotRotation}
-          offset={currPrint.stageParams.pivotPosition}
-          scale={currPrint.stageParams.pivotScale}
-          activeAxes={currPrint.stageParams.dragAxis}
-          visible={pivotVisibility}
-          axisColors={['rgb(153,255,0)','rgb(153,255,0)','rgb(153,255,0)']}
-          userData={{ rotation: 0 }}
-          onDragStart={(props) => {
-            setPivotComp(props.component);
-            setPivotAxis(props.axis);
-          }}
-          onDrag={(local) => {
-           
-            const position = new THREE.Vector3();
-            const scale = new THREE.Vector3();
-            const quaternion = new THREE.Quaternion(currPrint.stageParams.pivotRotation);
-            local.decompose(position, quaternion, scale);
-            const rotation = new THREE.Euler().setFromQuaternion(quaternion);
-            let newAttrs = currPrint.stageParams;
-
-            if (pivotComp === 'Slider' || pivotComp === 'Arrow') {
-
-                if (orderElement?.item.type !== 'totebag') {
-                newAttrs = {
-                        ...newAttrs,
-                         decalPosition: [position.x, position.y, position.z - 0.1],   
-                         pivotPosition: [0, 0, -0.2]   
-                         //pivotPosition: [position.x, position.y, -0.3],
-                    
-                }
-                }
-                if (orderElement?.item.type === 'totebag'){
-                    newAttrs = {
-                        ...newAttrs,
-                         decalPosition: [position.x, position.y, position.z - 0.1],      
-                         //pivotPosition: [position.x, position.y, -0.3],
-                    
-                }
-                }
-            }
-            if (pivotComp === 'Rotator') {
-
-            
-                newAttrs = {
-                        ...newAttrs,
-                        decalRotation: [rotation.x, Math.PI, rotation.z * -1],
-                        pivotPosition: [0, 0, -0.2]
-                        //pivotRotation: [rotation.x, Math.PI, rotation.z * -1]
-                    
-                }
-            }
-            if (pivotComp === 'Sphere') {
-
-                //if (pivotAxis === 0) newAttrs = {...newAttrs,decalScale:[newAttrs.deltaX * scale.x, newAttrs.deltaY * scale.x, newAttrs.deltaZ * scale.z]};
-                if (pivotAxis === 1) newAttrs = {...newAttrs,decalScale:[newAttrs.deltaX * scale.y, newAttrs.deltaY * scale.y, newAttrs.deltaZ * scale.z], pivotPosition: [0, 0, -0.2]};                    
-
-            }
-                
-            //@ts-ignore
-            dispatch(cartActions.updateStageParams({ newAttrs, activeView, itemCartId: orderElement.itemCartId }));
-            //@ts-ignore
-            dispatch(cartActions.updateCartParams({ newAttrs, activeView, itemCartId: orderElement.itemCartId, itemColor: orderElement.item.color }));
-          }}
-          onDragEnd={async () => {     
-            setpivotVisibility(false)  
-            setPivotOpacity(0)  
-            setPivotComp('');            
-            const to = setTimeout(() => {
-              document.querySelector('canvas')?.toBlob((blob) => {
-                
-                getScene(activeView, blob);
-            });
-            }, 100)
-            
-            return () => {clearTimeout(to)}
-            
-           
-          }}
-        />
-      <Decal onClick={() => {setpivotVisibility(!pivotVisibility)}} position={currPrint.stageParams.decalPosition} rotation={currPrint.stageParams.decalRotation} scale={currPrint ? currPrint.stageParams.decalScale : 0} matrixAutoUpdate map={texture} />
-        </>
-        }
-        {currPrint && currPrint.stageParams && activeView === 'lsleeve' &&
-        <>
-        <PivotControls
-          disableAxes
-          rotation={currPrint.stageParams.pivotRotation}
-          offset={currPrint.stageParams.pivotPosition}
-          scale={currPrint.stageParams.pivotScale}
-          activeAxes={currPrint.stageParams.dragAxis}
-          visible={pivotVisibility}
-          axisColors={['rgb(153,255,0)','rgb(153,255,0)','rgb(153,255,0)']}
-          userData={{ rotation: Math.PI / -2 }}
-          onDragStart={(props) => {
-            setPivotComp(props.component);
-            //console.log(props.axis);
-            setPivotAxis(props.axis);
-          }}
-          onDrag={(local) => {
-           
-            const position = new THREE.Vector3();
-            const scale = new THREE.Vector3();
-            const quaternion = new THREE.Quaternion(currPrint.stageParams.pivotRotation);
-            local.decompose(position, quaternion, scale);
-            const rotation = new THREE.Euler().setFromQuaternion(quaternion);
-            let newAttrs = currPrint.stageParams;
-
-            if (pivotComp === 'Slider' || pivotComp === 'Arrow') {
-
-            
-                newAttrs = {
-                        ...newAttrs,
-                         decalPosition: [position.x + 0.25, position.y, position.z],  
-                         pivotPosition: [0.4,0,0],                  
-                }
-            }
-            if (pivotComp === 'Rotator') {
-
-            
-                newAttrs = {
-                        ...newAttrs,
-                        decalRotation: [rotation.x, Math.PI / 2, rotation.z * -1],
-                        //pivotRotation: [rotation.x, Math.PI, rotation.z],
-                        pivotPosition: [0.4,0,0],
-                    
-                }
-            }
-            if (pivotComp === 'Sphere') {
-
-                //if (pivotAxis === 2) newAttrs = {...newAttrs,decalScale:[newAttrs.deltaX * scale.z, newAttrs.deltaY * scale.z, newAttrs.deltaZ * scale.x]};
-                if (pivotAxis === 1) newAttrs = {...newAttrs,decalScale:[newAttrs.deltaX * scale.y, newAttrs.deltaY * scale.y, newAttrs.deltaZ * scale.x], pivotPosition: [0.4,0,0],};                    
-
-            }
-            //@ts-ignore
-            dispatch(cartActions.updateStageParams({ newAttrs, activeView, itemCartId: orderElement.itemCartId }));
-            //@ts-ignore
-            dispatch(cartActions.updateCartParams({ newAttrs, activeView, itemCartId: orderElement.itemCartId, itemColor: orderElement.item.color }));
-          }}
-          onDragEnd={async () => {     
-            setpivotVisibility(false)  
-            setPivotOpacity(0)  
-            setPivotComp('');            
-            const to = setTimeout(() => {
-              document.querySelector('canvas')?.toBlob((blob) => {
-                
-                getScene(activeView, blob);
-            });
-            }, 100)
-            
-            return () => {clearTimeout(to)}
-            
-           
-          }}
-        />
-      <Decal onClick={() => {setpivotVisibility(!pivotVisibility)}} position={currPrint.stageParams.decalPosition} rotation={currPrint.stageParams.decalRotation} scale={currPrint ? currPrint.stageParams.decalScale : 0} matrixAutoUpdate map={texture} />
-        </>
-        }
-        {currPrint && currPrint.stageParams && activeView === 'rsleeve' &&
-        <>
-        <PivotControls
-          disableAxes
-          rotation={currPrint.stageParams.pivotRotation}
-          offset={currPrint.stageParams.pivotPosition}
-          scale={currPrint.stageParams.pivotScale}
-          activeAxes={currPrint.stageParams.dragAxis}
-          visible={pivotVisibility}
-          axisColors={['rgb(153,255,0)','rgb(153,255,0)','rgb(153,255,0)']}
-          userData={{ rotation: Math.PI / -2 }}
-          onDragStart={(props) => {
-            setPivotComp(props.component);
-            setPivotAxis(props.axis);
-          }}
-          onDrag={(local) => {
-           
-            const position = new THREE.Vector3();
-            const scale = new THREE.Vector3();
-            const quaternion = new THREE.Quaternion(currPrint.stageParams.pivotRotation);
-            local.decompose(position, quaternion, scale);
-            const rotation = new THREE.Euler().setFromQuaternion(quaternion);
-            let newAttrs = currPrint.stageParams;
-
-            if (pivotComp === 'Slider' || pivotComp === 'Arrow') {
-
-            
-                newAttrs = {
-                        ...newAttrs,
-                         decalPosition: [position.x - 0.25, position.y, position.z],  
-                         //pivotPosition: [-0.4, 0, 0],                  
-                }
-            }
-            if (pivotComp === 'Rotator') {
-
-            
-                newAttrs = {
-                        ...newAttrs,
-                        decalRotation: [rotation.x, Math.PI / -2, rotation.z * -1],
-                        //pivotRotation: [rotation.x, rotation.y, rotation.z]
-                        pivotPosition: [-0.4, 0, 0],
-                    
-                }
-            }
-            if (pivotComp === 'Sphere') {
-
-                //if (pivotAxis === 2) newAttrs = {...newAttrs,decalScale:[newAttrs.deltaX * scale.z, newAttrs.deltaY * scale.z, newAttrs.deltaZ * scale.x]};
-                if (pivotAxis === 1) newAttrs = {...newAttrs,decalScale:[newAttrs.deltaX * scale.y, newAttrs.deltaY * scale.y, newAttrs.deltaZ * scale.x], pivotPosition: [-0.4, 0, 0],};                    
-
-            }
-                //@ts-ignore
-            dispatch(cartActions.updateStageParams({ newAttrs, activeView, itemCartId: orderElement.itemCartId }));
-            //@ts-ignore
-            dispatch(cartActions.updateCartParams({ newAttrs, activeView, itemCartId: orderElement.itemCartId, itemColor: orderElement.item.color }));
-          }}
-          onDragEnd={async () => {     
-            setpivotVisibility(false)  
-            setPivotOpacity(0)  
-            setPivotComp('');            
-            const to = setTimeout(() => {
-              document.querySelector('canvas')?.toBlob((blob) => {
-                
-                getScene(activeView, blob);
-            });
-            }, 100)
-            
-            return () => {clearTimeout(to)}
-            
-           
-          }}
-        />
-      <Decal onClick={() => {setpivotVisibility(!pivotVisibility)}} position={currPrint.stageParams.decalPosition} rotation={currPrint.stageParams.decalRotation} scale={currPrint ? currPrint.stageParams.decalScale : 0} matrixAutoUpdate map={texture} />
-        </>
-        }
-        </>
-    )
-}
+    );
+};
 
 export default DecalComp;

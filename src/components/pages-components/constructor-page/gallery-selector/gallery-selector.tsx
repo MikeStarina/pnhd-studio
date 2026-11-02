@@ -9,6 +9,7 @@ import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
 import { useUploadPrintImageMutation, useGetGalleryImagesQuery } from "@/api/api";
 import Image from "next/image";
 import { photoProcessing } from "@/app/utils/constructor-utils";
+import { printUploadFormData, readPrintUpload } from "@/app/utils/print-upload";
 
 interface GalleryImage {
     id: string;
@@ -57,18 +58,18 @@ const GallerySelector: React.FC<{ orderElement: ICartOrderElement }> = ({
             // Создаем File объект из blob
             const file = new File([blob], `${image.id}_gallery.jpg`, { type: 'image/jpeg' });
             const print = photoProcessing(file);
-            if (print === undefined) {
+            if (!print) {
                 console.error('Что-то пошло не так');
+                return;
             }
-            // Создаем FormData и отправляем на сервер
-            const data = new FormData();
-            data.append("files", print, `${uuidv4()}_${print.name}`);
-            
-            const uploadedPrint = await uploadPrint(data);
-            if (uploadedPrint) {
-
-                // @ts-ignore
-                dispatch(cartActions.setPrint({ print: uploadedPrint, activeView, itemCartId: orderElement.itemCartId, itemType: orderElement.item.type, itemColor: orderElement.item.color }));
+            const uploaded = readPrintUpload(await uploadPrint(printUploadFormData(print, `${uuidv4()}_${print.name}`)));
+            if (uploaded) {
+                dispatch(cartActions.setPrint({
+                    print: { data: uploaded },
+                    itemCartId: orderElement.itemCartId,
+                    itemType: orderElement.item.type,
+                    itemColor: orderElement.item.color,
+                }));
             }
             // if (uploadedPrint && 'data' in uploadedPrint) {
             //     dispatch(cartActions.setPrint({ 
@@ -90,7 +91,7 @@ const GallerySelector: React.FC<{ orderElement: ICartOrderElement }> = ({
     };
 
     const deletePrint = () => {
-        dispatch(cartActions.deletePrint({ activeView, itemCartId: orderElement.itemCartId }));
+        dispatch(cartActions.deletePrint({ printId: currentPrint?.id, itemCartId: orderElement.itemCartId }));
     };
 
     return (

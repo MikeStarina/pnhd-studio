@@ -85,7 +85,7 @@ const utilsSlice = createSlice({
                 height: print.data.height,
             };
             const initStageParams = setCoords(coordsData, tab, itemType);
-            const initCartParams = getPrintFormatAndPriceFunc(initStageParams, tab, itemColor);
+            const initCartParams = getPrintFormatAndPriceFunc(initStageParams, itemColor);
             const printToAdd = {
                 file: {
                     name: print.data.name,

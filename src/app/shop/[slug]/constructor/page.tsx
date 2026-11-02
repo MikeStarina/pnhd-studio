@@ -1,57 +1,63 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./page.module.css";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useAppSelector } from "@/redux/redux-hooks";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/redux/redux-hooks";
 import Controls from "@/components/pages-components/constructor-page/constructor-controls/constructor-controls";
 import Stage from "@/components/pages-components/constructor-page/3dmockup/3dmokup";
 import DecalComp from "@/components/pages-components/constructor-page/3dmockup/decal";
 import Preview from "@/components/pages-components/constructor-page/3dmockup/preview";
-import Image from "next/image";
-import testImg from '../../../../../public/cookie.jpg'
-
-
-import dynamic from "next/dynamic";
-const DynamicStage = dynamic(
-    () => import("../../../../konva-stage/stage-component"),
-    { ssr: false }
-);
+import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
+import { ICartOrderElement } from "@/app/utils/types";
 
 const Constructor = () => {
     const router = useRouter();
+    const slugParam = useParams().slug;
+    const slug = Array.isArray(slugParam) ? slugParam[0] : slugParam;
     const itemCartId = useSearchParams().get("itemCartId");
+    const dispatch = useAppDispatch();
     const { order } = useAppSelector((store) => store.cart);
-    const orderElement = order?.filter((item) => item.itemCartId === itemCartId)[0];
     const { previewMode } = useAppSelector((store) => store.printConstructor);
+    const [cartReady, setCartReady] = useState(false);
+    const orderElement = order?.find((item) => item.itemCartId === itemCartId);
 
-    const gallery = [testImg, testImg, testImg, testImg, testImg, testImg];
-
-    //console.log('page render')
     useEffect(() => {
-        if (!itemCartId) router.replace("/shop"); //переписать чтоб возвращало на кароточку товара
-    }, [itemCartId]);
+        let nextOrder: ICartOrderElement[] = order ?? [];
+        const restoredOrder = sessionStorage.getItem("order");
+        if (restoredOrder) {
+            try {
+                const parsedOrder = JSON.parse(restoredOrder) as ICartOrderElement[];
+                if (Array.isArray(parsedOrder)) {
+                    nextOrder = parsedOrder;
+                    if (parsedOrder.length) dispatch(cartActions.restoreCart(parsedOrder));
+                }
+            } catch {
+                sessionStorage.removeItem("order");
+            }
+        }
+        setCartReady(true);
+        const hasItem = Boolean(itemCartId && nextOrder.some((item) => item.itemCartId === itemCartId));
+        if (!hasItem && slug) router.replace(`/shop/${slug}`);
+        // Корзина на первом рендере пустая: решение о редиректе принимаем по sessionStorage, а не по Redux.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch, itemCartId, router, slug]);
+
+    if (!cartReady || !orderElement?.item) {
+        return <section className={styles.screen} />;
+    }
 
     return (
-        <>
-            <section className={styles.screen}>
-                <div className={styles.mockup_container}>
-                    <div className={styles.stage_container}>
-                        {/* {orderElement?.item && <DynamicStage orderElement={orderElement} />} */}
-                        {!previewMode &&
-                            <Stage>
-                                <DecalComp />
-                            </Stage>
-                        }
-                        {previewMode &&
-                            <Preview />
-                        }
-
-                    </div>
-                </div>
-                {itemCartId && <Controls itemCartId={itemCartId} />}
-            </section>
-            {/* {itemCartId && orderElement && <GallerySelector orderElement={orderElement} />} */}
-        </>
+        <section className={styles.screen}>
+            <div className={styles.stage}>
+                {!previewMode && (
+                    <Stage>
+                        <DecalComp />
+                    </Stage>
+                )}
+                {previewMode && <Preview />}
+            </div>
+            {itemCartId && <Controls itemCartId={itemCartId} />}
+        </section>
     );
 };
 

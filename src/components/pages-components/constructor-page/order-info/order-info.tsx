@@ -2,18 +2,77 @@
 import React from "react";
 import styles from "./order-info.module.css";
 import { ICartOrderElement, IPrintFile } from "@/app/utils/types";
-import PrintStats from "./print-stats";
 import { totalPrintPriceFunc } from "@/app/utils/constructor-utils";
+import { useAppDispatch, useAppSelector } from "@/redux/redux-hooks";
+import { actions as cartActions } from "@/redux/cart-slice/cart.slice";
+import { actions as constructorActions } from "@/redux/constructor-slice/constructor.slice";
 
-const OrderInfo: React.FC<{ orderElement: ICartOrderElement }> = ({
+const printLine = (print: IPrintFile, index: number, volumeSize: number) => {
+  if (!print.file?.url || !print.cartParams) return `Принт ${index + 1} —`;
+  const lineTotal = print.cartParams.price * volumeSize;
+  return `Принт ${index + 1} — ${print.cartParams.format}, ${print.cartParams.size}, ${print.cartParams.price.toLocaleString("ru-RU")} Р. × ${volumeSize} шт. — ${lineTotal.toLocaleString("ru-RU")} Р.`;
+};
+
+const OrderInfo: React.FC<{ orderElement: ICartOrderElement; dock?: boolean }> = ({
   orderElement,
+  dock = false,
 }) => {
+  const dispatch = useAppDispatch();
+  const { selectedPrintId } = useAppSelector((store) => store.printConstructor);
   const { prints, item } = orderElement;
-  const volumeSize = item.sizes?.reduce((acc, item) => {
-    return acc + item.userQty!;
-  }, 0);
+  const list = prints ?? [];
+  const volumeSize = item.sizes?.reduce((acc, size) => acc + size.userQty!, 0);
 
-  const totalPrintPrice = totalPrintPriceFunc(prints?.front, prints?.back, prints?.lsleeve, prints?.rsleeve);
+  const totalPrintPrice = totalPrintPriceFunc(list);
+  const total = (item.price + totalPrintPrice) * volumeSize;
+
+  const selectPrint = (printId?: string) => {
+    if (!printId) return;
+    dispatch(constructorActions.setSelectedPrintId(printId));
+  };
+
+  const deletePrint = (event: React.MouseEvent, printId?: string) => {
+    event.stopPropagation();
+    if (!printId) return;
+    dispatch(cartActions.deletePrint({ printId, itemCartId: orderElement.itemCartId }));
+    if (selectedPrintId === printId) dispatch(constructorActions.setSelectedPrintId(null));
+  };
+
+  const rows = list.length
+    ? list.map((print, index) => {
+        const selected = Boolean(print.id && print.id === selectedPrintId);
+        return (
+          <button
+            key={print.id || index}
+            type="button"
+            data-print-row=""
+            className={selected ? `${styles.print_row} ${styles.print_row_selected}` : styles.print_row}
+            onClick={() => selectPrint(print.id)}
+          >
+            <span>{printLine(print, index, volumeSize)}</span>
+            <span
+              className={styles.print_delete}
+              onClick={(event) => deletePrint(event, print.id)}
+            >
+              Удалить
+            </span>
+          </button>
+        );
+      })
+    : <p className={styles.print_empty}>Принты —</p>;
+
+  if (dock) {
+    return (
+      <div className={styles.orderInfoDock}>
+        <p className={styles.dock_name}>{item.name}</p>
+        <p className={styles.dock_line}>
+          {item.price.toLocaleString("ru-RU")} Р. × {volumeSize} шт. — {(item.price * volumeSize).toLocaleString("ru-RU")} Р.
+        </p>
+        {rows}
+        <p className={styles.dock_total}>Итого: {total.toLocaleString("ru-RU")} Р.</p>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.orderInfo}>
@@ -26,33 +85,9 @@ const OrderInfo: React.FC<{ orderElement: ICartOrderElement }> = ({
           </span>
         </span>
       </p>
-      <PrintStats
-        printType="front"
-        printTypeName="Печать на груди"
-        print={prints?.front}
-        volumeSize={volumeSize}
-      />
-      <PrintStats
-        printType="back"
-        printTypeName="Печать на спине"
-        print={prints?.back}
-        volumeSize={volumeSize}
-      />
-      <PrintStats
-        printType="lsleeve"
-        printTypeName="Печать на левом рукаве"
-        print={prints?.lsleeve}
-        volumeSize={volumeSize}
-      />
-      <PrintStats
-        printType="rsleeve"
-        printTypeName="Печать на правом рукаве"
-        print={prints?.rsleeve}
-        volumeSize={volumeSize}
-      />
-
+      {rows}
       <p className={styles.order_info_title}>
-        Итого: {(item.price + totalPrintPrice) * volumeSize} Р.
+        Итого: {total.toLocaleString("ru-RU")} Р.
       </p>
     </div>
   );

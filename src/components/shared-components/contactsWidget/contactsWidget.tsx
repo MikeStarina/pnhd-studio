@@ -1,5 +1,6 @@
 'use client'
 import React, { useState } from "react"
+import { usePathname } from "next/navigation"
 import styles from './contactsWidget.module.css'
 import Link from "next/link"
 import TelegramLink from "../telegram-link/telegram-link"
@@ -10,7 +11,9 @@ import tg from '../../../../public/tg_logo.svg';
 // import wa from '../../../../public/wa_logo.svg';
 
 const ContactsWidget = () => {
+    const pathname = usePathname();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    if (pathname?.includes("/constructor")) return null;
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
