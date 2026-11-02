@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { resolveMediaUrl } from "./product-photos";
 import * as THREE from 'three';
 import { TParams } from "./types";
+import { dtgPriceForFormat } from "./constants";
 
 export const sideItemForPrint = (item: IProduct, activeView: string) => {
     let initialParams = {
@@ -133,27 +134,11 @@ export const photoProcessing = (file: any) => { //хз как типизиров
 };
 
 // считает стоимость печати
-export const totalPrintPriceFunc = (
-  front_file: IPrintFile | undefined,
-  back_file: IPrintFile | undefined,
-  lsleeve_file: IPrintFile | undefined,
-  rsleeve_file: IPrintFile | undefined,
-): number => {
-  let totalPrintPrice = 0;
-  totalPrintPrice = front_file && front_file.cartParams
-    ? totalPrintPrice + front_file.cartParams.price
-    : totalPrintPrice;
-  totalPrintPrice = back_file && back_file.cartParams
-    ? totalPrintPrice + back_file.cartParams.price
-    : totalPrintPrice;
-  totalPrintPrice = lsleeve_file && lsleeve_file.cartParams
-    ? totalPrintPrice + lsleeve_file.cartParams.price
-    : totalPrintPrice;
-  totalPrintPrice = rsleeve_file && rsleeve_file.cartParams
-    ? totalPrintPrice + rsleeve_file.cartParams.price
-    : totalPrintPrice;
- 
-  return totalPrintPrice;
+export const totalPrintPriceFunc = (prints?: IPrintFile[]): number => {
+  return (prints ?? []).reduce((total, print) => {
+    if (!print?.file?.url || !print.cartParams) return total;
+    return total + print.cartParams.price;
+  }, 0);
 };
 
 
@@ -326,34 +311,25 @@ export const setCoords = (currentImage: IInitialPrintParams, activeView: string,
 
 
 // определяет формат изображения (по площади) и стоимость печати
-export const getPrintFormatAndPriceFunc = (newAttrs: TParams, activeView: string, color: string) => {
+export const getPrintFormatAndPriceFunc = (newAttrs: TParams, color: string) => {
   const [ stageWidth, stageHeight, stageDepth ] = newAttrs.decalScale;
   const width = stageWidth * 120;
   const height = stageHeight * 120;
   const printSqr = width * height;
 
-  let screenSize = '';
-  let priceCounter = 0;
+  let screenSize = 'А3+';
 
   if (printSqr <= 150) {
     screenSize = 'А6';
-    priceCounter = color && color === 'белый' ? 350 : 450;
   } else if (printSqr > 150 && printSqr <= 315) {
     screenSize = 'А5';
-    priceCounter = color && color === 'белый' ? 450 : 575;
   } else if (printSqr > 315 && printSqr <= 609) {
     screenSize = 'А4';
-    priceCounter = color && color === 'белый' ? 575 : 750;
   } else if (printSqr > 609 && printSqr <= 1218) {
     screenSize = 'А3';
-    priceCounter = color && color === 'белый' ? 750 : 850;
-  } else if (printSqr > 1218 && printSqr <= 1420) {
-    screenSize = 'А3+';
-    priceCounter = color && color === 'белый' ? 850 : 1050;
-  } else {
-    screenSize = 'А3+';
-    priceCounter = color && color === 'белый' ? 850 : 1050;
   }
+
+  const priceCounter = dtgPriceForFormat(screenSize, color === 'белый');
 
   const displayWidth = Math.round(width) > 35 ? 35 : Math.round(width);
   const displayHeight = Math.round(height) > 42 ? 42 : Math.round(height);
@@ -362,7 +338,6 @@ export const getPrintFormatAndPriceFunc = (newAttrs: TParams, activeView: string
       price: priceCounter,
       format: screenSize,
       size: `${displayWidth} x ${displayHeight} см.`,
-      place: activeView,
   }
 
   return cartParams;

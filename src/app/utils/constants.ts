@@ -79,23 +79,33 @@ export const prices = [
         prices: [
             {
                 format: 'А6',
-                price: '400 Р. / 500 Р.'
+                price: '400 Р. / 500 Р.',
+                white: 400,
+                color: 500,
             },
             {
                 format: 'А5',
-                price: '500 Р. / 650 Р.'
+                price: '500 Р. / 650 Р.',
+                white: 500,
+                color: 650,
             },
             {
                 format: 'А4',
-                price: '650 Р. / 800 Р.'
+                price: '650 Р. / 800 Р.',
+                white: 650,
+                color: 800,
             },
             {
                 format: 'А3',
-                price: '800 Р. / 900 Р.'
+                price: '800 Р. / 900 Р.',
+                white: 800,
+                color: 900,
             },
             {
                 format: 'А3+',
-                price: '900 Р. / 1100 Р.'
+                price: '900 Р. / 1100 Р.',
+                white: 900,
+                color: 1100,
             },
         ]
     },
@@ -179,6 +189,13 @@ export const prices = [
         ]
     },
 ]
+
+export const dtgPriceForFormat = (format: string, isWhite: boolean): number => {
+    const group = prices.find((item) => item.name === 'DTG');
+    const row = group?.prices.find((item) => item.format === format) as { white?: number; color?: number } | undefined;
+    if (typeof row?.white !== 'number' || typeof row.color !== 'number') return 0;
+    return isWhite ? row.white : row.color;
+};
 
 
 export const feedbackArr = [

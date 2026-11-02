@@ -37,6 +37,8 @@ const CartIcon: React.FC = () => {
     }
   }, [])
 
+  if (pathname?.includes("constructor")) return null;
+
   return (
     <div className={containerStyles}>
       <Link href="/cart" className={styles.cartIcon_link}>

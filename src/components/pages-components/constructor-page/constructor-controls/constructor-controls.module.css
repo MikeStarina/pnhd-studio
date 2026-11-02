@@ -8,31 +8,125 @@
 }
 
 
-.controls_container {
-    margin: 0 0 0 50px;
-    padding: 0;
+.dock {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 5;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    align-items: stretch;
+    gap: 14px;
+    width: min(400px, calc(100vw - 32px));
+    max-width: 400px;
+    max-height: calc(100dvh - 32px);
+    overflow: auto;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.72);
+    color: #fff;
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+}
+
+.collapse,
+.panel_toggle {
+    border: 0;
+    background: transparent;
+    color: #fff;
+    font-family: "Neue_machina", sans-serif;
+    font-size: 12px;
+    line-height: 14px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.collapse {
+    align-self: flex-start;
+    padding: 0;
+}
+
+.panel_toggle {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 5;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(10px);
+}
+
+.text_button {
+    border: 0;
+    background: transparent;
+    color: #fff;
+    padding: 0;
+    margin: 0;
+    font-family: "Neue_machina", sans-serif;
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 800;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-align: left;
+}
+
+.text_button:hover,
+.text_button_active {
+    text-decoration: underline;
+}
+
+.text_button:disabled {
+    color: rgba(255, 255, 255, 0.45);
+    text-decoration: none;
+    cursor: default;
+}
+
+.dock_left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    min-width: 0;
+}
+
+.dock_row {
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    width: auto;
-    height: 500px;
+    gap: 8px;
+}
+
+.dock_right {
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+    flex: none;
+}
+
+.dock_cart {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
 }
 
 .link {
-    color: black;
+    color: #fff;
     font-family: 'Neue_machina';
     font-size: 12px;
+    line-height: 14px;
+    white-space: nowrap;
+    flex: none;
 }
 
 .controls_previewControlsWrapper {
-    width: 100%;
     box-sizing: border-box;
     display: flex;
-    justify-content: flex-end;
     align-items: center;
-    margin-bottom: 20px;
     gap: 5px;
 }
 
@@ -46,8 +140,8 @@
     border-radius: 5px;
     text-transform: uppercase;
     padding: 6px 10px;
-    min-width: 141px;
     color: black;
+    white-space: nowrap;
 }
 
 .active_tab {
@@ -60,8 +154,8 @@
     border-radius: 5px;
     text-transform: uppercase;
     padding: 6px 10px;
-    min-width: 141px;
     color: black;
+    white-space: nowrap;
 }
 
 .tab:hover {
@@ -253,13 +347,25 @@
     border-color: rgb(153,255,0);
 }
 
+.controls_cartButton:disabled {
+    cursor: default;
+    background-color: lightgray;
+    border-color: lightgray;
+}
+
+.save_error {
+    margin: 0;
+    max-width: 220px;
+    text-align: right;
+    font-family: 'Neue_machina';
+    font-size: 12px;
+    line-height: 14px;
+}
+
 .preview_container {
-    width: 100%;
     box-sizing: border-box;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-end;
+    align-items: center;
     gap: 5px;
 }
 
@@ -326,26 +432,23 @@
     background-color: rgb(153,255,0);
 }
 
-@media (max-width: 1250px) {
-    .controls_container {
-        margin: 0;
-        width: 579px;
-        align-items: center;
+@media (max-width: 640px) {
+    .dock {
+        top: 12px;
+        right: 12px;
+        left: 12px;
+        width: auto;
+        max-width: none;
+        max-height: 70dvh;
     }
 
-    .controls_previewControlsWrapper {
-            justify-content: center;
+    .panel_toggle {
+        top: 12px;
+        right: 12px;
     }
-}
-@media (max-width: 650px) {
-    .controls_container {
-        width: 100%;
-    }
-    .tab {
-        width: calc(50% - 5px);
-    }
-    .active_tab {
-        width: calc(50% - 5px);
+
+    .dock_right {
+        justify-content: space-between;
     }
 }
 

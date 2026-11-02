@@ -94,17 +94,20 @@ export type TTagInput = {
 };
 
 export interface IPrintFile {
+  id?: string,
   file?: { name: string, url: string, width: number, height: number, message?: string },
   stageParams?: TParams,
-  cartParams?: { price: number, format: string, size: string, place: string, },
+  cartParams?: { price: number, format: string, size: string, place?: string, },
   preview?: string,
+  needsPlacement?: boolean,
 }
 export interface IStageParams { x: number, y: number, width: number, height: number, rotation: number };
 
 export interface ICartOrderElement {
-  itemCartId: string, item: IProduct, isItemWithPrint: boolean, prints?: {
-    front: IPrintFile, back: IPrintFile, lsleeve: IPrintFile, rsleeve: IPrintFile
-  }
+  itemCartId: string,
+  item: IProduct,
+  isItemWithPrint: boolean,
+  prints?: IPrintFile[],
 }
 export interface ITotalPrintPriceFunc {
   front_file?: IPrintFile,
@@ -199,6 +202,7 @@ interface IAdditionalOrderParams {
     back_print?: string,
     lsleeve_print?: string,
     rsleeve_print?: string,
+    prints?: Array<{ file: string, name: string, size: string, format: string, price: number }>,
     textile?: string,
 }
 export type TUserOrderItem = IProduct & IAdditionalOrderParams;

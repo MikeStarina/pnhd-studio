@@ -53,6 +53,31 @@
     box-sizing: border-box;
 }
 
+.input_container_dock {
+    width: auto;
+}
+
+.input_container_dock .input_form,
+.input_container_dock .input_wrapper,
+.input_container_dock .printInfo_wrapper {
+    width: auto;
+    min-width: 0;
+}
+
+.input_container_dock .file_input_button,
+.input_container_dock .file_input_button:hover {
+    min-width: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    justify-content: flex-start;
+}
+
+.input_container_dock .file_input_button_text {
+    color: #fff;
+}
+
 .printInfo {
     max-width: 500px;
     color: black;
@@ -121,6 +146,7 @@
 
 .file_input_button {
     min-width: 141px;
+    background: #fff;
     border: 1px solid black;
     border-radius: 5px;
     display: flex;
@@ -176,6 +202,14 @@
     text-align: center;
     margin: 0 0 0 5px;
     padding: 0;
+}
+
+.upload_error {
+    margin: 8px 0 0 0;
+    font-family: "Neue_machina", sans-serif;
+    font-size: 12px;
+    line-height: 14px;
+    color: black;
 }
 
 @media (max-width: 390px) {

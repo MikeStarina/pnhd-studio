@@ -1,15 +1,14 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styles from './constructor-controls.module.css';
-import Tabs from '../tabs/tabs';
 import FileUploader from '../file-uploader/file-uploader';
 import { ICartOrderElement } from '@/app/utils/types';
 import OrderInfo from '../order-info/order-info';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/redux/redux-hooks';
 import { actions as constructorActions } from '@/redux/constructor-slice/constructor.slice';
 import { useAppDispatch } from '@/redux/redux-hooks';
-import { useUploadPrintImageMutation } from '@/api/api';
 
 
 
@@ -18,9 +17,12 @@ const Controls: React.FC<{ itemCartId: any}> = ({ itemCartId }) => {
     const { previewMode } = useAppSelector((store) => store.printConstructor);
     const orderElement = order?.filter((item) => item.itemCartId === itemCartId)[0];
     const dispatch = useAppDispatch();
-    const clickHandler = () => {
-        dispatch(constructorActions.setActiveView('front'));
-    }
+    const router = useRouter();
+    const goToCart = () => {
+        if (!orderElement) return;
+        router.push('/cart');
+    };
+    const [collapsed, setCollapsed] = useState(false);
     const [ createVideoState, setCreateVideoState ] = useState({
         inProgress: false,
         isVideoReady: false,
@@ -66,57 +68,57 @@ const Controls: React.FC<{ itemCartId: any}> = ({ itemCartId }) => {
                 }
             }
     }
+    if (!orderElement) return null;
+
+    if (collapsed) {
+        return (
+            <button type="button" className={styles.panel_toggle} onClick={() => setCollapsed(false)}>
+                Панель
+            </button>
+        );
+    }
+
     return (
-        <>
-        {orderElement && 
-            <>
-            <div className={styles.controls_container}>
-                <div className={styles.controls_previewControlsWrapper}>
-                    <button type='button' className={!previewMode ? styles.active_tab : styles.tab} onClick={() => {dispatch(constructorActions.setPreviewMode())}}>Редактор</button>
-                    <button type='button' className={previewMode ? styles.active_tab : styles.tab} onClick={() => {dispatch(constructorActions.setPreviewMode())}}>Превью</button>
+            <div className={styles.dock}>
+                <button type="button" className={`${styles.collapse} ${styles.text_button}`} onClick={() => setCollapsed(true)}>
+                    Свернуть
+                </button>
+                <OrderInfo orderElement={orderElement} dock />
+                <div className={styles.dock_row}>
+                    <button type="button" className={!previewMode ? `${styles.text_button} ${styles.text_button_active}` : styles.text_button} onClick={() => {dispatch(constructorActions.setPreviewMode(false))}}>Редактор</button>
+                    <button type="button" className={previewMode ? `${styles.text_button} ${styles.text_button_active}` : styles.text_button} onClick={() => {dispatch(constructorActions.setPreviewMode(true))}}>Превью</button>
                 </div>
-                
-                {!previewMode && 
-                    <>
-                        <Tabs orderElement={orderElement} />
-                        <FileUploader orderElement={orderElement} />
-                        <div style={{width: '100%', display: 'flex', justifyContent: 'flex-end', margin: '10px 0 0 0'}}>
-                            <Link className={styles.link} href='/howto' target='blank'>Как использовать конструктор ?</Link>
-                        </div>
-                    </>
-                }
                 {previewMode &&
-                    <div className={styles.preview_container}>
+                    <div className={styles.dock_row}>
                         <button
                             disabled={createVideoState.inProgress}
-                            type='button'
+                            type="button"
                             onClick={createVideo}
-                            className={styles.preview_createVideoButton}
+                            className={styles.text_button}
                         >
                             {createVideoState.text}
                         </button>
-                        <a href='/' id='share'aria-disabled={!createVideoState.isVideoReady} style={{ textDecoration: 'none'}}>
-                        <button disabled={!createVideoState.isVideoReady} className={styles.preview_downloadButton}>
-                            Скачать
-                        </button>
+                        <a href="/" id="share" aria-disabled={!createVideoState.isVideoReady} style={{ textDecoration: "none" }}>
+                            <button disabled={!createVideoState.isVideoReady} className={styles.text_button} type="button">
+                                Скачать
+                            </button>
                         </a>
                     </div>
-                    
                 }
-                <OrderInfo orderElement={orderElement} />
-
-            <Link href='/cart' style={{ alignSelf: 'flex-end', marginTop: '50px'}} onClick={clickHandler}>
+                {!previewMode &&
+                    <div className={styles.dock_row}>
+                        <FileUploader orderElement={orderElement} dock />
+                        <Link className={styles.link} href="/howto" target="blank">Как использовать</Link>
+                    </div>
+                }
                 <button
-                    type='button'
-                    className={styles.controls_cartButton}
+                    type="button"
+                    className={styles.text_button}
+                    onClick={goToCart}
                 >
-                    в корзину
+                    В корзину
                 </button>
-            </Link>
-        </div>
-        </>
-    }
-    </>
+            </div>
     )
 }
 

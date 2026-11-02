@@ -1,3 +1,86 @@
+.orderInfoDock {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    margin: 0;
+    min-width: 0;
+    width: 100%;
+}
+
+.dock_name,
+.dock_line,
+.dock_total {
+    margin: 0;
+    padding: 0;
+    font-family: "Neue_machina", sans-serif;
+    font-size: 14px;
+    line-height: 18px;
+    text-align: right;
+    white-space: nowrap;
+    color: inherit;
+}
+
+.dock_total {
+    margin-top: 4px;
+    font-weight: 800;
+}
+
+.print_row {
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font-family: "Neue_machina", sans-serif;
+    font-size: 14px;
+    line-height: 18px;
+    text-align: right;
+    cursor: pointer;
+    white-space: nowrap;
+    color: inherit;
+}
+
+.print_row_selected {
+    font-weight: 800;
+}
+
+.print_delete {
+    font-size: 12px;
+    line-height: 14px;
+    text-decoration: underline;
+    color: inherit;
+}
+
+.print_empty {
+    margin: 0;
+    font-family: "Neue_machina", sans-serif;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.orderInfoDock p,
+.orderInfoDock .dock_name,
+.orderInfoDock .dock_line,
+.orderInfoDock .dock_total,
+.orderInfoDock .print_row,
+.orderInfoDock .print_empty {
+    margin: 0;
+    font-size: 14px;
+    line-height: 18px;
+    text-align: left;
+    white-space: normal;
+}
+
+.orderInfoDock .print_row {
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
 .orderInfo {
     margin: 50px 0 0 0;
     padding: 0;
