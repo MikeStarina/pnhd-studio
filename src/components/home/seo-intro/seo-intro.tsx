@@ -6,7 +6,7 @@ import Facts, { type Fact } from '../facts/facts';
 import Marquee from '../marquee/marquee';
 import styles from './seo-intro.module.css';
 
-const methodsLine = ['Принт', 'Пошив', 'Вышивка', 'DTF', 'DTG', 'Шелкография'];
+const methodsLine = ['Принт', 'Вышивка', 'DTF', 'DTG', 'Шелкография'];
 
 // Изделия — ссылки на страницы категорий: с главной поисковик и человек идут прямо в нужный раздел
 const products = [

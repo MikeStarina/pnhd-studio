@@ -18,11 +18,17 @@
 .close:hover { background: var(--lime-soft); }
 
 .gallery { display: flex; flex-direction: column; gap: 8px; }
-.stage { display: grid; place-items: center; aspect-ratio: 1; border-radius: var(--r-sm); background: var(--surface); overflow: hidden; }
-.stage img { display: block; width: 100%; height: 100%; object-fit: contain; animation: infoIn var(--t-base) var(--ease-out) backwards; }
+/* Фото моделей вертикальные (3:4, 2:3). Место под фото постоянное — окно не прыгает при смене фото;
+   фото вписывается целиком и само несёт скругление и фон, без серых полос по бокам */
+.stage { position: relative; display: flex; align-items: center; justify-content: center; aspect-ratio: 3 / 4; max-height: 62dvh; }
+.stage img {
+  display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;
+  border-radius: var(--r-sm); background: var(--surface);
+  animation: infoIn var(--t-base) var(--ease-out) backwards;
+}
 .thumbs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; }
 .thumb, .thumbActive {
-  flex: none; width: 56px; height: 56px; padding: 0; border: 1px solid var(--line); border-radius: var(--r-sm);
+  flex: none; width: 48px; height: 64px; padding: 0; border: 1px solid var(--line); border-radius: var(--r-sm);
   background: var(--surface); overflow: hidden; cursor: pointer;
 }
 .thumbActive { border-color: var(--ink); }

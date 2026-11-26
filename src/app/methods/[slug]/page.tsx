@@ -185,7 +185,7 @@ const MethodPage: React.FC<{
 
           {method.name === 'DTF' && <DtfCalculator/>}
           <PriceScreen/>
-          <AdvantagesComponent />
+          <AdvantagesComponent slug={params.slug} />
           <PrintMethodsScreen excludedMethods={[params.slug]}/>
           <MapScreen/>
           <section className={styles.more_block}>

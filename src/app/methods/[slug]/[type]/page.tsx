@@ -171,7 +171,7 @@ const MethodOptionsPage: React.FC<{
                             />
                         ))}
                     </section>
-                    <AdvantagesComponent />
+                    <AdvantagesComponent slug={params.slug} />
                     <PriceScreen />
                     <MapScreen />
                     <section></section>

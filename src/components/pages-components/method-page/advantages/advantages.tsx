@@ -1,6 +1,9 @@
 import styles from './advantages.module.css';
 
-const AdvantagesComponent = () => {
+// Вышивка и термотрансфер — от 20 штук, остальные методы — поштучно
+const bulkOnly = ['vishivka', 'termotransfernaya-pechat'];
+
+const AdvantagesComponent = ({ slug }: { slug: string }) => {
     return (
         <div className={styles.advantages}>
             <div className={styles['advantage-card']}>
@@ -16,7 +19,7 @@ const AdvantagesComponent = () => {
             <div className={styles['advantage-card']}>
                 <img src="/5ff99b45c0869a731351dc84696c8c21.jpg" alt="прозрачность" className={styles['advantage-card_img']}/>
                 <div className={styles['advantage-card_title']}>Простота и прозрачность</div>
-                <div className={styles['advantage-card_txt']}>Минимальный тираж — от 1 штуки. Прозрачная стоимость — финальная сумма рассчитывается до начала работ и не меняется. Любая основа — мы печатаем на вашем собственном материале или поможем подобрать оптимальный текстиль.</div>
+                <div className={styles['advantage-card_txt']}>Минимальный тираж — {bulkOnly.includes(slug) ? 'от 20 штук' : 'от 1 штуки'}. Прозрачная стоимость — финальная сумма рассчитывается до начала работ и не меняется. Любая основа — мы печатаем на вашем собственном материале или поможем подобрать оптимальный текстиль.</div>
             </div>
         </div>
     )
