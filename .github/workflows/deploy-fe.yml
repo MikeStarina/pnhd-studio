@@ -109,6 +109,9 @@ jobs:
             set -euo pipefail
             cd /opt/studio-fe
             chmod 600 .env web.env
+            # Каждая выкладка скачивает новый образ; без очистки старые забивают диск («no space left on device»).
+            # Образ работающего контейнера не удаляется.
+            docker image prune -af
             docker compose pull
             docker compose up -d --remove-orphans
             docker compose ps
