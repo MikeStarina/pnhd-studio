@@ -1,7 +1,7 @@
 import styles from './advantages.module.css';
 
-// Вышивка и термотрансфер — от 20 штук, остальные методы — поштучно
-const bulkOnly = ['vishivka', 'termotransfernaya-pechat'];
+// Вышивка — от 20 штук, остальные методы — поштучно
+const bulkOnly = ['vishivka'];
 
 const AdvantagesComponent = ({ slug }: { slug: string }) => {
     return (

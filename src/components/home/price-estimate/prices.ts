@@ -48,7 +48,6 @@ export const priceMethods: PriceMethod[] = [
     name: 'Термотрансфер',
     slug: 'termotransfernaya-pechat',
     columns: ['Цена'],
-    note: 'Тираж — от\u00a020\u00a0штук',
     formats: [mini(400), a6(550), a5(700), a4(950), a3(1050), a3plus(1200)],
   },
   {

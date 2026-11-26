@@ -50,7 +50,7 @@ const panelSettings: Record<string, Omit<MethodPanelData, 'slug' | 'image'>> = {
     tone: 'lime',
     longName: true,
     best: 'Срочные надписи и спецэффекты',
-    minRun: 'от 20 шт.',
+    minRun: 'от 1 шт.',
     facts: ['От 15 минут', 'Любой материал', 'Золото, медь, кислотные цвета'],
     limits: ['Только вектор в один цвет'],
   },
