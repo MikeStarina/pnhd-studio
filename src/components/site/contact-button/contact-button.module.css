@@ -7,6 +7,8 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 8px;
+  /* Обёртка размером с меню, даже скрытое: нажатия сквозь неё проходят к странице, ловят только кнопка и меню */
+  pointer-events: none;
   /* Тон кнопки и карточки: тёмный на светлых блоках, инверсия — над тёмными */
   --fab-bg: var(--color-ink);
   --fab-fg: var(--color-white);
@@ -25,6 +27,7 @@
 
 .button {
   position: relative;
+  pointer-events: auto;
   display: grid;
   place-items: center;
   width: var(--fab-size);
@@ -80,6 +83,7 @@
 }
 
 .menu {
+  pointer-events: auto;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
