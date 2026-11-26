@@ -1,3 +1,4 @@
+import { resolveColorHex } from '@/app/utils/product-colors';
 import { shapeFor } from '../config/garment-shapes';
 import { sortSizes } from '../model/sizes';
 import type { ApiProduct, Garment, GarmentType, GarmentVariant } from '../model/types';
@@ -6,7 +7,7 @@ export const PNHD_API_URL = process.env.NEXT_PUBLIC_PNHD_API_URL || 'https://api
 
 const SUPPORTED: GarmentType[] = ['tshirt', 'longsleeve', 'sweatshirt', 'hoodie', 'totebag', 'cap'];
 
-/** Цвета без stageColor в API — запасная палитра по названию. */
+/** Цвета без stageColor в API — запасная палитра по названию; чего нет здесь — из таблицы цветов каталога сайта. */
 const COLOR_FALLBACK: Record<string, string> = {
   белый: '#ffffff', черный: '#2b2b2b', розовый: '#f4c2c9', молочный: '#f8f4ea', серый: '#9a9a9a',
 };
@@ -45,7 +46,7 @@ export const photosOf = (g: Garment): string[] => [...new Set(g.variants.flatMap
  */
 export function fabricHex(p: Pick<ApiProduct, 'color' | 'stageColor'>): string {
   const name = p.color.toLowerCase().replace('ё', 'е');
-  return COLOR_OVERRIDE[name] || p.stageColor || COLOR_FALLBACK[name] || '#d9d9d9';
+  return COLOR_OVERRIDE[name] || p.stageColor || COLOR_FALLBACK[name] || resolveColorHex(name) || '#d9d9d9';
 }
 
 function toVariant(p: ApiProduct): GarmentVariant {

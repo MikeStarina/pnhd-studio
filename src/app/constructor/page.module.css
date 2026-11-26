@@ -3,6 +3,13 @@
   --constructor-height: calc(100dvh - var(--header-height));
 }
 
+/* Плавающая шапка лежит на фоне страницы (--color-page, globals.css): здесь он тот же, что у конструктора, —
+   без белой полосы над ним */
+:global(body):has(.page) {
+  --color-page: var(--color-surface);
+  background-color: var(--color-page);
+}
+
 /* Заголовок страницы для поисковиков и экранных дикторов; визуально его роль играют шаги конструктора */
 .title {
   position: absolute;

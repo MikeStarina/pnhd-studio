@@ -144,8 +144,12 @@ export const useConstructor = create<ConstructorState>((set, get) => {
     bumpFonts: () => set((s) => ({ fontTick: s.fontTick + 1 })),
 
     setCatalog: (garments) => {
-      const first = garments[0];
-      set({ garments, garmentId: first?.id ?? null, variantId: first?.variants[0]?.productId ?? null });
+      // Каталог грузится при каждом открытии конструктора, а хранилище живёт между переходами по сайту:
+      // уже сделанный выбор (например, товар из ссылки ?product) свежий каталог не сбрасывает.
+      const { garmentId, variantId } = get();
+      const g = garments.find((x) => x.id === garmentId) ?? garments[0];
+      const v = g?.variants.find((x) => x.productId === variantId) ?? g?.variants[0];
+      set({ garments, garmentId: g?.id ?? null, variantId: v?.productId ?? null });
     },
     hydrate: (d) => {
       const g = get().garments.find((x) => x.id === d.garmentId) ?? selectGarment(get());

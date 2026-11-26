@@ -135,12 +135,14 @@ const ProductPage: React.FC<TProps> = async ({ params }) => {
             {item.color && (
               <div className={styles.colors}>
                 <p className={styles.colorLabel}>Цвет: {colorName(item.color)}</p>
+                {/* Каждый цвет — свой товар и свой адрес (старые адреса в поиске); при смене цвета страница стоит на месте */}
                 {variants.length > 1 && (
                   <ul className={styles.swatches} aria-label="Другие цвета">
                     {variants.map((variant) => (
                       <li key={variant._id}>
                         <Link
                           href={`/shop/${variant.slug}`}
+                          scroll={false}
                           className={styles.swatch}
                           style={{ '--swatch': colorHex(variant) ?? 'var(--color-line)' } as React.CSSProperties}
                           aria-label={colorName(variant.color)}
