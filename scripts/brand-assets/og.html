@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;900&display=block&subset=cyrillic" />
+<style>
+  /* Значения — из src/styles/tokens.css */
+  :root {
+    --color-ink: #050505;
+    --color-page: #ffffff;
+    --color-lime: #b4fb53;
+    --radius-card: 32px;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    background: var(--color-page);
+    color: var(--color-ink);
+    font-family: 'Roboto Condensed', sans-serif;
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 24px;
+    padding: 48px;
+  }
+  .left { display: flex; flex-direction: column; justify-content: space-between; }
+  .logo { height: 34px; width: auto; align-self: flex-start; }
+  h1 {
+    font-weight: 900;
+    font-size: 104px;
+    line-height: 0.94;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+  }
+  /* Как .titlePill первого экрана */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    height: 1.64em;
+    padding: 0 0.77em;
+    border: 3px solid currentColor;
+    border-radius: 999px;
+    font-size: 0.4em;
+    line-height: 1;
+    vertical-align: 0.5em;
+    margin-left: 0.2em;
+  }
+  .lead { font-size: 30px; font-weight: 500; line-height: 1.2; }
+  .right { position: relative; display: grid; grid-template-rows: 1fr auto; gap: 16px; }
+  .photo {
+    border-radius: var(--radius-card);
+    background: url('../../public/photos_screen_image_one.png') center / cover;
+  }
+  .card {
+    background: var(--color-lime);
+    border-radius: var(--radius-card);
+    padding: 26px 32px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .card b { font-weight: 900; font-size: 56px; line-height: 1; }
+  .card span { font-size: 22px; font-weight: 500; line-height: 1.15; text-align: right; }
+  .star {
+    position: absolute;
+    top: -14px;
+    right: -14px;
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    background: var(--color-ink);
+    display: grid;
+    place-items: center;
+  }
+  .star svg { width: 70px; height: 66px; }
+</style>
+</head>
+<body>
+  <div class="left">
+    <img class="logo" src="../../public/brand/logo-ru.svg" alt="" />
+    <h1>Реализуем<br />смелые <span class="pill">идеи</span><br />в&nbsp;вашем мерче</h1>
+    <p class="lead">Печать на одежде от 1 штуки · Санкт-Петербург</p>
+  </div>
+  <div class="right">
+    <div class="photo"></div>
+    <div class="card"><b>от 15 мин</b><span>срочная<br />печать</span></div>
+    <!-- Знак вставляет build.mjs: маска из file:// в Chromium не грузится -->
+    <div class="star"></div>
+  </div>
+</body>
+</html>

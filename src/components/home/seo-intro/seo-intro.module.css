@@ -1,0 +1,17 @@
+/* Изделия в пояснении — ссылки на страницы категорий: выглядят как текст, подчёркиваются при наведении */
+.link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.2em;
+  transition: text-decoration-color var(--duration) var(--ease);
+}
+
+.link:hover {
+  text-decoration-color: currentColor;
+}
+
+.link:focus-visible {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 2px;
+}

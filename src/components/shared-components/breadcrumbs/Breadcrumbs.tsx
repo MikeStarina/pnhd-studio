@@ -22,7 +22,7 @@ const Breadcrumbs = ({ items }: { items: BreadcrumbItem[] }) => {
             <nav className="breadcrumbs" aria-label="Хлебные крошки">
                 {items.map((item, index) =>
                     index === items.length - 1 ? (
-                        <span key={index} className="breadcrumb-item">{item.label}</span>
+                        <span key={index} className="breadcrumb-item" aria-current="page">{item.label}</span>
                     ) : (
                         <Link key={index} href={item.href} className="breadcrumb-item">{item.label}</Link>
                     )

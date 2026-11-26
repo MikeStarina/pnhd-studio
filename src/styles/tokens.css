@@ -1,0 +1,335 @@
+/* Дизайн-токены сайта. Описание и правила — docs/DESIGN-SYSTEM.md. */
+:root {
+  /* Цвета бренда */
+  --color-ink: #050505;
+  --color-white: #ffffff;
+  --color-lime: #b4fb53;
+  --color-blue: #1d19ea;
+  --color-orange: #ff9e42;
+  /* Наведение на салатовую кнопку (на тёмном фоне) */
+  --color-lime-hover: #8aea00;
+  /* Низ салатового градиента карточки конструктора на первом экране */
+  --color-lime-35: rgba(180, 251, 83, 0.35);
+
+  /* Нейтральные */
+  --color-card: #2e2e2e;
+  --color-surface: #f4f4f4;
+  --color-stage: #eaeaea;
+  /* Фон страницы и светлых секций — белый; светлые карточки на нём — --color-surface */
+  --color-page: var(--color-white);
+  --color-error: #c2410c;
+  --color-wall: #ecece6;
+  --color-wall-2: #dadad2;
+  --color-line: #cfcfcf;
+  --color-line-dark: #595959;
+  --color-muted: #8a8a84;
+  --color-dim: #999999;
+  --color-ink-64: rgba(0, 0, 0, 0.64);
+  --color-ink-10: rgba(0, 0, 0, 0.1);
+  /* Полупрозрачный белый поверх фото: неактивные индикаторы и их наведение */
+  --color-white-48: rgba(255, 255, 255, 0.48);
+  --color-white-80: rgba(255, 255, 255, 0.8);
+  /* Затемнение фото под белым текстом: сверху — лёгкое под кнопкой, снизу — плотное на высоту блока текста
+     (в пикселях от низа, а не в долях высоты: у высокой панели текст всё равно лежит на тёмном) */
+  --scrim-photo:
+    linear-gradient(to bottom, rgba(5, 5, 5, 0.4), rgba(5, 5, 5, 0) 120px),
+    linear-gradient(to top, rgba(5, 5, 5, 0.92) 0, rgba(5, 5, 5, 0.8) 220px, rgba(5, 5, 5, 0) 380px);
+
+  /* Шрифты: Roboto Condensed (переменный, 100–900) из пакета @fontsource-variable/roboto-condensed, подключён в layout */
+  --font-text: 'Roboto Condensed Variable', 'Arial Narrow', Arial, sans-serif;
+  /* Заголовки — Roboto Condensed в начертании Black (решение владельца 22.11, вместо Heading Pro из брендбука) */
+  --font-display: var(--font-text);
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-black: 900;
+
+  /* Заголовки (Display) */
+  --display-hero: 96px;
+  --display-xl: 88px;
+  --display-l: 72px;
+  --display-m: 60px;
+  --display-s: 36px;
+  /* Строки списков (вопросы FAQ): на телефоне — на ступень меньше --display-s */
+  --display-list: 36px;
+  /* Тот же уровень в плотных местах (невысокие окна) */
+  --display-s-compact: 28px;
+  --display-leading: 1;
+
+  /* Текст */
+  --text-l: 18px;
+  --text-m: 16px;
+  --text-s: 15px;
+  --text-xs: 14px;
+  --text-2xs: 13px;
+  --text-caption: 12px;
+  --tracking-caps: 0.06em;
+
+  /* Форма */
+  --radius-card: 32px;
+  --radius-card-s: 20px;
+  --radius-control: 12px;
+  --radius-pill: 999px;
+  /* «Блок в блоке»: отступ внутренней карточки от края внешней (блоки «О нас» и «Цена») */
+  --card-inset: 16px;
+  --border-control: 1.5px;
+  --control-height: 40px;
+  /* Главная кнопка формы во всю ширину: «Передать менеджеру» в «Цене», «Оформить заказ» в корзине и оформлении */
+  --submit-height: 56px;
+  /* Круглая кнопка-стрелка на плитках (каталог): крупнее обычного контрола, иконка 24 px */
+  --tile-arrow: 48px;
+  /* Карточка товара: кнопка «Нанести принт» на фото. На телефоне компактная (всегда видна), на компьютере — как стрелка плитки */
+  --card-action: 40px;
+  --card-action-icon: 20px;
+  /* Значок «развернуть» на маленьком превью (корзина): меньше --card-action, чтобы не закрывать принт */
+  --thumb-action: 28px;
+  --thumb-action-icon: 16px;
+  /* Каталог: метки на фото товара (NEW, SALE, «Нет в наличии»), кружки цвета (сам кружок и область нажатия),
+     зазор между рядами карточек */
+  --badge-height: 24px;
+  --swatch-size: 16px;
+  --swatch-hit: 28px;
+  /* Кружки цветов в карточке товара на телефоне: шесть цветов в одну строку узкой карточки */
+  --swatch-hit-s: 26px;
+  /* Страница товара: кружки цвета крупнее, чем в карточке */
+  --swatch-size-l: 24px;
+  --swatch-hit-l: 36px;
+  --grid-row-gap: 48px;
+  /* «Недавно смотрели» на планшете и телефоне: ширина мелкой карточки в ленте */
+  --mini-card: 128px;
+  /* Строка списков подвала: пункты навигации и контакты стоят на одних линиях */
+  --footer-row: 26px;
+  /* Фото позиции корзины: крупное, чтобы свой принт был виден без увеличения (на телефоне меньше) */
+  --cart-thumb: 176px;
+  /* Каталог: ширина боковой панели фильтров, ширина читаемой колонки SEO-текста, размер кружка цвета в фильтре */
+  --filters-width: 440px;
+  --prose-width: 760px;
+  --filter-swatch: 20px;
+  /* Плавающие элементы поверх страницы: уведомления, всплывающие карточки */
+  --shadow-float: 0 12px 32px rgba(0, 0, 0, 0.24);
+  /* Лёгкая тень вниз у шапки: она лежит поверх страницы и меню */
+  --shadow-header: 0 6px 16px rgba(0, 0, 0, 0.08);
+  /* Отзывы (home/reviews): чёрная карточка с бенто целиком помещается в окно под шапкой — высота, кегль и поля растут с высотой окна */
+  --reviews-height: clamp(420px, calc(100svh - var(--header-height) - 260px), 620px);
+  --reviews-pad: clamp(20px, 3svh, 32px);
+  --reviews-inner-gap: clamp(12px, 2svh, 20px);
+  --reviews-text: clamp(17px, 2.4svh, 24px);
+  --reviews-score: clamp(88px, 15svh, 144px);
+  --reviews-avatar: 40px;
+  /* Шаги «Как получить заказ» (home/steps): номер в круге и стрелка на линии */
+  --step-badge: 48px;
+  --step-arrow: 20px;
+  /* Отзывы с Яндекса длинные: на карточке — первые строки, целиком — по ссылке */
+  --reviews-lines: 5;
+  /* Кнопка «Написать нам» в правом нижнем углу: размер круга и отступ от краёв окна */
+  --fab-size: 56px;
+  --fab-offset: 24px;
+  /* Тень кнопки короче --shadow-float: сдвиг + размытие не больше отступа на телефоне,
+     иначе Safari срезает её ровной линией по краю окна */
+  --shadow-fab: 0 4px 12px rgba(0, 0, 0, 0.2);
+  /* Подложка под открытым меню: размытие и лёгкое затемнение страницы */
+  --backdrop-blur: 16px;
+  --backdrop-dim: rgba(0, 0, 0, 0.24);
+
+  /* Слои: шапка сайта, окна поверх страницы (выше шапки), уведомление о cookie (выше всего) */
+  --z-header: 50;
+  /* Кнопка «Написать нам»: ниже шапки и её меню (−1, −2), чтобы открытое меню-бургер её закрывало */
+  --z-fab: 40;
+  --z-modal: 100;
+  --z-notice: 1000;
+
+  /* Сетка */
+  --page-max: 1440px;
+  --page-gutter: 56px;
+  --section-gap: 120px;
+  /* Бегущая строка: поля сверху и снизу */
+  --marquee-pad: 22px;
+  /* Шапка — плавающая капсула по ширине сетки страницы. --header-height — всё место, которое она занимает сверху:
+     полоса акции (если есть) + отступ от края окна + сама капсула; от него отсчитываются липкие блоки и экраны под шапкой */
+  --header-offset: 12px;
+  --header-bar-height: 76px;
+  --header-height: calc(var(--header-bar-height) + var(--promo-bar-space, 0px));
+  /* Зазор между шапкой и первым блоком страницы */
+  --header-gap: 32px;
+  /* Полоса акции над шапкой (site/promo-bar): закреплена вместе с шапкой и входит в --header-height, пока она есть (globals.css) */
+  --promo-bar-height: 40px;
+  /* Переключатель «для бизнеса / для себя»: зазор между серой «таблеткой» и сегментами */
+  --switch-inset: 3px;
+  /* Строка переключателя под шапкой (не липкая): зазор от капсулы + сам переключатель. Первый экран вычитает её из окна */
+  --direction-row-height: calc(var(--header-offset) + var(--control-height));
+  /* Первый экран главной на компьютере занимает окно под шапкой, но не ниже этой высоты */
+  --hero-min-height: 600px;
+  /* Круглая наклейка первого экрана, которая заходит на фото */
+  --hero-badge-size: 124px;
+  /* Наименьшая ширина карточки «о студии» (она берёт всё место справа от заголовка) и ширина мини-конструктора в нижнем ряду */
+  --hero-about-width: 320px;
+  --hero-mini-width: 380px;
+  /* Нижний ряд карточек первого экрана на компьютере: доля высоты окна в пределах */
+  --hero-bottom-height: clamp(300px, 44svh, 420px);
+  /* Блок «Конструктор» на главной: шапка + витрина под высоту окна в этих пределах */
+  --promo-min-height: 540px;
+  --promo-max-height: 820px;
+  /* Блок «Способы печати»: высота ряда панелей на компьютере — по окну, чтобы шапка блока, ряд и строка под ним
+     помещались под шапкой сайта; открытая панель шире свёрнутой во столько раз; высота свёрнутой строки на телефоне */
+  --methods-height: clamp(340px, calc(100svh - var(--header-height) - 300px), 620px);
+  --methods-open: 4;
+  /* Блок «Каталог»: высота бенто категорий на компьютере — по окну, чтобы шапка блока и плитки
+     помещались под шапкой сайта */
+  --catalog-height: clamp(360px, calc(100svh - var(--header-height) - 248px), 640px);
+  --methods-row: 64px;
+  /* Стык двух светлых секций (home/sheet-cut): размер меток приводки, клетки шкалы цветов и зазор между частями */
+  --cut-mark: 32px;
+  --cut-swatch: 16px;
+  --cut-gap: 16px;
+  /* Звезда из линий в углу секции (home/corner-star): размер, толщина линий, центр — от верха и от правого края секции */
+  --corner-star-size: clamp(320px, 34vw, 520px);
+  --corner-star-line: 1.5px;
+  --corner-star-y: 96px;
+  --corner-star-x: 11%;
+
+  /* Движение */
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  /* Уход элемента: разгон без торможения */
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --duration: 200ms;
+  --duration-slow: 300ms;
+  /* Отдача нажатия; окна, листы и тосты: появление и уход (уход короче); редкие радостные моменты */
+  --duration-press: 160ms;
+  --duration-enter: 400ms;
+  --duration-exit: 240ms;
+  --duration-celebrate: 700ms;
+  /* Витрина конструктора на главной: проезд курсора к цели (шаг целиком — beat.step в data.ts) */
+  --promo-cursor-move: 720ms;
+  /* Медленное проявление и пульс заглушек загрузки */
+  --duration-fade: 800ms;
+  /* Один круг бегущей строки */
+  --marquee-duration: 40s;
+  /* Меню-бургер: выезд, уход (быстрее) и шаг задержки между пунктами */
+  --duration-menu-in: 480ms;
+  --duration-menu-out: 260ms;
+  --menu-stagger: 40ms;
+  /* Появление блоков при скролле: длительность, подъём и шаг между элементами группы */
+  --duration-reveal: 1000ms;
+  --reveal-shift: 24px;
+  --reveal-stagger: 90ms;
+  /* Части элемента группы, которые появляются по-своему (линии и числа фактов, номера и линии шагов):
+     длительность — короче --duration-reveal, чтобы уложиться в переход самого элемента */
+  --duration-reveal-part: 800ms;
+  /* Шаги «Как получить заказ» появляются по одному, как путь: шаг между ними */
+  --steps-stagger: 240ms;
+  /* Пружины (затухающие колебания, посчитаны заранее): мягкая — перелёт ~4%, упругая — ~16% для наклеек.
+     Подходят только для transform/opacity, длительность — --duration-spring; --ease-elastic — для разового отскока (галочка «Спасибо») */
+  --ease-spring: linear(0, 0.016, 0.059, 0.12, 0.194, 0.275, 0.359, 0.444, 0.525, 0.601, 0.672, 0.736, 0.793, 0.843, 0.886, 0.922, 0.952, 0.977, 0.996, 1.011, 1.022, 1.03, 1.035, 1.037, 1.038, 1.038, 1.036, 1.034, 1.031, 1.028, 1.025, 1.022, 1.019, 1.016, 1.013, 1.01, 1.008, 1.006, 1.005, 1.003, 1);
+  --ease-elastic: linear(0, 0.042, 0.151, 0.299, 0.465, 0.63, 0.781, 0.91, 1.012, 1.086, 1.134, 1.158, 1.163, 1.153, 1.134, 1.109, 1.082, 1.055, 1.031, 1.011, 0.995, 0.984, 0.977, 0.974, 0.974, 0.976, 0.979, 0.983, 0.988, 0.992, 0.996, 0.999, 1.001, 1.003, 1.004, 1.004, 1.004, 1.004, 1.003, 1.003, 1);
+  --duration-spring: 800ms;
+  /* Долгое мягкое торможение без рывка в начале — для появления блоков и движения от скролла */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Движение от скролла. Окно конструктора «ложится» на страницу: наклон до горизонтали */
+  --promo-tilt: 22deg;
+  /* Панели «Способов печати»: раскрытие — долгое, с плавным разгоном и торможением (без рывка на старте) */
+  --duration-panel: 800ms;
+  /* Смена чёрной карточки обещаний «Студии» под курсором: фон и цвета перетекают с --ease-panel */
+  --duration-highlight: 560ms;
+  --ease-panel: cubic-bezier(0.65, 0, 0.25, 1);
+  /* Подвал открывается из-под страницы: насколько его содержимое отстаёт, пока край подвала поднимается */
+  --footer-lift: 35%;
+}
+
+/* Невысокие окна ноутбуков: на карточке отзыва строкой меньше, чтобы блок помещался в окно */
+@media (max-height: 860px) {
+  :root {
+    --reviews-lines: 4;
+  }
+}
+
+/* Узкий и невысокий десктоп: в узких карточках отзывов дата уходит под звёзды — текста ещё строкой меньше */
+@media (min-width: 1024px) and (max-width: 1279px) and (max-height: 860px) {
+  :root {
+    --reviews-lines: 3;
+  }
+}
+
+/* Узкий десктоп: наклейки уже, текст в них длиннее — кегль и поля меньше, чтобы отзывы всё так же помещались в окно */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  :root {
+    --reviews-text: clamp(16px, 2.2svh, 22px);
+    --reviews-pad: clamp(16px, 2.6svh, 28px);
+    /* Заголовок каталога здесь в две строки — бенто ниже на высоту строки */
+    --catalog-height: clamp(360px, calc(100svh - var(--header-height) - 330px), 640px);
+  }
+}
+
+@media (max-width: 1023px) {
+  :root {
+    --page-gutter: 24px;
+    --section-gap: 80px;
+    --header-offset: 8px;
+    --header-bar-height: 64px;
+    --header-gap: 16px;
+    --promo-bar-height: 36px;
+    --hero-badge-size: 104px;
+    --radius-card: 24px;
+    --display-hero: 64px;
+    --display-xl: 56px;
+    --display-l: 48px;
+    --display-m: 40px;
+    --display-s: 28px;
+    --display-list: 28px;
+    /* Панели методов идут столбиком: четыре свёрнутые строки и открытая */
+    --methods-height: calc(4 * var(--methods-row) + 32px + 380px);
+  }
+}
+
+@media (max-width: 599px) {
+  :root {
+    --cart-thumb: 112px;
+    --page-gutter: 16px;
+    --section-gap: 64px;
+    --radius-card: 20px;
+    --radius-card-s: 16px;
+    --card-inset: 8px;
+    --display-hero: 48px;
+    --display-xl: 44px;
+    --display-l: 40px;
+    --display-m: 34px;
+    --display-s: 26px;
+    --display-list: 21px;
+    --hero-badge-size: 104px;
+    --cut-mark: 24px;
+    --cut-swatch: 12px;
+    --cut-gap: 8px;
+    /* Над заголовком на телефоне всего ~64 px: звезда меньше, центр почти у края — лучи не заходят на заголовок */
+    --corner-star-size: 200px;
+    --corner-star-line: 1px;
+    --corner-star-y: 8px;
+    --corner-star-x: 10%;
+    --fab-size: 48px;
+    --fab-offset: 16px;
+    --grid-row-gap: 32px;
+    /* На телефоне отзывы идут стопкой и в окно не помещаются — размеры постоянные */
+    --reviews-text: var(--text-l);
+    --reviews-pad: 20px;
+    --reviews-inner-gap: 12px;
+    --reviews-score: 96px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration: 0ms;
+    --duration-slow: 0ms;
+    --duration-press: 0ms;
+    --duration-enter: 0ms;
+    --duration-exit: 0ms;
+    --duration-celebrate: 0ms;
+    --duration-fade: 0ms;
+    --duration-menu-in: 0ms;
+    --duration-menu-out: 0ms;
+    --menu-stagger: 0ms;
+    --duration-spring: 0ms;
+    --duration-panel: 0ms;
+    --duration-highlight: 0ms;
+    --duration-reveal-part: 0ms;
+  }
+}

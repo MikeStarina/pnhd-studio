@@ -1,20 +1,26 @@
 import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
-import { Inter } from "next/font/google";
+// Шрифт текста — из npm-пакета: сборка не ходит в Google Fonts. Подмножества (кириллица, латиница) — по unicode-range.
+import "@fontsource-variable/roboto-condensed/wght.css";
 import "./globals.css";
 import ReduxProvider from "@/redux/redux-provider";
 import InfoBar from "@/components/shared-components/info-bar/info-bar";
-import MobileMenu from "@/components/shared-components/mobile-menu/mobile-menu";
-import CartIcon from "@/components/shared-components/cart-icon/cart-icon";
 import Popup from "@/components/shared-components/popup/popup";
 import AuthInit from "@/components/shared-components/auth/auth-init";
 import Script from "next/script";
-import CookieBar from "@/components/shared-components/cookie-bar/cookie-bar";
+import CookieNotice from "@/components/site/cookie-notice/cookie-notice";
+import { ANALYTICS_OFF_KEY, METRIKA_ID } from "@/components/site/analytics";
+import { SiteGoals } from "@/components/site/site-goals";
 import { textileOptions } from "@/app/utils/textile-options-data";
-import ContactsWidget from "@/components/shared-components/contactsWidget/contactsWidget";
-import SiteChrome from "@/components/shared-components/site-chrome";
-
-const inter = Inter({ subsets: ["latin"] });
+import ContactButton from "@/components/site/contact-button/contact-button";
+import ChromeGate from "@/components/site/chrome-gate";
+import RevealObserver from "@/components/site/reveal/reveal-observer";
+import SiteHeader from "@/components/site/site-header/site-header";
+import PromoBar from "@/components/site/promo-bar/promo-bar";
+import { promoActive } from "@/features/constructor/config/promo";
+import SiteFooter from "@/components/site/site-footer/site-footer";
+import SmoothScroll from "@/components/site/smooth-scroll/smooth-scroll";
+import AnchorLinks from "@/components/site/smooth-scroll/anchor-links";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -36,26 +42,42 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ru" suppressHydrationWarning>
+      <head>
+        {/* Включает скрытие блоков до первой отрисовки; если скрипт появления не запустился за 3 с — показывает всё */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "document.documentElement.classList.add('js-reveal');setTimeout(function(){if(!window.__revealReady)document.documentElement.classList.add('reveal-all')},3000);",
+          }}
+        />
+      </head>
       <ReduxProvider>
-        <body className={inter.className}>
-          <ContactsWidget />
+        <body>
+          <ContactButton />
           <Suspense>
             <InfoBar />
           </Suspense>
-          <Suspense>
-            <CookieBar />
-          </Suspense>
+          <CookieNotice />
+          <SiteGoals />
+          <RevealObserver />
+          <SmoothScroll />
+          <AnchorLinks />
           <AuthInit />
           <Popup />
-          <MobileMenu />
-          <main>
-            <CartIcon />
-
-            <SiteChrome>{children}</SiteChrome>
-          </main>
+          <PromoBar initiallyActive={promoActive()} />
+          <ChromeGate part="header">
+            <SiteHeader />
+          </ChromeGate>
+          <main>{children}</main>
+          <ChromeGate part="footer">
+            <SiteFooter />
+          </ChromeGate>
+          {/* Roistat и коллтрекинг UIS ставят свои cookie: после отказа в уведомлении о cookie их не загружаем, как и Метрику */}
           <Script id='roistat'>
-            {`(function(w, d, s, h, id) {
+            {`var analyticsOff = false;
+          try { analyticsOff = localStorage.getItem("${ANALYTICS_OFF_KEY}") === "1"; } catch (e) {}
+          if (!analyticsOff) (function(w, d, s, h, id) {
     w.roistatProjectId = id; w.roistatHost = h; w.roistatPage = d.location.href; w.roistatReferrer = d.referrer;
     var p = d.location.protocol == "https:" ? "https://" : "http://";
     var u = /^.*roistat_visit=[^;]+(.*)?$/.test(d.cookie) ? "/dist/module.js" : "/api/site/1.0/"+id+"/init?referrer="+encodeURIComponent(d.location.href);
@@ -64,23 +86,43 @@ export default function RootLayout({
             }
           </Script>
           <Script async id="metrika-counter" strategy="afterInteractive">
-            {`(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+            {`var analyticsOff = false;
+          try { analyticsOff = localStorage.getItem("${ANALYTICS_OFF_KEY}") === "1"; } catch (e) {}
+          if (analyticsOff) { window.ym = window.ym || function () {}; } else {
+          (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
           m[i].l=1*new Date();
           for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
           k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
           (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
-          ym(86217584, "init", {
+          ym(${METRIKA_ID}, "init", {
+                referrer: document.referrer,
+                url: location.href,
                 clickmap:true,
                 trackLinks:true,
                 accurateTrackBounce:true,
                 webvisor:true,
                 ecommerce:"dataLayer"
           });
+          }
           window.dataLayer = window.dataLayer || [];
           `}
           </Script>
-          <Script type="text/javascript" async src="https://app.uiscom.ru/static/cs.min.js?k=79obNG5YrzIplUgKXZYSiPbK7agWm7Dk"></Script>
+          <noscript>
+            <div>
+              <img src={`https://mc.yandex.ru/watch/${METRIKA_ID}`} style={{ position: 'absolute', left: '-9999px' }} alt="" />
+            </div>
+          </noscript>
+          <Script id="uiscom" strategy="afterInteractive">
+            {`var analyticsOff = false;
+          try { analyticsOff = localStorage.getItem("${ANALYTICS_OFF_KEY}") === "1"; } catch (e) {}
+          if (!analyticsOff) {
+            var cs = document.createElement("script");
+            cs.async = true;
+            cs.src = "https://app.uiscom.ru/static/cs.min.js?k=79obNG5YrzIplUgKXZYSiPbK7agWm7Dk";
+            document.body.appendChild(cs);
+          }`}
+          </Script>
         </body>
       </ReduxProvider>
     </html>

@@ -214,6 +214,8 @@ export interface IOrderBody {
   owner_name: string,
   owner_phone: string,
   owner_email: string,
+  /** Бэкенд каталога пока это поле не хранит: ник дублируется в owner_name (см. checkoutOrderObjectCreateFunc) */
+  owner_telegram: string,
   order_key: string,
   items: Array<TUserOrderItem>,
   isShipping: boolean,

@@ -51,6 +51,9 @@ export const normalizeColorKey = (color?: string): string => {
   return color.trim().toLowerCase().replace(/ё/g, 'е');
 };
 
+/** Название цвета для показа: в админке то «Черный», то «черный» — на сайте всегда строчными */
+export const colorName = (color?: string): string => color?.trim().toLowerCase() ?? '';
+
 export type ShopColorOption = {
   name: string;
   value: string;
@@ -62,7 +65,7 @@ export const getShopColorOptions = (
 ): ShopColorOption[] => {
   const seen = new Map<string, ShopColorOption>();
   for (const item of products) {
-    const name = item.color?.trim();
+    const name = colorName(item.color);
     if (!name) continue;
     const value = normalizeColorKey(name);
     if (!value || seen.has(value)) continue;

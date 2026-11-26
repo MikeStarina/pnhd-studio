@@ -1,0 +1,73 @@
+/* Акцент секции: на светлом фоне синий, на чёрном салатовый. Блоки берут --accent / --on-accent, а не цвет напрямую */
+.section {
+  --accent: var(--color-blue);
+  --on-accent: var(--color-white);
+  padding: var(--section-gap) 0;
+  background: var(--color-page);
+  color: var(--color-ink);
+}
+
+.section[data-tone='black'] {
+  --accent: var(--color-lime);
+  --on-accent: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+/* Декор лежит за содержимым, но над фоном секции (isolation), и обрезается её краями.
+   clip, а не hidden: hidden сделал бы секцию контейнером прокрутки и сломал липкие элементы внутри */
+.section[data-decor] {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+}
+
+.decor {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.inner {
+  box-sizing: border-box;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--page-gutter);
+}
+
+/* Секция с полосой: сверху белое поле высотой с шапку и её отступ, ниже — полоса, ещё ниже — содержимое.
+   Мягкая привязка ставит верх такой секции к верху окна: шапка лежит на белом поле, полоса — сразу под ней,
+   а от предыдущего блока ничего не видно */
+.section[data-strip] {
+  padding-top: calc(var(--header-height) + var(--header-offset));
+}
+
+.section[data-strip] > .inner {
+  margin-top: var(--section-gap);
+}
+
+/* «На экран» (компьютер): секция с полосой занимает ровно окно (так её ставит привязка).
+   Под полосой зазор как у первого экрана, шапка секции — вверху, последний блок прижат к низу;
+   на низком окне секция просто растёт по содержимому */
+@media (min-width: 1024px) {
+  .section[data-fit-screen] {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-height: 100svh;
+    padding-bottom: var(--header-gap);
+  }
+
+  .section[data-fit-screen] > .inner {
+    margin-top: var(--header-gap);
+  }
+
+  .section[data-fit-screen] > .inner {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+  }
+}

@@ -1,0 +1,241 @@
+/* Бенто категорий: 4 колонки × 2 ряда. Футболки — высокая плитка в первой колонке, худи — широкая,
+   остальные — малые, последняя — чёрная «Весь каталог». Высота сетки — по окну (--catalog-height) */
+.bento {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  height: var(--catalog-height);
+}
+
+.tile {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: var(--color-surface);
+}
+
+.tall {
+  grid-row: span 2;
+}
+
+.wide {
+  grid-column: span 2;
+}
+
+.link {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 24px;
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+.link:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: -4px;
+  border-radius: inherit;
+}
+
+/* Фото с разным фоном (белым, серым) сводятся к одной подложке: белый фон растворяется в ней */
+.img {
+  object-fit: cover;
+  object-position: center 20%;
+  mix-blend-mode: multiply;
+  transition: transform var(--duration-slow) var(--ease);
+}
+
+/* Наведение — только там, где есть мышь: на телефоне тап оставляет его «залипшим» */
+@media (hover: hover) {
+  .link:hover .img {
+    transform: scale(1.04);
+  }
+
+  .link:hover .arrow {
+    background: var(--color-ink);
+    color: var(--color-white);
+  }
+
+  .all:hover {
+    background: var(--accent);
+  }
+
+  .all .link:hover .arrow {
+    background: var(--color-white);
+    color: var(--color-ink);
+  }
+}
+
+/* Название и подпись — белая плашка внизу слева: читается на любом фото и не закрывает лицо модели сверху */
+/* Нижняя строка плитки: плашка слева, стрелка справа — по центру плашки */
+.foot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 14px 18px 16px;
+  border-radius: var(--radius-card-s);
+  background: var(--color-white);
+}
+
+.name {
+  font-family: var(--font-display);
+  font-size: var(--display-s-compact);
+  font-weight: var(--weight-black);
+  line-height: var(--display-leading);
+  text-transform: uppercase;
+}
+
+/* Число моделей и цена — двумя строками: в узкой плитке перенос в одну строку оставлял точку-разделитель в начале строки */
+.meta {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--text-xs);
+  line-height: 1.3;
+  color: var(--color-line-dark);
+}
+
+.arrow {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--tile-arrow);
+  height: var(--tile-arrow);
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--on-accent);
+  transition: background var(--duration) var(--ease), color var(--duration) var(--ease);
+}
+
+/* «Весь каталог» — чёрная плитка; при наведении берёт акцент секции */
+.all {
+  background: var(--color-ink);
+  transition: background var(--duration) var(--ease);
+}
+
+.all .link {
+  color: var(--color-white);
+}
+
+.all .foot {
+  height: 100%;
+  align-items: flex-end;
+}
+
+.all .label {
+  height: 100%;
+  justify-content: space-between;
+  padding: 0;
+  background: none;
+}
+
+.all .name {
+  font-size: var(--display-s);
+}
+
+.all .meta {
+  color: var(--color-white-80);
+  font-size: var(--text-m);
+}
+
+.all .link:focus-visible {
+  outline-color: var(--color-white);
+}
+
+.empty {
+  margin: 0;
+  padding: 32px 0;
+  font-size: var(--text-l);
+  color: var(--color-line-dark);
+}
+
+.empty a {
+  color: var(--color-ink);
+}
+
+/* Планшет и телефон: две колонки; футболки и «Весь каталог» — на всю ширину, остальные плитки по две в ряд */
+@media (max-width: 1023px) {
+  .bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
+    height: auto;
+    gap: 12px;
+  }
+
+  .tile {
+    aspect-ratio: 4 / 3;
+  }
+
+  .tall {
+    grid-row: auto;
+    grid-column: span 2;
+    aspect-ratio: 16 / 10;
+  }
+
+  .wide {
+    grid-column: auto;
+  }
+
+  .all {
+    grid-column: span 2;
+    aspect-ratio: auto;
+    min-height: 96px;
+  }
+
+  .link {
+    padding: 16px;
+  }
+
+}
+
+/* Телефон: малые плитки квадратные и узкие — плашка мельче, стрелка только у широких плиток, нажимается вся плитка */
+@media (max-width: 599px) {
+  .tile {
+    aspect-ratio: 1;
+  }
+
+  .tall {
+    aspect-ratio: 4 / 3;
+  }
+
+  .all {
+    aspect-ratio: auto;
+  }
+
+  .label {
+    padding: 10px 12px 12px;
+  }
+
+  .name {
+    font-size: var(--text-l);
+  }
+
+  .meta {
+    font-size: var(--text-2xs);
+  }
+
+  .tile:not(.tall):not(.all) .arrow {
+    display: none;
+  }
+}

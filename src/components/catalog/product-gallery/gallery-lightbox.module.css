@@ -1,0 +1,99 @@
+/* Просмотр на весь экран: фото целиком на серой подложке, кнопки поверх */
+.stage {
+  position: absolute;
+  inset: 0;
+  touch-action: pan-y;
+}
+
+.photo {
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+  transition: opacity var(--duration) var(--ease);
+}
+
+.photo[data-active='true'] {
+  opacity: 1;
+}
+
+.close,
+.arrow {
+  position: absolute;
+  z-index: 1;
+  display: grid;
+  width: var(--control-height);
+  height: var(--control-height);
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-white);
+  color: var(--color-ink);
+  cursor: pointer;
+  transition:
+    background var(--duration) var(--ease),
+    opacity var(--duration) var(--ease);
+}
+
+.close:focus-visible,
+.arrow:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+.close {
+  top: calc(var(--header-offset) + 4px);
+  right: calc(var(--header-offset) + 4px);
+}
+
+.arrow {
+  top: 50%;
+  translate: 0 -50%;
+}
+
+.arrow[data-side='prev'] {
+  left: var(--page-gutter);
+}
+
+.arrow[data-side='next'] {
+  right: var(--page-gutter);
+}
+
+.arrow:disabled {
+  opacity: 0.32;
+  cursor: default;
+}
+
+.counter {
+  position: absolute;
+  bottom: calc(var(--header-offset) + 4px);
+  left: 50%;
+  z-index: 1;
+  margin: 0;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--color-white);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  font-variant-numeric: tabular-nums;
+  translate: -50% 0;
+}
+
+@media (hover: hover) {
+  .close:hover,
+  .arrow:not(:disabled):hover {
+    background: var(--color-stage);
+  }
+}
+
+@media (max-width: 599px) {
+  .arrow[data-side='prev'] {
+    left: var(--header-offset);
+  }
+
+  .arrow[data-side='next'] {
+    right: var(--header-offset);
+  }
+}

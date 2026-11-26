@@ -1,6 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IPrintFile, IUploadPrintResponse } from "@/app/utils/types";
-import { setCoords, getPrintFormatAndPriceFunc } from "@/app/utils/constructor-utils";
 
 interface IInitialState {
     isMobileMenuActive: boolean,
@@ -9,8 +7,6 @@ interface IInitialState {
     isPopupVisible: boolean,
     popupType: 'lead' | 'auth' | '',
     popupTitle: string,
-    prints?: { front?: IPrintFile, back?: IPrintFile, lsleeve?: IPrintFile, rsleeve?: IPrintFile },
-    isPrintImageLoading: boolean,
 }
 
 const initialState: IInitialState = {
@@ -19,8 +15,6 @@ const initialState: IInitialState = {
     isPopupVisible: false,
     popupType: '',
     popupTitle: '',
-    prints: {},
-    isPrintImageLoading: false,
 }
 
 
@@ -75,53 +69,6 @@ const utilsSlice = createSlice({
                 ...state,
                 popupTitle: action.payload
             }
-        },
-        setPrint: (state, action: PayloadAction<{ print: IUploadPrintResponse, tab: string, itemType: string, itemColor: string }>) => {
-            const { print, tab, itemType, itemColor } = action.payload;
-            const coordsData = {
-                name: print.data.name,
-                url: print.data.url,
-                width: print.data.width,
-                height: print.data.height,
-            };
-            const initStageParams = setCoords(coordsData, tab, itemType);
-            const initCartParams = getPrintFormatAndPriceFunc(initStageParams, itemColor);
-            const printToAdd = {
-                file: {
-                    name: print.data.name,
-                    url: print.data.url,
-                    width: print.data.width,
-                    height: print.data.height,
-                },
-                stageParams: initStageParams,
-                cartParams: initCartParams,
-            };
-            if (!state.prints) {
-                state.prints = {};
-            }
-            // @ts-ignore
-            state.prints[tab] = printToAdd;
-        },
-        deletePrintTab: (state, action: PayloadAction<{ tab: string }>) => {
-            const { tab } = action.payload;
-            if (state.prints) {
-                // @ts-ignore
-                state.prints[tab] = undefined;
-            }
-        },
-        resetPrints: (state) => {
-            state.prints = {};
-        },
-        restorePrints: (state, action: PayloadAction<NonNullable<IInitialState['prints']>>) => {
-            state.prints = {
-                front: action.payload.front,
-                back: action.payload.back,
-                lsleeve: action.payload.lsleeve,
-                rsleeve: action.payload.rsleeve,
-            };
-        },
-        printImageLoaderToggler: (state) => {
-            state.isPrintImageLoading = !state.isPrintImageLoading;
         }
     }
 })

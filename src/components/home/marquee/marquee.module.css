@@ -1,0 +1,58 @@
+.marquee {
+  display: flex;
+  overflow: hidden;
+  padding: var(--marquee-pad) 0;
+  background: var(--color-white);
+  color: var(--color-ink);
+}
+
+.marquee[data-tone='black'] {
+  --mark-color: var(--color-lime);
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+.marquee[data-tone='lime'] {
+  background: var(--color-lime);
+  color: var(--color-ink);
+}
+
+.marquee[data-tone='blue'] {
+  --mark-color: var(--color-lime);
+  background: var(--color-blue);
+  color: var(--color-white);
+}
+
+.track {
+  display: flex;
+  flex-shrink: 0;
+  gap: 32px;
+  margin: 0;
+  padding: 0 32px 0 0;
+  list-style: none;
+  animation: run var(--marquee-duration) linear infinite;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  font-family: var(--font-display);
+  font-size: var(--display-s);
+  font-weight: var(--weight-black);
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+@keyframes run {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+  }
+}

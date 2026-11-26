@@ -1,0 +1,115 @@
+/* Строка корзины: фото | содержимое | удаление сверху и итог снизу. Позиции разделены линиями. */
+.item {
+  border-bottom: 1px solid var(--color-line);
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: var(--cart-thumb) minmax(0, 1fr) auto;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    'visual body remove'
+    'visual body total';
+  gap: 0 24px;
+  padding: 24px 0;
+}
+
+.visual {
+  grid-area: visual;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.body {
+  grid-area: body;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.remove {
+  grid-area: remove;
+  justify-self: end;
+  display: grid;
+  place-items: center;
+  width: var(--control-height);
+  height: var(--control-height);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  cursor: pointer;
+  transition: background var(--duration) var(--ease), color var(--duration) var(--ease);
+}
+
+/* Итог — внизу правой колонки: количество над суммой */
+.total {
+  grid-area: total;
+  align-self: end;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  margin: 0;
+  font-size: var(--text-l);
+  font-weight: var(--weight-bold);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.totalLabel {
+  color: var(--color-ink-64);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+}
+
+.remove:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .remove:hover {
+    background: var(--color-ink);
+    color: var(--color-white);
+  }
+}
+
+/* Телефон: удаление — в правом верхнем углу поверх, содержимое во всю ширину (место под кнопку — только у названия),
+   итог — строкой под содержимым */
+@media (max-width: 599px) {
+  .inner {
+    position: relative;
+    grid-template-columns: var(--cart-thumb) minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      'visual body'
+      'visual total';
+    gap: 0 16px;
+    padding: 16px 0;
+  }
+
+  .body > :first-child {
+    padding-right: calc(var(--control-height) + 8px);
+  }
+
+  .remove {
+    position: absolute;
+    top: 16px;
+    right: 0;
+  }
+
+  .total {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 12px;
+  }
+}

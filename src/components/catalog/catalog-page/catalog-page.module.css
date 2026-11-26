@@ -1,0 +1,243 @@
+.catalog {
+  padding: var(--header-gap) 0 var(--section-gap);
+  background: var(--color-page);
+  color: var(--color-ink);
+}
+
+.inner {
+  box-sizing: border-box;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--page-gutter);
+}
+
+/* Крошки — над меткой страницы, с тем же зазором, что между метками и заголовками на главной */
+.crumbs {
+  margin-bottom: 32px;
+}
+
+.crumbs :global(.breadcrumbs) {
+  margin: 0;
+}
+
+/* Строка разделов и кнопка фильтров */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 56px;
+}
+
+.sections {
+  min-width: 0;
+  flex: 1;
+}
+
+.sectionList {
+  display: flex;
+  gap: 8px;
+  margin: -4px;
+  padding: 4px;
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.sectionList::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: var(--control-height);
+  box-sizing: border-box;
+  padding: 0 18px;
+  border: var(--border-control) solid var(--color-ink);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-ink);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--duration) var(--ease),
+    color var(--duration) var(--ease);
+}
+
+.tab[aria-current='page'] {
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+.tabCount {
+  color: color-mix(in srgb, currentColor 64%, transparent);
+}
+
+.tab:focus-visible,
+.pill:focus-visible,
+.primary:focus-visible,
+.secondary:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+/* Выбранные фильтры: серые таблетки-ссылки с крестиком */
+.active {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  box-sizing: border-box;
+  padding: 0 12px 0 14px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-size: var(--text-xs);
+  text-decoration: none;
+  transition: background-color var(--duration) var(--ease);
+}
+
+.results {
+  margin-top: 40px;
+  transition: opacity var(--duration) var(--ease);
+}
+
+.results[data-pending] {
+  opacity: 0.5;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 80px 24px;
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  text-align: center;
+}
+
+.emptyTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--display-s);
+  font-weight: var(--weight-black);
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.emptyText {
+  max-width: 420px;
+  margin: 0;
+  color: var(--color-ink-64);
+  font-size: var(--text-l);
+  line-height: 1.4;
+}
+
+.emptyActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.primary,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  height: var(--control-height);
+  box-sizing: border-box;
+  padding: 0 24px;
+  border: var(--border-control) solid var(--color-ink);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-caps);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition:
+    background-color var(--duration) var(--ease),
+    color var(--duration) var(--ease),
+    border-color var(--duration) var(--ease);
+}
+
+.primary {
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+.secondary {
+  background: transparent;
+  color: var(--color-ink);
+}
+
+@media (hover: hover) {
+  .tab:hover {
+    background: var(--color-ink);
+    color: var(--color-white);
+  }
+
+  .pill:hover {
+    background: var(--color-stage);
+  }
+
+  .primary:hover {
+    border-color: var(--accent, var(--color-blue));
+    background: var(--color-blue);
+  }
+
+  .secondary:hover {
+    background: var(--color-ink);
+    color: var(--color-white);
+  }
+}
+
+@media (max-width: 1023px) {
+  .crumbs {
+    margin-bottom: 24px;
+  }
+
+  /* Разделы — на всю ширину экрана и прокручиваются вбок; кнопка фильтров под ними */
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-top: 40px;
+  }
+
+  .sections {
+    flex: none;
+    margin: 0 calc(-1 * var(--page-gutter));
+  }
+
+  .sectionList {
+    margin: -4px 0;
+    padding: 4px var(--page-gutter);
+  }
+
+  .toolbar > button {
+    align-self: flex-start;
+  }
+
+  .results {
+    margin-top: 32px;
+  }
+
+  .empty {
+    padding: 56px 20px;
+  }
+}

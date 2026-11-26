@@ -1,0 +1,60 @@
+/* Стык светлых секций: метки приводки, линия и шкала цветов. Линии вытягиваются от меток к шкале при появлении */
+.cut {
+  background: var(--color-page);
+  color: var(--color-ink);
+}
+
+.inner {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--cut-gap);
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--page-gutter);
+}
+
+.line {
+  flex: 1;
+  height: 1px;
+  background: var(--color-ink);
+}
+
+.line:first-of-type {
+  transform-origin: left center;
+}
+
+.line:last-of-type {
+  transform-origin: right center;
+}
+
+.swatches {
+  display: flex;
+}
+
+.swatch {
+  width: var(--cut-swatch);
+  height: var(--cut-swatch);
+  box-sizing: border-box;
+}
+
+.swatch[data-color='ink'] { background: var(--color-ink); }
+.swatch[data-color='blue'] { background: var(--color-blue); }
+.swatch[data-color='lime'] { background: var(--color-lime); }
+.swatch[data-color='white'] { background: var(--color-white); border: 1px solid var(--color-ink); }
+
+@media (prefers-reduced-motion: no-preference) {
+  :global(.js-reveal) .inner[data-reveal] .line {
+    transform: scaleX(0);
+    transition: transform var(--duration-reveal) var(--ease-out-soft);
+  }
+
+  :global(.js-reveal) .inner[data-reveal][data-revealed] .line {
+    transform: none;
+  }
+}
+
+/* Запасной выход, если скрипт появления не загрузился */
+:global(.js-reveal.reveal-all) .line {
+  transform: none;
+}

@@ -1,0 +1,5 @@
+# Страницы вне sitemap — добавлять к прогону вместе с адресами из sitemap
+/cart
+/checkout
+/thanks
+/this-page-does-not-exist

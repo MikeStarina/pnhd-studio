@@ -6,6 +6,7 @@ import { ssOptions } from "@/app/utils/method-options-data";
 import { textileOptions } from "@/app/utils/textile-options-data";
 import { printsOptions } from "@/app/utils/prints-options-data";
 import type { IProduct } from "@/app/utils/types";
+import { CASES_PUBLISHED } from "@/components/home/cases/data";
 
 type SitemapEntry = MetadataRoute.Sitemap[number];
 
@@ -88,6 +89,7 @@ export async function buildSitemapEntries(): Promise<MetadataRoute.Sitemap> {
       maxDate(productList.map(productUpdatedAt))
     ),
     entry("/methods", 0.9, "weekly"),
+    entry("/constructor", 0.9, "monthly"),
   ];
 
   for (const category of CATEGORY_PAGES) {
@@ -149,10 +151,12 @@ export async function buildSitemapEntries(): Promise<MetadataRoute.Sitemap> {
   }
 
   entries.push(
+    ...(CASES_PUBLISHED ? [entry("/cases", 0.6, "monthly")] : []),
     entry("/contacts", 0.5, "yearly"),
     entry("/loyalty", 0.5, "yearly"),
     entry("/howto", 0.5, "yearly"),
     entry("/privacy", 0.5, "yearly"),
+    entry("/consent", 0.5, "yearly"),
     entry("/oferta", 0.5, "yearly")
   );
 

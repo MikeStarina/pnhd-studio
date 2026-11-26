@@ -1,0 +1,489 @@
+/*
+ * Визуал в стиле studio.pnhd.ru. Все значения — из токенов сайта (src/styles/tokens.css): цвета, шрифты,
+ * радиусы, кегли, движение. Без них (отдельный стенд) — запасные значения ниже. Новые стили берут только эти имена.
+ */
+.app {
+  --lime: var(--color-lime, #b4fb53);
+  --lime-hover: var(--color-lime-hover, #8aea00);
+  --lime-soft: #efffd9;
+  --stage: var(--color-stage, #eaeaea);
+  --graphite: var(--color-card, #2e2e2e);
+  --ink: var(--color-ink, #050505);
+  --ink-10: var(--color-ink-10, rgba(0, 0, 0, .1));
+  --paper: var(--color-surface, #f4f4f4);
+  --surface: var(--color-surface, #f4f4f4);
+  --line: var(--color-line, #cfcfcf);
+  --muted: var(--color-ink-64, rgba(0, 0, 0, .64));
+  --danger: var(--color-error, #c2410c);
+  /* Предупреждение (не ошибка): низкое разрешение, принт вне зоны, остатки */
+  --warn-ink: #6b4300;
+  --warn-bg: #fff1d6;
+  --warn-line: #e0a83a;
+  /* Радиусы: карточка-колонка, плашка, поле/кнопка, «таблетка» */
+  --r-card: var(--radius-card-s, 20px);
+  --r-lg: 16px;
+  --r-ctl: var(--radius-control, 12px);
+  /* Кнопки, строки списков и плитки — тот же радиус, что у полей: скругление витрины на главной */
+  --r-sm: var(--radius-control, 12px);
+  --r-pill: var(--radius-pill, 999px);
+  /* Кегли сайта: 12 / 14 / 16 / 18 */
+  --fs-xs: var(--text-caption, 12px);
+  --fs-sm: var(--text-xs, 14px);
+  --fs-md: var(--text-m, 16px);
+  --fs-lg: var(--text-l, 18px);
+  --tap: 44px;
+  /* Движение сайта: при reduced motion длительности сайта обнуляются, конструктор следует за ними */
+  --ease-out: var(--ease, cubic-bezier(.2, 0, 0, 1));
+  --ease-in: cubic-bezier(.4, 0, 1, 1);
+  --t-fast: var(--duration, .2s);
+  --t-base: var(--duration-slow, .3s);
+  --t-press: var(--duration-press, .16s);
+  --t-enter: var(--duration-enter, .4s);
+  --t-exit: var(--duration-exit, .24s);
+  --t-celebrate: var(--duration-celebrate, .7s);
+  --font-body: var(--font-text, var(--pnhd-font-body-fallback, Arial)), Helvetica, sans-serif;
+  --font-head: var(--font-display, var(--pnhd-font-head-fallback, 'Arial Black')), sans-serif;
+
+  display: grid;
+  grid-template-columns: 290px minmax(0, 1fr) 350px;
+  grid-template-areas: 'guide guide guide' 'left center right';
+  /* Сверху шаги, ниже колонки ровно в остаток высоты: без minmax(0, 1fr) длинная панель растягивает ряд и страницу */
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px;
+  box-sizing: border-box;
+  height: 100vh;
+  /* Страница сайта задаёт --constructor-height, если над конструктором есть шапка */
+  height: var(--constructor-height, 100dvh);
+  overflow: hidden;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+/* Десктоп: страница не прокручивается и не «резинится» (на мобильной вёрстке страница скроллится как раньше) */
+@media (min-width: 901px) {
+  :global(html):has(.app), :global(html):has(.app) :global(body) { overflow: hidden; overscroll-behavior: none; }
+}
+/* Кнопки берут шрифт страницы. На телефоне — с нулевым весом селектора (:where), чтобы размеры шрифта
+   из классов компактной мобильной версии не перебивались. */
+@media (min-width: 901px) { .app button { font: inherit; color: inherit; } }
+@media (max-width: 900px) {
+  :where(.app) button { font: inherit; color: inherit; }
+  /* Из классов берём только размер шрифта; начертание — как на десктопе. */
+  .app button { font-family: inherit; font-weight: inherit; font-style: inherit; }
+}
+.app *:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+.panel { background: #fff; overflow-y: auto; overscroll-behavior: contain; min-height: 0; border: 1px solid var(--line); border-radius: var(--r-card); }
+.left { grid-area: left; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+.right { grid-area: right; display: flex; flex-direction: column; overflow-x: hidden; }
+.section { --pad: 20px; padding: var(--pad); display: flex; flex-direction: column; gap: 10px; }
+.section + .section { border-top: 1px solid var(--line); }
+
+/*
+ * Режим редактирования слоя (десктоп): слои, нанесение и размеры сворачиваются в строки-сводки,
+ * чтобы настройки не уводили их вниз. Тап по строке — «Готово» и переход к разделу.
+ */
+.summary { display: none; }
+.full { display: contents; }
+.right[data-editing] .full { display: none; }
+.right[data-editing] .summary { display: flex; flex-direction: column; gap: 6px; }
+.right[data-editing] .section:not([data-section='design']) { padding-top: 12px; padding-bottom: 12px; }
+.sumRow {
+  display: flex; align-items: center; gap: 10px; width: 100%; min-height: 44px; padding: 8px 10px 8px 12px; cursor: pointer;
+  border: 1px solid var(--line); border-radius: var(--r-ctl); background: #fff; text-align: left;
+  transition: border-color var(--t-fast), background-color var(--t-fast);
+}
+.sumRow:hover { border-color: var(--ink); background: var(--lime-soft); }
+.sumTitle { font-family: var(--font-head); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .02em; }
+.sumMeta { flex: 1; min-width: 0; font-size: 13px; color: var(--muted); text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sumRow svg { flex: none; }
+
+/* Заголовки секций — как «> ФУТБОЛКИ» на сайте */
+.h {
+  margin: 6px 0 2px; font-family: var(--font-head); font-size: 13px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .02em; color: var(--ink);
+}
+.muted { color: var(--muted); font-size: 13px; margin: 0; }
+/* Номер шага в заголовке колонки — тот же, что в полосе шагов сверху */
+.hNum {
+  display: inline-grid; place-items: center; width: 20px; height: 20px; margin-right: 8px; vertical-align: 1px; border-radius: 50%;
+  background: var(--ink); color: #fff; font-family: var(--font-body); font-size: 11px; font-weight: 800; letter-spacing: 0;
+}
+.h:has(> .hNum) { white-space: nowrap; }
+/* Колонка, на которую указали из полосы шагов: коротко подсвечивается (внутренней рамкой — панели обрезают внешнюю) */
+.app [data-flash] { animation: flash 1.4s var(--ease-out); }
+@keyframes flash { 0%, 50% { box-shadow: inset 0 0 0 4px var(--lime); } 100% { box-shadow: inset 0 0 0 4px transparent; } }
+.err { color: var(--danger); font-size: 13px; margin: 0; }
+.warn { color: var(--warn-ink); background: var(--warn-bg); border: 1px solid var(--warn-line); border-radius: var(--r-ctl); padding: 8px 10px; font-size: 13px; margin: 0; }
+.stub { color: var(--muted); }
+
+.colors { display: flex; gap: 12px; min-width: 0; overflow-x: auto; padding: 6px; margin: -6px; scrollbar-width: none; }
+.colors::-webkit-scrollbar { display: none; }
+
+/* Холст */
+/* .center — это <main>: сайт задаёт main свои поля и ширину, здесь они не нужны */
+.center { grid-area: center; display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; min-width: 0; max-width: none; min-height: 0; margin: 0; padding: 12px; gap: 8px; position: relative; }
+/*
+ * Панель под холстом: история | цвет | масштаб. Все три группы — белые «таблетки» без рамки, как вкладки сторон,
+ * одна высота; кнопки внутри — круглые. Края равной ширины — цвет стоит ровно по центру.
+ */
+/* Центр может сжиматься: длинная палитра прокручивается, а не заезжает под масштаб */
+.toolbar { --seg-h: 44px; display: grid; grid-template-columns: minmax(max-content, 1fr) minmax(0, auto) minmax(max-content, 1fr); align-items: center; gap: 8px; min-width: 0; }
+.history, .zoom, .colorBar {
+  display: flex; align-items: stretch; height: var(--seg-h); box-sizing: border-box;
+  gap: 2px; padding: 4px; border-radius: var(--r-pill); background: #fff; overflow: hidden;
+}
+.history { justify-self: start; }
+.zoom { justify-self: end; }
+.history button, .zoom button {
+  min-width: calc(var(--seg-h) - 8px); padding: 0 8px; display: grid; place-items: center; border: 0; border-radius: var(--r-pill); background: #fff;
+  color: var(--ink); font: inherit; font-size: 15px; font-weight: 800; line-height: 1; cursor: pointer;
+}
+.history button:not(:disabled):hover, .zoom button:not(:disabled):hover { background: var(--surface); }
+.history button:disabled, .zoom button:disabled { opacity: .35; cursor: default; }
+.zoomValue { min-width: 56px !important; font-size: var(--fs-xs) !important; font-variant-numeric: tabular-nums; }
+
+/* Цвет: та же рамка-сегмент, внутри — круглые образцы ткани */
+.colorBar { align-items: center; max-width: 100%; min-width: 0; padding: 0 14px; }
+.swatch, .swatchActive {
+  flex: none; width: 24px; height: 24px; border-radius: 50%; padding: 0; cursor: pointer;
+  /* тонкий внутренний контур — чтобы белый и светлые цвета не терялись на белом фоне */
+  border: 0; box-shadow: inset 0 0 0 1px rgba(0,0,0,.18);
+  transition: transform var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out);
+}
+.swatch:hover { transform: scale(1.1); }
+/* сколько штук этого цвета в заявке */
+.swatch, .swatchActive { position: relative; }
+.swatchCount {
+  /* значок количества не выходит за рамку панели: сверху до неё остаётся зазор */
+  position: absolute; top: -4px; right: -8px; min-width: 15px; height: 15px; padding: 0 3px; box-sizing: border-box;
+  border-radius: 8px; background: var(--lime); color: var(--ink); box-shadow: 0 0 0 1px var(--ink);
+  font-size: 9px; font-weight: 800; line-height: 15px; text-align: center; pointer-events: none;
+}
+/* выбранный: кольцо цвета текста через белый зазор */
+.swatchActive { box-shadow: inset 0 0 0 1px rgba(0,0,0,.18), 0 0 0 2px #fff, 0 0 0 3.5px var(--ink); }
+/* Стороны — один сегмент: в покое без рамок, выбранная — белая плашка */
+/* Стороны изделия — капсом с разрядкой, как кнопки шапки сайта */
+.sides { display: flex; gap: 2px; align-self: center; padding: 3px; border-radius: var(--r-pill); background: var(--stage); }
+.tab, .tabActive {
+  position: relative; padding: 8px 14px; white-space: nowrap; border-radius: var(--r-pill); border: 0;
+  background: transparent; cursor: pointer; font-size: var(--fs-xs); font-weight: 700; color: var(--muted);
+  text-transform: uppercase; letter-spacing: var(--tracking-caps, .06em); line-height: 1;
+}
+.tab:hover { color: var(--ink); }
+.tabActive { background: #fff; color: var(--ink); box-shadow: 0 1px 2px rgb(0 0 0 / .12); }
+.dot { position: absolute; top: 4px; right: 4px; width: 7px; height: 7px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 1px var(--ink); }
+.stage, .stageDrop { flex: 1; min-height: 0; position: relative; border-radius: var(--r-card); }
+.stageDrop { outline: 2px dashed var(--ink); outline-offset: -6px; background: var(--lime-soft); }
+/* «Фото вживую» — в правом верхнем углу поля с изделием */
+.livePhotos {
+  --press: .985;
+  position: absolute; top: 8px; right: 8px; z-index: 2; display: flex; align-items: center; gap: 6px;
+  min-height: 36px; padding: 0 14px 0 10px; border: 1px solid var(--line); border-radius: var(--r-pill);
+  background: #fff; color: var(--ink) !important; cursor: pointer;
+  font-size: var(--fs-xs); font-weight: 700; text-transform: uppercase; letter-spacing: var(--tracking-caps, .06em); line-height: 1;
+  transition: border-color var(--t-fast) var(--ease-out);
+}
+.livePhotos:hover { border-color: var(--ink); }
+.livePhotos:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+/* Телефон: изделие занимает всё поле — только иконка, подпись остаётся для читалок через aria-label */
+@media (max-width: 900px) {
+  .livePhotos { top: 4px; right: 4px; width: 40px; min-height: 40px; padding: 0; justify-content: center; }
+  .livePhotos span { display: none; }
+}
+.dropHint { position: absolute; left: 50%; top: 8px; transform: translateX(-50%); padding: 6px 12px; border-radius: var(--r-ctl); background: var(--ink); color: #fff; font-size: 12px; font-weight: 800; text-transform: uppercase; pointer-events: none; z-index: 2; }
+
+.back, .grip { display: none; }
+
+/* Кнопки — как «Сделать заказ» / «Проконсультироваться» на сайте */
+
+.btn {
+  padding: 12px 10px; border-radius: var(--r-ctl); border: 1px solid var(--ink); background: #fff;
+  font-size: 13px; font-weight: 800; text-transform: uppercase; cursor: pointer;
+}
+.btn:hover { background: var(--paper); }
+/* Необратимое для глаза действие (с возможностью отмены): красная кнопка в окне подтверждения */
+.btnDanger {
+  min-height: var(--tap); padding: 10px; border-radius: var(--r-ctl); border: 1px solid var(--danger); background: var(--danger); color: #fff;
+  font-size: 13px; font-weight: 800; text-transform: uppercase; cursor: pointer;
+}
+.btnDanger:hover { filter: brightness(.92); }
+.modal .btnDanger { width: 100%; }
+/* Общий сброс цвета кнопок (.app button) сильнее класса — белый текст задаём с тем же весом. */
+.app .btnDanger, .modal .btnDanger { color: #fff; }
+
+/* Слои */
+.layers { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.thumb { width: 36px; height: 36px; flex: none; border-radius: var(--r-ctl); border: 1px solid var(--ink); display: grid; place-items: center; overflow: hidden; font-weight: 800; font-size: 14px; }
+.thumb img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+/* Поля */
+
+.input {
+  width: 100%; padding: 11px 12px; border: 1px solid var(--ink); border-radius: var(--r-ctl);
+  font: inherit; font-size: 16px; box-sizing: border-box; background: #fff;
+}
+.input::placeholder { color: var(--muted); }
+.input:focus { outline: none; box-shadow: 0 0 0 3px var(--lime); }
+/* Поле с ошибкой: красная рамка; текст ошибки — .err под полем */
+.input[aria-invalid="true"] { border-color: var(--danger); box-shadow: inset 0 0 0 1px var(--danger); }
+.input[aria-invalid="true"]:focus { box-shadow: inset 0 0 0 1px var(--danger), 0 0 0 3px var(--lime); }
+.color { width: 44px; height: 44px; padding: 2px; border: 1px solid var(--ink); border-radius: var(--r-ctl); background: #fff; flex: none; }
+
+/* Размеры */
+
+/* Итог — графитовая плашка, как тёмные карточки сайта и полоса шагов сверху */
+.footer {
+  margin-top: auto; position: sticky; bottom: 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 16px 20px; background: var(--graphite); color: #fff;
+}
+/* Если цена и кнопка не помещаются в строку, кнопка уходит вниз на всю ширину, а не обрезается. */
+.footer > div { flex: 1 1 auto; min-width: 0; }
+.footer .cta { flex: 1 0 auto; }
+.footer .muted { color: rgb(255 255 255 / .65); }
+.cta {
+  padding: 14px 18px; border: 0; border-radius: var(--r-ctl); background: var(--lime); color: var(--ink) !important;
+  font-size: 14px; font-weight: 800; text-transform: uppercase; cursor: pointer; white-space: nowrap;
+}
+.cta:hover { background: var(--lime-hover); }
+.cta:disabled { opacity: .6; cursor: default; }
+
+/* Заявка */
+.modalBg { position: fixed; inset: 0; background: rgb(0 0 0 / .5); display: grid; place-items: center; padding: 16px; z-index: var(--z-modal, 100); }
+.modal {
+  background: #fff; border: 1px solid var(--ink); border-radius: var(--r-card); padding: 24px;
+  width: min(440px, 100%); max-height: calc(100dvh - 32px); overflow-y: auto;
+  display: flex; flex-direction: column; gap: 10px; box-sizing: border-box;
+}
+.modal h3 { margin: 0 0 4px; font-family: var(--font-head); font-size: 20px; font-weight: 700; text-transform: uppercase; }
+.modal .cta { width: 100%; }
+.modal .btn { width: 100%; }
+/* «Добавлено в корзину»: снимок изделия и что легло */
+.added { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+.added img, .added > span { flex: none; width: 72px; height: 72px; border-radius: var(--r-sm); background: var(--paper); object-fit: contain; }
+.added p { margin: 0; display: flex; flex-direction: column; gap: 2px; min-width: 0; font-size: var(--fs-sm); }
+.orderNumber {
+  align-self: flex-start; font-family: var(--font-head); font-size: 24px; font-weight: 700; letter-spacing: .02em;
+  margin: 0; padding: 6px 12px; border-radius: var(--r-ctl); background: var(--lime); user-select: all;
+}
+
+/* Средние экраны: колонки уже, чтобы четыре стороны поместились в строку */
+@media (max-width: 1200px) and (min-width: 901px) {
+  .app { grid-template-columns: 240px minmax(0, 1fr) 320px; gap: 10px; padding: 10px; }
+  .left, .section { padding: 16px; }
+  .section { --pad: 16px; }
+  .tab, .tabActive { padding: 7px 9px; font-size: var(--fs-xs); }
+  .footer { padding: 14px 16px; }
+  .cta { padding: 13px 14px; font-size: 13px; }
+}
+
+/*
+ * ─── Мобильная версия (приоритет) ───
+ * Экран не прокручивается целиком: холст закреплён сверху, под ним вкладки, ниже панель вкладки
+ * со своей прокруткой и итог. Изделие всегда на виду, пока листаешь настройки.
+ */
+@media (max-width: 900px) {
+  :global(html):has(.app), :global(html):has(.app) :global(body) { overflow: hidden; overscroll-behavior: none; }
+  .app {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    grid-template-areas: 'center' 'grip' 'panel' 'footer';
+    gap: 0; padding: 0;
+    height: 100vh; height: var(--constructor-height, 100dvh); overflow: hidden;
+  }
+  /* Пока открыта клавиатура — во всю видимую область над ней. */
+  .app[data-kb] { height: var(--vvh, 100dvh); }
+
+  /* Строка «назад» в начале листа: шагов на телефоне нет, вперёд ведёт кнопка итога */
+  .back {
+    display: flex; align-items: center; gap: 6px; width: 100%; min-height: var(--tap); margin: -4px 0 0; padding: 0; border: 0; border-bottom: 1px solid var(--line);
+    background: transparent; color: var(--ink) !important; font-size: var(--fs-sm); font-weight: 700; text-align: left; cursor: pointer;
+  }
+  .backMeta { min-width: 0; margin-left: auto; overflow: hidden; color: var(--muted); font-weight: 400; white-space: nowrap; text-overflow: ellipsis; }
+
+  .center {
+    height: 46dvh; gap: 6px; padding: 6px 8px 4px;
+    transition: height var(--t-base) var(--ease-out);
+  }
+  /* Редактирование слоя: высота холста та же (иначе холст меняет размер под пальцем, пока тащишь принт) —
+     вместо этого изделие приближается к принту (DesignStage, focus). */
+  /* Размеры: принт уже готов, изделие — для сверки; степперам нужно место. */
+  .app[data-tab='order'] .center { height: 38dvh; }
+  /* Развёрнутый лист: холст ниже, панели больше места. */
+  .app[data-sheet='full'] .center { height: 28dvh; }
+  /* Набор текста: только изделие над клавиатурой, без панели цвета. */
+  .center { overflow: hidden; }
+  .app[data-kb] .center { height: calc(var(--vvh, 100dvh) * .45); transition: none; }
+  .app[data-kb] :is(.sides, .toolbar, .grip, .footer) { display: none; }
+
+  .sides { align-self: stretch; }
+  .tab, .tabActive { flex: 1 1 0; min-width: 0; min-height: 32px; padding: 3px 2px; font-size: var(--fs-xs); }
+  /* Область нажатия стороны — 44 px при плашке 32 px */
+  .tab::after, .tabActive::after { content: ''; position: absolute; inset: -6px 0; }
+
+  /* Ручка листа */
+  .grip {
+    grid-area: grip; display: block; position: relative; height: 22px; padding: 0; border: 0; cursor: pointer;
+    background: #fff; border-top: 1px solid var(--line); border-radius: var(--r-lg) var(--r-lg) 0 0; touch-action: none; z-index: 2;
+  }
+  .grip::before { content: ''; position: absolute; left: 50%; top: 8px; width: 40px; height: 4px; margin-left: -20px; border-radius: 2px; background: var(--line); }
+  /* область нажатия шире видимой полоски: вниз, на отступ панели */
+  .grip::after { content: ''; position: absolute; inset: -6px 25% -16px; }
+
+  .panel { border: 0; border-radius: 0; }
+  .right { display: contents; }
+  /* Каждая вкладка прокручивается в своей строке сетки; прокрутка не утекает на страницу. */
+  .left, .section {
+    grid-area: panel; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+    border: 0; padding: 4px 12px 16px; gap: 8px; background: #fff;
+  }
+  .section + .section { border: 0; }
+  /* Слои на телефоне — список внутри шага «Принт», отдельной панели нет. */
+  .app [data-section='layers'] { display: none; }
+  /* Панель — колонка фиксированной высоты: блоки внутри не сжимаются, а прокручиваются. */
+  .left > *, .section > *, .section .full > * { flex-shrink: 0; }
+  /* Шапка редактора слоя прилипает к самому верху своей панели: липкий отступ считается от края
+     внутри padding прокручиваемой панели, поэтому — минус отступ. */
+  .section { --pad: 12px; --edit-top: -4px; }
+  .h { margin: 2px 0 0; font-size: var(--fs-sm); }
+  .muted, .err, .warn { font-size: var(--fs-xs); }
+  /* Поле в фокусе не прячется под закреплённую шапку редактора. */
+  .section :is(input, textarea) { scroll-margin-top: 60px; scroll-margin-bottom: 12px; }
+  /* На мобильном разделы — вкладки: сводки не нужны, каждая вкладка показывает своё целиком. */
+  .right[data-editing] .full { display: contents; }
+  .right[data-editing] .summary { display: none; }
+  .right[data-editing] .section:not([data-section='design']) { padding: 4px 12px 16px; }
+  .app[data-tab='garment'] :is([data-section='design'], [data-section='order']),
+  .app[data-tab='design'] :is([data-section='garment'], [data-section='order']),
+  .app[data-tab='order'] :is([data-section='garment'], [data-section='design']) { display: none; }
+  /* Сворачивание слоёв — только на десктопе */
+  .layers[hidden] { display: flex; }
+
+  .footer { grid-area: footer; position: relative; z-index: 3; margin: 0; padding: 8px 12px calc(8px + env(safe-area-inset-bottom)); gap: 10px; flex-wrap: nowrap; }
+  .footer .cta { flex: none; min-height: 44px; padding: 0 14px; font-size: 13px; }
+  /* Под холстом: отмена слева, цвет по центру. Масштаб — жестом двумя пальцами. */
+  .toolbar { --seg-h: 40px; gap: 6px; }
+  .zoom { display: none; }
+  /* Отмена — просто иконки; цвета — на белой «таблетке», как на витрине главной */
+  .history { padding: 0; background: none; }
+  .history button { min-width: 40px; padding: 0; background: none; }
+  .colorBar { padding: 0 6px; overflow: visible; }
+  .colors { gap: 2px; padding: 0; margin: 0; }
+  /* Кружок 22 px, как на витрине, в области нажатия 32 px: цвет рисуется внутренним кругом, сам button прозрачный */
+  .swatch, .swatchActive {
+    width: 32px; height: 32px; background-clip: content-box !important; padding: 5px; box-shadow: none;
+    border: 0; outline: 1px solid rgb(0 0 0 / .18); outline-offset: -6px;
+  }
+  .swatch:hover { transform: none; }
+  .swatchActive { outline: 1.5px solid var(--ink); outline-offset: -2.5px; }
+  .swatchCount { top: -2px; right: -2px; }
+  .thumb { width: 30px; height: 30px; font-size: 12px; }
+  .sumRow { min-height: 36px; padding: 5px 10px 5px 12px; }
+  .chart th, .chart td { padding: 5px 4px; }
+  .chart { font-size: 13px; }
+  .btn { padding: 10px 10px; }
+}
+
+/* Узкий телефон (до 360 px): полоса шагов компактнее, чтобы три шага с линиями поместились в ширину */
+@media (max-width: 360px) {
+}
+
+/* Телефон боком: холст слева, панель справа — иначе на холст остаётся полоска в треть экрана. */
+@media (max-width: 900px) and (orientation: landscape) and (max-height: 500px) {
+  .app {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    grid-template-areas: 'center panel' 'center footer';
+  }
+  .center, .app[data-editing] .center { height: auto; padding-left: max(8px, env(safe-area-inset-left)); }
+  .app[data-kb] .center { height: auto; }
+  .grip { display: none; }
+}
+
+/* Таблица размеров */
+.chart { width: 100%; border-collapse: collapse; font-size: 14px; text-align: center; }
+.chart th, .chart td { padding: 8px 6px; border-bottom: 1px solid var(--line); }
+.chart thead th { font-size: 12px; color: var(--muted); font-weight: 700; }
+.chart tbody th { text-align: left; font-weight: 800; }
+.layers[hidden] { display: none; }
+@media (max-width: 900px) { .desktopOnly { display: none; } }
+
+/* Текст */
+
+/* Превью: широкие шрифты переносятся (до 2 строк), без многоточия на коротком тексте */
+
+/* Короткое сообщение внизу экрана */
+.notice {
+  position: fixed; left: 50%; bottom: 72px; transform: translateX(-50%); z-index: 9; max-width: calc(100% - 32px);
+  padding: 10px 14px; border-radius: var(--r-ctl); background: var(--ink); color: #fff; font-size: 13px; text-align: center;
+}
+
+/* ─── Движение ───
+ * Только opacity и отдельные свойства translate/scale: они не спорят с transform,
+ * которым позиционированы кнопки на холсте и подсказки, и не трогают раскладку.
+ */
+@keyframes rise { from { opacity: 0; translate: 0 6px; } }
+@keyframes fade { from { opacity: 0; } }
+@keyframes pop { from { opacity: 0; scale: .92; } }
+@keyframes dotIn { from { opacity: 0; scale: .5; } }
+@keyframes modalIn { from { opacity: 0; translate: 0 14px; scale: .97; } }
+@keyframes modalOut { to { opacity: 0; translate: 0 8px; scale: .98; } }
+@keyframes fadeOut { to { opacity: 0; } }
+@keyframes toastIn { from { opacity: 0; translate: 0 12px; scale: .96; } }
+@keyframes stamp { from { opacity: 0; scale: .85; } }
+
+/* Отдача кнопок: плавная смена цвета и лёгкое нажатие. Широким кнопкам — меньше (--press). */
+.app button {
+  transition-property: background-color, border-color, color, box-shadow, opacity, transform, scale;
+  transition-duration: var(--t-fast);
+  transition-timing-function: var(--ease-out);
+}
+.app button:not(:disabled):not([data-still]):active { scale: var(--press, .975); transition-duration: var(--t-press); }
+.app :is(input, textarea, select) { transition: box-shadow var(--t-fast) var(--ease-out), border-color var(--t-fast) var(--ease-out), background-color var(--t-fast) var(--ease-out); }
+.cta, .btn, .btnDanger, .back { --press: .985; }
+
+/* Появление колонок при загрузке — лёгкой волной слева направо */
+.left, .center, .right { animation: rise var(--t-enter) var(--ease-out) backwards; }
+.center { animation-delay: .05s; }
+.right { animation-delay: .1s; }
+
+/* Холст: рамка перетаскивания файла «въезжает» внутрь */
+.stage { outline: 2px dashed transparent; outline-offset: 0; }
+.stage, .stageDrop { transition: outline-color var(--t-base) var(--ease-out), outline-offset var(--t-base) var(--ease-out), background-color var(--t-base) var(--ease-out); }
+.dropHint { animation: toastIn var(--t-base) var(--ease-out) backwards; }
+.dot { animation: dotIn var(--t-base) var(--ease-out) backwards; }
+
+/* Каталог */
+.layers:not([hidden]) { animation: rise var(--t-base) var(--ease-out) backwards; }
+
+/* Сообщения */
+.err, .warn { animation: rise var(--t-base) var(--ease-out) backwards; }
+.notice { animation: toastIn var(--t-enter) var(--ease-out) backwards; }
+
+/* Окна: фон проявляется с лёгким размытием, карточка поднимается; закрытие — короче (ui/useDismiss.ts) */
+.modalBg { backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); animation: fade var(--t-enter) var(--ease-out) backwards; }
+.modal { animation: modalIn var(--t-enter) var(--ease-out) backwards; }
+.modalBg[data-leaving] { pointer-events: none; animation: fadeOut var(--t-exit) var(--ease-in) forwards; }
+.modalBg[data-leaving] .modal { animation: modalOut var(--t-exit) var(--ease-in) forwards; }
+.reveal { animation: rise var(--t-base) var(--ease-out) backwards; }
+.orderNumber { animation: stamp var(--t-celebrate) var(--ease-out) .16s backwards; }
+
+/* Телефон: при смене вкладки панель появляется заново (display: none → block перезапускает анимацию) */
+@media (max-width: 900px) {
+  .left, .section { animation: rise var(--t-base) var(--ease-out) backwards; }
+  .right { animation: none; }
+  .modal { animation-name: modalIn; }
+}
+
+/* Полосы прокрутки не показываем: прокрутка и свайп работают как обычно, без всплывающего ползунка */
+:global(html):has(.app), :global(html):has(.app) :global(body), .app, .app * { scrollbar-width: none; -ms-overflow-style: none; }
+:global(html):has(.app)::-webkit-scrollbar, :global(html):has(.app) :global(body)::-webkit-scrollbar,
+.app::-webkit-scrollbar, .app *::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .app *, .app *::before, .app *::after {
+    animation-duration: 1ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}

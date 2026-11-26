@@ -1,0 +1,14 @@
+/* Конструктор занимает экран под шапкой сайта */
+.page {
+  --constructor-height: calc(100dvh - var(--header-height));
+}
+
+/* Заголовок страницы для поисковиков и экранных дикторов; визуально его роль играют шаги конструктора */
+.title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

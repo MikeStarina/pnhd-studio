@@ -1,0 +1,193 @@
+/* Путь заказа: четыре шага в ряд, номера соединены линией со стрелкой.
+   Планшет и телефон — столбиком, линия идёт вниз слева */
+.list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  padding-right: 24px;
+  color: var(--color-ink);
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  margin: 0 -24px 32px 0;
+}
+
+.number {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: var(--step-badge);
+  height: var(--step-badge);
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-family: var(--font-display);
+  font-size: var(--text-l);
+  font-weight: var(--weight-black);
+  line-height: 1;
+}
+
+/* Линия до следующего номера; стрелка — на её конце */
+.line {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: flex-end;
+  height: var(--step-arrow);
+  margin: 0 12px;
+  background: linear-gradient(var(--color-ink), var(--color-ink)) left center / calc(100% - 4px) 1px no-repeat;
+}
+
+.title {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-size: var(--display-s);
+  font-weight: var(--weight-black);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.text {
+  max-width: 30ch;
+  margin: 0;
+  font-size: var(--text-m);
+  line-height: 1.5;
+  color: color-mix(in srgb, currentColor 72%, transparent);
+}
+
+@media (max-width: 1023px) {
+  /* В столбик шаги доезжают до экрана по одному при прокрутке — длинная задержка по номеру тут лишняя */
+  .list {
+    --steps-stagger: var(--reveal-stagger);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Номер слева, линия вниз до следующего шага */
+  .item {
+    display: grid;
+    grid-template-columns: var(--step-badge) minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    column-gap: 20px;
+    padding: 0;
+  }
+
+  .track {
+    flex-direction: column;
+    grid-row: 1 / 3;
+    margin: 0;
+  }
+
+  .line {
+    width: var(--step-arrow);
+    height: auto;
+    min-height: 32px;
+    margin: 8px 0;
+    align-items: flex-end;
+    justify-content: center;
+    background-size: 1px calc(100% - 4px);
+    background-position: center top;
+  }
+
+  .line :global(svg) {
+    transform: rotate(90deg);
+  }
+
+  .title {
+    margin: 10px 0 8px;
+    font-size: var(--display-s-compact);
+  }
+
+  .text {
+    padding-bottom: 32px;
+  }
+
+  .item:last-child .text {
+    padding-bottom: 0;
+  }
+}
+
+/* Появление (общая система src/components/site/reveal; шаг — элемент группы, его номер — --i).
+   Путь рисуется по порядку: номер садится на пружине, линия со стрелкой прочерчивается к следующему номеру,
+   затем появляется следующий шаг. Шаг между шагами — --steps-stagger вместо общего --reveal-stagger.
+   Все переходы укладываются в переход шага (--duration-reveal), по нему система снимает метки */
+@media (prefers-reduced-motion: no-preference) {
+  :global(.js-reveal) .list > .item:not([data-reveal-done]),
+  :global(.js-reveal) .list > .item[data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+
+  :global(.js-reveal) .list > .item[data-reveal] {
+    transition-delay: calc(var(--i, 0) * var(--steps-stagger));
+  }
+
+  :global(.js-reveal) .item[data-reveal] .number {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  :global(.js-reveal) .item[data-reveal] .line {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  :global(.js-reveal) .item[data-reveal] .title,
+  :global(.js-reveal) .item[data-reveal] .text {
+    opacity: 0;
+    transform: translateY(var(--reveal-shift));
+  }
+
+  :global(.js-reveal) .item[data-reveal] .number {
+    transition:
+      opacity var(--duration-slow) var(--ease-out-soft),
+      transform var(--duration-spring) var(--ease-spring);
+    transition-delay: calc(var(--i, 0) * var(--steps-stagger));
+  }
+
+  :global(.js-reveal) .item[data-reveal] .line {
+    transition: clip-path var(--duration-reveal-part) var(--ease-out-soft);
+    transition-delay: calc(var(--i, 0) * var(--steps-stagger) + var(--duration-press));
+  }
+
+  :global(.js-reveal) .item[data-reveal] .title,
+  :global(.js-reveal) .item[data-reveal] .text {
+    transition:
+      opacity var(--duration-reveal-part) var(--ease-out-soft),
+      transform var(--duration-reveal-part) var(--ease-out-soft);
+    transition-delay: calc(var(--i, 0) * var(--steps-stagger) + var(--duration-press));
+  }
+
+  :global(.js-reveal) .item[data-reveal] .text {
+    transition-delay: calc(var(--i, 0) * var(--steps-stagger) + var(--duration));
+  }
+
+  :global(.js-reveal) .item[data-reveal][data-revealed] .number,
+  :global(.js-reveal) .item[data-reveal][data-revealed] .title,
+  :global(.js-reveal) .item[data-reveal][data-revealed] .text,
+  :global(.js-reveal.reveal-all) .item .number,
+  :global(.js-reveal.reveal-all) .item .title,
+  :global(.js-reveal.reveal-all) .item .text {
+    opacity: 1;
+    transform: none;
+  }
+
+  :global(.js-reveal) .item[data-reveal][data-revealed] .line,
+  :global(.js-reveal.reveal-all) .item .line {
+    clip-path: inset(0);
+  }
+}
+
+/* В столбик линия прочерчивается сверху вниз */
+@media (prefers-reduced-motion: no-preference) and (max-width: 1023px) {
+  :global(.js-reveal) .item[data-reveal] .line {
+    clip-path: inset(0 0 100% 0);
+  }
+}

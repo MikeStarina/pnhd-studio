@@ -11,7 +11,7 @@ type RoistatWindow = Window & {
     };
 };
 
-function readRoistatVisitId(): string {
+export function readRoistatVisitId(): string {
     if (typeof document === 'undefined') return '';
 
     const match = document.cookie.match(/(?:^|;\s*)roistat_visit=([^;]+)/);

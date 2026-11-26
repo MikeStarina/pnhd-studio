@@ -1,16 +1,26 @@
 import React from 'react';
 import styles from './page.module.css';
+import { Metadata } from 'next';
 import Breadcrumbs from '@/components/shared-components/breadcrumbs/Breadcrumbs';
+
+export const metadata: Metadata = {
+  title: 'Договор оферты: правила согласования изображения и печати | Studio PNHD',
+  description:
+    'Правила согласования изображения и его печати в Pinhead Studio: как согласуется макет, сроки, качество печати и ответственность сторон.',
+  metadataBase: new URL('https://studio.pnhd.ru'),
+  alternates: {
+    canonical: '/oferta',
+  },
+};
 
 function Oferta() {
  
   return (
     <section className={styles.page}>
       <Breadcrumbs items={[{label: 'Главная', href: '/'}, {label: 'Оферта', href: '/oferta'}]} />
-      Правила согласования изображения и его печати в компании «ПИНХЭД СТУДИЯ»
-      (ООО &quot;ПИНХЭД СТУДИО&quot;)
-      <br />
-      <br />
+      <h1>
+        Правила согласования изображения и его печати в компании «ПИНХЭД СТУДИЯ» (ООО &quot;ПИНХЭД СТУДИО&quot;)
+      </h1>
       1. Общие положения
       <br />
       <br />

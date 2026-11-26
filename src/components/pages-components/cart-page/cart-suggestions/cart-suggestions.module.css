@@ -1,0 +1,12 @@
+/* Ссылка «Весь каталог» под подборкой — как «Весь раздел» под «Похожими» на странице товара */
+.more {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 48px;
+}
+
+@media (max-width: 599px) {
+  .more {
+    margin-top: 32px;
+  }
+}

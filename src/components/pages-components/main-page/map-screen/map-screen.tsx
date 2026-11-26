@@ -22,7 +22,7 @@ const MapScreen: React.FC = () => {
             <div className={styles.screen_mapBox}>
                 <MapComponent />
                 <div className={styles.mapBox_contacts}>
-                    <p className={styles.contacts_text}>Режим работы: ежедневно, 11:00–20:00</p>
+                    <p className={styles.contacts_text}>Режим работы: ежедневно, 10:00–20:00</p>
                     <p className={styles.contacts_text}>Телефон: +7 (812) 904-61-56</p>
                     <p className={styles.contacts_text}>Email: STUDIO@PNHD.RU</p>
                     <p className={styles.contacts_text}>Адрес: 197022, г. Санкт-Петербург, ул. Чапыгина, д. 1, ст. м. «Петроградская»</p>

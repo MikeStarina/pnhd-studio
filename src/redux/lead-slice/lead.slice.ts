@@ -11,7 +11,7 @@ interface ILeadSlice {
 const initialState: ILeadSlice = {
     name: '',
     phone: '',
-    isAgreedWithPrivacyPolicy: true,
+    isAgreedWithPrivacyPolicy: false,
 }
 
 

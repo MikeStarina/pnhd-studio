@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { reducer as utilsReducer } from './utils-slice/utils.slice';
 import { reducer as cartReducer } from './cart-slice/cart.slice';
-import { reducer as constructorReducer } from './constructor-slice/constructor.slice';
+import { reducer as cartDesignsReducer } from './cart-designs-slice/cart-designs.slice';
 import { reducer as leadReducer } from './lead-slice/lead.slice';
 import { reducer as authReducer } from './auth-slice/auth.slice';
 import { api } from '@/api/api';
@@ -12,8 +12,8 @@ import { setupListeners } from '@reduxjs/toolkit/query'
 export const store = configureStore({
   reducer: {
     utils: utilsReducer,
-    printConstructor: constructorReducer,
     cart: cartReducer,
+    cartDesigns: cartDesignsReducer,
     leads: leadReducer,
     auth: authReducer,
     [ api.reducerPath ]: api.reducer,

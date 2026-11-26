@@ -1,0 +1,213 @@
+/* Галерея товара: фото 3:4 на серой подложке, миниатюры под ним; на телефоне — лента с прилипанием и точками */
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.viewer {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: var(--color-surface);
+}
+
+.track {
+  position: absolute;
+  inset: 0;
+}
+
+.track {
+  cursor: zoom-in;
+}
+
+.track:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: -2px;
+  border-radius: var(--radius-card);
+}
+
+/* Кадры лежат стопкой, виден текущий: смена — проявлением */
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-slow) var(--ease);
+}
+
+.slide[data-active='true'] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Белый фон снимков растворяется в серой подложке, как в карточке каталога */
+.photo {
+  object-fit: cover;
+  object-position: center 20%;
+  mix-blend-mode: multiply;
+}
+
+/* Явная кнопка «на весь экран»: нажатие на фото открывает то же, кнопка нужна тем, кто ищет её глазами и экранным чтением */
+.zoom {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1;
+  display: grid;
+  width: var(--control-height);
+  height: var(--control-height);
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--color-white);
+  color: var(--color-ink);
+  cursor: pointer;
+  transition: background var(--duration) var(--ease);
+}
+
+.zoom:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+.badges {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+.badge {
+  composes: badge from '../product-card/product-card.module.css';
+}
+
+.thumbs {
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.thumbs::-webkit-scrollbar {
+  display: none;
+}
+
+.thumbs li {
+  flex: 0 0 auto;
+}
+
+.thumb {
+  position: relative;
+  display: block;
+  width: 72px;
+  aspect-ratio: 3 / 4;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-control);
+  overflow: hidden;
+  background: var(--color-surface);
+  cursor: pointer;
+  box-shadow: 0 0 0 0 var(--color-ink);
+  transition: box-shadow var(--duration) var(--ease);
+}
+
+.thumb[aria-current='true'] {
+  box-shadow: 0 0 0 2px var(--color-ink);
+}
+
+.thumb:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 3px;
+}
+
+.dots {
+  display: none;
+}
+
+@media (hover: hover) {
+  .zoom:hover {
+    background: var(--color-stage);
+  }
+
+  .thumb:hover {
+    box-shadow: 0 0 0 2px var(--color-line);
+  }
+
+  .thumb[aria-current='true']:hover {
+    box-shadow: 0 0 0 2px var(--color-ink);
+  }
+}
+
+@media (max-width: 599px) {
+  .track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .slide {
+    position: relative;
+    flex: 0 0 100%;
+    opacity: 1;
+    pointer-events: auto;
+    scroll-snap-align: start;
+    transition: none;
+  }
+
+  .badges {
+    top: 8px;
+    left: 8px;
+  }
+
+  .zoom {
+    right: 8px;
+    bottom: 8px;
+  }
+
+  .thumbs {
+    display: none;
+  }
+
+  .dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-line);
+    transition: background var(--duration) var(--ease), transform var(--duration) var(--ease);
+  }
+
+  .dot[data-active='true'] {
+    background: var(--color-ink);
+    transform: scale(1.33);
+  }
+}

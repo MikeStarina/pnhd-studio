@@ -1,0 +1,77 @@
+.prose {
+  max-width: var(--prose-width);
+  font-size: var(--text-l);
+  line-height: 1.5;
+}
+
+.prose h2 {
+  margin: 64px 0 24px;
+  font-family: var(--font-display);
+  font-size: var(--display-s);
+  font-weight: var(--weight-black);
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.prose h2:first-child {
+  margin-top: 0;
+}
+
+/* Абзацы приглушены цветом, как пояснения на главной */
+.prose p {
+  margin: 0 0 16px;
+  color: color-mix(in srgb, currentColor 64%, transparent);
+}
+
+.prose ul {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 0 16px;
+  padding-left: 1.25em;
+  color: color-mix(in srgb, currentColor 64%, transparent);
+}
+
+.prose ul > li::marker {
+  color: var(--accent);
+}
+
+.prose ol {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.prose ol > li {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  color: color-mix(in srgb, currentColor 64%, transparent);
+  counter-increment: step;
+}
+
+.prose ol > li::before {
+  content: counter(step, decimal-leading-zero);
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: var(--text-l);
+  font-weight: var(--weight-black);
+  line-height: 1.5;
+}
+
+@media (max-width: 599px) {
+  .prose {
+    font-size: var(--text-m);
+  }
+
+  .prose h2 {
+    margin-top: 48px;
+  }
+
+  .prose ol > li {
+    grid-template-columns: 40px minmax(0, 1fr);
+  }
+}

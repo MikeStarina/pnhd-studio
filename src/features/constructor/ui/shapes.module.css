@@ -1,0 +1,17 @@
+/* Выбор формы фото */
+.wrap { display: flex; flex-direction: column; gap: 8px; }
+.label { font-size: var(--fs-xs); font-weight: 700; color: var(--muted); }
+.row { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+.btn {
+  height: 40px; display: grid; place-items: center; padding: 0; border: 0; min-width: 0;
+  border-radius: var(--r-sm); background: var(--surface); color: var(--ink); cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out);
+}
+.btn:hover { background: var(--lime-soft); }
+.btn[aria-pressed='true'] { background: var(--lime); box-shadow: inset 0 0 0 1px var(--ink); }
+.btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.icon { width: 22px; height: 22px; display: block; overflow: visible; }
+
+@media (max-width: 767px) {
+  .btn { height: var(--tap); }
+}

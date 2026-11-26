@@ -1,0 +1,845 @@
+/* Компьютер: шапка блока и витрина вместе помещаются в окно под шапкой сайта. */
+@media (min-width: 1024px) {
+  .fit {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    height: clamp(
+      var(--promo-min-height),
+      calc(100svh - var(--header-height) - 48px),
+      var(--promo-max-height)
+    );
+  }
+}
+
+/* Сетка главной: шаги в первой колонке, окно конструктора — во второй и третьей */
+.row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  align-items: stretch;
+  min-height: 0;
+}
+
+.row a:focus-visible,
+.row button:focus-visible {
+  outline: 2px solid var(--color-lime);
+  outline-offset: 3px;
+}
+
+/* Шаги */
+.rail {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-height: 0;
+}
+
+.steps {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Шаг не меньше своего текста: описание активного шага не наезжает на линию следующего и на кнопку,
+   свободная высота колонки делится между шагами поровну */
+.stepItem {
+  display: flex;
+  flex: 1 0 auto;
+  border-top: 1px solid var(--color-line-dark);
+}
+
+.step {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  width: 100%;
+  padding: 20px 0;
+  border: 0;
+  background: none;
+  color: var(--color-dim);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: color var(--duration) var(--ease);
+}
+
+.step:hover,
+.stepOn {
+  color: var(--color-white);
+}
+
+.stepNum {
+  flex: 0 0 24px;
+  padding-top: 3px;
+  font-size: var(--text-caption);
+  line-height: 1.4;
+}
+
+/* Описание раскрывается по высоте строки сетки (0fr → 1fr): шаг растёт плавно, без скачка списка */
+.stepText {
+  display: grid;
+  grid-template-rows: auto 0fr;
+  min-width: 0;
+  transition: grid-template-rows var(--duration-slow) var(--ease);
+}
+
+.stepOn .stepText {
+  grid-template-rows: auto 1fr;
+}
+
+.stepTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-l);
+  font-weight: var(--weight-bold);
+  line-height: 1.1;
+  text-transform: uppercase;
+  /* Начертания шрифта статичные: жирность переключается сразу, плавно растёт только кегль */
+  transition: font-size var(--duration-slow) var(--ease);
+}
+
+.stepOn .stepTitle {
+  font-size: var(--display-s);
+  font-weight: var(--weight-black);
+}
+
+.stepHint {
+  min-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity var(--duration) var(--ease);
+}
+
+.stepOn .stepHint {
+  opacity: 1;
+  transition-delay: calc(var(--duration-slow) - var(--duration));
+}
+
+.stepHintText {
+  display: block;
+  max-width: 32ch;
+  padding-top: 8px;
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  color: var(--color-dim);
+}
+
+/* Полоса времени шага поверх верхней линии: сколько осталось до следующего шага */
+.progress {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent, var(--color-lime));
+  transform-origin: left;
+  animation: progress var(--beat) linear both;
+}
+
+.progress[data-paused] {
+  animation-play-state: paused;
+}
+
+@keyframes progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.cta {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  height: calc(var(--control-height) * 1.35);
+  border-radius: var(--radius-pill);
+  background: var(--color-lime);
+  color: var(--color-ink);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background var(--duration) var(--ease);
+}
+
+/* На чёрном фоне основная кнопка салатовая, при наведении белая */
+.cta:hover {
+  background: var(--color-white);
+}
+
+/* Окно конструктора: уменьшенная копия /constructor, вид меняется по ширине самого окна */
+.frame {
+  position: relative;
+  grid-column: span 2;
+  min-height: 0;
+  container: promo / inline-size;
+}
+
+.cover {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-card);
+}
+
+.window {
+  --pane-left: 188px;
+  --pane-right: 232px;
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-size: var(--text-2xs);
+  user-select: none;
+}
+
+/* Шаги настоящего конструктора: «1 — 2 — 3», текущий на салатовой плашке */
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-white);
+}
+
+.barStep {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px 4px 4px;
+  border-radius: var(--radius-pill);
+  color: var(--color-muted);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+  transition: background var(--duration-slow) var(--ease), color var(--duration-slow) var(--ease);
+}
+
+.barStepOn {
+  background: var(--color-lime);
+  color: var(--color-ink);
+}
+
+.barNum {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-pill);
+  background: var(--color-stage);
+  color: var(--color-ink);
+  font-size: var(--text-caption);
+}
+
+.barStepOn .barNum {
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+.panes {
+  display: grid;
+  grid-template-columns: var(--pane-left) minmax(0, 1fr) var(--pane-right);
+  min-height: 0;
+  container: panes / size;
+}
+
+
+
+.left,
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+  padding: 16px;
+  overflow: hidden;
+  background: var(--color-white);
+}
+
+.methodsGroup {
+  display: contents;
+}
+
+.left {
+  border-right: 1px solid var(--color-line);
+}
+
+.right {
+  border-left: 1px solid var(--color-line);
+}
+
+.paneCaption {
+  margin-top: 4px;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  list-style: none;
+  margin: 0 0 6px;
+  padding: 0;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  padding: 0 10px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-control);
+  font-weight: var(--weight-medium);
+  transition: background var(--duration-slow) var(--ease), border-color var(--duration-slow) var(--ease);
+}
+
+.item svg {
+  flex: none;
+  color: var(--color-muted);
+}
+
+.itemOn {
+  border-color: var(--color-ink);
+  background: var(--color-lime);
+}
+
+.itemOn svg {
+  color: var(--color-ink);
+}
+
+.filler {
+  flex: none;
+  height: 34px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-control);
+}
+
+/* Холст: вкладки сторон, изделие, цвета */
+.center {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  justify-items: center;
+  gap: 12px;
+  min-height: 0;
+  padding: 16px;
+  background: var(--color-stage);
+}
+
+.sides {
+  display: flex;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-white);
+}
+
+.side {
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+}
+
+.sideOn {
+  background: var(--color-stage);
+}
+
+/* Мокап красится слоем цвета по маске, складки — тот же мокап поверх через multiply */
+.scene {
+  position: relative;
+  height: 100%;
+  aspect-ratio: 1200 / 1380;
+  max-width: 100%;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity var(--duration-slow) var(--ease), transform var(--duration-enter) var(--ease);
+}
+
+.layerOn {
+  opacity: 1;
+  transform: none;
+}
+
+.tint {
+  position: absolute;
+  inset: 0;
+  background: var(--tint);
+  -webkit-mask: var(--mock) center / contain no-repeat;
+  mask: var(--mock) center / contain no-repeat;
+  transition: background-color var(--duration-slow) var(--ease);
+}
+
+.shade {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(2);
+  mix-blend-mode: multiply;
+}
+
+.zone {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.print {
+  display: block;
+  width: 78%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: top;
+  animation: print-in var(--duration-enter) var(--ease) both;
+}
+
+@keyframes print-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.swatches {
+  display: flex;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--color-white);
+}
+
+.swatch {
+  width: 22px;
+  height: 22px;
+  box-sizing: border-box;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-pill);
+  transition: box-shadow var(--duration) var(--ease);
+}
+
+.swatchOn {
+  box-shadow: 0 0 0 2px var(--color-white), 0 0 0 3.5px var(--color-ink);
+}
+
+/* Правая панель: загрузка, готовые принты и текст, нанесение, кнопка заявки внизу */
+.upload {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px;
+  border-radius: var(--radius-control);
+  background: var(--color-lime);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-control);
+  font-weight: var(--weight-bold);
+  line-height: 1.2;
+  transition: border-color var(--duration) var(--ease), background var(--duration) var(--ease);
+}
+
+.tile[data-hot] {
+  border-color: var(--color-ink);
+}
+
+.methods {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.method {
+  padding: 10px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-control);
+  font-weight: var(--weight-medium);
+  text-align: center;
+}
+
+.methodOn {
+  border-color: var(--color-ink);
+  background: var(--color-surface);
+}
+
+.right {
+  position: relative;
+  padding-bottom: 76px;
+}
+
+/* Итог прижат к низу панели: остаётся на месте, даже если окно невысокое */
+.total {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 12px 12px 16px;
+  background: var(--color-ink);
+}
+
+.totalFiller {
+  width: 56px;
+  height: 10px;
+  border-radius: var(--radius-pill);
+  background: var(--color-line-dark);
+}
+
+.orderBtn {
+  padding: 10px 16px;
+  border-radius: var(--radius-pill);
+  background: var(--color-lime);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background var(--duration) var(--ease);
+}
+
+.orderBtn[data-hot] {
+  background: var(--color-lime-hover);
+}
+
+/* Нижний лист — только в компактном окне, как в конструкторе на телефоне */
+.sheet {
+  display: none;
+}
+
+/* Итог: заявка отправлена */
+.toast {
+  position: absolute;
+  /* По центру холста, над цветами */
+  left: calc(var(--pane-left) + (100% - var(--pane-left) - var(--pane-right)) / 2);
+  bottom: 72px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: min(280px, calc(100% - 32px));
+  box-sizing: border-box;
+  padding: 14px 16px;
+  border-radius: var(--radius-card-s);
+  background: var(--color-white);
+  box-shadow: var(--shadow-float);
+  opacity: 0;
+  transform: translate(-50%, 12px) scale(0.96);
+  transition: opacity var(--duration-exit) var(--ease-in), transform var(--duration-exit) var(--ease-in);
+}
+
+.toastOn {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  transition: opacity var(--duration-enter) var(--ease), transform var(--duration-enter) var(--ease);
+}
+
+.toastIcon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-pill);
+  background: var(--color-lime);
+}
+
+.toastText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.toastTitle {
+  font-size: var(--text-s);
+  font-weight: var(--weight-black);
+  text-transform: uppercase;
+}
+
+.toastHint {
+  color: var(--color-ink-64);
+}
+
+/* Курсор: острие стрелки — в точке цели; на компактном окне — касание пальцем */
+.cursor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  transition: transform var(--promo-cursor-move) var(--ease);
+}
+
+.arrow {
+  display: block;
+  margin: -3px 0 0 -5px;
+  fill: var(--color-ink);
+  stroke: var(--color-white);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.24));
+  transition: transform var(--duration-press) var(--ease);
+}
+
+.cursorDown .arrow {
+  transform: scale(0.86);
+}
+
+.touch {
+  display: none;
+}
+
+@container promo (max-width: 719px) {
+  .window {
+    min-height: 0;
+  }
+
+  .bar,
+  .left,
+  .right {
+    display: none;
+  }
+
+  .window {
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .panes {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+
+  .center {
+    padding: 12px;
+  }
+
+  .sheet {
+    display: block;
+    padding: 12px;
+    border-top: 1px solid var(--color-line);
+    background: var(--color-white);
+  }
+
+  .sheetSlide {
+    display: grid;
+    align-items: center;
+    min-height: 48px;
+    animation: sheet-in var(--duration-enter) var(--ease) both;
+  }
+
+  .chips {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .chip {
+    display: grid;
+    flex: 1;
+    place-items: center;
+    height: 48px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-control);
+    color: var(--color-muted);
+    transition: background var(--duration-slow) var(--ease), border-color var(--duration-slow) var(--ease);
+  }
+
+  .chipOn {
+    border-color: var(--color-ink);
+    background: var(--color-lime);
+    color: var(--color-ink);
+  }
+
+  .sheet .total {
+    position: static;
+    padding: 0;
+    background: none;
+  }
+
+  .sheet .orderBtn {
+    flex: 1;
+    padding: 15px;
+    text-align: center;
+  }
+
+  .toast {
+    left: 50%;
+    bottom: 84px;
+  }
+
+  .arrow {
+    display: none;
+  }
+
+  .touch {
+    display: block;
+    width: 36px;
+    height: 36px;
+    margin: -18px 0 0 -18px;
+    border: 2px solid var(--color-white);
+    border-radius: var(--radius-pill);
+    background: rgba(5, 5, 5, 0.32);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
+    transition: transform var(--duration-press) var(--ease);
+  }
+
+  .cursorDown .touch {
+    transform: scale(0.8);
+  }
+}
+
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Невысокие окна компьютера: шаги плотнее, чтобы блок целиком помещался в экран */
+@media (min-width: 1024px) and (max-height: 820px) {
+  .step {
+    padding: 12px 0;
+  }
+
+  .stepOn .stepTitle {
+    font-size: var(--display-s-compact);
+  }
+
+  /* Описание во всю ширину колонки — в две строки, а не в три: открытый шаг помещается над кнопкой */
+  .stepHintText {
+    max-width: none;
+  }
+}
+
+@media (min-width: 1024px) and (max-height: 700px) {
+  .stepHint {
+    display: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .row {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  /* На планшете и телефоне сначала окно, потом шаги и кнопка */
+  .frame {
+    grid-column: auto;
+    order: -1;
+    height: 560px;
+  }
+
+  .stepItem {
+    flex: none;
+  }
+
+  .step {
+    padding: 16px 0;
+  }
+}
+
+@media (max-width: 599px) {
+  .frame {
+    height: 480px;
+  }
+
+  .stepOn .stepTitle {
+    font-size: var(--display-s);
+  }
+}
+
+/* Невысокое окно: панели сжимаются, второстепенное (модель, нанесение) уходит, кнопка заявки остаётся внизу */
+@container panes (max-height: 400px) {
+  .filler,
+  .methodsGroup {
+    display: none;
+  }
+
+  .item {
+    height: 34px;
+  }
+
+  .left,
+  .right {
+    gap: 8px;
+  }
+}
+
+/* Окно конструктора «ложится» на страницу при скролле: въезжает наклонённым от зрителя и выпрямляется,
+   пока блок поднимается до середины экрана. Без animation-timeline окно просто стоит ровно */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .frame {
+      perspective: 1400px;
+      view-timeline: --promo-frame;
+    }
+
+    .window {
+      transform-origin: 50% 100%;
+      animation: lay-down var(--ease-out-soft) both;
+      animation-timeline: --promo-frame;
+      animation-range: entry 0% cover 40%;
+    }
+  }
+}
+
+@keyframes lay-down {
+  from {
+    transform: rotateX(var(--promo-tilt)) scale(0.9);
+    opacity: 0.4;
+  }
+}

@@ -1,0 +1,362 @@
+/* Карточка товара: фото 3:4 на серой подложке, ниже строка цветов и размеров, цена и название капсом */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+  color: var(--color-ink);
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius-card-s);
+  overflow: hidden;
+  background: var(--color-surface);
+}
+
+/* Фото с разным фоном (белым, серым) сводятся к одной подложке: белый фон растворяется в ней */
+.photo {
+  object-fit: cover;
+  object-position: center 20%;
+  mix-blend-mode: multiply;
+  transition:
+    opacity var(--duration-slow) var(--ease),
+    transform var(--duration-slow) var(--ease);
+}
+
+.second {
+  opacity: 0;
+}
+
+/* Сменили цвет кружком — новое фото проявляется, а не подменяется рывком */
+.photo[data-switched] {
+  animation: photo-in var(--duration-slow) var(--ease);
+}
+
+@keyframes photo-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Второе фото нужно только для наведения мышью: на сенсорных экранах его не рендерим — и браузер его не качает */
+@media (hover: none) {
+  .second {
+    display: none;
+  }
+}
+
+.badges {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: var(--badge-height);
+  padding: 0 10px;
+  border-radius: var(--radius-pill);
+  background: var(--color-white);
+  color: var(--color-ink);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+}
+
+.badge[data-tone='new'] {
+  background: var(--color-lime);
+}
+
+.badge[data-tone='sale'] {
+  background: var(--color-blue);
+  color: var(--color-white);
+}
+
+.badge[data-tone='out'] {
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Цвета слева, размеры справа; высота строки постоянная — по кружку, даже если цвет один */
+.options {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: var(--swatch-hit);
+  margin-top: -6px;
+}
+
+.sizes {
+  margin-left: auto;
+  font-size: var(--text-xs);
+  color: var(--color-line-dark);
+  white-space: nowrap;
+}
+
+/* Название — последним, под ценой. Под него всегда две строки: у цветов одной модели названия разной длины,
+   и смена цвета не должна сдвигать карточки ниже; пустая вторая строка уходит в низ карточки. Длиннее — обрезается */
+.name {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  min-height: calc(2em * 1.15);
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-l);
+  font-weight: var(--weight-black);
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.link {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Растянутая ссылка: нажатие в любом месте карточки ведёт на товар */
+.link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.card:has(.link:focus-visible) .media {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 3px;
+}
+
+.link:focus-visible {
+  outline: none;
+}
+
+/* Цена и цена с принтом — одной строкой, на узкой карточке вторая уходит вниз */
+.price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 10px;
+  margin: 0;
+}
+
+.priceMain {
+  font-size: var(--text-l);
+}
+
+.priceNote {
+  font-size: var(--text-xs);
+  color: var(--color-line-dark);
+}
+
+/* Цены не рвутся посередине числа: переносится только строка целиком */
+.priceNote > * {
+  white-space: nowrap;
+}
+
+.priceOld {
+  text-decoration-thickness: 1px;
+}
+
+/* «Нанести принт»: круглая кнопка поверх растянутой ссылки, в углу фото. На компьютере — по наведению и фокусу */
+.print {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--card-action);
+  height: var(--card-action);
+  border-radius: var(--radius-pill);
+  background: var(--color-lime);
+  color: var(--color-ink);
+  transition:
+    opacity var(--duration) var(--ease),
+    transform var(--duration) var(--ease),
+    background var(--duration) var(--ease),
+    color var(--duration) var(--ease);
+}
+
+.print svg {
+  width: var(--card-action-icon);
+  height: var(--card-action-icon);
+}
+
+.printLabel {
+  display: none;
+}
+
+.print:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+.swatches {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  margin: 0 0 0 -6px;
+  padding: 0;
+  list-style: none;
+}
+
+/* Кружок цвета 16 px в области нажатия 28 px; текущий цвет — кольцо цвета текста через белый зазор */
+.swatch {
+  display: grid;
+  place-items: center;
+  width: var(--swatch-hit);
+  height: var(--swatch-hit);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+}
+
+.swatch::before {
+  content: '';
+  width: var(--swatch-size);
+  height: var(--swatch-size);
+  border-radius: 50%;
+  background: var(--swatch);
+  box-shadow: inset 0 0 0 1px var(--color-ink-10);
+  transition: box-shadow var(--duration) var(--ease);
+}
+
+.swatch[aria-pressed='true']::before {
+  box-shadow:
+    inset 0 0 0 1px var(--color-ink-10),
+    0 0 0 2px var(--color-white),
+    0 0 0 3px var(--color-ink);
+}
+
+.swatch:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: -2px;
+}
+
+@media (hover: hover) {
+  /* С мышью — «таблетка» с подписью, как кнопки сайта: одна кисточка без слов не читается */
+  .print {
+    gap: 8px;
+    width: auto;
+    height: var(--control-height);
+    padding: 0 16px 0 12px;
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .printLabel {
+    display: inline;
+    font-size: var(--text-xs);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+  }
+
+  .card:hover .print,
+  .print:focus-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  .print svg {
+    width: 1.25em;
+    height: 1.25em;
+  }
+
+  .print:hover {
+    background: var(--color-ink);
+    color: var(--color-white);
+  }
+
+  /* Второе фото — при наведении на карточку, но не пока курсор на кружках: там смотрят на цвет, а не на второй ракурс */
+  .card:not(:has(.swatches:hover)):hover .second {
+    opacity: 1;
+  }
+
+  /* Фото смешиваются через multiply: первое должно погаснуть, иначе обе фигуры просвечивают друг сквозь друга */
+  .card:not(:has(.swatches:hover)):hover .media:has(.second) .photo:not(.second) {
+    opacity: 0;
+  }
+
+  .card:hover .photo {
+    transform: scale(1.03);
+  }
+
+  .swatch:hover::before {
+    box-shadow:
+      inset 0 0 0 1px var(--color-ink-10),
+      0 0 0 2px var(--color-white),
+      0 0 0 3px var(--color-line);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .print {
+    transform: none;
+  }
+
+  .photo[data-switched] {
+    animation: none;
+  }
+}
+
+@media (max-width: 599px) {
+  .print {
+    right: 8px;
+    bottom: 8px;
+  }
+
+  .card {
+    gap: 12px;
+  }
+
+  .name,
+  .priceMain {
+    font-size: var(--text-m);
+  }
+
+  /* На телефоне в строке место только кружкам: размеры — на странице товара. Шесть цветов встают в одну строку */
+  .swatches + .sizes {
+    display: none;
+  }
+
+  .swatches {
+    gap: 0;
+  }
+
+  .swatch {
+    width: var(--swatch-hit-s);
+    height: var(--swatch-hit-s);
+  }
+
+  .badges {
+    top: 8px;
+    left: 8px;
+  }
+}

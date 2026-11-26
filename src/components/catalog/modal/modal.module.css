@@ -1,0 +1,82 @@
+/* Окно поверх страницы: подложка как у меню-бургера и панели фильтров, уход быстрее появления */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-modal) - 1);
+  background: var(--backdrop-dim);
+  -webkit-backdrop-filter: blur(var(--backdrop-blur));
+  backdrop-filter: blur(var(--backdrop-blur));
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--duration-exit) var(--ease-in),
+    visibility 0s linear var(--duration-exit);
+}
+
+.backdrop[data-open] {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity var(--duration-enter) var(--ease);
+}
+
+.panel {
+  position: fixed;
+  z-index: var(--z-modal);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-white);
+  color: var(--color-ink);
+  opacity: 0;
+  transform: translateY(24px);
+  visibility: hidden;
+  transition:
+    opacity var(--duration-exit) var(--ease-in),
+    transform var(--duration-exit) var(--ease-in),
+    visibility 0s linear var(--duration-exit);
+}
+
+.panel:focus {
+  outline: none;
+}
+
+.panel[data-open] {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+  transition:
+    opacity var(--duration-enter) var(--ease),
+    transform var(--duration-enter) var(--ease);
+}
+
+/* Диалог: карточка по центру, содержимое листается внутри */
+.panel[data-variant='dialog'] {
+  top: 50%;
+  left: 50%;
+  width: min(var(--prose-width), calc(100% - 2 * var(--header-offset)));
+  max-height: calc(100% - 2 * var(--header-offset));
+  border: 1px solid var(--color-ink-10);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-float);
+  translate: -50% -50%;
+}
+
+/* Просмотр: на весь экран, фото целиком */
+.panel[data-variant='full'] {
+  inset: 0;
+  background: var(--color-surface);
+}
+
+@media (max-width: 599px) {
+  .panel[data-variant='dialog'] {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    right: 0;
+    max-height: calc(100% - var(--header-height));
+    border-width: 1px 0 0;
+    border-radius: var(--radius-card) var(--radius-card) 0 0;
+    translate: none;
+  }
+}

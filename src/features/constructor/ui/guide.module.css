@@ -1,0 +1,35 @@
+/*
+ * Шаги над конструктором (ui/StepGuide.tsx). Только десктоп: на телефоне свои вкладки-шаги.
+ * Одна строка без подложки, чтобы не отнимать высоту у холста; текущий шаг — лаймовая плашка.
+ */
+.guide { grid-area: guide; min-width: 0; animation: guideIn var(--t-base) var(--ease-out) backwards; }
+
+/* [1]——[2]——[3]: линии от шага до шага, последний шаг у правого края */
+.strip { display: flex; margin: 0; padding: 0; list-style: none; min-width: 0; }
+.item { flex: 1 1 0; display: flex; align-items: center; min-width: 0; }
+.item:first-child { flex: 0 0 auto; }
+.line { flex: 1 1 auto; min-width: 24px; height: 2px; margin: 0 8px; border-radius: 1px; background: var(--line); transition: background-color var(--t-base) var(--ease-out); }
+.line[data-done] { background: var(--ink); }
+.step {
+  flex: none; display: flex; align-items: center; gap: 10px; min-width: 0; padding: 4px 14px 4px 4px; border: 0; border-radius: var(--r-pill);
+  background: transparent; cursor: pointer; text-align: left; color: var(--muted) !important;
+  transition: background-color var(--t-fast) var(--ease-out), color var(--t-fast) var(--ease-out);
+}
+.step:hover { background: var(--ink-10); }
+.step:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.step[data-done] { color: var(--ink) !important; }
+.step[data-active] { background: var(--lime); color: var(--ink) !important; }
+.num {
+  flex: none; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%;
+  background: var(--ink-10); color: inherit; font-size: var(--fs-sm); font-weight: 800; font-variant-numeric: tabular-nums;
+  transition: background-color var(--t-base) var(--ease-out), color var(--t-base) var(--ease-out);
+}
+.step[data-done] .num { background: var(--ink); color: var(--lime); }
+.step[data-active] .num { background: var(--ink); color: #fff; }
+.stepTitle { font-size: var(--fs-sm); font-weight: 700; line-height: 1.25; white-space: nowrap; }
+.note { font-size: var(--fs-xs); line-height: 1.25; white-space: nowrap; opacity: .72; }
+
+@keyframes guideIn { from { opacity: 0; } }
+
+@media (max-width: 1320px) { .note { display: none; } }
+@media (max-width: 900px) { .guide { display: none; } }

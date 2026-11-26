@@ -35,3 +35,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# screenshots
+/.artifacts/
+
+# constructor orders store and e2e
+/data/
+/test-results/
+/playwright-report/
+/.next-e2e*/
+/.next-*/

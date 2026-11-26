@@ -83,3 +83,8 @@
     max-width: 100%;
     text-align: justify;
 }
+@media (max-width: 700px) {
+    .brief_text {
+        text-align: left;
+    }
+}

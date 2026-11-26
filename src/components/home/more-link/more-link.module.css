@@ -1,0 +1,35 @@
+/* На светлой секции — чёрная таблетка, на чёрной — белая; при наведении обе берут акцент секции */
+.link {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  height: calc(var(--control-height) * 1.15);
+  padding: 0 28px;
+  border-radius: var(--radius-pill);
+  background: var(--color-ink);
+  color: var(--color-white);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background var(--duration) var(--ease), color var(--duration) var(--ease);
+}
+
+:global([data-tone='black']) .link {
+  background: var(--color-white);
+  color: var(--color-ink);
+}
+
+.link:hover,
+:global([data-tone='black']) .link:hover {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}

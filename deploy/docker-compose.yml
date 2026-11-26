@@ -7,6 +7,11 @@ services:
     environment:
       PORT: "3000"
       HOSTNAME: 0.0.0.0
+    # Каналы заявок конструктора (ORDER_*): файл пишет деплой из секретов GitHub.
+    env_file:
+      - web.env
+    volumes:
+      - orders:/app/data/orders
     networks:
       - studio
 
@@ -29,5 +34,7 @@ networks:
   studio:
 
 volumes:
+  # Заявки, которые ещё не ушли в канал, переживают перезапуск и новый образ.
+  orders:
   caddy_data:
   caddy_config:

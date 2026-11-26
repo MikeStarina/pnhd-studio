@@ -1,0 +1,36 @@
+/* Фото 3:4 на сером, скругление карточки; вся площадь — кнопка просмотра */
+.photo {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-card-s);
+  background: var(--color-surface);
+  cursor: zoom-in;
+}
+
+.photo:disabled {
+  cursor: default;
+}
+
+.photo:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+/* Белый кружок в правом нижнем углу — тот же значок, что у галереи товара */
+.zoom {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  display: grid;
+  width: var(--thumb-action);
+  height: var(--thumb-action);
+  place-items: center;
+  border-radius: var(--radius-pill);
+  background: var(--color-white);
+  color: var(--color-ink);
+}

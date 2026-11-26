@@ -1,0 +1,190 @@
+/* Экран-состояние: «Спасибо», ошибка, 404. Чёрная карточка по сетке страницы.
+   Успех — салатовый знак с упругим отскоком (редкий радостный момент); сбой — спокойный белый знак, без отскока. */
+.page {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--page-max);
+  min-height: 60svh;
+  margin: 0 auto;
+  padding: var(--header-gap) var(--page-gutter) var(--section-gap);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 64px;
+  border-radius: var(--radius-card);
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+.badge {
+  display: grid;
+  place-items: center;
+  width: var(--fab-size);
+  height: var(--fab-size);
+  border-radius: 50%;
+  background: var(--color-lime);
+  color: var(--color-ink);
+}
+
+.badge[data-tone='problem'] {
+  background: var(--color-white);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--display-xl);
+  font-weight: var(--weight-black);
+  line-height: var(--display-leading);
+  text-transform: uppercase;
+}
+
+.text {
+  max-width: 32em;
+  margin: 0;
+  font-size: var(--text-l);
+  line-height: 1.4;
+}
+
+.note {
+  margin: -8px 0 0;
+  color: var(--color-dim);
+  font-size: var(--text-xs);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.primary,
+.secondary {
+  font-family: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4em;
+  height: var(--control-height);
+  padding: 0 28px;
+  border-radius: var(--radius-pill);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background var(--duration) var(--ease), color var(--duration) var(--ease), border-color var(--duration) var(--ease);
+}
+
+.primary {
+  background: var(--color-lime);
+  color: var(--color-ink);
+}
+
+.primary {
+  border: 0;
+}
+
+.secondary {
+  border: var(--border-control) solid var(--color-line-dark);
+  background: transparent;
+  color: var(--color-white);
+}
+
+.primary:focus-visible,
+.secondary:focus-visible {
+  outline: 2px solid var(--color-lime);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .primary:hover {
+    background: var(--color-white);
+  }
+
+  .secondary:hover {
+    border-color: var(--color-white);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .badge[data-tone='success'] {
+    animation: pop var(--duration-celebrate) var(--ease-elastic) both;
+  }
+
+  .badge[data-tone='problem'] {
+    animation: rise var(--duration-reveal-part) var(--ease-out-soft) both;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .card {
+    animation: rise var(--duration-reveal) var(--ease-out-soft) both;
+  }
+
+  .title,
+  .text,
+  .note,
+  .actions {
+    animation: rise var(--duration-reveal-part) var(--ease-out-soft) both;
+  }
+
+  .title {
+    animation-delay: calc(var(--reveal-stagger) * 2);
+  }
+
+  .text {
+    animation-delay: calc(var(--reveal-stagger) * 3);
+  }
+
+  .note {
+    animation-delay: calc(var(--reveal-stagger) * 4);
+  }
+
+  .actions {
+    animation-delay: calc(var(--reveal-stagger) * 5);
+  }
+
+  .badge {
+    animation-delay: var(--reveal-stagger);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--reveal-shift));
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.85) rotate(-12deg);
+  }
+}
+
+@media (max-width: 599px) {
+  .card {
+    gap: 20px;
+    padding: 32px 20px;
+  }
+
+  .primary,
+  .secondary {
+    flex: 1 1 100%;
+  }
+}
+
+.text a {
+  color: inherit;
+  text-decoration-color: var(--color-lime);
+  text-underline-offset: 0.2em;
+}

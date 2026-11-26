@@ -1,0 +1,96 @@
+/* Стена на всю ширину экрана, а не колонки страницы */
+.wall {
+  --tile-w: 208px;
+  --tile-h: 104px;
+  --tile-gap: 16px;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--tile-gap);
+  box-sizing: border-box;
+  width: 100vw;
+  margin: 0 calc(50% - 50vw);
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+}
+
+.row {
+  display: flex;
+  width: max-content;
+  animation: clients-marquee 90s linear infinite;
+}
+
+.row[data-row='1'] {
+  margin-left: calc(var(--tile-w) / -2);
+  animation-duration: 104s;
+  animation-direction: reverse;
+}
+
+.track {
+  display: flex;
+  gap: var(--tile-gap);
+  margin: 0;
+  padding: 0 var(--tile-gap) 0 0;
+  list-style: none;
+}
+
+.tile {
+  box-sizing: border-box;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--tile-w);
+  height: var(--tile-h);
+  border: 1px solid var(--color-line-dark);
+  border-radius: var(--radius-card-s);
+}
+
+.logo {
+  height: auto;
+}
+
+.name {
+  color: var(--color-white);
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: var(--weight-black);
+  line-height: 1.05;
+  text-align: center;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+@keyframes clients-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row {
+    animation: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .wall {
+    --tile-w: 160px;
+    --tile-h: 80px;
+    --tile-gap: 12px;
+  }
+}
+
+@media (max-width: 599px) {
+  .wall {
+    --tile-w: 128px;
+    --tile-h: 64px;
+    --tile-gap: 10px;
+
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .name {
+    font-size: 14px;
+  }
+}

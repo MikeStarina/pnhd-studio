@@ -1,0 +1,603 @@
+.section {
+  --accent: var(--color-blue);
+  --on-accent: var(--color-white);
+  padding-top: var(--header-gap);
+  background: var(--color-page);
+  color: var(--color-ink);
+}
+
+.inner {
+  position: relative;
+  box-sizing: border-box;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--page-gutter) 16px;
+}
+
+/* Компьютер: первый экран целиком помещается в окно. Нижний ряд карточек берёт свою высоту,
+   верхний — остаток; заголовок масштабируется по высоте верхнего ряда (единицы cqh). */
+@media (min-width: 1024px) {
+  .section {
+    box-sizing: border-box;
+    display: grid;
+    min-height: max(var(--hero-min-height), calc(100svh - var(--header-height) - var(--direction-row-height)));
+  }
+
+  /* Верхний ряд не ниже карточки «О нас»: в совсем низком окне блок вырастает, а не наезжает на нижний ряд */
+  .inner {
+    display: grid;
+    grid-template-rows: minmax(210px, 1fr) auto;
+    width: 100%;
+  }
+
+  .top {
+    position: relative;
+    container-type: size;
+  }
+
+  /* Нижний ряд — почти половина экрана, как в макете; верхний с заголовком берёт остаток */
+  .bottom {
+    min-height: var(--hero-bottom-height);
+  }
+}
+
+/* Верхний ряд: каскадный заголовок слева по ширине своей длинной строки, чёрная карточка «о студии» — всё остальное место
+   (не уже --hero-about-width) */
+.top {
+  display: grid;
+  grid-template-columns: max-content minmax(var(--hero-about-width), 1fr);
+  gap: 32px;
+  align-items: stretch;
+}
+
+/* Размер заголовка: по ширине окна, по высоте верхнего ряда (4 строки × 0,9 ≈ 3,6 размера) и по месту рядом с карточкой
+   «о студии» (самая длинная строка — около 11 размеров) */
+.title {
+  --title-size: min(
+    var(--display-xl),
+    6.6vw,
+    27cqh,
+    (min(100vw, var(--page-max)) - 2 * var(--page-gutter) - var(--hero-about-width) - 32px) / 11
+  );
+  width: max-content;
+  margin: 0;
+  align-self: center;
+  font-family: var(--font-display);
+  font-size: var(--title-size);
+  font-weight: var(--weight-black);
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+/* Ключевая фраза страницы — часть H1, набрана как метка секции. На компьютере стоит в пустом углу
+   над первой строкой (она сдвинута вправо), на узком экране — строкой над заголовком */
+.title {
+  position: relative;
+}
+
+.kicker {
+  position: absolute;
+  top: 0.35em;
+  left: 0;
+  /* Не шире отступа первой строки: на узком десктопе переносится, а не упирается в «твоей» */
+  max-width: calc(var(--title-size) * 4.6 - 16px);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-caps);
+  line-height: 1.3;
+}
+
+/* Каскад строк, как в макете: каждая строка со своим отступом слева (в долях кегля), последняя прижата вправо.
+   Ширина заголовка — по самой длинной строке, поэтому «одежде» кончается ровно под «твоей» */
+.lineOne,
+.lineTwo,
+.lineThree,
+.lineFour {
+  display: block;
+  white-space: nowrap;
+}
+
+.lineOne {
+  padding-left: 4.6em;
+}
+
+.lineTwo {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+}
+
+.lineThree {
+  padding-left: 2.4em;
+}
+
+.lineFour {
+  text-align: right;
+}
+
+/* «От 1 шт.» — овальная обводка цвета текста, без заливки */
+.titlePill {
+  display: inline-flex;
+  align-items: center;
+  height: 2.4em;
+  padding: 0 1.1em;
+  border: var(--border-control) solid currentColor;
+  border-radius: var(--radius-pill);
+  font-size: 0.25em;
+  font-weight: var(--weight-medium);
+  letter-spacing: normal;
+  line-height: 1;
+}
+
+/* Чёрная карточка: метка вверху, текст внизу, салатовая звезда-росчерк уходит за правый верхний край */
+.about {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 28px;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+/* Размер — от высоты карточки, угол — правый верхний: при любой ширине карточки росчерк не дотягивается до текста внизу */
+.aboutScribble {
+  position: absolute;
+  top: -20%;
+  right: -12%;
+  width: auto;
+  height: 74%;
+  pointer-events: none;
+}
+
+.aboutPill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: var(--badge-height);
+  padding: 0 14px;
+  border: 1px solid var(--color-white);
+  border-radius: var(--radius-pill);
+  background: var(--color-ink);
+  color: var(--color-white);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color var(--duration) var(--ease), color var(--duration) var(--ease);
+}
+
+.aboutPill:hover {
+  background: var(--color-lime);
+  border-color: var(--color-lime);
+  color: var(--color-ink);
+}
+
+.aboutText {
+  position: relative;
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+}
+
+/* Нижний ряд: слева мини-конструктор, справа салатовая карточка конструктора */
+.bottom {
+  display: grid;
+  grid-template-columns: var(--hero-mini-width) minmax(0, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+/* Мини-конструктор: белая карточка в чёрной рамке — выбор вещи, мокап, загрузка и «Открыть» */
+.mini {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 28px;
+  border: 1px solid var(--color-ink);
+  border-radius: var(--radius-card);
+  background: var(--color-white);
+}
+
+/* Круглая наклейка на правом верхнем углу мини-конструктора, фон прозрачный; заходит на салатовую карточку — как в макете */
+.badge {
+  position: absolute;
+  top: calc(var(--hero-badge-size) / -2);
+  right: calc(var(--hero-badge-size) / -2 + 16px);
+  z-index: 1;
+  width: var(--hero-badge-size);
+  aspect-ratio: 1;
+  color: var(--color-ink);
+}
+
+.badgeRing {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.badgeText {
+  fill: currentColor;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+}
+
+/* Четырёхлучевая звезда в центре наклейки */
+.badgeStar {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 26%;
+  height: 26%;
+  background: currentColor;
+  -webkit-mask: url('/home/star-4.svg') center / contain no-repeat;
+  mask: url('/home/star-4.svg') center / contain no-repeat;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .badgeRing {
+    animation: badge-spin 24s linear infinite;
+  }
+}
+
+@keyframes badge-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Метки: вещи мини-конструктора и шаги заказа. Выбранная вещь и первый шаг — чёрные */
+.miniChips,
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip,
+.step {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  height: var(--thumb-action);
+  padding: 0 14px;
+  border: 1px solid var(--color-ink);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-ink);
+  font-family: inherit;
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.chip {
+  cursor: pointer;
+  transition: background-color var(--duration) var(--ease), color var(--duration) var(--ease);
+}
+
+.chip:hover {
+  background: var(--color-surface);
+}
+
+.chip[aria-checked='true'],
+.step:first-child {
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+.miniBody {
+  display: grid;
+  flex: 1;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 16px;
+  min-height: 0;
+}
+
+/* Мокап вещи на синем: серые маски конструктора осветлены до белой вещи; смена — плавной сменой картинок */
+.miniPhoto {
+  position: relative;
+  min-height: 160px;
+  overflow: hidden;
+  border-radius: var(--radius-card-s);
+  background: var(--color-blue);
+}
+
+.miniMockup {
+  position: absolute;
+  inset: 8%;
+  width: 84%;
+  height: 84%;
+  object-fit: contain;
+  filter: brightness(1.9) drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
+  opacity: 0;
+  transition: opacity var(--duration-slow) var(--ease);
+}
+
+.miniMockup[data-active] {
+  opacity: 1;
+}
+
+.miniActions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dropzone {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px dashed var(--color-ink);
+  border-radius: var(--radius-card-s);
+  color: var(--color-ink);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  text-align: center;
+  text-decoration: none;
+  transition: background-color var(--duration) var(--ease);
+}
+
+.dropzone:hover {
+  background: var(--color-surface);
+}
+
+/* Чёрные кнопки-капсулы с текстом и стрелкой: «Открыть» и «Перейти в конструктор» */
+.miniOpen,
+.orderButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: var(--submit-height);
+  padding: 0 28px;
+  border-radius: var(--radius-pill);
+  background: var(--color-ink);
+  color: var(--color-white);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color var(--duration) var(--ease), color var(--duration) var(--ease);
+}
+
+.miniOpen {
+  height: 48px;
+}
+
+.miniOpen:hover,
+.orderButton:hover {
+  background: var(--color-blue);
+}
+
+/* Главная карточка первого экрана — салатовая, светлеет книзу: шаги, заголовок, линия, текст, кнопка и стрелка */
+.order {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 28px;
+  border-radius: var(--radius-card);
+  background: linear-gradient(180deg, var(--color-lime) 0%, var(--color-lime-35) 100%);
+  container-type: inline-size;
+}
+
+.orderMain {
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.orderCopy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 660px;
+}
+
+.orderTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  /* Кегль по ширине карточки и высоте окна: главный заголовок экрана остаётся крупнее */
+  font-size: min(var(--display-s) * 1.2, 5.6cqi, 5.4svh);
+  font-weight: var(--weight-black);
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.orderText {
+  width: 100%;
+  max-width: 460px;
+  margin: 20px 0 24px;
+  padding-top: 8px;
+  border-top: 1px solid var(--color-ink);
+  color: var(--color-ink);
+  font-size: var(--text-s);
+  line-height: 1.5;
+  opacity: 0.8;
+}
+
+.orderArrow {
+  display: flex;
+  flex-shrink: 0;
+  transition: transform var(--duration) var(--ease);
+}
+
+.orderArrow img {
+  width: 100px;
+  height: 100px;
+}
+
+/* Сдвиг при наведении — только там, где есть мышь: на телефоне тап оставляет его «залипшим» */
+@media (hover: hover) {
+  .orderArrow:hover {
+    transform: translate(4px, -4px);
+  }
+}
+
+.aboutPill:focus-visible,
+.chip:focus-visible,
+.dropzone:focus-visible,
+.miniOpen:focus-visible,
+.orderButton:focus-visible {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 3px;
+}
+
+@media (max-width: 1279px) {
+  .orderArrow img {
+    width: 72px;
+    height: 72px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .top,
+  .bottom {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .title {
+    --title-size: min(var(--display-hero), 10.5vw);
+  }
+
+  .lineOne {
+    padding-left: 2.4em;
+  }
+
+  .lineThree {
+    padding-left: 1.2em;
+  }
+
+  .about {
+    min-height: 240px;
+  }
+
+  /* Карточки идут столбиком: наклейка целиком внутри мини-конструктора, в правом верхнем углу —
+     на чёрную карточку выше она не заходит (фон у неё прозрачный) */
+  .badge {
+    top: 12px;
+    right: 12px;
+  }
+
+  /* Ряд меток не ниже наклейки — она не наезжает на мокап и зону загрузки */
+  .miniChips {
+    align-content: center;
+    min-height: calc(var(--hero-badge-size) - 16px);
+    padding-right: var(--hero-badge-size);
+  }
+
+  /* Широкая карточка: росчерк справа, текст слева от него */
+  .aboutScribble {
+    right: -4%;
+  }
+
+  .aboutText {
+    max-width: 56%;
+  }
+
+  .kicker {
+    position: static;
+    display: block;
+    max-width: none;
+    margin-bottom: 16px;
+  }
+
+  .order {
+    padding: 24px;
+  }
+
+  .orderTitle {
+    font-size: var(--display-s);
+  }
+}
+
+@media (max-width: 599px) {
+  .lineOne {
+    padding-left: 1.2em;
+  }
+
+  .lineThree {
+    padding-left: 0.6em;
+  }
+
+  .about,
+  .mini,
+  .order {
+    padding: 20px;
+  }
+
+  .about {
+    min-height: 220px;
+  }
+
+  /* Узкая карточка: росчерк меньше и выше, чтобы не ложился на текст */
+  .aboutScribble {
+    height: 68%;
+  }
+
+  .aboutText {
+    max-width: none;
+  }
+
+  .mini {
+    padding-top: 24px;
+  }
+
+  .miniPhoto {
+    min-height: 200px;
+  }
+
+  .miniOpen {
+    padding: 0 16px;
+  }
+
+  .orderMain {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .orderTitle {
+    font-size: var(--display-s-compact);
+  }
+
+  .orderArrow {
+    display: none;
+  }
+}
+
+/* Невысокое окно компьютера: карточки первого экрана плотнее, заголовку остаётся больше места */
+@media (min-width: 1024px) and (max-height: 820px) {
+  .mini,
+  .order {
+    gap: 16px;
+    padding: 24px;
+  }
+
+  .orderText {
+    margin: 14px 0 16px;
+  }
+
+  .orderButton {
+    height: 48px;
+  }
+}

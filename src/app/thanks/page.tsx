@@ -1,42 +1,29 @@
-'use client'
-import React, { useEffect, useState } from "react";
-import { useRouter, redirect } from "next/navigation";
-import styles from './page.module.css';
+import React from 'react';
+import { redirect } from 'next/navigation';
+import { siteContacts } from '@/components/site/contacts';
+import StatusScreen from '@/components/site/status-screen/status-screen';
 
+/** Страница после оформления заказа. Без `?from=checkout` (прямой заход) — на главную. */
+const Page: React.FC<{ searchParams: { [n: string]: string | undefined } }> = ({ searchParams }) => {
+  if (searchParams.from !== 'checkout') redirect('/');
 
-
-
-
-
-const Page: React.FC<{ searchParams: { [n: string]: string }}> = ({ searchParams }) => {
-
-    const [ counter, setCounter ] = useState(5)
-
-    const router = useRouter();
-    useEffect(() => {
-        if (!searchParams.from || searchParams.from !== 'checkout') router.push('/');
-        const interval = setInterval(() => {
-            if(counter === 0) return router.push('/');
-            setCounter(counter - 1);
-        }, 1000)
-
-        return () => {
-            clearInterval(interval)
-        }
-    }, [counter])
-
-    return (
-        <section className={styles.page}>
-        {searchParams.from && searchParams.from === 'checkout' &&
-            <div className={styles.wrapper}>
-                <h1 className={styles.title}>СПАСИБО!</h1>
-                <p className={styles.text}>
-                    Мы свяжемся с вами в течении 15 минут — подтвердим заказ и пришлем ссылку на оплату UwU, а пока перенаправми вас на главную через {counter} секунд.
-                </p>
-            </div>
-        }
-        </section>
-    )
-}
+  return (
+    <StatusScreen
+      tone="success"
+      title={<>Спасибо за&nbsp;заказ</>}
+      text={
+        <>
+          Менеджер свяжется с&nbsp;тобой в&nbsp;течение 15&nbsp;минут в&nbsp;рабочее время, подтвердит заказ
+          и&nbsp;пришлёт ссылку на&nbsp;оплату.
+        </>
+      }
+      note={`Работаем ${siteContacts.hours.toLowerCase()}`}
+      actions={[
+        { label: 'Вернуться в каталог', href: '/shop' },
+        { label: 'На главную', href: '/' },
+      ]}
+    />
+  );
+};
 
 export default Page;

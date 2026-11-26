@@ -1,0 +1,137 @@
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-bottom: 56px;
+}
+
+/* Секция из одной шапки: снизу только отступ секции */
+.head:last-child {
+  margin-bottom: 0;
+}
+
+/* Сетка главной — три равные колонки: заголовок занимает две, пояснение — третью,
+   поэтому пояснение стоит ровно над правой колонкой содержимого секции */
+.row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  gap: 24px 16px;
+}
+
+.title {
+  grid-column: span 2;
+}
+
+/* Без пояснения заголовку не нужна пустая третья колонка: иначе он переносится без причины */
+.title:only-child {
+  grid-column: 1 / -1;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--display-l);
+  font-weight: var(--weight-black);
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.lead {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: var(--text-l);
+  line-height: 1.4;
+}
+
+/* Пояснение приглушено цветом, а не opacity: вложенный акцент (оценка в «Отзывах») может вернуть себе полный цвет */
+.lead p {
+  margin: 0;
+  color: color-mix(in srgb, currentColor 64%, transparent);
+}
+
+/* По центру: заголовок и пояснение под ним — одной колонкой по центру; отступы и кегль на компьютере ещё и от высоты окна,
+   чтобы секция «на экран» помещалась вместе с содержимым */
+.head[data-centered] {
+  gap: clamp(16px, 3svh, 40px);
+  margin-bottom: clamp(24px, 4svh, 56px);
+}
+
+.head[data-centered] .row {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  gap: clamp(12px, 2svh, 24px);
+  text-align: center;
+}
+
+.head[data-centered] .title {
+  grid-column: auto;
+  max-width: 14em;
+  font-size: min(var(--display-l), 7.5svh);
+  text-wrap: balance;
+}
+
+.head[data-centered] .lead {
+  max-width: 760px;
+}
+
+@media (max-width: 1023px) {
+  .head {
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .head[data-centered] .title {
+    font-size: var(--display-l);
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+  }
+
+  .title {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 599px) {
+  .lead {
+    font-size: var(--text-m);
+  }
+
+  .head[data-centered] .row {
+    justify-items: start;
+    text-align: left;
+  }
+}
+
+/* Текст «прочитывается» при скролле: полный цвет заливает строки слева направо и сверху вниз.
+   Строчный элемент красит фон через все строки подряд, поэтому заливка идёт в порядке чтения.
+   Без animation-timeline текст просто стоит в своём цвете. В режиме высокой контрастности фон текста заменяется,
+   а буквы здесь прозрачные — эффект выключен, иначе текст пропадёт */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) and (forced-colors: none) {
+    .lead p:has(.read) {
+      view-timeline: --read;
+    }
+
+    .read {
+      background:
+        linear-gradient(currentColor, currentColor) 0 0 / 0% 100% no-repeat,
+        linear-gradient(color-mix(in srgb, currentColor 22%, transparent), color-mix(in srgb, currentColor 22%, transparent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: read linear both;
+      animation-timeline: --read;
+      animation-range: entry 50% cover 40%;
+    }
+  }
+}
+
+@keyframes read {
+  to {
+    background-size: 100% 100%, auto;
+  }
+}

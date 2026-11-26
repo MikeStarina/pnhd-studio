@@ -1,0 +1,117 @@
+/* Окно «Готовые принты» (ui/TemplatePicker.tsx). Телефон — лист снизу, от 901 px — окно по центру. */
+@keyframes tplFade { from { opacity: 0; } }
+@keyframes tplFadeOut { to { opacity: 0; } }
+@keyframes tplUp { from { transform: translateY(40px); opacity: 0; } }
+@keyframes tplDown { to { transform: translateY(40px); opacity: 0; } }
+@keyframes tplPop { from { transform: translateY(12px) scale(.98); opacity: 0; } }
+@keyframes tplPopOut { to { transform: translateY(12px) scale(.98); opacity: 0; } }
+
+.backdrop {
+  position: fixed; inset: 0; z-index: var(--z-modal, 100); display: flex; align-items: flex-end; justify-content: center;
+  background: rgb(0 0 0 / .5); animation: tplFade var(--t-enter) var(--ease-out) backwards;
+}
+.backdrop[data-leaving] { pointer-events: none; animation: tplFadeOut var(--t-exit) var(--ease-in) forwards; }
+
+.sheet {
+  position: relative; box-sizing: border-box; width: 100%; height: 80dvh; display: flex; flex-direction: column;
+  background: var(--paper, #fff); border-radius: var(--r-lg) var(--r-lg) 0 0; overflow: hidden;
+  animation: tplUp var(--t-enter) var(--ease-out) backwards;
+}
+.backdrop[data-leaving] .sheet { animation: tplDown var(--t-exit) var(--ease-in) forwards; }
+
+.head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 16px 16px 8px; }
+.title { margin: 0; font-family: var(--font-head); font-size: var(--fs-lg); font-weight: 700; text-transform: uppercase; }
+.close {
+  flex: none; width: var(--tap); height: var(--tap); margin: -6px -8px -6px 0; padding: 0; display: grid; place-items: center;
+  border: 0; border-radius: var(--r-sm); background: transparent; color: var(--ink); cursor: pointer;
+}
+.close:hover { background: var(--surface); }
+
+.chips { display: flex; gap: 8px; padding: 4px 16px 12px; overflow-x: auto; scrollbar-width: none; flex: none; }
+.chips::-webkit-scrollbar { display: none; }
+.chip {
+  flex: none; min-height: var(--tap); padding: 0 16px; border: 1px solid var(--line); border-radius: var(--r-sm);
+  background: var(--surface); color: var(--ink); font: inherit; font-size: var(--fs-sm); cursor: pointer; white-space: nowrap;
+  transition: border-color var(--t-fast), background-color var(--t-fast);
+}
+.chip[data-on] { border-color: var(--ink); }
+.chip:focus-visible, .card:focus-visible, .slide:focus-visible, .track:focus-visible, .arrow:focus-visible, .dot:focus-visible, .nameBtn:focus-visible, .close:focus-visible, .btnGhost:focus-visible, .btnMain:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+.scroll { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 0 16px 16px; }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.card {
+  display: flex; flex-direction: column; gap: 8px; padding: 0; border: 0; background: none; color: var(--ink);
+  font: inherit; text-align: left; cursor: pointer; min-width: 0;
+}
+.card:active .preview { transform: scale(.98); }
+.preview {
+  position: relative; aspect-ratio: 5 / 6; border: 1px solid var(--line); border-radius: var(--r-sm); overflow: hidden;
+  transition: transform var(--t-fast), border-color var(--t-fast);
+}
+.card:hover .preview { border-color: var(--ink); }
+.canvas { display: block; width: 100%; height: 100%; }
+.name { font-size: var(--fs-sm); line-height: 1.25; }
+
+/* Карусель «вживую»: слайды на scroll-snap, первый — превью принта */
+.live { position: relative; }
+.track {
+  display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain;
+  border-radius: var(--r-sm);
+}
+.track::-webkit-scrollbar { display: none; }
+.slide {
+  flex: none; width: 100%; box-sizing: border-box; padding: 0; border: 0; background: none; color: inherit; font: inherit;
+  scroll-snap-align: start; scroll-snap-stop: always; cursor: pointer; aspect-ratio: 5 / 6; min-width: 0;
+}
+.slide .preview { width: 100%; height: 100%; }
+.photo {
+  display: block; width: 100%; height: 100%; object-fit: cover; border: 1px solid var(--line); border-radius: var(--r-sm);
+  box-sizing: border-box; background: var(--surface);
+}
+.arrow {
+  position: absolute; top: 50%; z-index: 1; width: 32px; height: 32px; margin-top: -16px; padding: 0; display: none; place-items: center;
+  border: 1px solid var(--line); border-radius: var(--r-sm); background: var(--paper, #fff); color: var(--ink); cursor: pointer;
+}
+.arrow[data-dir='prev'] { left: 6px; }
+.arrow[data-dir='next'] { right: 6px; }
+.arrow:disabled { opacity: 0; pointer-events: none; }
+.dots { position: absolute; left: 0; right: 0; bottom: 6px; display: flex; justify-content: center; pointer-events: none; }
+.dot {
+  position: relative; width: 20px; height: 20px; padding: 0; border: 0; background: none; cursor: pointer; pointer-events: auto;
+}
+.dot::before {
+  content: ''; position: absolute; inset: 7px; border-radius: 50%; background: var(--paper, #fff);
+  box-shadow: 0 0 0 1px var(--ink); transition: background-color var(--t-fast);
+}
+.dot[data-on]::before { background: var(--ink); }
+.nameBtn {
+  padding: 0; border: 0; background: none; color: var(--ink); font: inherit; font-size: var(--fs-sm); line-height: 1.25;
+  text-align: left; cursor: pointer;
+}
+
+/* Подтверждение замены — внизу листа, поверх сетки */
+.confirm {
+  flex: none; display: flex; flex-direction: column; gap: 12px; padding: 16px;
+  border-top: 1px solid var(--line); background: var(--paper, #fff);
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+}
+.confirmText { margin: 0; font-size: var(--fs-md); }
+.confirmBtns { display: flex; gap: 8px; }
+.btnGhost, .btnMain {
+  flex: 1; min-height: var(--tap); padding: 0 16px; border-radius: var(--r-sm); font: inherit; font-size: var(--fs-sm); cursor: pointer;
+}
+.btnGhost { border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+.btnMain { border: 1px solid var(--ink); background: var(--lime); color: var(--ink); font-family: var(--font-head); font-weight: 700; text-transform: uppercase; }
+
+@media (min-width: 901px) {
+  .backdrop { align-items: center; padding: 16px; }
+  .sheet { width: min(720px, 100%); height: min(640px, calc(100dvh - 32px)); border-radius: var(--r-lg); animation-name: tplPop; }
+  .backdrop[data-leaving] .sheet { animation-name: tplPopOut; }
+  .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .arrow { display: grid; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .backdrop, .sheet, .backdrop[data-leaving] .sheet { animation: none; }
+  .preview, .chip, .dot::before { transition: none; }
+  .track { scroll-behavior: auto; }
+}

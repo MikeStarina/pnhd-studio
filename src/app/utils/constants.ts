@@ -17,25 +17,21 @@ export const checkResponse = (res: any) => {
 };
 
 
+/** Товары из API; при сбое API бросает ошибку — для страниц, где «нет ответа» и «нет товара» значат разное */
+export const fetchProducts = async (searchParams?: Record<string, string>): Promise<IProduct[]> => {
+    const query = searchParams ? `?${new URLSearchParams(searchParams)}` : '';
+    const res = await fetch(`${apiBaseUrl}/api/products${query}`, {
+        next: { revalidate: 3600, tags: ['shopDataTag'] },
+        headers: { 'Content-Type': 'application/json' },
+    });
+    if (!res.ok) throw new Error(`Products API answered ${res.status}`);
+    const json: { data?: IProduct[] } = await res.json();
+    return json.data ?? [];
+};
+
 export const getShopData = async (searchParams?: { [n: string]: string }) => {
-    let queryString = '';
-    if (searchParams) {
-        const keys = Object.keys(searchParams);
-        keys.forEach((key, index) => {
-            const part = `${encodeURIComponent(key)}=${encodeURIComponent(searchParams[key])}`;
-            if (index === 0) return queryString += `?${part}`;
-            return queryString += `&${part}`;
-        })
-    }
     try {
-        const shopData = await fetch(`${apiBaseUrl}/api/products${queryString}`, {
-            next: { revalidate: 3600, tags: ['shopDataTag'] },
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        }).then(checkResponse)
-        console.log(shopData);
-        return shopData?.data ?? [];
+        return await fetchProducts(searchParams);
     } catch (err) {
         // Docker/CI build must not fail when API is unreachable (e.g. first stage deploy)
         console.warn('getShopData failed:', err);
@@ -240,7 +236,7 @@ export const feedbackArr = [
 export const faqArr = [
     {
         title: 'В какие дни работает студия?',
-        text: 'Ежедневно с 11 до 20 часа. Без выходных',
+        text: 'Ежедневно с 10 до 20 часов. Без выходных',
     },
     {
         title: 'Как к вам проехать?',

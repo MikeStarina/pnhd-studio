@@ -1,0 +1,83 @@
+/* Кадрирование фото: модалка шире обычной, внутри — картинка с рамкой. */
+
+.card.card {
+  width: min(760px, 100%); overflow: hidden; outline: none; gap: 12px;
+}
+
+.presets {
+  display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; flex: none;
+  margin: 0 -2px; padding: 2px;
+}
+.presets::-webkit-scrollbar { display: none; }
+.chip {
+  flex: none; height: 36px; padding: 0 14px; border: 0; border-radius: var(--r-pill); background: var(--surface);
+  color: var(--ink); font: inherit; font-size: var(--fs-sm); font-weight: 700; cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease-out), box-shadow var(--t-fast) var(--ease-out);
+}
+.chip:hover { background: var(--lime-soft); }
+.chip[aria-pressed='true'] { background: var(--lime); box-shadow: inset 0 0 0 1px var(--ink); }
+.chip:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.note { margin: 0; flex: none; font-size: var(--fs-xs); color: var(--muted); }
+.fail { margin: 8px 0; font-size: var(--fs-md); }
+
+/* Область под картинку: поля по 12px, чтобы ручки на краях не обрезались */
+.stage {
+  position: relative; box-sizing: border-box; flex: none; height: min(70dvh, 560px); padding: 12px;
+  display: grid; place-items: center; background: var(--surface); border-radius: var(--r-sm);
+  user-select: none; -webkit-user-select: none; touch-action: none;
+}
+.frame { position: relative; flex: none; }
+.clip { position: absolute; inset: 0; overflow: hidden; background: #fff; }
+.img { display: block; width: 100%; height: 100%; pointer-events: none; -webkit-user-drag: none; }
+/* Затемнение вокруг рамки: тень рамки шире любой картинки, лишнее срезает .clip */
+.dim { position: absolute; box-shadow: 0 0 0 9999px rgb(0 0 0 / .55); pointer-events: none; }
+
+.box {
+  position: absolute; box-sizing: border-box; cursor: move; touch-action: none;
+  box-shadow: 0 0 0 1.5px #fff, 0 0 0 2.5px rgb(0 0 0 / .35);
+  background:
+    linear-gradient(rgb(255 255 255 / .45), rgb(255 255 255 / .45)) calc(100% / 3) 0 / 1px 100% no-repeat,
+    linear-gradient(rgb(255 255 255 / .45), rgb(255 255 255 / .45)) calc(200% / 3) 0 / 1px 100% no-repeat,
+    linear-gradient(rgb(255 255 255 / .45), rgb(255 255 255 / .45)) 0 calc(100% / 3) / 100% 1px no-repeat,
+    linear-gradient(rgb(255 255 255 / .45), rgb(255 255 255 / .45)) 0 calc(200% / 3) / 100% 1px no-repeat;
+}
+
+/* Контур формы обрезки поверх кадра */
+.shape { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+
+/* Ручка: зона нажатия 44px, видимый значок рисует ::before */
+.h { position: absolute; width: var(--tap, 44px); height: var(--tap, 44px); touch-action: none; }
+.h::before {
+  content: ''; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  background: #fff; border: 1px solid var(--ink); box-sizing: border-box; border-radius: 2px;
+}
+.h_nw, .h_ne, .h_se, .h_sw { z-index: 2; }
+.h_nw::before, .h_ne::before, .h_se::before, .h_sw::before { width: 16px; height: 16px; }
+.h_n::before, .h_s::before { width: 22px; height: 6px; }
+.h_e::before, .h_w::before { width: 6px; height: 22px; }
+
+.h_nw { left: 0; top: 0; transform: translate(-50%, -50%); cursor: nwse-resize; }
+.h_ne { left: 100%; top: 0; transform: translate(-50%, -50%); cursor: nesw-resize; }
+.h_se { left: 100%; top: 100%; transform: translate(-50%, -50%); cursor: nwse-resize; }
+.h_sw { left: 0; top: 100%; transform: translate(-50%, -50%); cursor: nesw-resize; }
+.h_n { left: 50%; top: 0; transform: translate(-50%, -50%); cursor: ns-resize; }
+.h_s { left: 50%; top: 100%; transform: translate(-50%, -50%); cursor: ns-resize; }
+.h_e { left: 100%; top: 50%; transform: translate(-50%, -50%); cursor: ew-resize; }
+.h_w { left: 0; top: 50%; transform: translate(-50%, -50%); cursor: ew-resize; }
+
+.actions { display: flex; gap: 8px; flex: none; align-items: center; justify-content: flex-end; }
+/* Кнопки модалки по умолчанию на всю ширину — здесь в ряд */
+.card.card .actions > button { width: auto; flex: none; min-height: var(--tap, 44px); }
+.card.card .actions > .reset { margin-right: auto; }
+
+/* Телефон: на весь экран, картинка занимает всё свободное место */
+@media (max-width: 767px) {
+  .bg.bg { padding: 0; }
+  .card.card {
+    width: 100%; height: 100dvh; max-height: none; border: 0; border-radius: 0; padding: 16px;
+    /* Кнопки внизу не под полоской «домой» на iPhone */
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+  }
+  .stage { flex: 1 1 auto; min-height: 0; height: auto; }
+  .chip { height: var(--tap, 44px); }
+}

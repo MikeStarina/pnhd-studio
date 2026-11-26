@@ -1,0 +1,361 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+}
+
+/* Вкладки — как в карточке «Как собрать заказ» первого экрана: контурные «таблетки», текущая чёрная */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  height: var(--control-height);
+  padding: 0 18px;
+  border: var(--border-control) solid var(--color-ink);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-ink);
+  font-family: inherit;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  transition:
+    background-color var(--duration) var(--ease),
+    color var(--duration) var(--ease);
+}
+
+.tab:hover,
+.tab[aria-selected='true'] {
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+.tab:focus-visible,
+.fabric:focus-visible,
+.pick:focus-visible,
+.more:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+
+/* Цвет ткани: «таблетки» с кружком цвета, выбранная — с обводкой цвета текста */
+.fabrics {
+  display: flex;
+  gap: 4px;
+  padding: var(--switch-inset);
+  border-radius: var(--radius-pill);
+  background: var(--color-white);
+}
+
+.fabric {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: calc(var(--control-height) - var(--switch-inset) * 2);
+  padding: 0 14px 0 8px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-ink-64);
+  font-family: inherit;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  transition:
+    background-color var(--duration) var(--ease),
+    color var(--duration) var(--ease);
+}
+
+.fabric:hover {
+  color: var(--color-ink);
+}
+
+.fabric[aria-pressed='true'] {
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+.swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px var(--color-ink-10);
+}
+
+.fabric[data-fabric='white'] .swatch {
+  background: var(--color-white);
+}
+
+.fabric[data-fabric='colored'] .swatch {
+  background: var(--color-ink);
+}
+
+/* Футболка слева, таблица справа */
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.figure {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+}
+
+/* Наклейка, как плашки фактов шелкографии: салатовая, с лёгким поворотом, заходит на футболку */
+.sticker {
+  position: absolute;
+  top: 4%;
+  right: -4%;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 11em;
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--color-lime);
+  color: var(--color-ink);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-caps);
+  line-height: 1.15;
+  text-transform: uppercase;
+  transform: rotate(6deg);
+}
+
+.figcaption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: var(--border-control) solid var(--color-ink);
+}
+
+.figName {
+  font-size: var(--text-l);
+  font-weight: var(--weight-bold);
+}
+
+.figSize {
+  margin-left: 8px;
+  font-size: var(--text-xs);
+  color: var(--color-ink-64);
+}
+
+.figPrice {
+  font-family: var(--font-display);
+  font-size: var(--display-s);
+  font-weight: var(--weight-black);
+  line-height: var(--display-leading);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .panel {
+    animation: panel-in var(--duration-slow) var(--ease);
+  }
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.caption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.th {
+  padding: 0 0 8px;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-caps);
+  line-height: 1.2;
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--color-ink-64);
+}
+
+.row {
+  border-top: 1px solid var(--color-line);
+  cursor: pointer;
+}
+
+.row > * {
+  height: 44px;
+  padding: 0;
+  vertical-align: middle;
+  transition: color var(--duration) var(--ease);
+}
+
+/* Строка, которая сейчас на футболке: метка акцентом слева */
+.row[data-active] > * {
+  color: var(--accent);
+}
+
+.format {
+  text-align: left;
+}
+
+/* Вся строка — одна кнопка выбора формата для клавиатуры; мышью строка выбирается целиком */
+.pick {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: var(--text-m);
+  font-weight: var(--weight-bold);
+  cursor: pointer;
+}
+
+.pick::before {
+  content: '';
+  align-self: center;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0;
+  transform: scale(0.5);
+  transition:
+    opacity var(--duration) var(--ease),
+    transform var(--duration) var(--ease);
+}
+
+.row[data-active] .pick::before {
+  opacity: 1;
+  transform: none;
+}
+
+.size {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-regular);
+  color: var(--color-ink-64);
+  white-space: nowrap;
+}
+
+.price {
+  font-size: var(--text-m);
+  font-weight: var(--weight-bold);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.th.price {
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+}
+
+.foot {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.note {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  color: var(--color-ink-64);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 24px;
+}
+
+.more {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-ink);
+  text-decoration: none;
+  transition: color var(--duration) var(--ease);
+}
+
+.more:hover {
+  color: var(--accent);
+}
+
+.build {
+  color: var(--accent);
+}
+
+.build:hover {
+  color: var(--color-ink);
+}
+
+@media (max-width: 599px) {
+  /* Четыре метода — ровной сеткой 2×2, а не рваным переносом */
+  .tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .tab {
+    justify-content: center;
+    padding: 0 14px;
+  }
+
+  .body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .figure {
+    width: min(100%, 280px);
+    margin: 0 auto;
+  }
+
+  .row > * {
+    height: 48px;
+  }
+}

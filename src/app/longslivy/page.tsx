@@ -1,13 +1,8 @@
 import React from "react";
-import styles from "@/app/contacts/page.module.css";
 import {Metadata} from "next";
-import MarkupScript from "@/components/shared-components/markup-script/markup-script";
-import FaqSection from '@/components/pages-components/main-page/faq-screen/faq-screen';
 import {SITE_INFO} from "@/app/constants";
-import {IProduct} from "@/app/utils/types";
-import {getShopData} from "@/app/utils/constants";
-import ProductCardsBlock from "@/components/pages-components/shop-page/product-cards-block/product-cards-block";
-import Breadcrumbs from '@/components/shared-components/breadcrumbs/Breadcrumbs';
+import CatalogPage from '@/components/catalog/catalog-page/catalog-page';
+import type {SearchParams} from '@/components/catalog/filters';
 
 export const metadata: Metadata = {
     title: 'Печать принта на лонгсливах - нанесение принтов и логотипов на заказ от 1 шт',
@@ -18,8 +13,7 @@ export const metadata: Metadata = {
     },
 };
 
-const Page: React.FC = async () => {
-    const shopData: Array<IProduct> = await getShopData({type: 'longsleeve'});
+const Page: React.FC<{searchParams: SearchParams}> = async ({searchParams}) => {
     const slug = 'longslivy';
     const h1 = 'Печать на лонгсливах в СПб';
     const jsonLdWebpage = {
@@ -46,11 +40,6 @@ const Page: React.FC = async () => {
             ]
         }
     }
-    const jsonLdFaq = {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [] as any[]
-    }
     const faqSet = [
         {
             title: 'Какой метод нанесения вы используете для печати?',
@@ -73,49 +62,38 @@ const Page: React.FC = async () => {
             text: 'Да, с отзывами о нашей работе и примерами готовых работ вы можете ознакомиться в специальном разделе на сайте или в наших социальных сетях. Мы ценим честную обратную связь.',
         },
     ]
-    for (let faqItem of faqSet){
-        jsonLdFaq['mainEntity'].push({
-            "@type": "Question",
-            "name": faqItem['title'],
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": faqItem['text']
-            }
-        })
-    }
 
     return (
-        <>
-            <MarkupScript jsonLd={jsonLdWebpage}/>
-            <MarkupScript jsonLd={jsonLdFaq}/>
-            <Breadcrumbs items={[{label: 'Главная', href: '/'}, {label: h1, href: '/'+slug}]} />
-            <div className={styles.title_wrapper}>
-                <h1 className={styles.page_title}>{h1}</h1>
-            </div>
+        <CatalogPage
+            type="longsleeve"
+            title={h1}
+            breadcrumbs={[{label: 'Главная', href: '/'}, {label: h1, href: '/'+slug}]}
+            jsonLd={[jsonLdWebpage]}
+            faq={faqSet.map(({title, text}) => ({question: title, answer: text}))}
+            searchParams={searchParams}
+            seo={
+                <>
+                    <h2>Печать принта на лонгсливах на заказ</h2>
+                    <p>Лонгслив &mdash; идеальный формат для прохладной погоды, тренировок или создания стильного повседневного образа. Хочешь, чтобы эта удобная одежда стала по-настоящему уникальной? Мы предлагаем качественную печать на лонгсливах в Санкт-Петербурге. Перенесем любой твой дизайн, имя, любимое фото или графику &mdash; и уже через несколько дней ты получишь вещь, которой больше нет ни у кого.</p>
+                    <h2>Как проходит процесс?</h2>
+                    <ul>
+                        <li>Выбор и заказ. В нашем каталоге ты найдешь лонгсливы разных фасонов и цветов. Определись с моделью и оформи заказ онлайн или в нашей studio.</li>
+                        <li>Подготовка макета. Присылай свое изображение в любом формате. Если нужно, наши дизайнеры помогут его доработать для идеального результата.</li>
+                        <li>Печать и нанесение. Мы используем современный цифровой метод нанесения. Эта технология гарантирует яркие краски и отличную детализацию, а изображение будет стойким к стиркам.</li>
+                        <li>Готово! После завершения всех этапов работ ты можешь забрать свой уникальный лонгслив или заказать курьерскую доставку по городу.</li>
+                    </ul>
+                    <h2>Почему стоит обратиться к нам?</h2>
+                    <ul>
+                        <li>Индивидуальный подход. Мы печатаем от одной вещи, помогая реализовать твою личную идею.</li>
+                        <li>Качество результата. Используем проверенные материалы, чтобы печать радовала тебя долго.</li>
+                        <li>Скорость и простота. Четкие этапы работы и короткие сроки исполнения.</li>
+                        <li>Доверие. Наша репутация подтверждена реальными отзывами довольных клиентов.</li>
+                    </ul>
 
-            {shopData && shopData.length > 0 && <ProductCardsBlock shopData={shopData}/>}
-
-            <h2>Печать принта на лонгсливах на заказ</h2>
-            <p>Лонгслив &mdash; идеальный формат для прохладной погоды, тренировок или создания стильного повседневного образа. Хочешь, чтобы эта удобная одежда стала по-настоящему уникальной? Мы предлагаем качественную печать на лонгсливах в Санкт-Петербурге. Перенесем любой твой дизайн, имя, любимое фото или графику &mdash; и уже через несколько дней ты получишь вещь, которой больше нет ни у кого.</p>
-            <h2>Как проходит процесс?</h2>
-            <ul>
-                <li>Выбор и заказ. В нашем каталоге ты найдешь лонгсливы разных фасонов и цветов. Определись с моделью и оформи заказ онлайн или в нашей studio.</li>
-                <li>Подготовка макета. Присылай свое изображение в любом формате. Если нужно, наши дизайнеры помогут его доработать для идеального результата.</li>
-                <li>Печать и нанесение. Мы используем современный цифровой метод нанесения. Эта технология гарантирует яркие краски и отличную детализацию, а изображение будет стойким к стиркам.</li>
-                <li>Готово! После завершения всех этапов работ ты можешь забрать свой уникальный лонгслив или заказать курьерскую доставку по городу.</li>
-            </ul>
-            <h2>Почему стоит обратиться к нам?</h2>
-            <ul>
-                <li>Индивидуальный подход. Мы печатаем от одной вещи, помогая реализовать твою личную идею.</li>
-                <li>Качество результата. Используем проверенные материалы, чтобы печать радовала тебя долго.</li>
-                <li>Скорость и простота. Четкие этапы работы и короткие сроки исполнения.</li>
-                <li>Доверие. Наша репутация подтверждена реальными отзывами довольных клиентов.</li>
-            </ul>
-
-            <p>Готов создать свою авторскую вещь? Загляни в каталог на сайте, чтобы выбрать основу, и свяжись с нами по контактам, указанным ниже, чтобы обсудить свой заказ!</p>
-
-            <FaqSection faqSet={faqSet}/>
-        </>
+                    <p>Готов создать свою авторскую вещь? Загляни в каталог на сайте, чтобы выбрать основу, и свяжись с нами по контактам, указанным ниже, чтобы обсудить свой заказ!</p>
+                </>
+            }
+        />
     )
 }
 

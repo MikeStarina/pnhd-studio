@@ -13,7 +13,7 @@ export const LocalBusinessJsonLD = {
     "postalCode": "197022",
     "addressCountry": "RU"
   },
-  "openingHours": ["Пн-Пт 11:00-20:00"],
+  "openingHours": ["Mo-Su 10:00-20:00"],
   "priceRange": "₽",
   "areaServed": "Санкт-Петербург и область"
 }

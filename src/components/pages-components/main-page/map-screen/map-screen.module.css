@@ -88,8 +88,10 @@
     line-height: 14px;
     font-weight: 400;
     text-transform: uppercase;
-    cursor: pointer;   
+    cursor: pointer;
     min-width: 160px;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 .contacts_contactsButton > a {
     margin: 0;
@@ -220,6 +222,11 @@
     .contacts_text {
         font-size: 14px;
         line-height: 16px;
+    }
+
+    /* Номер телефона широким шрифтом в 14px не влезает в 320px */
+    .contacts_contactsButton {
+        font-size: 12px;
     }
 
     .contacts_socialButton {

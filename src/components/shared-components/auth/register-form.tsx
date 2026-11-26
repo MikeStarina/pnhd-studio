@@ -9,6 +9,7 @@ import { textFieldSx, getErrorMessage } from "./auth-utils";
 import { useAppDispatch, useAppSelector } from "@/redux/redux-hooks";
 import { actions as authActions } from "@/redux/auth-slice/auth.slice";
 import { useRegisterMutation } from "@/api/api";
+import ConsentField from "@/components/site/consent-field/consent-field";
 import RU_FLAG from "../../../../public/ru_flag.webp";
 
 const RegisterForm: React.FC = () => {
@@ -19,6 +20,8 @@ const RegisterForm: React.FC = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [agree, setAgree] = useState(false);
+  const [agreeError, setAgreeError] = useState("");
   const [register, { isLoading, error }] = useRegisterMutation();
 
   useEffect(() => {
@@ -33,6 +36,11 @@ const RegisterForm: React.FC = () => {
 
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!agree) {
+      setAgreeError("Отметь согласие на обработку персональных данных, иначе зарегистрироваться не получится");
+      document.getElementById("register-agree")?.focus();
+      return;
+    }
     const trimmedEmail = email.trim();
     try {
       await register({
@@ -106,6 +114,15 @@ const RegisterForm: React.FC = () => {
         onChange={(e: ChangeEvent<HTMLInputElement>) =>
           setPassword(e.target.value)
         }
+      />
+      <ConsentField
+        id="register-agree"
+        checked={agree}
+        error={agreeError}
+        onChange={(checked) => {
+          setAgree(checked);
+          if (checked) setAgreeError("");
+        }}
       />
       {error && <p className={styles.auth_errorText}>{getErrorMessage(error)}</p>}
       <button

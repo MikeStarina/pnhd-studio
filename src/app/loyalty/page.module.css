@@ -1,417 +1,293 @@
-.hero {
-    width: 100%;
-    background-color: rgb(57, 57, 57);
-    border-radius: 20px;
-    margin: 120px 0 0 0;
-    padding: 80px 60px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    position: relative;
-    overflow: hidden;
+/* Крошки лежат в первой секции: отступ секции уже есть, поэтому свой верхний отступ у них убран */
+.crumbs :global(.breadcrumbs) {
+  margin: 0 0 var(--header-gap);
 }
 
-.hero::after {
-    content: '';
-    position: absolute;
-    right: -60px;
-    top: -60px;
-    width: 400px;
-    height: 400px;
-    border-radius: 50%;
-    border: 2px solid rgba(153, 255, 0, 0.15);
-    pointer-events: none;
+.cta {
+  margin-top: 40px;
 }
 
-.hero::before {
-    content: '';
-    position: absolute;
-    right: -20px;
-    bottom: -80px;
-    width: 280px;
-    height: 280px;
-    border-radius: 50%;
-    border: 2px solid rgba(153, 255, 0, 0.1);
-    pointer-events: none;
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
-.hero_content {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    z-index: 1;
+/* Кнопка-таблетка как в MoreLink: на светлой секции чёрная, на чёрной — белая; наведение — акцент секции */
+.button,
+.buttonGhost {
+  display: inline-flex;
+  box-sizing: border-box;
+  align-items: center;
+  height: calc(var(--control-height) * 1.15);
+  padding: 0 28px;
+  border-radius: var(--radius-pill);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-caps);
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background-color var(--duration) var(--ease), color var(--duration) var(--ease);
 }
 
-.hero_eyebrow {
-    font-family: 'Neue_machina';
-    font-size: 14px;
-    line-height: 14px;
-    font-weight: 400;
-    color: rgb(153, 255, 0);
-    text-transform: uppercase;
-    margin: 0;
-    padding: 0;
-    letter-spacing: 0.05em;
+.button {
+  background: var(--color-ink);
+  color: var(--color-white);
 }
 
-.hero_title {
-    font-family: 'DrukTextWideCyr-Medium';
-    font-size: 56px;
-    line-height: 56px;
-    font-weight: 400;
-    color: rgb(153, 255, 0);
-    text-transform: uppercase;
-    margin: 0;
-    padding: 0;
-    max-width: 700px;
+:global([data-tone='black']) .button {
+  background: var(--color-white);
+  color: var(--color-ink);
 }
 
-.hero_sub {
-    font-family: 'Neue_machina';
-    font-size: 16px;
-    line-height: 16px;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.7);
-    margin: 0;
-    padding: 0;
+.buttonGhost {
+  border: var(--border-control) solid currentColor;
+  color: inherit;
 }
 
-.hero_button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Neue_machina';
-    font-size: 14px;
-    font-weight: 800;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: black;
-    background-color: rgb(153, 255, 0);
-    border-radius: 8px;
-    padding: 14px 28px;
-    align-self: flex-start;
-    transition: background-color 0.2s ease;
+.button:hover,
+:global([data-tone='black']) .button:hover,
+.buttonGhost:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
 }
 
-.hero_button:hover {
-    background-color: white;
+.button:focus-visible,
+.buttonGhost:focus-visible,
+.inlineLink:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
 }
 
-/* sections */
-.section {
-    width: 100%;
-    margin: 40px 0 0 0;
-    box-sizing: border-box;
+/* Уровни: пять колонок с линией сверху, как поля печатного листа; кешбэк — крупно и цветом акцента */
+.levels {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.section_title {
-    font-family: 'DrukTextWideCyr-Medium';
-    font-size: 28px;
-    line-height: 28px;
-    font-weight: 400;
-    color: black;
-    text-transform: uppercase;
-    margin: 0 0 10px 0;
-    padding: 0;
+.level {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0 0;
+  border-top: 1px solid var(--color-line-dark);
 }
 
-.section_subtitle {
-    font-family: 'Neue_machina';
-    font-size: 16px;
-    line-height: 22px;
-    font-weight: 400;
-    color: black;
-    margin: 0 0 20px 0;
-    padding: 0;
+/* :where — без веса, иначе сброс перебивает отступы строк ниже, и кешбэк прилипает к сумме */
+:where(.level) p {
+  margin: 0;
 }
 
-/* cards */
-.card {
-    width: 100%;
-    border: 1px solid black;
-    border-radius: 20px;
-    padding: 50px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+.levelName {
+  color: color-mix(in srgb, currentColor 64%, transparent);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
 }
 
-.card_title {
-    font-family: 'DrukTextWideCyr-Medium';
-    font-size: 18px;
-    line-height: 18px;
-    font-weight: 400;
-    color: black;
-    text-transform: uppercase;
-    margin: 0;
-    padding: 0;
+.levelSum {
+  margin-top: 12px;
+  font-size: var(--text-l);
+  line-height: 1.3;
 }
 
-.card_text {
-    font-family: 'Neue_machina';
-    font-size: 18px;
-    line-height: 26px;
-    font-weight: 400;
-    color: black;
-    margin: 0;
-    padding: 0;
+.levelCashback,
+.levelBase {
+  margin-top: clamp(32px, 6svh, 64px);
 }
 
-.list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+.levelCashback {
+  display: flex;
+  align-items: baseline;
+  gap: 0.2em;
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: var(--display-l);
+  font-weight: var(--weight-black);
+  line-height: 0.9;
 }
 
-.list li {
-    font-family: 'Neue_machina';
-    font-size: 18px;
-    line-height: 26px;
-    font-weight: 400;
-    color: black;
-    padding-left: 28px;
-    position: relative;
+.levelUnit {
+  color: color-mix(in srgb, currentColor 64%, transparent);
+  font-family: var(--font-text);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
 }
 
-.list li::before {
-    content: '—';
-    position: absolute;
-    left: 0;
-    color: rgb(153, 255, 0);
+.levelBase {
+  color: color-mix(in srgb, currentColor 64%, transparent);
+  font-size: var(--text-l);
+  line-height: 1.3;
 }
 
-/* levels grid */
-.levels_grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
+/* Способы вступить: три равные карточки на выбор — без номеров и стрелок, чтобы не читались как шаги.
+   Значок в круге --step-badge цвета акцента, как у шагов; ссылка, если есть, прижата к низу карточки */
+.ways {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--card-inset);
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.level_card {
-    background-color: rgb(57, 57, 57);
-    border: 1px solid rgb(57, 57, 57);
-    border-radius: 20px;
-    padding: 30px 20px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    align-items: flex-start;
+.way {
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  border-radius: var(--radius-card-s);
+  background: var(--color-surface);
 }
 
-.level_name {
-    font-family: 'DrukTextWideCyr-Medium';
-    font-size: 14px;
-    line-height: 14px;
-    font-weight: 400;
-    color: white;
-    text-transform: uppercase;
-    margin: 0;
-    padding: 0;
+.wayIcon {
+  display: grid;
+  place-items: center;
+  width: var(--step-badge);
+  height: var(--step-badge);
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
-.level_sum {
-    font-family: 'Neue_machina';
-    font-size: 14px;
-    line-height: 18px;
-    font-weight: 400;
-    color: white;
-    margin: 0;
-    padding: 0;
-    flex: 1;
+.wayTitle {
+  margin: clamp(32px, 6svh, 64px) 0 0;
+  font-family: var(--font-display);
+  font-size: var(--display-s);
+  font-weight: var(--weight-black);
+  line-height: 1.05;
+  text-transform: uppercase;
 }
 
-.level_cashback {
-    font-family: 'DrukTextWideCyr-Medium';
-    font-size: 32px;
-    line-height: 32px;
-    font-weight: 400;
-    color: rgb(153, 255, 0);
-    margin: 0;
-    padding: 0;
+.wayText {
+  max-width: 32ch;
+  margin: 12px 0 0;
+  color: color-mix(in srgb, currentColor 64%, transparent);
+  font-size: var(--text-l);
+  line-height: 1.5;
 }
 
-.level_no_cashback {
-    font-family: 'Neue_machina';
-    font-size: 12px;
-    line-height: 14px;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.4);
-    margin: 0;
-    padding: 0;
+.wayLink {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 0.25em;
+  margin-top: auto;
+  padding-top: 24px;
+  color: var(--accent);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-caps);
+  text-decoration: none;
+  text-transform: uppercase;
 }
 
-/* two columns */
-.two_col {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+.wayLink:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
 }
 
-/* support */
-.support_card {
-    background-color: rgb(153, 255, 0);
-    border-color: rgb(153, 255, 0);
-}
-
-.support_link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Neue_machina';
-    font-size: 14px;
-    font-weight: 800;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: black;
-    background-color: black;
-    color: white;
-    border-radius: 8px;
-    padding: 10px 24px;
-    align-self: flex-start;
-    transition: background-color 0.2s ease;
-}
-
-.support_link:hover {
-    background-color: white;
-    color: black;
-}
-
-.support_buttons {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.support_link_alt {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Neue_machina';
-    font-size: 14px;
-    font-weight: 800;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: black;
-    border: 2px solid black;
-    border-radius: 8px;
-    padding: 10px 24px;
-    align-self: flex-start;
-    transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.support_link_alt:hover {
-    background-color: black;
-    color: white;
-}
-
-.inline_link {
-    color: black;
+@media (hover: hover) and (pointer: fine) {
+  .wayLink:hover {
     text-decoration: underline;
     text-underline-offset: 3px;
-    text-decoration-color: rgba(0, 0, 0, 0.4);
-    transition: text-decoration-color 0.2s ease;
+  }
 }
 
-.inline_link:hover {
-    text-decoration-color: black;
+/* Условия: шесть коротких карточек 3 × 2 на чёрном (--color-card), по одной мысли в каждой — читается взглядом */
+.terms {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--card-inset);
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-/* responsive */
-@media (max-width: 1024px) {
-    .hero {
-        padding: 60px 40px;
-    }
-
-    .hero_title {
-        font-size: 42px;
-        line-height: 42px;
-    }
-
-    .levels_grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
+.term {
+  padding: 32px;
+  border-radius: var(--radius-card-s);
+  background: var(--color-card);
 }
 
-@media (max-width: 768px) {
-    .hero {
-        margin: 100px 0 0 0;
-        padding: 50px 30px;
-    }
-
-    .hero_title {
-        font-size: 34px;
-        line-height: 34px;
-    }
-
-    .card {
-        padding: 30px;
-    }
-
-    .two_col {
-        grid-template-columns: 1fr;
-    }
-
-    .levels_grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .card_text,
-    .list li {
-        font-size: 16px;
-        line-height: 22px;
-    }
+.termTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--display-s-compact);
+  font-weight: var(--weight-black);
+  line-height: 1.05;
+  text-transform: uppercase;
 }
 
-@media (max-width: 500px) {
-    .hero {
-        margin: 80px 0 0 0;
-        padding: 40px 20px;
-        border-radius: 15px;
-    }
+.termText {
+  margin: 16px 0 0;
+  color: var(--color-white-80);
+  font-size: var(--text-l);
+  line-height: 1.5;
+}
 
-    .hero_title {
-        font-size: 28px;
-        line-height: 28px;
-    }
+.inlineLink {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 
-    .hero_sub {
-        font-size: 13px;
-    }
+@media (hover: hover) and (pointer: fine) {
+  .inlineLink:hover {
+    text-decoration-thickness: 2px;
+  }
+}
 
-    .levels_grid {
-        grid-template-columns: 1fr 1fr;
-    }
+@media (max-width: 1023px) {
+  .ways {
+    grid-template-columns: minmax(0, 1fr);
+  }
 
-    .level_cashback {
-        font-size: 26px;
-        line-height: 26px;
-    }
+  .way {
+    padding: 24px;
+  }
 
-    .card {
-        padding: 20px;
-        border-radius: 15px;
-    }
+  .wayTitle {
+    margin-top: 24px;
+  }
 
-    .card_title {
-        font-size: 16px;
-        line-height: 16px;
-    }
+  .levels {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px 16px;
+  }
 
-    .card_text,
-    .list li {
-        font-size: 14px;
-        line-height: 20px;
-    }
+  .terms {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 
-    .section_title {
-        font-size: 22px;
-        line-height: 22px;
-    }
+  .term {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 599px) {
+  .terms {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .termText {
+    font-size: var(--text-m);
+  }
+
+  .levelCashback {
+    font-size: var(--display-m);
+  }
+
+  .button,
+  .buttonGhost {
+    justify-content: center;
+    width: 100%;
+  }
 }

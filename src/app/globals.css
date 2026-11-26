@@ -1,22 +1,52 @@
 @import url(../vendors/fonts/font.css);
+@import url(../styles/tokens.css);
 
 html,
 body {
   max-width: 100vw;
   /* overflow-x: hidden; */
   background-color: white;
-  color: black;
+  color: var(--color-ink);
   box-sizing: border-box;
   margin: 0 auto;
   padding: 0;
-  font-family: 'Neue_machina', Arial, Helvetica, sans-serif;
+  font-family: var(--font-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   position: relative;
 }
 
+/* Страница не оттягивается за верхний и нижний край при прокрутке (эластичный отскок macOS и iOS) */
+html,
+body {
+  overscroll-behavior-y: none;
+}
+
+/* Полоса прокрутки страницы скрыта; прокрутка колесом, тачпадом, клавиатурой и пальцем работает как обычно */
+html {
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
 * {
-  font-family: 'Neue_machina', Arial, Helvetica, sans-serif;
+  font-family: var(--font-text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 main {
@@ -33,32 +63,147 @@ main {
 .roistat-online-chat-holder {
   display: none;
 }
+/* Хлебные крошки: мелкий капс с разрядкой, как метки секций; разделитель — салатовая точка */
 .breadcrumbs{
   margin: 30px 0 0 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
-  font-size: 10px;
+  gap: 4px 10px;
   align-items: center;
+  font-size: var(--text-caption);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-ink-64);
 }
 .breadcrumb-item{
   display: flex;
-  gap: 4px;
+  gap: 10px;
   align-items: center;
-  color: black;
+  color: inherit;
   text-decoration: none;
+}
+a.breadcrumb-item{
+  transition: color var(--duration) var(--ease);
+}
+a.breadcrumb-item:hover{
+  color: var(--color-ink);
+}
+a.breadcrumb-item:focus-visible{
+  outline: 2px solid var(--color-ink);
+  outline-offset: 3px;
+}
+.breadcrumb-item:last-child{
+  color: var(--color-ink);
 }
 .breadcrumb-item:not(:last-child):after{
   content: '';
-  width: 4px;
+  width: 5px;
   aspect-ratio: 1/1;
   flex-shrink: 0;
   border-radius: 50%;
-  background: #99FF00;
+  background: var(--color-lime);
 }
 @media (max-width: 1350px) {
   main {
     box-sizing: initial;
     margin: 0 20px;
   }
+}
+
+/* Страницы в новом дизайне сами задают ширину секций */
+main:has(> [data-layout='wide']) {
+  display: block;
+  max-width: none;
+  margin: 0;
+}
+
+/* Плавающая шапка лежит на фоне страницы: на широких страницах он тот же, что у первого экрана */
+body:has(main > [data-layout='wide']) {
+  background-color: var(--color-page);
+}
+
+/* Внутренняя страница из секций (бонусы, методы): первый блок с крошками встаёт на --header-gap под шапкой,
+   как каталог, товар и корзина, а не на --section-gap — иначе под переключателем пустое поле */
+[data-layout='wide'][data-inner-page] > section:first-of-type {
+  padding-top: var(--header-gap);
+}
+
+/* Без висячих строк: заголовки выравниваются по строкам, в абзацах нет одиноких слов в конце */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p,
+li,
+dd,
+blockquote {
+  text-wrap: pretty;
+}
+
+/* Появление при скролле (src/components/site/reveal). Скрываем, только если скрипт запущен (класс js-reveal ставится
+   в <head> до отрисовки) и человек не просил уменьшить движение; reveal-all — запасной выход, если скрипт не загрузился */
+@media (prefers-reduced-motion: no-preference) {
+  .js-reveal [data-reveal],
+  .js-reveal [data-reveal-group] > :not([data-reveal-done]) {
+    opacity: 0;
+    transform: translateY(var(--reveal-shift));
+  }
+
+  .js-reveal [data-reveal] {
+    transition: opacity var(--duration-reveal) var(--ease-out-soft), transform var(--duration-reveal) var(--ease-out-soft);
+    transition-delay: calc(var(--i, 0) * var(--reveal-stagger));
+  }
+
+  /* Варианты группы — у каждого блока свой характер появления:
+     fan — карточки выезжают веером с разным наклоном и садятся на пружине;
+     rise — ниже */
+  .js-reveal [data-reveal-group='fan'] > :not([data-reveal-done]),
+  .js-reveal [data-reveal-group='fan'] > [data-reveal] {
+    transform: translateY(calc(var(--reveal-shift) * 2)) rotate(calc((var(--i, 0) - 2) * 2deg)) scale(0.96);
+    transform-origin: 50% 100%;
+  }
+
+  .js-reveal [data-reveal-group='fan'] > [data-reveal] {
+    transition:
+      opacity var(--duration-reveal) var(--ease-out-soft),
+      transform var(--duration-spring) var(--ease-spring);
+    transition-delay: calc(var(--i, 0) * var(--reveal-stagger) * 1.5);
+  }
+
+  /* rise — панели вырастают снизу вверх, как столбики (способы печати). Обрезается содержимое панели, а не сама
+     панель: полностью обрезанный элемент IntersectionObserver не видит. Панель раскрывается через flex-grow —
+     его переход перечислен здесь, иначе на время появления раскрытие шло бы рывком */
+  .js-reveal [data-reveal-group='rise'] > :not([data-reveal-done]),
+  .js-reveal [data-reveal-group='rise'] > [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: flex-grow var(--duration-panel) var(--ease-panel);
+  }
+
+  .js-reveal [data-reveal-group='rise'] > :not([data-reveal-done]) > *,
+  .js-reveal [data-reveal-group='rise'] > [data-reveal] > * {
+    clip-path: inset(100% 0 0 0);
+  }
+
+  .js-reveal [data-reveal-group='rise'] > [data-reveal] > * {
+    transition: clip-path var(--duration-reveal) var(--ease-out-soft) calc(var(--i, 0) * var(--reveal-stagger));
+  }
+
+  .js-reveal [data-reveal-group='rise'] > [data-reveal][data-revealed] > * {
+    clip-path: inset(0);
+  }
+
+  .js-reveal [data-reveal][data-revealed],
+  .js-reveal.reveal-all [data-reveal],
+  .js-reveal.reveal-all [data-reveal-group] > * {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Полоса акции закреплена над шапкой — шапка занимает сверху больше места (--header-height в tokens.css) */
+:root:has([data-promo-bar]) {
+  --promo-bar-space: var(--promo-bar-height);
 }

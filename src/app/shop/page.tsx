@@ -1,14 +1,11 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import {Metadata} from 'next';
-import ProductCardsBlock from '@/components/pages-components/shop-page/product-cards-block/product-cards-block';
-import {IProduct} from '../utils/types';
 import {getShopData} from '../utils/constants';
+import {IProduct} from '../utils/types';
 import {productMainPhotoUrl} from '../utils/product-photos';
-import ProductFilterComp from '@/components/pages-components/shop-page/products-filter/products-filter';
-import MarkupScript from "@/components/shared-components/markup-script/markup-script";
 import {CatalogPageNavigationJsonLD} from "@/app/utils/markups";
-import FaqScreen from '@/components/pages-components/main-page/faq-screen/faq-screen';
-import NoModelBlock from '@/components/shared-components/noModelBlock/NoModelBlock';
+import CatalogPage from '@/components/catalog/catalog-page/catalog-page';
+import type {SearchParams} from '@/components/catalog/filters';
 
 
 export const metadata: Metadata = {
@@ -26,13 +23,8 @@ export const metadata: Metadata = {
   },
 };
 
-const ShopPage: React.FC = async () => {
-
-  const shopData: Array<IProduct> = await getShopData();
-  // if (searchParams.priceSort) {
-  //   searchParams.priceSort === 'ASC' && shopData.sort((a,b) => (a.price - b.price));
-  //   searchParams.priceSort === 'DESC' && shopData.sort((a,b) => (b.price - a.price));
-  // }
+const ShopPage: React.FC<{ searchParams: SearchParams }> = async ({ searchParams }) => {
+  const shopData: IProduct[] = await getShopData();
   const jsonLdCatalog = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -57,21 +49,14 @@ const ShopPage: React.FC = async () => {
     }
   }
 
-
   return (
-    <Suspense fallback={<div>Загрузка...</div>}>
-      <ProductFilterComp shopData={shopData}>
-        {shopData && shopData.length > 0 && <ProductCardsBlock shopData={shopData}/>}
-        <MarkupScript jsonLd={jsonLdCatalog} />
-        <MarkupScript jsonLd={CatalogPageNavigationJsonLD} />
-      </ProductFilterComp>
-      <NoModelBlock />
-      <div style={{ marginTop: '120px', width: '100%' }}>
-      <FaqScreen />
-      </div>
-    </Suspense>
+    <CatalogPage
+      title="Каталог"
+      breadcrumbs={[{ label: 'Главная', href: '/' }, { label: 'Каталог', href: '/shop' }]}
+      jsonLd={[jsonLdCatalog, CatalogPageNavigationJsonLD]}
+      searchParams={searchParams}
+    />
   )
 }
 
 export default ShopPage;
-

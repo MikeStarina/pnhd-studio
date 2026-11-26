@@ -1,6 +1,7 @@
 import { ICartOrderElement, IPrintFile, ICdekCitySearchResponse, ICdekPointsResponse, TUserOrderItem, IOrderBody } from "./types"
 import { TCartState } from "@/redux/cart-slice/cart.slice";
 import { v4 as uuidv4 } from 'uuid';
+import { telegramNick } from './telegram';
 
 export const getPreviewArrFunc = (prints?: IPrintFile[]): IPrintFile[] => {
     return (prints ?? []).filter((print) => print?.file?.url);
@@ -41,6 +42,31 @@ export const cartSummaryFunc = (order: Array<ICartOrderElement>): number => {
     return totalCartPrice;
 }
 
+const positionTotal = (elem: ICartOrderElement): number => {
+    const qty = elem.item.sizes.reduce((acc, size) => acc + (size.userQty ?? 0), 0);
+    return (elem.item.price + itemPrintUnitPrice(elem)) * qty;
+};
+
+/** Промокод на позицию: 'all' (или пусто) — на все, иначе совпадение с типом, _id или slug изделия. */
+const promoCoversItem = (elem: ICartOrderElement, discountedItem: string): boolean =>
+    !discountedItem || discountedItem === 'all' || [elem.item.type, elem.item._id, elem.item.slug].includes(discountedItem);
+
+/**
+ * Суммы заказа для экрана и для бэкенда. Бэкенд берёт их из заказа как есть (чек ЮKassa, сделка в Битриксе):
+ * промокод 'freeShipping' обнуляет доставку, остальные умножают цену своих позиций на discount_ratio.
+ */
+export const orderPricing = (cart: TCartState) => {
+    const order = cart.order ?? [];
+    const promo = cart.validPromoCode;
+    const total = cartSummaryFunc(order);
+    const freeShipping = Boolean(promo.name) && promo.mechanic === 'freeShipping';
+    const discounted = !promo.name || freeShipping
+        ? total
+        : Math.round(order.reduce((sum, elem) => sum + positionTotal(elem) * (promoCoversItem(elem, promo.discounted_item) ? promo.discount_ratio : 1), 0));
+    const shipping = cart.isDelivery && !freeShipping ? cart.deliveryParams.deliveryPrice : 0;
+    return { total, discounted, shipping, freeShipping };
+};
+
 export const orderHasPrints = (order: Array<ICartOrderElement> | undefined): boolean => {
     if (!order) return false;
     return order.some((elem) => elem.prints && getPreviewArrFunc(elem.prints).length > 0);
@@ -60,21 +86,27 @@ export const checkoutOrderObjectCreateFunc = (cart: TCartState, roistat: string)
 
     const { order, validPromoCode, deliveryParams, userData, isDelivery } = cart;
 
-    const orderTotalPrice = cartSummaryFunc(order!);
+    const pricing = orderPricing(cart);
+    const nick = telegramNick(userData.telegram) ?? '';
+    const name = `${userData.surname} ${userData.name}`;
+    // Бэкенд каталога не хранит ник отдельно — дописываем к имени, чтобы менеджер видел его в Битриксе и письме.
+    // Имя там до 40 знаков (длиннее — заказ не сохранится), поэтому без ника, если не помещается.
+    const nameWithNick = `${name} · ${nick}`;
 
     let data: IOrderBody = {
-        order_total_price: orderTotalPrice,
-        order_discounted_price: validPromoCode.name ? orderTotalPrice * validPromoCode.discount_ratio : orderTotalPrice,
+        order_total_price: pricing.total,
+        order_discounted_price: pricing.discounted,
         order_promocode: validPromoCode,
-        owner_name: `${userData.surname} ${userData.name}`,
+        owner_name: nick && nameWithNick.length <= 40 ? nameWithNick : name,
         owner_phone: userData.phone.substring(1, userData.phone.length),
         owner_email: userData.email,
+        owner_telegram: nick,
         order_key: uuidv4(),
         items: [],
         isShipping: isDelivery,
         shipping_city: deliveryParams.validCityTo,
         shipping_point: deliveryParams.validDeliveryPoint,
-        shipping_price: deliveryParams.deliveryPrice,
+        shipping_price: pricing.shipping,
         packages: [],
         roistat
       };

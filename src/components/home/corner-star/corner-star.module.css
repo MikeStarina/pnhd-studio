@@ -1,0 +1,10 @@
+/* Центр звезды (точка 314,287 из 622×598) стоит у правого верхнего угла секции, лучи уходят за края.
+   Размер и положение центра — токены --corner-star-* */
+.star {
+  position: absolute;
+  top: calc(var(--corner-star-y) - var(--corner-star-size) * 0.48);
+  right: calc(var(--corner-star-x) - var(--corner-star-size) * 0.494);
+  width: var(--corner-star-size);
+  height: auto;
+  stroke-width: var(--corner-star-line);
+}

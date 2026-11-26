@@ -1,0 +1,300 @@
+/* Подвал — чёрная полоса от края до края окна; содержимое — на сетке страницы */
+.footer {
+  width: 100%;
+  margin-top: var(--section-gap);
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+/* Страницы из секций во всю ширину (главная) сами задают отступы — подвал встаёт вплотную */
+:global(main:has(> [data-layout='wide'])) + .footer {
+  margin-top: 0;
+}
+
+.inner {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 72px var(--page-gutter) 32px;
+}
+
+.top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 40px 16px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  font-style: normal;
+}
+
+.caption {
+  margin: 0 0 6px;
+  color: var(--color-dim);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-caps);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+/* Пункты навигации — в две колонки сверху вниз, капсом с разрядкой, как меню шапки.
+   Строки навигации и контактов одной высоты (--footer-row) с одним промежутком: телефон — на линии «Каталога» */
+.navList {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(4, var(--footer-row));
+  gap: 6px 40px;
+}
+
+.contactList {
+  display: grid;
+  grid-auto-rows: var(--footer-row);
+  gap: 6px;
+}
+
+.navLink,
+.phone,
+.contact {
+  display: flex;
+  align-items: center;
+}
+
+.navLink {
+  position: relative;
+  justify-self: start;
+  color: var(--color-white);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-caps);
+  line-height: 1;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Линия растёт слева при наведении — как у пунктов шапки */
+.navLink::after {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  border-radius: var(--radius-pill);
+  background: var(--color-lime);
+  content: '';
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--duration-slow) var(--ease);
+}
+
+.navLink:hover::after {
+  transform: none;
+}
+
+.phone {
+  justify-self: start;
+  color: var(--color-white);
+  font-family: var(--font-display);
+  font-size: var(--text-l);
+  font-weight: var(--weight-black);
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color var(--duration) var(--ease);
+}
+
+.contact {
+  justify-self: start;
+  color: var(--color-white);
+  font-size: var(--text-m);
+  line-height: 1;
+  text-decoration: none;
+  transition: color var(--duration) var(--ease);
+}
+
+.phone:hover,
+a.contact:hover,
+.legalLink:hover {
+  color: var(--color-lime);
+}
+
+/* Мессенджеры и соцсети — круглые контурные кнопки со знаками, при наведении салатовые */
+.socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.social {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--control-height);
+  height: var(--control-height);
+  border: var(--border-control) solid var(--color-line-dark);
+  border-radius: var(--radius-pill);
+  color: var(--color-white);
+  text-decoration: none;
+  transition: background-color var(--duration) var(--ease), border-color var(--duration) var(--ease), color var(--duration) var(--ease);
+}
+
+.social:hover {
+  border-color: var(--color-lime);
+  background: var(--color-lime);
+  color: var(--color-ink);
+}
+
+.button {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  height: var(--control-height);
+  padding: 0 24px;
+  border-radius: var(--radius-pill);
+  background: var(--color-lime);
+  color: var(--color-ink);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-caps);
+  line-height: 1;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background-color var(--duration) var(--ease);
+}
+
+.button:hover {
+  background: var(--color-white);
+}
+
+.logo {
+  display: block;
+}
+
+.logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.footer a:focus-visible {
+  outline: 2px solid var(--color-lime);
+  outline-offset: 3px;
+}
+
+.legal {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-line-dark);
+  color: var(--color-dim);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-caps);
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.legalLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 32px;
+}
+
+.company {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px 20px;
+  margin: 0;
+}
+
+.legalLink {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--duration) var(--ease);
+}
+
+@media (max-width: 1023px) {
+  .inner {
+    gap: 48px;
+    padding-top: 56px;
+  }
+
+  .top {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .button {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
+  .navList {
+    grid-auto-flow: row;
+    grid-template-rows: none;
+    grid-auto-rows: var(--footer-row);
+  }
+}
+
+@media (max-width: 599px) {
+  .inner {
+    gap: 40px;
+    padding-top: 48px;
+    padding-bottom: 24px;
+  }
+
+  .top {
+    grid-template-columns: 1fr;
+  }
+
+  .navList {
+    grid-auto-flow: column;
+    grid-template-rows: repeat(4, var(--footer-row));
+    column-gap: 32px;
+  }
+
+  .legal {
+    flex-direction: column;
+  }
+
+  .company {
+    justify-content: flex-start;
+  }
+}
+
+/* Подвал открывается из-под страницы: край поднимается, а содержимое отстаёт и догоняет к полному показу.
+   Без animation-timeline подвал просто въезжает со страницей */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .footer {
+      overflow: clip;
+      view-timeline: --footer;
+    }
+
+    .inner {
+      animation: lift var(--ease-out-soft) both;
+      animation-timeline: --footer;
+      animation-range: entry 0% entry 90%;
+    }
+  }
+}
+
+@keyframes lift {
+  from {
+    transform: translateY(calc(-1 * var(--footer-lift)));
+  }
+}

@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+      # Новый дизайн сайта собирается и выкладывается с этой ветки. Откат — Run workflow на main.
+      - redesign
   workflow_dispatch:
 
 permissions:
@@ -12,7 +14,7 @@ permissions:
 
 jobs:
   deploy:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/redesign'
     runs-on: ubuntu-latest
     environment: prod
     env:
@@ -38,10 +40,17 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
       - name: Build and push
+        env:
+          NEXT_PUBLIC_PNHD_API_URL: ${{ vars.NEXT_PUBLIC_PNHD_API_URL }}
+          NEXT_PUBLIC_YM_COUNTER_ID: ${{ vars.NEXT_PUBLIC_YM_COUNTER_ID }}
+          NEXT_PUBLIC_PRICE_SOURCE: ${{ vars.NEXT_PUBLIC_PRICE_SOURCE }}
         run: |
           IMAGE="${{ steps.meta.outputs.image }}"
           docker build \
             --build-arg "NEXT_PUBLIC_API_URL=${{ steps.meta.outputs.api_url }}" \
+            --build-arg "NEXT_PUBLIC_PNHD_API_URL=${NEXT_PUBLIC_PNHD_API_URL}" \
+            --build-arg "NEXT_PUBLIC_YM_COUNTER_ID=${NEXT_PUBLIC_YM_COUNTER_ID}" \
+            --build-arg "NEXT_PUBLIC_PRICE_SOURCE=${NEXT_PUBLIC_PRICE_SOURCE}" \
             -t "${IMAGE}:${{ steps.meta.outputs.tag }}" \
             -t "${IMAGE}:${{ steps.meta.outputs.sha_tag }}" \
             .
@@ -51,6 +60,13 @@ jobs:
       - name: Prepare deploy bundle
         env:
           FE_IMAGE: ${{ steps.meta.outputs.image }}:${{ steps.meta.outputs.tag }}
+          ORDER_BITRIX_WEBHOOK: ${{ secrets.ORDER_BITRIX_WEBHOOK }}
+          ORDER_BITRIX_CATEGORY_ID: ${{ vars.ORDER_BITRIX_CATEGORY_ID }}
+          ORDER_BITRIX_SOURCE_ID: ${{ vars.ORDER_BITRIX_SOURCE_ID }}
+          ORDER_BITRIX_MARK_FIELD: ${{ vars.ORDER_BITRIX_MARK_FIELD }}
+          ORDER_BITRIX_CLIENTID_FIELD: ${{ vars.ORDER_BITRIX_CLIENTID_FIELD }}
+          ORDER_TELEGRAM_BOT_TOKEN: ${{ secrets.ORDER_TELEGRAM_BOT_TOKEN }}
+          ORDER_TELEGRAM_CHAT_ID: ${{ vars.ORDER_TELEGRAM_CHAT_ID }}
         run: |
           set -euo pipefail
           mkdir -p deploy-bundle
@@ -60,7 +76,17 @@ jobs:
           {
             echo "FE_IMAGE=${FE_IMAGE}"
           } > deploy-bundle/.env
-          chmod 644 deploy-bundle/.env
+          # Переменные контейнера web: каналы заявок конструктора. Пустые — заявки остаются на диске и в логе.
+          {
+            for key in ORDER_BITRIX_WEBHOOK ORDER_BITRIX_CATEGORY_ID ORDER_BITRIX_SOURCE_ID ORDER_BITRIX_MARK_FIELD \
+              ORDER_BITRIX_CLIENTID_FIELD ORDER_TELEGRAM_BOT_TOKEN ORDER_TELEGRAM_CHAT_ID; do
+              echo "${key}=${!key}"
+            done
+          } > deploy-bundle/web.env
+          if [ -z "${ORDER_BITRIX_WEBHOOK}${ORDER_TELEGRAM_BOT_TOKEN}" ]; then
+            echo "::warning::Каналы заявок не заданы (ORDER_BITRIX_WEBHOOK / ORDER_TELEGRAM_BOT_TOKEN): заявки конструктора не дойдут до менеджера"
+          fi
+          chmod 644 deploy-bundle/.env deploy-bundle/web.env
 
       - name: Upload deploy bundle to VM
         uses: appleboy/scp-action@v0.1.7
@@ -82,7 +108,7 @@ jobs:
           script: |
             set -euo pipefail
             cd /opt/studio-fe
-            chmod 600 .env
+            chmod 600 .env web.env
             docker compose pull
             docker compose up -d --remove-orphans
             docker compose ps
