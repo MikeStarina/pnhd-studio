@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { deliverAndMark, ensureRetryLoop, hasChannel, logOrder } from './_lib/deliver';
 import { BadOrder, DuplicateOrder, parseOrder, type Order } from './_lib/parse';
+import { recordOrder } from './_lib/ledger';
 import { retryAfter } from './_lib/limit';
 import { markLogged, saveOrder } from './_lib/store';
 
@@ -8,7 +9,7 @@ import { markLogged, saveOrder } from './_lib/store';
  * Приём заявки из конструктора.
  * 0. С одного адреса — не больше 20 заявок за 10 минут (_lib/limit.ts), иначе 429.
  * 1. Заявка проверяется; повторная отправка той же заявки (тот же номер и содержимое) второй сделки не создаёт.
- * 2. Заявка с файлами сохраняется на диск (ORDER_STORE_DIR).
+ * 2. Заявка записывается в журнал (_lib/ledger.ts) и с файлами сохраняется на диск (ORDER_STORE_DIR).
  * 3. Отправляется в канал: Битрикс24, иначе Telegram (см. _lib/deliver.ts).
  * Если канал не ответил, клиент всё равно получает номер: заявка лежит на диске и уходит при повторных
  * попытках. Без настроенных каналов (локальная разработка) заявка остаётся на диске и в логе сервера.
@@ -29,6 +30,9 @@ export async function POST(req: Request) {
   }
   const done = (delivered: string, filesFailed = 0) =>
     NextResponse.json({ ok: true, number: order.number, delivered, filesFailed });
+
+  // Журнал — не условие приёма: если запись не удалась, заявка всё равно уходит менеджеру.
+  await recordOrder(order).catch((e) => console.error('[order]', order.number, 'not in ledger:', e));
 
   let stored = true;
   try {

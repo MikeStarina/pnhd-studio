@@ -1,3 +1,4 @@
+import { orderSource } from './ledger';
 import { orderText, type Order } from './parse';
 
 /** COMMENTS сделки — HTML: текст клиента экранируем, переносы строк ставим сами. */
@@ -20,9 +21,6 @@ const CRM = {
   page: { field: 'UF_CRM_DEAL_URL_PAGE', constructor: 2500, cart: 2506 },
 } as const;
 
-/** В /api/orders заявки шлют конструктор и оформление корзины; остальные формы сайта идут через бэкенд. */
-const pageValue = (url: string) =>
-  /^\/(checkout|cart)(\/|$)/.test(url ? new URL(url).pathname : '') ? CRM.page.cart : CRM.page.constructor;
 
 /**
  * Заявка в Битрикс24 через входящий вебхук (права: CRM).
@@ -79,7 +77,7 @@ export async function sendToBitrix(o: Order, webhook: string): Promise<string[]>
       COMMENTS: escapeHtml(orderText(o)).replace(/\n/g, '<br>'),
       [CRM.orderNumber]: o.number,
       [CRM.project.field]: CRM.project.studio,
-      [CRM.page.field]: pageValue(o.page),
+      [CRM.page.field]: orderSource(o.page) === 'cart' ? CRM.page.cart : CRM.page.constructor,
       ...(o.clientId ? { [CRM.metrikaClientId]: o.clientId } : {}),
       ...(o.roistat ? { [CRM.roistatVisit]: o.roistat } : {}),
       UTM_SOURCE: o.utm.source,

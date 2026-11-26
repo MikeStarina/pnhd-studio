@@ -67,6 +67,7 @@ jobs:
           ORDER_BITRIX_CLIENTID_FIELD: ${{ vars.ORDER_BITRIX_CLIENTID_FIELD }}
           ORDER_TELEGRAM_BOT_TOKEN: ${{ secrets.ORDER_TELEGRAM_BOT_TOKEN }}
           ORDER_TELEGRAM_CHAT_ID: ${{ vars.ORDER_TELEGRAM_CHAT_ID }}
+          ORDER_LEDGER_TOKEN: ${{ secrets.ORDER_LEDGER_TOKEN }}
         run: |
           set -euo pipefail
           mkdir -p deploy-bundle
@@ -79,7 +80,7 @@ jobs:
           # Переменные контейнера web: каналы заявок конструктора. Пустые — заявки остаются на диске и в логе.
           {
             for key in ORDER_BITRIX_WEBHOOK ORDER_BITRIX_CATEGORY_ID ORDER_BITRIX_SOURCE_ID ORDER_BITRIX_MARK_FIELD \
-              ORDER_BITRIX_CLIENTID_FIELD ORDER_TELEGRAM_BOT_TOKEN ORDER_TELEGRAM_CHAT_ID; do
+              ORDER_BITRIX_CLIENTID_FIELD ORDER_TELEGRAM_BOT_TOKEN ORDER_TELEGRAM_CHAT_ID ORDER_LEDGER_TOKEN; do
               echo "${key}=${!key}"
             done
           } > deploy-bundle/web.env
