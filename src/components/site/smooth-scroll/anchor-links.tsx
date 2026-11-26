@@ -11,6 +11,15 @@ import { subscribeLenis } from './smooth-scroll';
  * прокручиваем к блоку и убираем якорь из адреса (как ?product в конструкторе).
  * Прокрутка — через Lenis, если он включён, иначе нативная (плавная, если человек не просил меньше движения).
  */
+/** Блок по якорю из адреса. Битый якорь («#%» из обрезанной ссылки) — не ошибка: блока просто нет. */
+const blockByHash = (hash: string): HTMLElement | null => {
+  try {
+    return document.getElementById(decodeURIComponent(hash.slice(1)));
+  } catch {
+    return null;
+  }
+};
+
 const AnchorLinks: React.FC = () => {
   const pathname = usePathname();
 
@@ -27,7 +36,7 @@ const AnchorLinks: React.FC = () => {
       if (!(link instanceof HTMLAnchorElement) || link.target === '_blank') return;
       const url = new URL(link.href);
       if (url.origin !== location.origin || url.pathname !== location.pathname || !url.hash) return;
-      const target = document.getElementById(decodeURIComponent(url.hash.slice(1)));
+      const target = blockByHash(url.hash);
       if (!target) return;
       event.preventDefault();
       // Через кадр: пункт меню-бургера сначала закрывает меню, и Lenis снова запускается — запуск обрывает начатую прокрутку
@@ -44,7 +53,7 @@ const AnchorLinks: React.FC = () => {
   // Переход с другой страницы: Next доводит до блока по якорю, но по сдвинутому проявлением положению — ставим точно и убираем якорь
   useEffect(() => {
     if (!location.hash) return;
-    const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    const target = blockByHash(location.hash);
     if (!target) return;
     const frame = requestAnimationFrame(() => {
       window.scrollTo({ top: blockTop(target), behavior: 'instant' });

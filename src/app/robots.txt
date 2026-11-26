@@ -6,6 +6,8 @@ Disallow: /tproduct/
 Disallow: /thanks
 Disallow: /checkout
 Disallow: /cart
+Disallow: /profile
+Disallow: /auth
 Disallow: /*/constructor
 Disallow: *&&&
 
@@ -17,6 +19,8 @@ Disallow: /tproduct/
 Disallow: /thanks
 Disallow: /checkout
 Disallow: /cart
+Disallow: /profile
+Disallow: /auth
 Disallow: /*/constructor
 Disallow: *&&&
 Disallow: /*?id=
@@ -30,6 +34,8 @@ Disallow: /tproduct/
 Disallow: /thanks
 Disallow: /checkout
 Disallow: /cart
+Disallow: /profile
+Disallow: /auth
 Disallow: /*/constructor
 Disallow: *&&&
 

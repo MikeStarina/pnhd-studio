@@ -11,7 +11,6 @@ import {ssOptions} from "@/app/utils/method-options-data";
 import {prices} from "@/app/utils/constants";
 import MarkupScript from "@/components/shared-components/markup-script/markup-script";
 import PrintMethodsScreen from "@/components/pages-components/main-page/print-methods-screen/print-methods-screen";
-import {type} from "node:os";
 import { SITE_INFO } from "@/app/constants";
 import AdvantagesComponent from "@/components/pages-components/method-page/advantages/advantages";
 import Breadcrumbs from '@/components/shared-components/breadcrumbs/Breadcrumbs';

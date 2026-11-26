@@ -21,7 +21,7 @@ export const generateMetadata = ({
         keywords: option?.meta.metaKeywords,
         openGraph: {
             type: "website",
-            url: `https://studio.pnhd.ru/textile/${params.slug}`,
+            url: `https://studio.pnhd.ru/prints/${params.slug}`,
             title: option?.meta.metaTitle,
             description: option?.meta.metaDescription,
             siteName: "ПИНХЭД СТУДИЯ",

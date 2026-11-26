@@ -8,6 +8,7 @@ import InfoBar from "@/components/shared-components/info-bar/info-bar";
 import Popup from "@/components/shared-components/popup/popup";
 import AuthInit from "@/components/shared-components/auth/auth-init";
 import Script from "next/script";
+import { SITE_INFO } from "@/app/constants";
 import CookieNotice from "@/components/site/cookie-notice/cookie-notice";
 import { ANALYTICS_OFF_KEY, METRIKA_ID } from "@/components/site/analytics";
 import { SiteGoals } from "@/components/site/site-goals";
@@ -29,6 +30,8 @@ export const viewport: Viewport = {
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
+    // Без него относительные картинки для соцсетей на страницах без своего metadataBase получают адрес localhost.
+    metadataBase: new URL(SITE_INFO.domain),
     verification: {
       yandex: "35381404e7bfd3a4",
       //google: "M4lIu49eO2o_XQZ5jyQ3zNkORxQftkEpEvf0E04pRFU",

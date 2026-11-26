@@ -10,9 +10,9 @@ const badgeText = 'Реализуем смелые идеи на твоей од
 
 /** Вещи мини-конструктора: мокап из конструктора и белый вариант из каталога, с которым он откроется. */
 const garments = [
-  { id: 'tshirt', label: 'Футболка', mockup: '/mockups/tshirt_regular.png', slug: 'futbolka-regular-belaya' },
-  { id: 'hoodie', label: 'Худи', mockup: '/mockups/hoodie.png', slug: 'hudi-classic-belyj-man' },
-  { id: 'longsleeve', label: 'Лонгслив', mockup: '/mockups/longsleeve.png', slug: 'longsliv-classic-belyj-woman' },
+  { id: 'tshirt', label: 'Футболка', mockup: '/home/constructor/tshirt_regular.webp', slug: 'futbolka-regular-belaya' },
+  { id: 'hoodie', label: 'Худи', mockup: '/home/constructor/hoodie.webp', slug: 'hudi-classic-belyj-man' },
+  { id: 'longsleeve', label: 'Лонгслив', mockup: '/home/constructor/longsleeve.webp', slug: 'longsliv-classic-belyj-woman' },
 ];
 
 const steps = ['Выбери одежду из каталога', 'Расположи принт', 'Оформи заказ', 'Дождись и забери заказ'];

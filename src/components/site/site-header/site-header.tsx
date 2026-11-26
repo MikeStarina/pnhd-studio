@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAppSelector } from '@/redux/redux-hooks';
@@ -27,6 +27,7 @@ const DirectionSwitch: React.FC = () => (
 
 const SiteHeader: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const burger = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
   const inConstructor = pathname?.includes('/constructor') ?? false;
   const cartCount = useAppSelector((store) => (store.cart.order?.length ?? 0) + store.cartDesigns.items.length);
@@ -36,7 +37,12 @@ const SiteHeader: React.FC = () => {
   useEffect(() => {
     if (!menuOpen) return;
     document.documentElement.style.overflow = 'hidden';
-    const onKey = (event: KeyboardEvent) => event.key === 'Escape' && setMenuOpen(false);
+    // Escape возвращает фокус на кнопку меню: иначе он остаётся на скрытой ссылке.
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      setMenuOpen(false);
+      burger.current?.focus();
+    };
     window.addEventListener('keydown', onKey);
     return () => {
       document.documentElement.style.overflow = '';
@@ -84,6 +90,7 @@ const SiteHeader: React.FC = () => {
             </Link>
             <button
               type="button"
+              ref={burger}
               className={styles.burger}
               aria-expanded={menuOpen}
               aria-controls="site-menu"
@@ -125,7 +132,7 @@ const SiteHeader: React.FC = () => {
             </Link>
           ))}
         </nav>
-        <Link href={constructorHref} className={styles.menuPrimary} style={stagger(siteNav.length + 1)}>
+        <Link href={constructorHref} className={styles.menuPrimary} style={stagger(siteNav.length + 1)} onClick={() => setMenuOpen(false)}>
           Нанести принт
         </Link>
         <div className={styles.menuContacts} style={stagger(siteNav.length + 2)}>

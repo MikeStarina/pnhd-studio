@@ -18,7 +18,7 @@ import SheetCut from '@/components/home/sheet-cut/sheet-cut';
 import SectionSnap from '@/components/site/smooth-scroll/section-snap';
 import { ogImageHref } from '@/components/site/links';
 
-const callLine = ['Закажи мерч', 'С любым принтом', 'Пинхэд'];
+const callLine = ['Закажи одежду', 'С любым принтом', 'Пинхэд'];
 
 export const metadata: Metadata = {
   title: 'Печать на одежде в Санкт-Петербурге на заказ от 1 штуки цена в Pinhead Studio',

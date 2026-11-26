@@ -18,7 +18,8 @@ const formatPhone = (value: string): string => {
   const prefixed = /^[78]/.test(digits) && (value.trim().startsWith('+7') || digits.length === 1 || digits.length > 10);
   const national = (prefixed ? digits.slice(1) : digits).slice(0, 10);
   const [a, b, c, d] = [national.slice(0, 3), national.slice(3, 6), national.slice(6, 8), national.slice(8, 10)];
-  return `+7${a ? ` (${a}` : ''}${a.length === 3 ? ')' : ''}${b ? ` ${b}` : ''}${c ? `-${c}` : ''}${d ? `-${d}` : ''}`;
+  // Скобку закрываем вместе со следующей цифрой: иначе её не стереть — формат тут же дописал бы её обратно.
+  return `+7${a ? ` (${a}` : ''}${b ? `) ${b}` : ''}${c ? `-${c}` : ''}${d ? `-${d}` : ''}`;
 };
 
 const validate = (name: string, phone: string, agree: boolean): Errors => ({

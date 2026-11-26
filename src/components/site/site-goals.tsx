@@ -20,7 +20,7 @@ const sourceOf = (link: HTMLAnchorElement) => {
 const LINK_GOALS: Array<[test: (url: URL) => boolean, goal: SiteGoal]> = [
   [(u) => u.protocol === 'tel:', 'phone_click'],
   [(u) => u.protocol === 'mailto:', 'email_click'],
-  [(u) => u.hostname === 't.me', 'telegram_click'],
+  [(u) => u.hostname === 't.me' || u.hostname === 'telegram.me', 'telegram_click'],
   [(u) => u.hostname === 'wa.me', 'whatsapp_click'],
   [(u) => u.hostname === 'vk.com', 'vk_click'],
 ];
