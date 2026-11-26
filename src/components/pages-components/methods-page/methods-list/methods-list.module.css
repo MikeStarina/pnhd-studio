@@ -1,0 +1,363 @@
+/*
+ * Методы на /methods. Компьютер — бенто как на старом сайте (12 колонок): сверху заголовок и «Шелкография» справа,
+ * ниже по краям высокие «Флекс» и «Вышивка», между ними друг над другом «DTF» и «DTG».
+ * Планшет — бенто в две колонки. Телефон — заголовок и лента карточек (макет «04 · Методы нанесения», mobile).
+ * Промежуток 16 px — как в бенто кейсов и каталога на главной.
+ */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-areas:
+    'head head head head head silk silk silk silk silk silk silk'
+    'flex flex flex dtf  dtf  dtf  dtf  dtf  dtf  emb  emb  emb'
+    'flex flex flex dtg  dtg  dtg  dtg  dtg  dtg  emb  emb  emb';
+  grid-template-rows: minmax(300px, auto) minmax(280px, auto) minmax(280px, auto);
+  gap: 16px;
+}
+
+.head {
+  grid-area: head;
+  align-self: center;
+  padding: 0 24px 0 0;
+}
+
+/* Карточки — прямо в сетке бенто; список остаётся списком (role="list" в разметке) */
+.list {
+  display: contents;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  min-width: 0;
+}
+
+.item[data-area='silk'] {
+  grid-area: silk;
+}
+
+.item[data-area='emb'] {
+  grid-area: emb;
+}
+
+.item[data-area='dtf'] {
+  grid-area: dtf;
+}
+
+.item[data-area='dtg'] {
+  grid-area: dtg;
+}
+
+.item[data-area='flex'] {
+  grid-area: flex;
+}
+
+/* Карточка: рамка и скругление в стиле сайта; под курсором или в фокусе — синяя, текст белый */
+.card {
+  display: grid;
+  flex: 1;
+  gap: 24px;
+  padding: 16px;
+  border: 1px solid var(--color-ink);
+  border-radius: var(--radius-card);
+  background: var(--color-white);
+  color: var(--color-ink);
+  text-decoration: none;
+  transition:
+    background-color var(--duration) var(--ease),
+    border-color var(--duration) var(--ease),
+    color var(--duration) var(--ease);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 2px;
+}
+
+/* Фото в разметке после текста: широкой и высокой ставим его первым; у wide-right оно остаётся справа */
+.item[data-shape='wide'] .photo,
+.item[data-shape='tall'] .photo {
+  order: -1;
+}
+
+/* Широкая: фото и текст рядом, фото на всю высоту карточки */
+.item[data-shape='wide'] .card,
+.item[data-shape='wide-right'] .card {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+/* Высокая: фото сверху, текст ниже, цена прижата к низу */
+.item[data-shape='tall'] .card {
+  grid-template-rows: 240px 1fr;
+}
+
+.photo {
+  position: relative;
+  min-height: 200px;
+  overflow: hidden;
+  border-radius: var(--radius-card-s);
+}
+
+.img {
+  object-fit: cover;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+  padding: 8px 8px 4px;
+}
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--display-s);
+  font-weight: var(--weight-black);
+  line-height: var(--display-leading);
+  text-transform: uppercase;
+}
+
+/* Номер — как у методов на главной: «01» шрифтом заголовков, приглушённый */
+.mark {
+  flex: none;
+  font-family: var(--font-display);
+  font-size: var(--display-s);
+  font-weight: var(--weight-black);
+  line-height: var(--display-leading);
+  color: color-mix(in srgb, currentColor 32%, transparent);
+}
+
+.text {
+  font-size: var(--text-m);
+  line-height: 1.4;
+}
+
+/* Цена — внизу карточки: «от 400 ₽» крупно, рядом что за цена и тираж */
+.price {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.priceValue {
+  font-family: var(--font-display);
+  font-size: var(--display-s);
+  font-weight: var(--weight-black);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.priceNote {
+  font-size: var(--text-xs);
+  line-height: 18px;
+  color: color-mix(in srgb, currentColor 64%, transparent);
+}
+
+/* Синяя — в фокусе с клавиатуры (всегда) и под курсором мыши; на сенсорных экранах :hover «залипает» после тапа,
+   поэтому наведение — только для мыши */
+@media (min-width: 600px) {
+  .card:focus-visible {
+    border-color: var(--color-blue);
+    background: var(--color-blue);
+    color: var(--color-white);
+  }
+}
+
+@media (min-width: 600px) and (hover: hover) {
+  .item:hover .card {
+    border-color: var(--color-blue);
+    background: var(--color-blue);
+    color: var(--color-white);
+  }
+}
+
+/* Точки под лентой — только на телефоне */
+.dots {
+  display: none;
+}
+
+/* Небольшой компьютер: высоким карточкам — фото ниже, чтобы текст помещался */
+@media (max-width: 1279px) {
+  .item[data-shape='tall'] .card {
+    grid-template-rows: 200px 1fr;
+  }
+}
+
+/* Планшет: бенто в две колонки — заголовок, «Шелкография», две высокие рядом, «DTF» и «DTG» */
+@media (max-width: 1023px) {
+  .bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      'head head'
+      'silk silk'
+      'flex emb'
+      'dtf  dtf'
+      'dtg  dtg';
+    grid-template-rows: none;
+  }
+
+  .head {
+    padding: 0 0 16px;
+  }
+
+  .item[data-shape='wide'] .card,
+  .item[data-shape='wide-right'] .card {
+    min-height: 260px;
+  }
+}
+
+/* Телефон: заголовок над лентой карточек вбок до краёв экрана; карточки белые, синеют только при нажатии */
+@media (max-width: 599px) {
+  .bento {
+    display: block;
+  }
+
+  .head {
+    padding: 0 0 24px;
+  }
+
+  .list {
+    display: flex;
+    gap: 16px;
+    margin: 0 calc(-1 * var(--page-gutter));
+    padding: 0 var(--page-gutter);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 var(--page-gutter);
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+
+  .list::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Карусель: справа выглядывает следующая карточка (56 px), чтобы было видно, что ленту листают */
+  .item {
+    flex: none;
+    width: calc(100vw - 2 * var(--page-gutter) - 56px);
+    max-width: 340px;
+    scroll-snap-align: start;
+  }
+
+  .item[data-shape] .card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 420px;
+    padding: 16px 16px 20px;
+  }
+
+  .item[data-shape] .photo {
+    order: -1;
+    flex: none;
+    height: 200px;
+    min-height: 0;
+  }
+
+  .body {
+    flex: 1;
+    gap: 12px;
+    padding: 0;
+  }
+
+  /* Карточки белые; синий — только отклик на нажатие (тот же цвет, что при наведении на компьютере).
+     Где мы в ленте, показывают точки и счётчик под ней */
+  .card {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .card:active {
+    border-color: var(--color-blue);
+    background: var(--color-blue);
+    color: var(--color-white);
+  }
+
+  /* Название и номер в одну строку: на узких телефонах кегль чуть меньше 36 px, чтобы «Шелкография 01» влезала */
+  .top {
+    gap: 8px;
+  }
+
+  .name,
+  .mark {
+    font-size: min(var(--display-card), 8.6vw);
+  }
+
+  .text {
+    font-size: var(--text-xs);
+    line-height: 20px;
+  }
+
+  .priceValue {
+    font-size: var(--display-s-compact);
+  }
+
+  .priceNote {
+    font-size: var(--text-2xs);
+    line-height: 16px;
+  }
+
+  /* Точки по центру под лентой, в серой «таблетке» — как переключатель «Для бизнеса / Для себя».
+     Видна точка 6 px, нажимается вся кнопка 24 px */
+  .dots {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    margin: 16px auto 0;
+    padding: 4px 8px;
+    border-radius: var(--radius-pill);
+    background: var(--color-surface);
+  }
+
+  .dot {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    transition: width var(--duration) var(--ease);
+  }
+
+  .dot::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--color-line);
+    transition:
+      width var(--duration) var(--ease),
+      background-color var(--duration) var(--ease);
+  }
+
+  .dot[aria-current] {
+    width: 38px;
+  }
+
+  .dot[aria-current]::before {
+    width: 20px;
+    background: var(--color-blue);
+  }
+
+  .dot:focus-visible {
+    outline: 2px solid var(--color-blue);
+    outline-offset: -2px;
+    border-radius: var(--radius-pill);
+  }
+}

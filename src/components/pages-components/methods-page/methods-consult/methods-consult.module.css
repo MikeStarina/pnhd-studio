@@ -1,0 +1,48 @@
+/* Серая карточка на весь ряд, как блок цен на главной, но пополам: слева текст, справа чёрная форма (шире, чем на главной) */
+.shell {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--card-inset);
+  padding: var(--card-inset);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+}
+
+/* Заголовок и пояснение — слева, по верху; внешний отступ + этот = 40 px от края карточки */
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: calc(40px - var(--card-inset));
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--display-l);
+  font-weight: var(--weight-black);
+  line-height: var(--display-leading);
+  text-transform: uppercase;
+}
+
+.lead {
+  max-width: 440px;
+  margin: 0;
+  font-size: var(--text-l);
+  line-height: 1.4;
+  color: var(--color-ink-64);
+}
+
+@media (max-width: 1023px) {
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+}
+
+@media (max-width: 599px) {
+  .text {
+    gap: 16px;
+    padding: calc(24px - var(--card-inset));
+  }
+}

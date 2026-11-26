@@ -27,7 +27,8 @@ const validate = (name: string, phone: string, agree: boolean): Errors => ({
   ...(agree ? {} : { agree: 'Отметь согласие на обработку персональных данных, иначе заявку не отправить' }),
 });
 
-const PriceForm: React.FC = () => {
+/** Заявка менеджеру. source — откуда заявка для Метрики: блок цен на главной или страница методов */
+const PriceForm: React.FC<{ source?: 'price' | 'methods' }> = ({ source = 'price' }) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [agree, setAgree] = useState(false);
@@ -44,7 +45,7 @@ const PriceForm: React.FC = () => {
       phone: phone.replace(/[^\d+]/g, ''),
       roistat: readRoistatVisitId() || 'n/a',
     });
-    track('error' in result ? 'lead_error' : 'lead_submit', { form: 'price' });
+    track('error' in result ? 'lead_error' : 'lead_submit', { form: source });
   };
 
   const submit = (event: React.FormEvent<HTMLFormElement>) => {

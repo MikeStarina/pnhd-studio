@@ -1,6 +1,6 @@
 /**
  * События воронки конструктора. Уходят через единую аналитику сайта (components/site/analytics.ts):
- * цель в Метрику, без счётчика — в консоль. Перечень целей — docs/ANALYTICS.md.
+ * цель в Метрику, без счётчика — в консоль.
  */
 import {
   ANALYTICS_OFF_KEY, analyticsAllowed, readEntry, track as sendGoal, trackPurchase as sendPurchase,

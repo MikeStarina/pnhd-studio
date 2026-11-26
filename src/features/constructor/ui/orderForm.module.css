@@ -138,7 +138,8 @@ button.line:disabled { cursor: progress; }
 .sendSum { font-weight: 700; }
 
 /* ── Отправлено ── */
-.done { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 28px 24px 24px; }
+/* Экран «Заявка отправлена» выделяется (конструктор целиком — нет): номер заказа копируют, чтобы назвать менеджеру */
+.done { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 28px 24px 24px; -webkit-user-select: text; user-select: text; }
 .done h3 { margin: 0; }
 .doneIcon {
   width: 60px; height: 60px; display: grid; place-items: center; border-radius: 50%; background: var(--lime);

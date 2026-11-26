@@ -2,3 +2,42 @@
 .crumbs :global(.breadcrumbs) {
   margin: 0 0 var(--header-gap);
 }
+
+/* h1 в левой верхней ячейке бенто: ключ мелко, слоган крупно, подзаголовок жирным — как на старом /methods */
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: var(--weight-black);
+  text-transform: uppercase;
+}
+
+/* Ключ «Методы печати на одежде» — строкой над слоганом, внутри h1 */
+.eyebrow {
+  display: block;
+  margin-bottom: 16px;
+  font-family: var(--font-text);
+  font-size: var(--text-s);
+  font-weight: var(--weight-bold);
+  line-height: 1.2;
+  letter-spacing: var(--tracking-caps);
+}
+
+.big {
+  display: block;
+  font-size: var(--display-l);
+  line-height: var(--display-leading);
+}
+
+.sub {
+  display: block;
+  margin-top: 16px;
+  font-size: var(--display-s);
+  line-height: var(--display-leading);
+}
+
+/* Ячейка заголовка в бенто уже экрана: до 1440 px слоган на ступень меньше, чтобы «смелые идеи» не уходили в третью строку */
+@media (max-width: 1439px) and (min-width: 1024px) {
+  .big {
+    font-size: var(--display-m);
+  }
+}

@@ -7,10 +7,9 @@ import styles from './price-stage.module.css';
 export type Fabric = 'white' | 'colored';
 
 const MOCKUP = '/home/constructor/tshirt_regular.webp';
-const PRINT: Record<Fabric, string> = {
-  white: '/home/constructor/prints/print-1-light.webp',
-  colored: '/home/constructor/prints/print-1-dark.webp',
-};
+/** Принт — фирменная звезда (brand/asterisk.svg, 195×184): синяя на белой ткани, салатовая на цветной; доля ширины формата */
+const PRINT_RATIO = 184 / 195;
+const PRINT_FILL = 0.9;
 const TINT: Record<Fabric, string> = {
   white: resolveColorHex('белый') ?? '#ffffff',
   colored: resolveColorHex('чёрный') ?? '#111111',
@@ -35,13 +34,16 @@ const box = {
 const pct = (value: number) => `${(value * 100).toFixed(3)}%`;
 
 /**
- * Футболка с местом под принт в реальном масштабе. Размер формата меняется через clip-path и transform
- * (без width/height): рамка вырезается из прямоугольника под A3+, принт уменьшается одним масштабом от верха.
+ * Футболка с принтом в реальном масштабе формата. Размер меняется только через transform (без width/height):
+ * звезда нарисована под A3+ и уменьшается одним масштабом.
  */
 const PriceStage: React.FC<{ format: PriceFormat; fabric: Fabric }> = ({ format, fabric }) => {
   const sx = format.w / MAX.w;
   const sy = format.h / MAX.h;
-  const side = pct((1 - sx) / 2);
+  // Звезда почти квадратная, формат вертикальный: ставим её по центру формата по высоте.
+  // Сдвиг translateY — в долях высоты самой картинки до масштаба (MAX.w × PRINT_RATIO в см).
+  const scale = Math.min(sx, sy) * PRINT_FILL;
+  const offset = (format.h - MAX.w * scale * PRINT_RATIO) / 2 / (MAX.w * PRINT_RATIO);
 
   return (
     <div className={styles.stage} data-fabric={fabric}>
@@ -52,15 +54,7 @@ const PriceStage: React.FC<{ format: PriceFormat; fabric: Fabric }> = ({ format,
         className={styles.box}
         style={{ left: pct(box.left), top: pct(box.top), width: pct(box.width), height: pct(box.height) }}
       >
-        <span className={styles.area} style={{ clipPath: `inset(0 ${side} ${pct(1 - sy)} ${side})` }} />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={PRINT[fabric]}
-          alt=""
-          className={styles.print}
-          style={{ transform: `scale(${Math.min(sx, sy)})` }}
-          draggable={false}
-        />
+        <span className={styles.print} style={{ transform: `translateY(${pct(offset)}) scale(${scale})` }} />
       </div>
     </div>
   );

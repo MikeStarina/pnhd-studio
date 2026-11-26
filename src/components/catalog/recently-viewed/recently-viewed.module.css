@@ -92,6 +92,8 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-padding: 0 var(--page-gutter);
+    -webkit-user-select: none;
+    user-select: none;
     scrollbar-width: none;
   }
 

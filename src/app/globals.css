@@ -16,6 +16,27 @@ body {
   position: relative;
 }
 
+/* Интерфейс не выделяется: двойной тап по кнопке, долгое нажатие и перетаскивание не выделяют текст страницы.
+   Обычный текст (описания, цены, контакты, оферта) выделяется как обычно. :where — нулевой вес, компонент может вернуть. */
+:where(button, [role='button'], [role='tab'], [role='radio'], [role='switch'], label, summary, nav, img, svg, video) {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Картинки: без меню долгого нажатия на iPhone */
+img {
+  -webkit-touch-callout: none;
+}
+
+/* Поля ввода выделяются всегда, даже внутри невыделяемого блока (иначе Safari не даёт набирать текст) */
+input,
+textarea,
+select,
+[contenteditable='true'] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
 /* Страница не оттягивается за верхний и нижний край при прокрутке (эластичный отскок macOS и iOS) */
 html,
 body {

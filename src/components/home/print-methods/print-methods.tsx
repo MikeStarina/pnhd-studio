@@ -6,18 +6,12 @@ import MethodPanels from './method-panels';
 import { methodPanels, methodsTitle } from './data';
 import styles from './print-methods.module.css';
 
-/** На главной — секция с h2; на странице /methods она же открывает страницу: h1, свой заголовок, крошки сверху */
-const PrintMethods: React.FC<{ as?: 'h1' | 'h2'; title?: React.ReactNode; before?: React.ReactNode }> = ({
-  as = 'h2',
-  title = methodsTitle(methodPanels.length),
-  before,
-}) => (
+/** Методы печати на главной: панели методов (ведут на страницы методов) и ссылка к расчёту цен ниже */
+const PrintMethods: React.FC = () => (
   <Section tone="white" id="methods" labelledBy="methods-title">
-    {before}
     <SectionHead
-      as={as}
       titleId="methods-title"
-      title={title}
+      title={methodsTitle(methodPanels.length)}
       lead="Под любой тираж, ткань и&nbsp;срок: от&nbsp;одной футболки за&nbsp;15&nbsp;минут до&nbsp;партии в&nbsp;цветах по&nbsp;Пантону"
     />
     <MethodPanels panels={methodPanels} />

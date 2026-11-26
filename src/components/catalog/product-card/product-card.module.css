@@ -1,6 +1,8 @@
 /* Карточка товара: фото 3:4 на серой подложке, ниже строка цветов и размеров, цена и название капсом */
 .card {
   position: relative;
+  -webkit-user-select: none;
+  user-select: none;
   display: flex;
   flex-direction: column;
   gap: 16px;

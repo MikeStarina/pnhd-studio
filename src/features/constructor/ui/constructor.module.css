@@ -59,6 +59,10 @@
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-body);
+  /* Конструктор — интерфейс, а не текст: перетаскивание принта и тапы не выделяют подписи. Поля ввода — см. globals.css,
+     экран с номером заказа — orderForm.module.css (.done) */
+  -webkit-user-select: none;
+  user-select: none;
 }
 /* Десктоп: страница не прокручивается и не «резинится» (на мобильной вёрстке страница скроллится как раньше) */
 @media (min-width: 901px) {

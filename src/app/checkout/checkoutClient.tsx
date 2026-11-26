@@ -156,7 +156,7 @@ const CheckoutPage: React.FC = () => {
     setPending(true);
     setFailed('none');
     const done = sent.current;
-    // Цели воронки конструктора (docs/ANALYTICS.md): заявка на изделие с принтом оформляется здесь.
+    // Цель воронки конструктора: заявка на изделие с принтом оформляется здесь.
     const goalParams = (i: number) => ({
       product: designs[i].garment.name, method: designs[i].method, qty: designPrices[i].qty,
       order_price: designPrices[i].total, colors: designPrices[i].lines.length,
