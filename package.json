@@ -26,6 +26,7 @@
     "classnames": "^2.5.1",
     "cookie-parser": "^1.4.7",
     "dayjs": "^1.11.18",
+    "exceljs": "^4.4.0",
     "fontkit": "^2.0.4",
     "idb-keyval": "^6.3.0",
     "jsonwebtoken": "^9.0.3",

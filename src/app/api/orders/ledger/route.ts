@@ -1,10 +1,10 @@
 import { timingSafeEqual } from 'node:crypto';
-import { ledgerCsv } from '../_lib/ledger';
+import { ledgerXlsx } from '../_lib/ledger';
 
 export const dynamic = 'force-dynamic';
 
 /**
- * Выгрузка журнала заявок в CSV. Закрыта паролем ORDER_LEDGER_TOKEN (HTTP Basic, имя любое):
+ * Выгрузка журнала заявок в Excel. Закрыта паролем ORDER_LEDGER_TOKEN (HTTP Basic, имя любое):
  * браузер сам спросит пароль. Пароль не задан — адреса нет.
  */
 export async function GET(req: Request) {
@@ -14,10 +14,10 @@ export async function GET(req: Request) {
     return new Response('Unauthorized', { status: 401, headers: { 'WWW-Authenticate': 'Basic realm="orders", charset="UTF-8"' } });
   }
   const date = new Date().toISOString().slice(0, 10);
-  return new Response(await ledgerCsv(), {
+  return new Response(await ledgerXlsx(), {
     headers: {
-      'content-type': 'text/csv; charset=utf-8',
-      'content-disposition': `attachment; filename="orders-${date}.csv"`,
+      'content-type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'content-disposition': `attachment; filename="zayavki-${date}.xlsx"`,
       'cache-control': 'no-store',
     },
   });
