@@ -7,6 +7,7 @@ import SheetCut from '@/components/home/sheet-cut/sheet-cut';
 import PriceEstimate from '@/components/home/price-estimate/price-estimate';
 import ConstructorPromo from '@/components/home/constructor-promo/constructor-promo';
 import styles from './page.module.css';
+import { ogImageHref } from '@/components/site/links';
 
 export const metadata: Metadata = {
   title: 'Методы печати на одежде в Санкт-Петербурге в Pinhead Studio',
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
     'методы печати на одежде, нанесение принта, dtg, dtf, шелкография, термотрансфер, вышивка, печать на футболках, санкт-петербург, от 1 шт',
   metadataBase: new URL(SITE_INFO.domain),
   alternates: { canonical: '/methods' },
-  openGraph: { type: 'website', title: 'Методы печати на одежде — Pinhead Studio', images: '/opengraph-image.jpg' },
+  openGraph: { type: 'website', title: 'Методы печати на одежде — Pinhead Studio', images: ogImageHref },
 };
 
 /** Методы нанесения: те же блоки, что на главной — панели методов (ведут на страницы методов), цены с расчётом и конструктор */

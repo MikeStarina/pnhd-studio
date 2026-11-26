@@ -16,6 +16,7 @@ import About from '@/components/home/about/about';
 import Marquee from '@/components/home/marquee/marquee';
 import SheetCut from '@/components/home/sheet-cut/sheet-cut';
 import SectionSnap from '@/components/site/smooth-scroll/section-snap';
+import { ogImageHref } from '@/components/site/links';
 
 const callLine = ['Закажи мерч', 'С любым принтом', 'Пинхэд'];
 
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
     'печать на футболках, санкт-петербург, недорого, на заказ, цена, от 1 шт, срочный, заказать, хороший, сделать, стоимость, доставка, быстрый, качественный, черный, оверсайз, белый, онлайн, спортивный, свой дизайн, конструктор, создать макет, нанесение, собственный, толстовка, худи, студия, услуги, каталог, а3, а4, одежда, свитшот',
   metadataBase: new URL('https://studio.pnhd.ru'),
   alternates: { canonical: '/' },
-  openGraph: { type: 'website', title: 'PNHD STUDIO | Главная', images: '/opengraph-image.jpg' },
+  openGraph: { type: 'website', title: 'PNHD STUDIO | Главная', images: ogImageHref },
 };
 
 const HomePage: React.FC = () => (

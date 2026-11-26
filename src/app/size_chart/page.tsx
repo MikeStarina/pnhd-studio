@@ -10,6 +10,7 @@ import gildanTee from "../../../public/sizeChart/tee_gildan_sizes.png";
 import promoTee from "../../../public/sizeChart/tee_promo_sizes.png";
 import classicHood from "../../../public/sizeChart/hoodie_classic_sizes.png";
 import Breadcrumbs from '@/components/shared-components/breadcrumbs/Breadcrumbs';
+import { ogImageHref } from '@/components/site/links';
 
 const itemsArr = [
     {
@@ -50,7 +51,7 @@ export const metadata: Metadata = {
     openGraph: {
       type: 'website',
       title: 'PNHD STUDIO | Главная',
-      images: '/opengraph-image.jpg',
+      images: ogImageHref,
     },
   };
 

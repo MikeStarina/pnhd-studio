@@ -6,3 +6,6 @@ export const contactsHref = '/#contacts';
 
 /** Сайт для бизнеса (оптовое направление) — на него ведёт переключатель в шапке. */
 export const businessSiteHref = 'https://pnhd.ru/';
+
+/** Превью ссылки (src/app/opengraph-image.jpg). Версию в адресе поднимать при каждой замене картинки: соцсети кэшируют превью по адресу. */
+export const ogImageHref = '/opengraph-image.jpg?v=2';

@@ -4,6 +4,7 @@ import {Metadata} from "next";
 import MapScreen from "@/components/pages-components/main-page/map-screen/map-screen";
 import MarkupScript from "@/components/shared-components/markup-script/markup-script";
 import Breadcrumbs from '@/components/shared-components/breadcrumbs/Breadcrumbs';
+import { ogImageHref } from '@/components/site/links';
 
 export const metadata: Metadata = {
   title: 'Контактная информация студии печати на одежде ПИНХЭД СТУДИЯ',
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     title: 'PNHD STUDIO | Главная',
-    images: '/opengraph-image.jpg',
+    images: ogImageHref,
   },
 };
 

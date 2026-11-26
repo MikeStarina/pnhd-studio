@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { ConstructorWithCart } from './ConstructorWithCart';
 import styles from './page.module.css';
+import { ogImageHref } from '@/components/site/links';
 
 export const metadata: Metadata = {
   title: 'Конструктор одежды с принтом онлайн — ПИНХЭД СТУДИЯ',
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     title: 'Конструктор одежды с принтом — ПИНХЭД СТУДИЯ',
-    images: '/opengraph-image.jpg',
+    images: ogImageHref,
   },
 };
 

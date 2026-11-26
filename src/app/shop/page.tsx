@@ -6,6 +6,7 @@ import {productMainPhotoUrl} from '../utils/product-photos';
 import {CatalogPageNavigationJsonLD} from "@/app/utils/markups";
 import CatalogPage from '@/components/catalog/catalog-page/catalog-page';
 import type {SearchParams} from '@/components/catalog/filters';
+import { ogImageHref } from '@/components/site/links';
 
 
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     title: 'PNHD STUDIO | Главная',
-    images: '/opengraph-image.jpg',
+    images: ogImageHref,
   },
 };
 

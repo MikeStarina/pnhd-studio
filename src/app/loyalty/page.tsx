@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { contactsHref } from '@/components/site/links';
+import { contactsHref, ogImageHref } from '@/components/site/links';
 import { Icon } from '@/features/constructor/ui/icons';
 import Breadcrumbs from '@/components/shared-components/breadcrumbs/Breadcrumbs';
 import Section from '@/components/home/section/section';
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     title: 'Программа лояльности Pinhead Studio',
-    images: '/opengraph-image.jpg',
+    images: ogImageHref,
   },
 };
 

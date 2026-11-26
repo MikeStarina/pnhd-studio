@@ -6,7 +6,7 @@ import SectionHead from '@/components/home/section-head/section-head';
 import Cases from '@/components/home/cases/cases';
 import { CASES_PUBLISHED } from '@/components/home/cases/data';
 import MoreLink from '@/components/home/more-link/more-link';
-import { constructorHref } from '@/components/site/links';
+import { constructorHref, ogImageHref } from '@/components/site/links';
 import styles from './page.module.css';
 
 export const metadata: Metadata = {
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/cases' },
   // Пока на странице заглушки — не индексировать (см. CASES_PUBLISHED).
   ...(CASES_PUBLISHED ? {} : { robots: { index: false, follow: true } }),
-  openGraph: { type: 'website', title: 'PNHD STUDIO | Кейсы', images: '/opengraph-image.jpg' },
+  openGraph: { type: 'website', title: 'PNHD STUDIO | Кейсы', images: ogImageHref },
 };
 
 const CasesPage: React.FC = () => (
