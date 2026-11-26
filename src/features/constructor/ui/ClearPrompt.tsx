@@ -1,5 +1,6 @@
 'use client';
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import s from './constructor.module.css';
 import { useDismiss } from './useDismiss';
 
@@ -11,7 +12,9 @@ export function ClearPrompt({ count, onConfirm, onCancel }: { count: number; onC
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [dismiss, onCancel]);
-  return (
+  // Окно открывается из панели слоёв, а у панели на телефоне анимация со сдвигом: fixed внутри неё считается
+  // от панели, и ручка листа с шапкой сайта ложатся поверх окна. Поэтому окно — в корне конструктора (там его переменные).
+  return createPortal(
     <div className={s.modalBg} data-leaving={leaving || undefined} onClick={(e) => { if (e.target === e.currentTarget) dismiss(onCancel); }}>
       <div className={s.modal} role="dialog" aria-label="Очистить всё?">
         <h3>Очистить всё?</h3>
@@ -21,6 +24,7 @@ export function ClearPrompt({ count, onConfirm, onCancel }: { count: number; onC
         <button type="button" className={s.btnDanger} onClick={() => dismiss(onConfirm)}>Очистить всё</button>
         <button type="button" className={s.btn} onClick={() => dismiss(onCancel)} autoFocus>Оставить</button>
       </div>
-    </div>
+    </div>,
+    document.querySelector(`.${s.app}`) ?? document.body,
   );
 }

@@ -292,8 +292,12 @@
     gap: 0; padding: 0;
     height: 100vh; height: var(--constructor-height, 100dvh); overflow: hidden;
   }
-  /* Пока открыта клавиатура — во всю видимую область над ней. */
-  .app[data-kb] { height: var(--vvh, 100dvh); }
+  /* Пока открыта клавиатура — ровно в видимой области над ней, поверх шапки сайта: иначе шапка + конструктор
+     не помещаются, iOS сдвигает страницу и холст уходит за верхний край. */
+  .app[data-kb] {
+    position: fixed; top: var(--vvt, 0px); left: 0; right: 0; z-index: calc(var(--z-header) + 1);
+    height: var(--vvh, 100dvh); background: #fff;
+  }
 
   /* Строка «назад» в начале листа: шагов на телефоне нет, вперёд ведёт кнопка итога */
   .back {

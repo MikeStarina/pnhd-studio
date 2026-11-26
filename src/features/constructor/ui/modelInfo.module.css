@@ -19,10 +19,11 @@
 
 .gallery { display: flex; flex-direction: column; gap: 8px; }
 /* Фото моделей вертикальные (3:4, 2:3). Место под фото постоянное — окно не прыгает при смене фото;
-   фото вписывается целиком и само несёт скругление и фон, без серых полос по бокам */
-.stage { position: relative; display: flex; align-items: center; justify-content: center; aspect-ratio: 3 / 4; max-height: 62dvh; }
+   фото вписывается целиком и само несёт скругление и фон, без серых полос по бокам.
+   Фото — абсолютно внутри рамки: Safari не считает max-height в % от рамки, чей размер задан aspect-ratio. */
+.stage { position: relative; aspect-ratio: 3 / 4; max-height: 62dvh; }
 .stage img {
-  display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;
+  position: absolute; inset: 0; margin: auto; display: block; max-width: 100%; max-height: 100%; width: auto; height: auto;
   border-radius: var(--r-sm); background: var(--surface);
   animation: infoIn var(--t-base) var(--ease-out) backwards;
 }

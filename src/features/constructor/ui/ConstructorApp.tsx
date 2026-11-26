@@ -166,8 +166,8 @@ export function ConstructorApp({ ordersEndpoint = '/api/orders', onAddToCart, in
     return () => mq.removeEventListener('change', on);
   }, []);
 
-  // Экранная клавиатура: высота видимой области — в --vvh, пока клавиатура открыта — data-kb.
-  // Раскладка ужимается над клавиатурой, чтобы изделие с текстом оставалось на виду во время набора.
+  // Экранная клавиатура: видимая область — в --vvh (высота) и --vvt (сдвиг сверху), пока клавиатура открыта — data-kb.
+  // Раскладка закрепляется в видимой области над клавиатурой, чтобы изделие с текстом оставалось на виду во время набора.
   const [kb, setKb] = useState(false);
   useEffect(() => {
     const vv = window.visualViewport;
@@ -175,6 +175,7 @@ export function ConstructorApp({ ordersEndpoint = '/api/orders', onAddToCart, in
     const onResize = () => {
       const open = window.innerHeight - vv.height > 120 && window.matchMedia('(max-width: 900px)').matches;
       appRef.current?.style.setProperty('--vvh', `${Math.round(vv.height)}px`);
+      appRef.current?.style.setProperty('--vvt', `${Math.round(vv.offsetTop)}px`);
       setKb(open);
       if (!open) return;
       // iOS сдвигает страницу к полю ввода; у нас прокручивается панель, а страница должна стоять на месте.
@@ -185,9 +186,15 @@ export function ConstructorApp({ ordersEndpoint = '/api/orders', onAddToCart, in
         window.scrollTo(0, 0);
       });
     };
+    // iOS сдвигает видимую область к полю ввода, не меняя её размер, — тогда приходит только scroll.
+    const onScroll = () => appRef.current?.style.setProperty('--vvt', `${Math.round(vv.offsetTop)}px`);
     onResize();
     vv.addEventListener('resize', onResize);
-    return () => vv.removeEventListener('resize', onResize);
+    vv.addEventListener('scroll', onScroll);
+    return () => {
+      vv.removeEventListener('resize', onResize);
+      vv.removeEventListener('scroll', onScroll);
+    };
   }, []);
 
   // Cmd/Ctrl+Z — отмена, Cmd/Ctrl+Shift+Z и Ctrl+Y — повтор, Delete — удалить выбранный слой.
