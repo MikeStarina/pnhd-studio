@@ -40,7 +40,7 @@ export async function deliverAndMark(order: Order): Promise<Delivered> {
   try {
     const res = await deliver(order);
     if (res.filesFailed.length) console.error('[order]', order.number, 'files not delivered:', res.filesFailed);
-    await markDelivered(order.number, res.channel).catch((e) => console.error('[order]', order.number, 'store:', e));
+    await markDelivered(order.number, res.channel, res.filesFailed).catch((e) => console.error('[order]', order.number, 'store:', e));
     return res;
   } catch (e) {
     await markAttempt(order.number).catch(() => undefined);

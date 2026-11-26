@@ -105,7 +105,7 @@ export async function sendToBitrix(o: Order, webhook: string): Promise<string[]>
     await call('crm.timeline.comment.add', {
       fields: {
         ENTITY_ID: dealId, ENTITY_TYPE: 'deal',
-        COMMENT: `⚠️ Не удалось приложить файлы: ${failed.join(', ')}. Запросите макет у клиента.`,
+        COMMENT: `⚠️ Не удалось приложить файлы: ${failed.join(', ')}. Запросите макет у клиента. Копии 30 дней лежат на сервере сайта.`,
       },
     }).catch(() => undefined);
   }

@@ -24,6 +24,7 @@ import { trackPurchase } from '@/components/site/analytics';
 import type { TCartState } from '@/redux/cart-slice/cart.slice';
 import ConsentField from '@/components/site/consent-field/consent-field';
 import Amount from '@/components/pages-components/cart-page/amount';
+import { clearSent, readSent, saveSent, type SentOrders } from './sent-orders';
 import styles from './page.module.css';
 import summary from '@/components/pages-components/cart-page/cart-summary/cart-summary.module.css';
 import form from '@/components/pages-components/checkout-page/form/form.module.css';
@@ -114,9 +115,7 @@ const CheckoutPage: React.FC = () => {
   const [pending, setPending] = useState(false);
   const sending = useRef(false);
   // Что уже принято: повтор после сбоя шлёт только остальное, а не второй заказ.
-  const sent = useRef<{ catalog?: string; designs: Map<string, string>; numbers: Map<string, string> }>({
-    designs: new Map(), numbers: new Map(),
-  });
+  const sent = useRef<SentOrders | null>(null);
   const [createOrder, { isLoading }] = useCreateOrderMutation();
   const [validatePromocode, { isLoading: isPromoLoading, reset: resetPromo }] = usePromocodeValidationMutation();
 
@@ -155,7 +154,7 @@ const CheckoutPage: React.FC = () => {
     sending.current = true;
     setPending(true);
     setFailed('none');
-    const done = sent.current;
+    const done = (sent.current ??= readSent(cart.order));
     // Цель воронки конструктора: заявка на изделие с принтом оформляется здесь.
     const goalParams = (i: number) => ({
       product: designs[i].garment.name, method: designs[i].method, qty: designPrices[i].qty,
@@ -167,6 +166,7 @@ const CheckoutPage: React.FC = () => {
         const result = await createOrder(checkoutOrderObjectCreateFunc(cart, readRoistatVisitId() || 'n/a'));
         if ('error' in result) throw new Error('catalog_order');
         done.catalog = result.data.id;
+        saveSent(cart.order, done);
       }
       for (const [i, design] of designs.entries()) {
         if (done.designs.has(design.id)) continue;
@@ -176,8 +176,10 @@ const CheckoutPage: React.FC = () => {
           i === 0 ? printFiles : [],
         );
         done.numbers.set(design.id, built.number);
+        saveSent(cart.order, done);
         const number = await sendDesignOrder(built);
         done.designs.set(design.id, number);
+        saveSent(cart.order, done);
         track('order_success', { ...goalParams(i), currency: 'RUB', order_id: number }, number);
       }
     } catch (err) {
@@ -209,6 +211,7 @@ const CheckoutPage: React.FC = () => {
     });
     // CartPersist сотрёт сохранённую корзину вместе с Redux; картинки изделий удаляем сами — до ухода со страницы.
     await Promise.all(designs.map((design) => deleteDesignAssets(design.id).catch(() => undefined)));
+    clearSent();
     dispatch(cartActions.resetCart());
     dispatch(designActions.clear());
     window.location.replace('/thanks?from=checkout');

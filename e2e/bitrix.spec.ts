@@ -1,4 +1,4 @@
-import { readFile, writeFile } from 'node:fs/promises';
+import { readdir, readFile, writeFile } from 'node:fs/promises';
 import { expect, test } from '@playwright/test';
 import { acceptedNumber, addToCart, fillCheckout, openConstructor, orderAndSubmit, solidPng, uploadImage } from './helpers';
 
@@ -104,4 +104,27 @@ test('DTF с надписью: в сделку приходит PDF файла �
   // Шрифт в файл не встроен: буквы нарисованы контурами. Картинка клиента — растром под ними.
   expect(raw).not.toContain('/Font');
   expect(raw).toContain('/Subtype /Image');
+});
+
+test('файл, который Битрикс не принял, остаётся на сервере; принятые удаляются', async ({ page }) => {
+  const log = process.env.BITRIX_STUB_LOG;
+  test.skip(!log, 'нужна заглушка Битрикса: npx playwright test -c playwright.bitrix.config.ts');
+
+  await page.route(/mc\.yandex\.ru/, (r) => r.abort());
+  await openConstructor(page);
+  await uploadImage(page, 'logo.png', solidPng(800, 800, [0, 120, 255]));
+  await addToCart(page, { M: 1 });
+  await fillCheckout(page, undefined, false);
+  const pdf = Buffer.from('%PDF-1.6\n1 0 obj<<>>endobj\ntrailer<<>>\n%%EOF\n');
+  await page.locator('input[type=file][multiple]').setInputFiles([
+    { name: 'слишком-большой.pdf', mimeType: 'application/pdf', buffer: pdf },
+    { name: 'обычный.pdf', mimeType: 'application/pdf', buffer: pdf },
+  ]);
+  const number = await acceptedNumber(page);
+  await page.getByRole('button', { name: 'Оформить заказ' }).click();
+  const n = await number();
+
+  const dir = `data/e2e-orders-bitrix/${n}`;
+  await expect.poll(async () => (JSON.parse(await readFile(`${dir}/meta.json`, 'utf8')) as { status: string }).status).toBe('delivered');
+  expect(await readdir(`${dir}/files`)).toEqual([`${n}_file_0_слишком-большой.pdf`]);
 });

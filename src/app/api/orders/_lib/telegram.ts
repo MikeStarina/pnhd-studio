@@ -41,7 +41,7 @@ export async function sendToTelegram(o: Order, token: string, chat: string): Pro
   if (failed.length) {
     await tg('sendMessage', JSON.stringify({
       chat_id: chat,
-      text: `⚠️ К заявке № ${o.number} не доставлены файлы: ${failed.join(', ')}. Запросите макет у клиента.`,
+      text: `⚠️ К заявке № ${o.number} не доставлены файлы: ${failed.join(', ')}. Запросите макет у клиента. Копии 30 дней лежат на сервере сайта.`,
     }));
   }
   return failed;

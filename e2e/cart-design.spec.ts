@@ -2,7 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { readdir, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { ORDERS_DIR } from '../playwright.config';
-import { mainButton, openConstructor, readStored, solidPng, storedCount, uploadImage } from './helpers';
+import { addToCart, fillCheckout, mainButton, openConstructor, readStored, solidPng, storedCount, uploadImage } from './helpers';
 
 /**
  * Изделие из конструктора идёт в корзину (adr/0001): позиция «свой принт» с превью и окончательной ценой,
@@ -240,6 +240,7 @@ test('оформление отправляет изделие с принтом
   // Во время акции отзыв о конструкторе — обязательное поле оформления.
   const feedback = page.getByLabel(/Отзыв о конструкторе/);
   if (await feedback.count()) await feedback.fill('Автотест: всё понятно');
+  await page.locator('input[type=file][multiple]').setInputFiles({ name: 'maket.png', mimeType: 'image/png', buffer: solidPng(400, 400, [0, 0, 0]) });
   await page.getByLabel(/согласие на обработку/).check();
   const before = await storedCount();
   await page.getByRole('button', { name: 'Оформить заказ' }).click();
@@ -268,4 +269,37 @@ test('оформление отправляет изделие с принтом
 
   await expect(page.getByRole('link', { name: 'Корзина, товаров: 0' })).toBeVisible();
   await expect.poll(() => storedAssets(page)).toBe(0);
+});
+
+test('каталог принят, изделие сорвалось, страницу перезагрузили: повторное оформление не создаёт второй заказ каталога', async ({ page }) => {
+  const catalogOrders: unknown[] = [];
+  await page.route((url) => url.pathname === '/api/orders' && url.hostname !== 'localhost', async (route) => {
+    catalogOrders.push(route.request().postDataJSON());
+    await route.fulfill({ status: 200, contentType: 'application/json', body: '{"id":"cat-778","paymentUrl":""}' });
+  });
+  let designPosts = 0;
+  await page.route((url) => url.pathname === '/api/orders' && url.hostname === 'localhost', async (route) => {
+    designPosts += 1;
+    if (designPosts === 1) return route.fulfill({ status: 500, contentType: 'application/json', body: '{"ok":false}' });
+    return route.continue();
+  });
+
+  await openConstructor(page);
+  await uploadImage(page, 'logo.png', solidPng(1000, 1000, [255, 0, 170]));
+  await addToCart(page, { M: 1 });
+  await page.goto('/shop/futbolka-regular-chernaya');
+  await page.getByRole('button', { name: 'Добавить M' }).click();
+  await page.getByRole('button', { name: 'В корзину' }).click();
+  await expect(page.getByRole('link', { name: 'Корзина, товаров: 2' })).toBeVisible();
+
+  await fillCheckout(page);
+  await page.getByRole('button', { name: 'Оформить заказ' }).click();
+  await expect(page.getByRole('alert').filter({ hasText: 'Не удалось оформить заказ' })).toBeVisible({ timeout: 60_000 });
+
+  // Перезагрузка стирает память страницы; корзина остаётся полной.
+  await fillCheckout(page);
+  await page.getByRole('button', { name: 'Оформить заказ' }).click();
+  await expect(page).toHaveURL(/\/thanks\?from=checkout$/, { timeout: 60_000 });
+  expect(catalogOrders).toHaveLength(1);
+  expect(designPosts).toBe(2);
 });

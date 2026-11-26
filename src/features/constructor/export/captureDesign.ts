@@ -1,3 +1,4 @@
+import type { RefObject } from 'react';
 import type { DesignStageHandle } from '../canvas/DesignStage';
 import { sidesFor } from '../config/print-areas';
 import { designBounds } from '../model/bounds';
@@ -20,8 +21,10 @@ async function toPng(dataUrl: string): Promise<Blob> {
  * Снимает макет для корзины: превью каждого цвета с каждой стороной, файл печати на сторону, исходники клиента —
  * и кладёт их в IndexedDB. Холст на это время перебирает цвета и стороны и возвращается туда, где был.
  * Снимать нужно здесь: на оформлении холста нет.
+ * Холст передаётся ссылкой: его методы помнят зону стороны, при которой созданы, поэтому после каждой
+ * смены стороны берём их заново.
  */
-export async function captureDesign(stage: DesignStageHandle, garment: Garment, price: PriceBreakdown): Promise<CartDesign> {
+export async function captureDesign(stage: RefObject<DesignStageHandle>, garment: Garment, price: PriceBreakdown): Promise<CartDesign> {
   const { layers, method, quantities, side, garmentId, variantId, setSide, selectVariant } = useConstructor.getState();
   const id = newDesignId();
   const sides = sidesFor(garment).filter((sd) => sideHasLayers(layers, sd));
@@ -29,21 +32,25 @@ export async function captureDesign(stage: DesignStageHandle, garment: Garment, 
   const previews: Array<Omit<CartDesign['previews'][number], 'asset'> & { name: string }> = [];
   const prints: Array<{ side: CartDesign['sides'][number]; dpi: number; name: string; vectorName?: string }> = [];
 
-  stage.setTurnEnabled(false);
+  const canvas = () => {
+    if (!stage.current) throw new Error('canvas_missing');
+    return stage.current;
+  };
+  canvas().setTurnEnabled(false);
   try {
     for (const [i, line] of price.lines.entries()) {
       selectVariant(line.productId);
       for (const sd of sides) {
         setSide(sd);
         // Снимок — только когда холст показал этот цвет и сторону и загрузил их картинки.
-        await stage.whenReady();
-        const preview = stage.exportPreview();
+        await canvas().whenReady();
+        const preview = canvas().exportPreview();
         if (!preview) throw new Error('export_failed');
         const name = `preview_${i}_${sd}.png`;
         files.push([name, await toPng(preview)]);
         previews.push({ productId: line.productId, color: line.color, hex: line.hex, side: sd, name });
         if (i === 0) {
-          const print = stage.exportPrint();
+          const print = canvas().exportPrint();
           if (!print) throw new Error('export_failed');
           const printName = `print_${sd}_${print.dpi}dpi.png`;
           files.push([printName, await toPng(print.dataUrl)]);
@@ -62,7 +69,7 @@ export async function captureDesign(stage: DesignStageHandle, garment: Garment, 
   } finally {
     if (variantId) selectVariant(variantId);
     setSide(side);
-    stage.setTurnEnabled(true);
+    stage.current?.setTurnEnabled(true);
   }
 
   // Исходники клиента — как загружены, без пересжатия; один файл — один раз, даже если слоёв несколько.

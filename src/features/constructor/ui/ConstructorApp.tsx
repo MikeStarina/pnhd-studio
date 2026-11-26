@@ -517,7 +517,7 @@ export function ConstructorApp({ ordersEndpoint = '/api/orders', onAddToCart, in
     if (adding || !onAddToCart || !ready() || !garment || !price || !stageRef.current) return;
     setAdding(true);
     try {
-      const design = await captureDesign(stageRef.current, garment, price);
+      const design = await captureDesign(stageRef, garment, price);
       track('cart_add', { product: garment.name, method: st.method, qty: price.qty, order_price: price.total, colors: price.lines.length });
       onAddToCart(design);
       // Работа режима ушла в корзину — её черновик больше не нужен.

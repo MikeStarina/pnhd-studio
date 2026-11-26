@@ -60,3 +60,22 @@ test('файл печати совпадает с превью и с разме�
   const [p, v] = [rel(pr, pb), rel(vr, vb)];
   for (const k of ['dx', 'dy', 'bw', 'bh', 'rh'] as const) expect(Math.abs(p[k] - v[k]), `${k}: печать ${p[k]}, превью ${v[k]}`).toBeLessThan(0.04);
 });
+
+/** Стороны при «В корзину» снимаются программно: файл печати каждой — в её размере, а не в размере открытой стороны. */
+test('файл печати переда не обрезан по зоне рукава, когда «В корзину» нажали с рукава', async ({ page }) => {
+  await openConstructor(page);
+  await uploadImage(page, 'red.png', solidPng(900, 900, [230, 20, 20]));
+  await page.getByRole('button', { name: 'Рукав Л' }).click();
+  await uploadImage(page, 'blue.png', solidPng(900, 450, [20, 20, 230]));
+
+  const number = await orderAndSubmit(page, { M: 1 });
+  const { meta, file } = await readStored(number);
+  const print = await file('print_front');
+  const dpi = Number(print.name.match(/_(\d+)dpi/)?.[1]);
+  const cm = meta.order.sides.find((x) => x.startsWith('перед'))!.match(/≈(\d+)×(\d+) см/)!;
+  const box = await colorBox(page, print.buf, 'red');
+  // Квадрат целиком в файле и в заявленном размере.
+  expect(Math.abs(box.imgW / box.imgH - 1)).toBeLessThan(0.05);
+  expect(Math.abs((box.imgW / dpi) * 2.54 - Number(cm[1]))).toBeLessThanOrEqual(1);
+  expect(Math.abs((box.imgH / dpi) * 2.54 - Number(cm[2]))).toBeLessThanOrEqual(1);
+});

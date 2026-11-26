@@ -8,7 +8,7 @@ import type { Order, OrderFile } from './parse';
  * Если канал недоступен, она остаётся здесь и уходит при повторной попытке (см. deliver.ts).
  *
  *   <папка>/<номер>/meta.json   — состояние и, пока заявка не доставлена, её данные
- *   <папка>/<номер>/files/*     — файлы заявки; удаляются после доставки
+ *   <папка>/<номер>/files/*     — файлы заявки; после доставки удаляются, кроме тех, что канал не принял
  *
  * После доставки от заявки остаётся короткая запись без контактов клиента: по ней сервер узнаёт
  * повторную отправку той же заявки и не создаёт вторую сделку.
@@ -35,6 +35,8 @@ export interface StoredOrder {
   /** Данные заявки без файлов — только пока она не доставлена. */
   order?: Omit<Order, 'files'>;
   files?: StoredFile[];
+  /** Файлы, которые канал не принял: лежат в files/, пока запись не удалится по сроку. */
+  filesKept?: string[];
 }
 
 const dirOf = (number: string) => path.join(DIR, number);
@@ -63,14 +65,23 @@ export async function saveOrder(o: Order): Promise<void> {
   });
 }
 
-/** Заявка доставлена: файлы и контакты клиента удаляются, остаётся короткая запись. */
-export async function markDelivered(number: string, channel: string): Promise<void> {
+/**
+ * Заявка доставлена: файлы и контакты клиента удаляются, остаётся короткая запись.
+ * Файлы, которые канал не принял (`kept`), остаются: это может быть сам файл печати, а второй копии нет.
+ */
+export async function markDelivered(number: string, channel: string, kept: string[] = []): Promise<void> {
   const m = await findOrder(number);
   if (!m) return;
-  await rm(path.join(dirOf(number), 'files'), { recursive: true, force: true });
+  const filesDir = path.join(dirOf(number), 'files');
+  if (kept.length) {
+    for (const name of await readdir(filesDir)) if (!kept.includes(name)) await rm(path.join(filesDir, name), { force: true });
+  } else {
+    await rm(filesDir, { recursive: true, force: true });
+  }
   await writeMeta({
     number, fingerprint: m.fingerprint, status: 'delivered', receivedAt: m.receivedAt, attempts: m.attempts,
     deliveredAt: new Date().toISOString(), channel, total: m.total,
+    ...(kept.length ? { filesKept: kept } : {}),
   });
 }
 
