@@ -55,7 +55,11 @@ export async function sendToBitrix(o: Order, webhook: string): Promise<string[]>
         NAME: c.name,
         OPENED: 'Y',
         PHONE: [{ VALUE: c.phone, VALUE_TYPE: 'WORK' }],
-        EMAIL: [{ VALUE: c.email, VALUE_TYPE: 'WORK' }],
+        EMAIL: [
+          { VALUE: c.email, VALUE_TYPE: 'WORK' },
+          // Адрес из ника: по нему ChatApp связывает контакт с перепиской в Telegram
+          ...(c.telegram ? [{ VALUE: `${c.telegram.slice(1)}@telegram.chatapp.online`, VALUE_TYPE: 'OTHER' }] : []),
+        ],
         // Стандартное поле «Мессенджеры»: из карточки контакта открывается чат
         ...(c.telegram ? { IM: [{ VALUE: c.telegram.slice(1), VALUE_TYPE: 'TELEGRAM' }] } : {}),
         ADDRESS_CITY: c.city,
