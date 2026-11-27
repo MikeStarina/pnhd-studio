@@ -273,8 +273,6 @@
   --promo-tilt: 22deg;
   /* Панели «Способов печати»: раскрытие — долгое, с плавным разгоном и торможением (без рывка на старте) */
   --duration-panel: 800ms;
-  /* Смена чёрной карточки обещаний «Студии» под курсором: фон и цвета перетекают с --ease-panel */
-  --duration-highlight: 560ms;
   --ease-panel: cubic-bezier(0.65, 0, 0.25, 1);
   /* Подвал открывается из-под страницы: насколько его содержимое отстаёт, пока край подвала поднимается */
   --footer-lift: 35%;
@@ -378,7 +376,6 @@
     --menu-stagger: 0ms;
     --duration-spring: 0ms;
     --duration-panel: 0ms;
-    --duration-highlight: 0ms;
     --duration-reveal-part: 0ms;
   }
 }

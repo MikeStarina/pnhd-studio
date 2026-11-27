@@ -26,7 +26,6 @@ const promises: Fact[] = [
     unit: '₽',
     text: <>за&nbsp;принт формата А6. На&nbsp;твоей вещи&nbsp;— та&nbsp;же цена</>,
     link: { href: '#price', label: 'Все цены' },
-    highlight: true,
   },
   { value: '0', unit: '₽', text: <>за&nbsp;помощь дизайнера: вместе поправим, где и&nbsp;как встанет рисунок</> },
   { value: '15', unit: 'мин', text: <>ждать звонка после заявки в&nbsp;рабочее время. Назовём цену и&nbsp;срок</>, link: { href: '#price', label: 'Оставить заявку' } },

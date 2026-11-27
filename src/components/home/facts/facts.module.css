@@ -1,10 +1,12 @@
-/* Четыре колонки, как поля печатного листа: линия сверху, тонкие разделители между колонками.
-   Линии — псевдоэлементы колонок, чтобы при появлении прочертить их трансформацией. Планшет — 2×2, телефон — столбиком */
+/* Одна светлая панель на всю ширину, внутри четыре колонки с тонкими разделителями — как поля печатного листа.
+   Планшет — 2×2, телефон — столбиком; разделители — псевдоэлементы колонок под каждую раскладку */
 .list {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   margin: 0;
   padding: 0;
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
   list-style: none;
 }
 
@@ -12,67 +14,27 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 0 24px clamp(24px, 4svh, 40px);
+  padding: clamp(28px, 5svh, 56px) 32px clamp(28px, 4svh, 48px);
   color: var(--color-ink);
-  transition:
-    background-color var(--duration-highlight) var(--ease-panel),
-    color var(--duration-highlight) var(--ease-panel);
 }
 
-/* Выбранное обещание — чёрная карточка во всю высоту колонки; акцент и стрелка ссылки на ней салатовые.
-   Сначала выбрано главное, дальше — последнее под курсором или с фокусом; фон и цвета перетекают */
-.item[data-active] {
-  --accent: var(--color-lime);
-  --arrow: var(--color-lime);
-  background: var(--color-ink);
-  color: var(--color-white);
-}
-
-/* Линия сверху: у колонок ряда стыкуется в одну */
-.item::before {
+/* Разделитель слева — у всех колонок, кроме первой в ряду; не доходит до краёв панели */
+.item:not(:first-child)::before {
   content: '';
   position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 1px;
-  background: var(--color-ink);
-  transform-origin: left center;
-}
-
-/* Разделитель слева — у всех колонок, кроме первой в ряду */
-.item::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
+  top: 32px;
+  bottom: 32px;
   left: 0;
   width: 1px;
   background: var(--color-line);
-  transform-origin: center top;
-  transition: opacity var(--duration-highlight) var(--ease-panel);
-}
-
-.item:first-child:not([data-highlight]) {
-  padding-left: 0;
-}
-
-.item:first-child::after {
-  content: none;
-}
-
-/* Разделители у чёрной карточки прячутся */
-.item[data-active]::after,
-.item[data-active] + .item::after {
-  opacity: 0;
 }
 
 .value {
   display: flex;
   align-items: baseline;
   gap: 0.1em;
-  /* Отступ и кегль на компьютере ещё и от высоты окна: блок «Студия» помещается в экран */
-  margin: clamp(28px, 6svh, 72px) 0 16px;
+  /* Кегль на компьютере ещё и от высоты окна: блок «Студия» помещается в экран */
+  margin: 0 0 16px;
   font-family: var(--font-display);
   font-size: min(var(--display-xl), 9svh);
   font-weight: var(--weight-black);
@@ -86,7 +48,6 @@
   font-size: 0.4em;
   letter-spacing: 0;
   color: var(--accent);
-  transition: color var(--duration-highlight) var(--ease-panel);
 }
 
 .text {
@@ -114,12 +75,7 @@
 }
 
 .link :global(svg) {
-  transition: transform var(--duration) var(--ease), color var(--duration-highlight) var(--ease-panel);
-}
-
-/* На чёрной карточке стрелка ссылки — салатовая (--arrow) */
-.link :global(svg) {
-  color: var(--arrow, currentColor);
+  transition: transform var(--duration) var(--ease);
 }
 
 .link:focus-visible {
@@ -140,113 +96,67 @@
 @media (max-width: 1023px) {
   .list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    row-gap: 40px;
+    border-radius: var(--radius-card-s);
   }
 
-  .item:nth-child(odd):not([data-highlight]) {
-    padding-left: 0;
+  .item {
+    padding: 32px 24px;
   }
 
-  .item:nth-child(odd)::after {
+  /* 2×2: вертикальный разделитель — только у правой колонки, горизонтальный — над второй строкой */
+  .item:nth-child(odd)::before {
     content: none;
   }
 
-  .value {
-    margin-top: 48px;
+  .item:nth-child(n + 3)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 24px;
+    left: 24px;
+    height: 1px;
+    background: var(--color-line);
+  }
+
+  .item:nth-child(3)::after {
+    right: 0;
+  }
+
+  .item:nth-child(4)::after {
+    left: 0;
   }
 }
 
 @media (max-width: 599px) {
   .list {
     grid-template-columns: minmax(0, 1fr);
-    row-gap: 32px;
   }
 
   .item {
-    padding: 0 0 8px;
+    padding: 24px 20px;
   }
 
-  /* Через .list: иначе правило планшета «у нечётной колонки нет поля слева» снимает поле и у карточки */
-  .list > .item[data-active] {
-    padding: 0 20px 24px;
-    border-radius: var(--radius-card-s);
+  /* Столбиком — только горизонтальные разделители между фактами */
+  .item:not(:first-child)::before {
+    content: '';
+    top: 0;
+    right: 20px;
+    bottom: auto;
+    left: 20px;
+    width: auto;
+    height: 1px;
   }
 
-  /* Карточка скруглена — линия сверху торчала бы за её углы; карточка сама отделяет себя от соседей */
-  .item[data-active]::before {
-    content: none;
-  }
-
-  .item::after {
+  .item:nth-child(n + 3)::after {
     content: none;
   }
 
   .value {
-    margin: 24px 0 12px;
+    margin-bottom: 12px;
     font-size: var(--display-l);
   }
 
   .link {
     padding-top: 12px;
-  }
-}
-
-/* Появление (общая система src/components/site/reveal; колонка — элемент группы, её номер — --i).
-   Сама колонка не двигается: линия прочерчивается слева направо через весь ряд, разделитель растёт вниз,
-   затем поднимаются число и текст.
-   Все переходы укладываются в переход колонки (--duration-reveal), по нему система снимает метки */
-@media (prefers-reduced-motion: no-preference) {
-  :global(.js-reveal) .list > .item:not([data-reveal-done]),
-  :global(.js-reveal) .list > .item[data-reveal] {
-    opacity: 1;
-    transform: none;
-  }
-
-  :global(.js-reveal) .item[data-reveal]::before {
-    transform: scaleX(0);
-  }
-
-  :global(.js-reveal) .item[data-reveal]::after {
-    transform: scaleY(0);
-  }
-
-  :global(.js-reveal) .item[data-reveal] .value,
-  :global(.js-reveal) .item[data-reveal] .text,
-  :global(.js-reveal) .item[data-reveal] .link {
-    opacity: 0;
-    transform: translateY(var(--reveal-shift));
-  }
-
-  :global(.js-reveal) .item[data-reveal]::before,
-  :global(.js-reveal) .item[data-reveal]::after {
-    transition: transform var(--duration-reveal-part) var(--ease-out-soft) calc(var(--i, 0) * var(--reveal-stagger));
-  }
-
-  :global(.js-reveal) .item[data-reveal] .value,
-  :global(.js-reveal) .item[data-reveal] .text,
-  :global(.js-reveal) .item[data-reveal] .link {
-    transition:
-      opacity var(--duration-reveal-part) var(--ease-out-soft),
-      transform var(--duration-reveal-part) var(--ease-out-soft);
-    transition-delay: calc(var(--i, 0) * var(--reveal-stagger) + var(--duration-press));
-  }
-
-  :global(.js-reveal) .item[data-reveal] .text,
-  :global(.js-reveal) .item[data-reveal] .link {
-    transition-delay: calc(var(--i, 0) * var(--reveal-stagger) + var(--duration));
-  }
-
-  :global(.js-reveal) .item[data-reveal][data-revealed]::before,
-  :global(.js-reveal) .item[data-reveal][data-revealed]::after,
-  :global(.js-reveal) .item[data-reveal][data-revealed] .value,
-  :global(.js-reveal) .item[data-reveal][data-revealed] .text,
-  :global(.js-reveal) .item[data-reveal][data-revealed] .link,
-  :global(.js-reveal.reveal-all) .item::before,
-  :global(.js-reveal.reveal-all) .item::after,
-  :global(.js-reveal.reveal-all) .item .value,
-  :global(.js-reveal.reveal-all) .item .text,
-  :global(.js-reveal.reveal-all) .item .link {
-    opacity: 1;
-    transform: none;
   }
 }
