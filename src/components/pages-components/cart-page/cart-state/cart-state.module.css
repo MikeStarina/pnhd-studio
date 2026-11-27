@@ -59,15 +59,21 @@
   margin-top: 8px;
 }
 
-.primary,
+/* Место кнопки-перехода (home/more-link): на телефоне слот растягивается, кнопка — вместе с ним */
+.primary {
+  display: flex;
+  flex-direction: column;
+}
+
 .secondary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4em;
-  height: var(--control-height);
+  height: var(--more-link);
   padding: 0 28px;
+  border: var(--border-control) solid var(--color-ink);
   border-radius: var(--radius-pill);
+  color: var(--color-ink);
   font-size: var(--text-2xs);
   font-weight: var(--weight-medium);
   letter-spacing: var(--tracking-caps);
@@ -77,28 +83,12 @@
   transition: background var(--duration) var(--ease), color var(--duration) var(--ease);
 }
 
-.primary {
-  background: var(--color-ink);
-  color: var(--color-white);
-}
-
-.secondary {
-  border: var(--border-control) solid var(--color-ink);
-  color: var(--color-ink);
-}
-
-.primary:focus-visible,
 .secondary:focus-visible {
   outline: 2px solid var(--color-ink);
   outline-offset: 3px;
 }
 
 @media (hover: hover) {
-  .primary:hover {
-    background: var(--color-lime);
-    color: var(--color-ink);
-  }
-
   .secondary:hover {
     background: var(--color-white);
   }

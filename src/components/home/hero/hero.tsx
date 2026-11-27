@@ -4,12 +4,13 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Icon } from '@/features/constructor/ui/icons';
 import { constructorHref } from '../../site/links';
+import MoreLink from '../more-link/more-link';
 import styles from './hero.module.css';
 
 const badgeText = 'Реализуем смелые идеи на твоей одежде ✦ ';
 
 /** Вещи мини-конструктора: мокап из конструктора и белый вариант из каталога, с которым он откроется. */
-const garments = [
+const picks = [
   { id: 'tshirt', label: 'Футболка', mockup: '/home/constructor/tshirt_regular.webp', slug: 'futbolka-regular-belaya' },
   { id: 'hoodie', label: 'Худи', mockup: '/home/constructor/hoodie.webp', slug: 'hudi-classic-belyj-man' },
   { id: 'longsleeve', label: 'Лонгслив', mockup: '/home/constructor/longsleeve.webp', slug: 'longsliv-classic-belyj-woman' },
@@ -19,7 +20,7 @@ const steps = ['Выбери одежду из каталога', 'Распол�
 
 const Hero: React.FC = () => {
   const [garmentId, setGarmentId] = useState('hoodie');
-  const garment = garments.find((item) => item.id === garmentId) ?? garments[0];
+  const garment = picks.find((item) => item.id === garmentId) ?? picks[0];
   const garmentHref = `${constructorHref}?product=${garment.slug}`;
 
   return (
@@ -65,7 +66,7 @@ const Hero: React.FC = () => {
             </span>
 
             <div className={styles.miniChips} role="radiogroup" aria-label="Вещь для принта">
-              {garments.map((item) => (
+              {picks.map((item) => (
                 <button
                   key={item.id}
                   type="button"
@@ -81,7 +82,7 @@ const Hero: React.FC = () => {
 
             <div className={styles.miniBody}>
               <div className={styles.miniPhoto}>
-                {garments.map((item) => (
+                {picks.map((item) => (
                   <img
                     key={item.id}
                     src={item.mockup}
@@ -96,10 +97,9 @@ const Hero: React.FC = () => {
                 <Link href={garmentHref} className={styles.dropzone}>
                   <Icon name="upload" size={24} />
                   Загрузить принт
-                </Link>
-                <Link href={garmentHref} className={styles.miniOpen}>
-                  Открыть
-                  <Icon name="arrowRight" size={16} />
+                  <span className={styles.dropArrow} aria-hidden="true">
+                    <Icon name="arrowRight" size={16} stroke={2} />
+                  </span>
                 </Link>
               </div>
             </div>
@@ -117,10 +117,11 @@ const Hero: React.FC = () => {
               <div className={styles.orderCopy}>
                 <p className={styles.orderTitle}>Создай собственную одежду с&nbsp;уникальными принтами</p>
                 <p className={styles.orderText}>Почувствуй себя дизайнером и&nbsp;собери свою вещь в&nbsp;онлайн-конструкторе</p>
-                <Link href={constructorHref} className={styles.orderButton}>
-                  Перейти в&nbsp;конструктор
-                  <Icon name="arrowRight" size={16} />
-                </Link>
+                <div className={styles.orderAction}>
+                  <MoreLink href={constructorHref} size="l" onLime>
+                    Перейти в&nbsp;конструктор
+                  </MoreLink>
+                </div>
               </div>
               <Link href={constructorHref} className={styles.orderArrow} aria-hidden="true" tabIndex={-1}>
                 <img src="/home/arrow-thin.svg" alt="" />

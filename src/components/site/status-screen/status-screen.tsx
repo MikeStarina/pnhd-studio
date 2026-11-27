@@ -1,13 +1,15 @@
 import React from 'react';
 import Link from 'next/link';
 import { Icon } from '@/features/constructor/ui/icons';
+import MoreLink from '@/components/home/more-link/more-link';
 import styles from './status-screen.module.css';
 
 type Action = { label: string; href: string } | { label: string; onClick: () => void };
 
 /**
  * Экран-состояние на всю страницу: «Спасибо за заказ», ошибка, 404.
- * Первое действие — главное (салатовое), остальные — контурные. Знак: успех — галочка, сбой — восклицательный.
+ * Первое действие — главное: переход — белая кнопка со стрелкой (home/more-link), действие — салатовая без стрелки.
+ * Остальные — контурные. Знак: успех — галочка, сбой — восклицательный.
  */
 const StatusScreen: React.FC<{
   tone: 'success' | 'problem';
@@ -27,16 +29,23 @@ const StatusScreen: React.FC<{
       <div className={styles.actions}>
         {actions.map((action, i) => {
           const className = i === 0 ? styles.primary : styles.secondary;
-          const content = (
-            <>
-              {action.label}
-              {i === 0 && <Icon name="arrowRight" size="1.25em" stroke={2} />}
-            </>
-          );
-          return 'href' in action ? (
-            <Link key={action.label} href={action.href} className={className}>{content}</Link>
+          if (!('href' in action))
+            return (
+              <button key={action.label} type="button" onClick={action.onClick} className={className}>
+                {action.label}
+              </button>
+            );
+          // Главный переход — общая кнопка со стрелкой; слот растягивает её на телефоне
+          return i === 0 ? (
+            <div key={action.label} className={styles.slot}>
+              <MoreLink href={action.href} onDark>
+                {action.label}
+              </MoreLink>
+            </div>
           ) : (
-            <button key={action.label} type="button" onClick={action.onClick} className={className}>{content}</button>
+            <Link key={action.label} href={action.href} className={className}>
+              {action.label}
+            </Link>
           );
         })}
       </div>

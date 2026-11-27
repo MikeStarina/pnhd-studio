@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Icon } from '@/features/constructor/ui/icons';
+import MoreLink from '@/components/home/more-link/more-link';
 import styles from './cart-state.module.css';
 
 /** Пока корзина читается из хранилища браузера: место под список, без мигания «пусто». */
@@ -21,10 +22,9 @@ export const CartEmpty: React.FC = () => (
       Выбери изделие в&nbsp;каталоге или собери своё в&nbsp;конструкторе&nbsp;— оно появится здесь.
     </p>
     <div className={styles.actions}>
-      <Link href="/shop" className={styles.primary}>
-        Перейти в каталог
-        <Icon name="arrowRight" size="1.25em" stroke={2} />
-      </Link>
+      <div className={styles.primary}>
+        <MoreLink href="/shop">Перейти в каталог</MoreLink>
+      </div>
       <Link href="/constructor" className={styles.secondary}>
         Открыть конструктор
       </Link>

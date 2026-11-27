@@ -338,6 +338,7 @@
 }
 
 .dropzone {
+  position: relative;
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -358,32 +359,30 @@
   background: var(--color-surface);
 }
 
-/* Чёрные кнопки-капсулы с текстом и стрелкой: «Открыть» и «Перейти в конструктор» */
-.miniOpen,
-.orderButton {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  height: var(--submit-height);
-  padding: 0 28px;
+/* Место главной кнопки (home/more-link size="l") */
+.orderAction {
+  display: flex;
+}
+
+/* Зона загрузки — сама переход в конструктор: в углу тот же салатовый круг со стрелкой, что у кнопок-переходов.
+   Отдельной кнопки «Открыть» нет: на экране одна кнопка — «Перейти в конструктор» */
+.dropArrow {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: grid;
+  place-items: center;
+  width: var(--more-link-dot);
+  height: var(--more-link-dot);
   border-radius: var(--radius-pill);
-  background: var(--color-ink);
-  color: var(--color-white);
-  font-size: var(--text-xs);
-  font-weight: var(--weight-medium);
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background-color var(--duration) var(--ease), color var(--duration) var(--ease);
+  background: var(--color-lime);
+  transition: transform var(--duration) var(--ease);
 }
 
-.miniOpen {
-  height: 48px;
-}
-
-.miniOpen:hover,
-.orderButton:hover {
-  background: var(--color-blue);
+@media (hover: hover) {
+  .dropzone:hover .dropArrow {
+    transform: translateX(var(--more-link-shift));
+  }
 }
 
 /* Главная карточка первого экрана — салатовая, светлеет книзу: шаги, заголовок, линия, текст, кнопка и стрелка */
@@ -456,9 +455,7 @@
 
 .aboutPill:focus-visible,
 .chip:focus-visible,
-.dropzone:focus-visible,
-.miniOpen:focus-visible,
-.orderButton:focus-visible {
+.dropzone:focus-visible {
   outline: 2px solid var(--color-blue);
   outline-offset: 3px;
 }
@@ -567,10 +564,6 @@
     min-height: 200px;
   }
 
-  .miniOpen {
-    padding: 0 16px;
-  }
-
   .orderMain {
     flex-direction: column;
     align-items: flex-start;
@@ -578,6 +571,12 @@
 
   .orderTitle {
     font-size: var(--display-s-compact);
+  }
+
+  /* Телефон: главная кнопка во всю ширину карточки */
+  .orderAction {
+    flex-direction: column;
+    align-self: stretch;
   }
 
   .orderArrow {
@@ -597,7 +596,9 @@
     margin: 14px 0 16px;
   }
 
-  .orderButton {
-    height: 48px;
+  /* Главная кнопка ниже: высоту кнопка берёт из --more-link-l */
+  .orderAction {
+    --more-link-l: var(--more-link);
+    --tile-arrow: var(--more-link-dot);
   }
 }

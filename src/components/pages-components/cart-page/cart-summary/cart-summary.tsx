@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useAppSelector } from '@/redux/redux-hooks';
 import { itemPrintUnitPrice } from '@/app/utils/cart-utils';
 import { rub } from '@/components/catalog/data';
-import { Icon } from '@/features/constructor/ui/icons';
+import MoreLink from '@/components/home/more-link/more-link';
 import { useDesignPrices } from '@/features/constructor/cart/useDesignPrice';
 import Amount from '../amount';
 import styles from './cart-summary.module.css';
@@ -47,10 +47,9 @@ const CartSummary: React.FC = () => {
           <Amount value={total} format={rub} />
         </span>
       </p>
-      <Link href="/checkout" className={styles.submit}>
+      <MoreLink href="/checkout" stretch>
         Оформить заказ
-        <Icon name="arrowRight" size="1.25em" stroke={2} />
-      </Link>
+      </MoreLink>
       <Link href="/shop" className={styles.more}>
         Продолжить покупки
       </Link>

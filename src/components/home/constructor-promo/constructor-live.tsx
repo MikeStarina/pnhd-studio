@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Icon } from '@/features/constructor/ui/icons';
+import MoreLink from '../more-link/more-link';
 import { HOVER_INTENT_MS } from '@/styles/motion';
 import { beat, colorOrder, colors, garmentOrder, garments, prints, railSteps, sideLabels } from './data';
 import styles from './constructor-promo.module.css';
@@ -34,6 +35,9 @@ const ConstructorLive: React.FC<Props> = ({ href }) => {
   const [ordered, setOrdered] = useState(false);
   const [aim, setAim] = useState('canvas');
   const [pressed, setPressed] = useState(false);
+  const [arrived, setArrived] = useState(false);
+  const [clicks, setClicks] = useState(0);
+  const [acted, setActed] = useState(false);
   const [cursor, setCursor] = useState<{ x: number; y: number } | null>(null);
 
   const [inView, setInView] = useState(false);
@@ -53,6 +57,7 @@ const ConstructorLive: React.FC<Props> = ({ href }) => {
     if (s === 1) setColorIdx(colorOrder[k % colors.length]);
     if (s === 2) setPrintIdx(k % prints.length);
     if (s === 3) setOrdered(true);
+    setActed(true);
   }, []);
 
   const go = useCallback(
@@ -61,6 +66,7 @@ const ConstructorLive: React.FC<Props> = ({ href }) => {
       setStep(next);
       setRun((r) => r + 1);
       setDone(false);
+      setActed(false);
       if (next < 3) setOrdered(false);
       if (reduced) apply(next, loop);
     },
@@ -99,14 +105,22 @@ const ConstructorLive: React.FC<Props> = ({ href }) => {
     setColorIdx(poster.color);
     setPrintIdx(poster.print);
     setOrdered(poster.ordered);
+    setActed(true);
   }, [reduced]);
 
   // Один шаг: курсор едет к цели, нажимает, вещь меняется; дальше — когда шаг дослушан и витрину не держат
   useEffect(() => {
     if (!animate) return;
     const timers = [
-      window.setTimeout(() => setAim(targetFor(step, loop)), 120),
-      window.setTimeout(() => setPressed(true), beat.move),
+      window.setTimeout(() => {
+        setArrived(false);
+        setAim(targetFor(step, loop));
+      }, beat.start),
+      window.setTimeout(() => setArrived(true), beat.arrive),
+      window.setTimeout(() => {
+        setPressed(true);
+        setClicks((n) => n + 1);
+      }, beat.move),
       window.setTimeout(() => {
         setPressed(false);
         apply(step, loop);
@@ -122,6 +136,7 @@ const ConstructorLive: React.FC<Props> = ({ href }) => {
   useEffect(() => {
     if (!done || hold || !animate) return;
     setDone(false);
+    setActed(false);
     if (step === 3) {
       setLoop((k) => k + 1);
       setOrdered(false);
@@ -157,15 +172,40 @@ const ConstructorLive: React.FC<Props> = ({ href }) => {
     if (e.pointerType === 'mouse') setHover(value);
   };
   const sheet = step < 2 ? 'garments' : step === 2 ? 'prints' : 'order';
+  // Цель курсора: подсвечена, когда курсор доехал, и поджата, пока он нажимает
+  const mark = (target: string) => ({
+    'data-target': target,
+    'data-hover': (arrived && aim === target) || undefined,
+    'data-press': (pressed && aim === target) || undefined,
+  });
+  const reached = (i: number) => i < step || (i === step && acted);
+  // Что выбрано на каждом шаге: показываем в карточке шага, когда в окне на это нажали
+  const picked = [
+    reached(0) && garment.one,
+    reached(1) && (
+      <>
+        <span className={styles.stepChipDot} style={{ background: color.hex }} />
+        {color.name}
+      </>
+    ),
+    reached(2) && print !== null && 'Готовый принт',
+    ordered && 'В корзине',
+  ];
   const printTile = (
-    <span className={styles.tile} data-target="prints" data-hot={step === 2 || undefined}>
+    <span className={styles.tile} {...mark('prints')} data-on={(print !== null && step >= 2) || undefined}>
       <Icon name="image" size={18} />
       Готовые принты
     </span>
   );
   const orderButton = (
-    <span className={styles.orderBtn} data-target="order" data-hot={step === 3 || undefined}>
-      В корзину
+    <span className={styles.orderBtn} {...mark('order')} data-on={ordered || undefined}>
+      {ordered ? (
+        <>
+          <Icon name="checkMark" size={14} stroke={2} />В корзине
+        </>
+      ) : (
+        'В корзину'
+      )}
     </span>
   );
 
@@ -180,45 +220,49 @@ const ConstructorLive: React.FC<Props> = ({ href }) => {
       onBlurCapture={(e) => !e.currentTarget.contains(e.relatedTarget) && setFocus(false)}
     >
       <div className={styles.rail}>
-        <ol className={styles.steps}>
-          {railSteps.map(({ title, text }, i) => (
-            <li key={title} className={styles.stepItem}>
-              <button
-                type="button"
-                className={i === step ? `${styles.step} ${styles.stepOn}` : styles.step}
-                aria-current={i === step ? 'step' : undefined}
-                onPointerEnter={(e) => {
-                  if (e.pointerType !== 'mouse' || i === step) return;
-                  window.clearTimeout(hoverTimer.current);
-                  hoverTimer.current = window.setTimeout(() => go(i), HOVER_INTENT_MS);
-                }}
-                onPointerLeave={() => window.clearTimeout(hoverTimer.current)}
-                onFocus={() => i !== step && go(i)}
-                onClick={() => tap(i)}
-              >
-                <span className={styles.stepNum}>{`[0${i + 1}]`}</span>
-                <span className={styles.stepText}>
-                  <span className={styles.stepTitle}>{title}</span>
-                  <span className={styles.stepHint}>
-                    <span className={styles.stepHintText}>{text}</span>
+        <div className={styles.stepsBox} style={{ '--step': step } as React.CSSProperties}>
+          <span className={styles.glow} aria-hidden="true">
+            <span
+              key={`${step}-${run}`}
+              className={styles.progress}
+              data-paused={!animate || undefined}
+              style={{ '--beat': `${beat.step}ms` } as React.CSSProperties}
+            />
+          </span>
+          <ol className={styles.steps}>
+            {railSteps.map(({ title, text }, i) => (
+              <li key={title} className={styles.stepItem}>
+                <button
+                  type="button"
+                  className={[styles.step, i === step && styles.stepOn, i !== step && reached(i) && styles.stepDone].filter(Boolean).join(' ')}
+                  aria-current={i === step ? 'step' : undefined}
+                  onPointerEnter={(e) => {
+                    if (e.pointerType !== 'mouse' || i === step) return;
+                    window.clearTimeout(hoverTimer.current);
+                    hoverTimer.current = window.setTimeout(() => go(i), HOVER_INTENT_MS);
+                  }}
+                  onPointerLeave={() => window.clearTimeout(hoverTimer.current)}
+                  onFocus={() => i !== step && go(i)}
+                  onClick={() => tap(i)}
+                >
+                  <span className={styles.stepNum} aria-hidden="true">
+                    {i !== step && reached(i) ? <Icon name="checkMark" size={14} stroke={2} /> : i + 1}
                   </span>
-                </span>
-                {i === step && (
-                  <span
-                    key={run}
-                    className={styles.progress}
-                    data-paused={!animate || undefined}
-                    style={{ '--beat': `${beat.step}ms` } as React.CSSProperties}
-                    aria-hidden="true"
-                  />
-                )}
-              </button>
-            </li>
-          ))}
-        </ol>
-        <Link href={href} className={styles.cta}>
-          Открыть конструктор&nbsp;<Icon name="arrowRight" size="1.25em" stroke={2} />
-        </Link>
+                  <span className={styles.stepTitle}>{title}</span>
+                  {picked[i] && (
+                    <span className={styles.stepChip} aria-hidden="true">
+                      {picked[i]}
+                    </span>
+                  )}
+                  <span className={styles.stepHint}>{text}</span>
+                </button>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <MoreLink href={href} size="l" stretch>
+          Открыть конструктор
+        </MoreLink>
       </div>
 
       <div className={styles.frame}>
@@ -248,7 +292,7 @@ const ConstructorLive: React.FC<Props> = ({ href }) => {
                   <li
                     key={g.id}
                     className={i === garmentIdx ? `${styles.item} ${styles.itemOn}` : styles.item}
-                    data-target={`garment-${g.id}`}
+                    {...mark(`garment-${g.id}`)}
                     data-aim="start"
                   >
                     <Icon name={g.icon} size={22} />
@@ -293,7 +337,7 @@ const ConstructorLive: React.FC<Props> = ({ href }) => {
                     key={c.name}
                     className={i === colorIdx ? `${styles.swatch} ${styles.swatchOn}` : styles.swatch}
                     style={{ background: c.hex }}
-                    data-target={`color-${i}`}
+                    {...mark(`color-${i}`)}
                   />
                 ))}
               </ul>
@@ -330,7 +374,7 @@ const ConstructorLive: React.FC<Props> = ({ href }) => {
                 {sheet === 'garments' && (
                   <ul className={styles.chips}>
                     {garments.map((g, i) => (
-                      <li key={g.id} className={i === garmentIdx ? `${styles.chip} ${styles.chipOn}` : styles.chip} data-target={`garment-${g.id}`}>
+                      <li key={g.id} className={i === garmentIdx ? `${styles.chip} ${styles.chipOn}` : styles.chip} {...mark(`garment-${g.id}`)}>
                         <Icon name={g.icon} size={22} />
                       </li>
                     ))}
@@ -370,6 +414,7 @@ const ConstructorLive: React.FC<Props> = ({ href }) => {
                 <path d="M5 3l14 8.2-6.1 1.3L10 18.6z" />
               </svg>
               <span className={styles.touch} />
+              {clicks > 0 && <span key={clicks} className={styles.ripple} />}
             </span>
           )}
         </div>

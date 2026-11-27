@@ -1,8 +1,8 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
 import { Icon } from '@/features/constructor/ui/icons';
 import Section from '../section/section';
+import MoreLink from '../more-link/more-link';
 import { siteContacts } from '../../site/contacts';
 import { constructorHref } from '../../site/links';
 import RouteLink from './route-link';
@@ -40,9 +40,11 @@ const About: React.FC = () => (
             </div>
           ))}
         </dl>
-        <Link href={constructorHref} className={styles.button}>
-          Нанести принт&nbsp;<Icon name="arrowRight" size="1.25em" stroke={2} />
-        </Link>
+        <div className={styles.action}>
+          <MoreLink href={constructorHref} onDark>
+            Нанести принт
+          </MoreLink>
+        </div>
       </div>
 
       {/* Сюда ведут все ссылки «Контакты» (contactsHref) */}

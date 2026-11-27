@@ -1,11 +1,16 @@
-/* На светлой секции — чёрная таблетка, на чёрной — белая; при наведении обе берут акцент секции */
+/* Кнопка-переход: на светлой секции — чёрная таблетка, на чёрной — белая; стрелка — в салатовом круге,
+   круг стоит концентрично скруглению таблетки. Фон при наведении не меняется: движется круг */
 .link {
+  --dot: var(--more-link-dot);
+  --height: var(--more-link);
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
-  gap: 0.5em;
-  height: calc(var(--control-height) * 1.15);
-  padding: 0 28px;
+  /* Если родитель растянул кнопку, круг уходит к правому краю */
+  justify-content: space-between;
+  gap: 12px;
+  height: var(--height);
+  padding: 0 calc((var(--height) - var(--dot)) / 2) 0 22px;
   border-radius: var(--radius-pill);
   background: var(--color-ink);
   color: var(--color-white);
@@ -15,65 +20,85 @@
   text-transform: uppercase;
   text-decoration: none;
   white-space: nowrap;
-  transition: background var(--duration) var(--ease), color var(--duration) var(--ease);
+  transition: transform var(--duration-press) var(--ease);
 }
 
-:global([data-tone='black']) .link {
+:global([data-tone='black']) .link,
+.link[data-on-dark] {
   background: var(--color-white);
   color: var(--color-ink);
 }
 
-.link:hover,
-:global([data-tone='black']) .link:hover {
-  background: var(--accent);
-  color: var(--on-accent);
+.link:active {
+  transform: scale(var(--press-scale));
 }
 
+/* Рамка фокуса — цветом таблетки: на светлом фоне чёрная, на тёмном салатовая */
 .link:focus-visible {
-  outline: 2px solid currentColor;
+  outline: 2px solid var(--color-ink);
   outline-offset: 3px;
 }
 
-/* Крупная (рядом с заголовком секции): высота --more-link-l, кегль --text-l, стрелка — салатовый круг --tile-arrow.
-   При наведении круг уезжает вправо, фон таблетки не меняется */
+:global([data-tone='black']) .link:focus-visible,
+.link[data-on-dark]:focus-visible {
+  outline-color: var(--color-lime);
+}
+
+/* Крупная — главная кнопка блока: высота --more-link-l, кегль --text-l, круг --tile-arrow */
 .link[data-size='l'] {
+  --dot: var(--tile-arrow);
+  --height: var(--more-link-l);
   gap: 20px;
-  height: var(--more-link-l);
-  padding: 0 calc((var(--more-link-l) - var(--tile-arrow)) / 2) 0 32px;
+  padding-left: 32px;
   font-size: var(--text-l);
   font-weight: var(--weight-bold);
 }
 
-.link[data-size='l']:hover {
-  background: var(--color-ink);
-  color: var(--color-white);
+/* Телефон: крупная кнопка плотнее, чтобы длинная подпись помещалась в карточку */
+@media (max-width: 599px) {
+  .link[data-size='l'] {
+    gap: 12px;
+    padding-left: 24px;
+    font-size: var(--text-m);
+  }
 }
 
-:global([data-tone='black']) .link[data-size='l']:hover {
-  background: var(--color-white);
-  color: var(--color-ink);
-}
-
-.arrow {
+.link[data-stretch] {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--tile-arrow);
-  height: var(--tile-arrow);
+}
+
+/* При наведении круг сдвигается туда, куда показывает стрелка */
+.arrow {
+  --dx: var(--more-link-shift);
+  --dy: 0px;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--dot);
+  height: var(--dot);
   border-radius: var(--radius-pill);
   background: var(--color-lime);
   color: var(--color-ink);
   transition: transform var(--duration) var(--ease);
 }
 
-@media (hover: hover) {
-  .link[data-size='l']:hover .arrow {
-    transform: translateX(4px);
-  }
+/* На салатовой карточке круг белый: салатовый слился бы с фоном */
+.link[data-on-lime] .arrow {
+  background: var(--color-white);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .arrow {
-    transition: none;
+.link[data-arrow='upRight'] .arrow {
+  --dx: calc(var(--more-link-shift) * 0.75);
+  --dy: calc(var(--more-link-shift) * -0.75);
+}
+
+.link[data-arrow='down'] .arrow {
+  --dx: 0px;
+  --dy: var(--more-link-shift);
+}
+
+@media (hover: hover) {
+  .link:hover .arrow {
+    transform: translate(var(--dx), var(--dy));
   }
 }
