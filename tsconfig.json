@@ -36,7 +36,8 @@
     ".next-e2e/types/**/*.ts",
     ".next-e2e-3129/types/**/*.ts",
     ".next-check/types/**/*.ts",
-    ".next-e2e-bitrix/types/**/*.ts"
+    ".next-e2e-bitrix/types/**/*.ts",
+    ".next-e2e-3121/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

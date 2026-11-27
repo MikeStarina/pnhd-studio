@@ -168,6 +168,10 @@ const ConstructorLive: React.FC<Props> = ({ href }) => {
   const garment = garments[garmentIdx];
   const color = colors[colorIdx];
   const print = printIdx === null ? null : prints[printIdx];
+  const lightFabric = isLight(color.hex);
+  // Принты на сцене: тот, что на вещи с прошлого круга, и принт этого круга. Оба стоят в разметке заранее —
+  // картинка загружена до своего шага, а прошлый принт успевает плавно уйти, а не пропадает вместе с узлом
+  const printSlots = [...new Set([loop - 1, loop].filter((k) => k >= 0).map((k) => k % prints.length))];
   const onMouse = (value: boolean) => (e: React.PointerEvent) => {
     if (e.pointerType === 'mouse') setHover(value);
   };
@@ -199,13 +203,10 @@ const ConstructorLive: React.FC<Props> = ({ href }) => {
   );
   const orderButton = (
     <span className={styles.orderBtn} {...mark('order')} data-on={ordered || undefined}>
-      {ordered ? (
-        <>
-          <Icon name="checkMark" size={14} stroke={2} />В корзине
-        </>
-      ) : (
-        'В корзину'
-      )}
+      <span className={styles.orderLabel}>В корзину</span>
+      <span className={styles.orderLabel}>
+        <Icon name="checkMark" size={14} stroke={2} />В корзине
+      </span>
     </span>
   );
 
@@ -316,18 +317,26 @@ const ConstructorLive: React.FC<Props> = ({ href }) => {
               <div className={styles.scene}>
                 {garments.map((g, i) => (
                   <div key={g.id} className={i === garmentIdx ? `${styles.layer} ${styles.layerOn}` : styles.layer}>
-                    <div className={styles.tint} style={{ '--tint': color.hex, '--mock': `url(${g.file})` } as React.CSSProperties} />
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={g.file} alt="" className={styles.shade} draggable={false} />
-                    {print && (
-                      <div
-                        className={styles.zone}
-                        style={{ left: `${g.zone.x * 100}%`, top: `${g.zone.y * 100}%`, width: `${g.zone.w * 100}%`, height: `${g.zone.h * 100}%` }}
-                      >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img key={print.id} src={isLight(color.hex) ? print.light : print.dark} alt="" className={styles.print} draggable={false} />
-                      </div>
-                    )}
+                    <div className={styles.fabric} style={{ '--mock': `url(${g.file})` } as React.CSSProperties}>
+                      {colors.map((c, k) => (
+                        <span key={c.name} className={styles.tint} data-on={k === colorIdx || undefined} style={{ background: c.hex }} />
+                      ))}
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={g.file} alt="" className={styles.shade} draggable={false} />
+                    </div>
+                    <div
+                      className={styles.zone}
+                      style={{ left: `${g.zone.x * 100}%`, top: `${g.zone.y * 100}%`, width: `${g.zone.w * 100}%`, height: `${g.zone.h * 100}%` }}
+                    >
+                      {printSlots.map((slot) => (
+                        <span key={prints[slot].id} className={styles.print} data-on={slot === printIdx || undefined}>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={prints[slot].light} alt="" className={styles.ink} data-on={lightFabric || undefined} loading="lazy" draggable={false} />
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={prints[slot].dark} alt="" className={styles.ink} data-on={!lightFabric || undefined} loading="lazy" draggable={false} />
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 ))}
               </div>

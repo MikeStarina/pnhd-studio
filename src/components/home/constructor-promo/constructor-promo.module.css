@@ -425,39 +425,70 @@
   background: var(--color-stage);
 }
 
-/* Мокап красится слоем цвета по маске, складки — тот же мокап поверх через multiply */
+/* Ткань вещи — цвет и складки под одной маской мокапа: складки — тот же мокап поверх цвета через multiply.
+   Всё, что меняется на сцене (вещь, цвет, принт), стоит в разметке заранее и меняется только прозрачностью и
+   трансформацией: ни один кадр не ждёт загрузки картинки и не перерисовывает маску.
+   isolation: порядок слоёв сцены (z-index ниже) не выходит за неё — уведомление и курсор окна остаются поверх вещи */
 .scene {
   position: relative;
+  isolation: isolate;
   height: 100%;
   aspect-ratio: 1200 / 1380;
   max-width: 100%;
 }
 
+/* Смена вещи — смена кадра: новая проявляется поверх старой, старая уходит той же кривой, но на четверть перехода
+   позже. Уходи они одновременно — обе полупрозрачны разом, сквозь них просвечивает фон холста, и вещь на середине
+   перехода бледнеет. Только прозрачность: с масштабом слой на время перехода теряет дробную часть своего
+   положения, и в первом и последнем кадре вещь с принтом сдвигалась на пиксель */
 .layer {
   position: absolute;
   inset: 0;
   opacity: 0;
-  transform: scale(0.96);
-  transition: opacity var(--duration-slow) var(--ease), transform var(--duration-enter) var(--ease);
+  transition: opacity var(--duration-slow) var(--ease) calc(var(--duration-slow) / 4);
 }
 
 .layerOn {
+  z-index: 1;
   opacity: 1;
-  transform: none;
+  transition: opacity var(--duration-slow) var(--ease);
+}
+
+/* Маска общая для цвета и складок: складки умножаются только на цвет под собой и не могут выйти за край цвета.
+   С маской на одном цвете складки по краю вещи ложились на фон холста — в покое незаметно, а пока слой вещи
+   полупрозрачен (и умножать не на что) — белой каймой */
+.fabric {
+  position: absolute;
+  inset: 0;
+  -webkit-mask: var(--mock) center / contain no-repeat;
+  mask: var(--mock) center / contain no-repeat;
+}
+
+/* Смена цвета: новый цвет проявляется поверх прежнего, прежний стоит под ним до конца перехода и только потом
+   гаснет (задержка). Гасни они одновременно — ткань на середине стала бы прозрачной. Гаснет прежний не разом,
+   а за --duration: под новым вариантом принта он утолщает сглаженные края линий, и разом они бы «щёлкнули» */
+.tint,
+.ink {
+  position: absolute;
+  opacity: 0;
+  transition: opacity var(--duration) linear var(--duration-slow);
+}
+
+.tint[data-on],
+.ink[data-on] {
+  z-index: 1;
+  opacity: 1;
+  transition: opacity var(--duration-slow) var(--ease);
 }
 
 .tint {
-  position: absolute;
   inset: 0;
-  background: var(--tint);
-  -webkit-mask: var(--mock) center / contain no-repeat;
-  mask: var(--mock) center / contain no-repeat;
-  transition: background-color var(--duration-slow) var(--ease);
 }
 
 .shade {
   position: absolute;
   inset: 0;
+  z-index: 2;
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -467,29 +498,40 @@
 
 .zone {
   position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
 }
 
+/* Принт: появляется — проявляется, приподнимаясь; уходит — гаснет на месте и быстрее (поза возвращается уже
+   невидимой: у трансформации задержка вместо длительности). Новый принт идёт поверх уходящего — вещь не пустеет.
+   Уходит по --ease, а не по --ease-in: два разных рисунка не должны долго лежать друг на друге.
+   will-change здесь и у .ink — не про скорость. Принт — ужатая картинка с тонкими линиями в зоне с дробными
+   координатами: уходя в отдельный слой на время перехода и возвращаясь из него, она перерисовывается со сдвигом
+   на долю пикселя, и принт «щёлкал» в первом и последнем кадре. В постоянном слое переключения нет */
 .print {
-  display: block;
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateY(8px) scale(0.9);
+  transition: opacity var(--duration-exit) var(--ease), transform 0s linear var(--duration-exit);
+  will-change: transform, opacity;
+}
+
+.print[data-on] {
+  z-index: 1;
+  opacity: 1;
+  transform: none;
+  transition: opacity var(--duration-enter) var(--ease), transform var(--duration-enter) var(--ease);
+}
+
+/* Вариант принта под светлую и под тёмную ткань: меняется вместе с цветом вещи, тем же переходом (.tint выше).
+   Картинка вписана в зону печати по ширине 78% и прижата к её верху */
+.ink {
+  top: 0;
+  left: 11%;
   width: 78%;
-  max-height: 100%;
+  height: 100%;
   object-fit: contain;
   object-position: top;
-  animation: print-in var(--duration-enter) var(--ease) both;
-}
-
-@keyframes print-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px) scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+  will-change: opacity;
 }
 
 .swatches {
@@ -607,11 +649,10 @@
   background: var(--color-line-dark);
 }
 
+/* Обе подписи кнопки стоят в одной ячейке: ширина кнопки — по самой длинной и не скачет, когда «В корзину»
+   сменяется на «✓ В корзине» */
 .orderBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
+  display: inline-grid;
   padding: 10px 16px;
   border-radius: var(--radius-pill);
   background: var(--color-lime);
@@ -620,6 +661,24 @@
   text-transform: uppercase;
   white-space: nowrap;
   transition: background var(--duration) var(--ease), transform var(--duration-press) var(--ease);
+}
+
+.orderLabel {
+  display: inline-flex;
+  grid-area: 1 / 1;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: opacity var(--duration) var(--ease);
+}
+
+.orderLabel:last-child,
+.orderBtn[data-on] .orderLabel:first-child {
+  opacity: 0;
+}
+
+.orderBtn[data-on] .orderLabel:last-child {
+  opacity: 1;
 }
 
 .orderBtn[data-hover] {
