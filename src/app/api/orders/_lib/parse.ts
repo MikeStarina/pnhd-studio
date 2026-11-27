@@ -100,8 +100,8 @@ const FILE_RULES: Array<{ key: RegExp; types: string[]; maxMb: number; title: (m
 ];
 
 const rub = (n: number) => `${n.toLocaleString('ru-RU')} ₽`;
-export const str = (v: unknown, max: number) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
-export const obj = (v: unknown): Record<string, unknown> =>
+const str = (v: unknown, max: number) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
+const obj = (v: unknown): Record<string, unknown> =>
   v && typeof v === 'object' && !Array.isArray(v) ? (v as Record<string, unknown>) : {};
 /** Имя файла без путей и управляющих символов. */
 const safeName = (name: string, fallback: string) =>
@@ -154,32 +154,11 @@ const originHost = (origin: string) => {
   }
 };
 
-/** Браузер шлёт Origin с каждым POST: запрос с чужого сайта не принимаем. */
-export const foreignOrigin = (req: Request) => {
-  const origin = req.headers.get('origin');
-  return Boolean(origin && originHost(origin) !== siteHost(req));
-};
-
-/** Номер визита Roistat из куки roistat_visit: по нему Roistat ставит сделке источник. */
-export const roistatVisit = (req: Request) =>
-  req.headers.get('cookie')?.match(/(?:^|;\s*)roistat_visit=([\w-]{1,40})(?:;|$)/)?.[1] ?? '';
-
-/** Аналитика заявки из тела запроса и куки: метки, ClientID Метрики, страница отправки, визит Roistat. */
-export function requestAnalytics(raw: Record<string, unknown>, req: Request) {
-  const rawUtm = obj(raw.utm);
-  const utm: Record<string, string> = {};
-  for (const k of UTM_KEYS) if (str(rawUtm[k], 200)) utm[k] = str(rawUtm[k], 200);
-  return {
-    utm,
-    clientId: /^\d{5,30}$/.test(str(raw.clientId, 40)) ? str(raw.clientId, 40) : '',
-    page: /^https?:\/\//.test(str(raw.page, 300)) ? str(raw.page, 300) : '',
-    roistat: roistatVisit(req),
-  };
-}
-
 /** Разбирает и проверяет multipart-заявку. Бросает BadOrder с кодом ошибки. */
 export async function parseOrder(req: Request): Promise<Order> {
-  if (foreignOrigin(req)) throw new BadOrder('bad_origin', 403);
+  // Браузер шлёт Origin с каждым POST: заявку с чужого сайта не принимаем.
+  const origin = req.headers.get('origin');
+  if (origin && originHost(origin) !== siteHost(req)) throw new BadOrder('bad_origin', 403);
   // Размер проверяем до formData(): она читает всё тело в память.
   const length = Number(req.headers.get('content-length'));
   if (!length) throw new BadOrder('length_required', 411);
@@ -326,13 +305,19 @@ export async function parseOrder(req: Request): Promise<Order> {
     });
   }
 
+  const rawUtm = obj(raw.utm);
+  const utm: Record<string, string> = {};
+  for (const k of UTM_KEYS) if (str(rawUtm[k], 200)) utm[k] = str(rawUtm[k], 200);
+
   return {
     number,
     fingerprint,
     garment: { name: priced.garmentName },
-    method, lines, qty, total, sides, promo, contacts,
-    ...requestAnalytics(raw, req),
+    method, lines, qty, total, sides, promo, contacts, utm,
+    clientId: /^\d{5,30}$/.test(str(raw.clientId, 40)) ? str(raw.clientId, 40) : '',
     source: /^[\w.:-]{1,40}$/.test(str(raw.source, 40)) ? str(raw.source, 40) : '',
+    page: /^https?:\/\//.test(str(raw.page, 300)) ? str(raw.page, 300) : '',
+    roistat: req.headers.get('cookie')?.match(/(?:^|;\s*)roistat_visit=([\w-]{1,40})(?:;|$)/)?.[1] ?? '',
     files,
     rejectedFiles,
   };

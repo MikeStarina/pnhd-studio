@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useCreateLeadMutation } from '@/api/api';
-import { getClientId, track } from '@/components/site/analytics';
-import { getUtm } from '@/features/constructor/analytics/utm';
+import { readRoistatVisitId } from '@/components/shared-components/telegram-link/telegram-link';
+import { track } from '@/components/site/analytics';
 import ConsentField from '@/components/site/consent-field/consent-field';
 import { siteContacts } from '@/components/site/contacts';
 import styles from './price-estimate.module.css';
@@ -35,23 +35,17 @@ const PriceForm: React.FC<{ source?: 'price' | 'methods' }> = ({ source = 'price
   const [agree, setAgree] = useState(false);
   const [errors, setErrors] = useState<Errors>({});
   const [createLead, { isLoading, isSuccess, isError, reset }] = useCreateLeadMutation();
-  // ClientID Метрики ждём до секунды: второе нажатие за это время вторую заявку не шлёт.
-  const sending = useRef(false);
 
+  // Приём заявок на бэкенде принимает только имя, телефон (до 12 символов) и метку Roistat: лишние поля он отклоняет.
   const send = async () => {
     const found = validate(name, phone, agree);
     setErrors(found);
-    if (Object.keys(found).length > 0 || sending.current) return;
-    sending.current = true;
+    if (Object.keys(found).length > 0 || isLoading) return;
     const result = await createLead({
       name: name.trim(),
       phone: phone.replace(/[^\d+]/g, ''),
-      form: source,
-      utm: getUtm(),
-      clientId: await getClientId(),
-      page: window.location.href,
+      roistat: readRoistatVisitId() || 'n/a',
     });
-    sending.current = false;
     track('error' in result ? 'lead_error' : 'lead_submit', { form: source });
   };
 

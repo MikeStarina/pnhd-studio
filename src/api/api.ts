@@ -260,15 +260,25 @@ export const api = createApi({
         },
       }),
     }),
-    // Заявка идёт на сервер сайта (api/leads/route.ts), а не на бэкенд каталога: сделку в Битриксе создаёт он.
     createLead: builder.mutation<
-      { ok: boolean },
-      { name: string; phone: string; form: 'price' | 'methods' | 'popup'; utm: Record<string, string>; clientId: string; page: string }
+      { message: string },
+      {
+        name: string;
+        phone: string;
+        roistat: string;
+        email?: string;
+        comment?: string;
+        reference_url?: string;
+      }
     >({
       query: (data) => ({
-        url: `${window.location.origin}/api/leads`,
+        url: '/api/leads/',
         method: 'POST',
-        body: data,
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+          'Content-length': '',
+        },
       })
     }),
     getGalleryImages: builder.query<Array<{id: string, src: string, alt: string}>, void>({

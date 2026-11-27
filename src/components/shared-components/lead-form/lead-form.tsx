@@ -7,8 +7,7 @@ import { MuiTelInput } from 'mui-tel-input'
 import ConsentField from '@/components/site/consent-field/consent-field';
 import { actions as leadActions } from "@/redux/lead-slice/lead.slice";
 import { useCreateLeadMutation } from "@/api/api";
-import { getClientId, track } from "@/components/site/analytics";
-import { getUtm } from "@/features/constructor/analytics/utm";
+import { track } from "@/components/site/analytics";
 import Link from "next/link";
 import Image from "next/image";
 import RU_FLAG from '../../../../public/ru_flag.webp';
@@ -34,9 +33,10 @@ const LeadForm: React.FC = () => {
             document.getElementById('lead-agree')?.focus();
             return;
         }
-        void getClientId().then((clientId) =>
-            createLead({ name, phone: phone.replaceAll(' ', ''), form: 'popup', utm: getUtm(), clientId, page: window.location.href }),
-        ).then((result) => {
+        //const cookie: {[n: string]: string} = getCookie(document.cookie);
+
+        const roistat = 'n/a';
+        createLead({roistat, name, phone: phone.replaceAll(' ', '')}).then((result) => {
             track('error' in result ? 'lead_error' : 'lead_submit', { form: 'popup' });
         });
         dispatch(leadActions.resetLeadData());
