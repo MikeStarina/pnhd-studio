@@ -117,6 +117,12 @@ jobs:
             docker compose pull
             docker compose up -d --remove-orphans
             docker compose ps
+            # Прогрев: первый запрос после перезапуска собирает страницу долго (до 20+ с). Его делает выкладка,
+            # а не первый покупатель и не сторож мониторинга. Сбой прогрева выкладку не валит.
+            for i in $(seq 1 30); do curl -s -o /dev/null -m 5 http://127.0.0.1:3000/api/health && break; sleep 2; done
+            for p in / /constructor /shop /cart /checkout /api/health; do
+              curl -s -o /dev/null -m 60 -w "warm $p %{http_code} %{time_total}s\n" "http://127.0.0.1:3000$p" || true
+            done
 
       # Сообщение в тему «Релизы» группы мониторинга: что выложено (текст коммита ветки выкладки) или что выкладка не удалась.
       # Без секрета RELEASES_TELEGRAM_TOKEN шаг ничего не делает.
