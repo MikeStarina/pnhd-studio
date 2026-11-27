@@ -1,3 +1,4 @@
+import { randomBytes } from 'node:crypto';
 import { deflateSync } from 'node:zlib';
 import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
@@ -8,7 +9,22 @@ import { ORDERS_DIR } from '../playwright.config';
 export function solidPng(width: number, height: number, [r, g, b]: [number, number, number]): Buffer {
   const row = Buffer.alloc(1 + width * 4);
   for (let x = 0; x < width; x++) row.set([r, g, b, 255], 1 + x * 4);
-  const raw = Buffer.concat(Array.from({ length: height }, () => row));
+  return encodePng(width, height, Buffer.concat(Array.from({ length: height }, () => row)));
+}
+
+/** PNG из случайных непрозрачных точек: не сжимается, поэтому весит как фото с телефона (около 4 байт на точку). */
+export function noisePng(width: number, height: number): Buffer {
+  const raw = randomBytes(height * (1 + width * 4));
+  for (let y = 0; y < height; y++) {
+    const row = y * (1 + width * 4);
+    raw[row] = 0;
+    for (let x = 0; x < width; x++) raw[row + 4 + x * 4] = 255;
+  }
+  return encodePng(width, height, raw);
+}
+
+/** Строки точек (перед каждой — байт фильтра 0) → файл PNG. */
+function encodePng(width: number, height: number, raw: Buffer): Buffer {
   const table = Array.from({ length: 256 }, (_, n) => {
     let c = n;
     for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;

@@ -9,7 +9,7 @@ import { printAreaFor, sidesFor } from '../config/print-areas';
 import { FRAME } from '../config/garment-shapes';
 import { isLight } from '../canvas/tint';
 import { designBounds } from '../model/bounds';
-import { clearDraft, hasContent, loadDraft, saveDraft, type Draft, type DraftState } from '../model/draft';
+import { clearDraft, hasContent, loadDraft, restoreImages, saveDraft, type Draft, type DraftState, type SaveResult } from '../model/draft';
 import { ensureFont, onFontLoaded } from '../model/fonts';
 import { calcPrice, priceVariants } from '../model/pricing';
 import { METHOD_INFO } from '../config/pricing';
@@ -236,6 +236,8 @@ export function ConstructorApp({ onAddToCart, initial, draftScope, addLabel, chi
 
   /** Макет и размеры, только что положенные в корзину (сравниваются по ссылке). */
   const sent = useRef<{ layers: unknown; quantities: unknown } | null>(null);
+  /** Чем закончилось прошлое сохранение черновика. */
+  const lastSave = useRef<SaveResult | null>(null);
   // Черновик: при открытии спрашиваем, продолжать ли; пока не ответили — ничего не сохраняем.
   const [draft, setDraft] = useState<Draft | null>(null);
   const [draftGate, setDraftGate] = useState<'wait' | 'ask' | 'open'>('wait');
@@ -251,7 +253,6 @@ export function ConstructorApp({ onAddToCart, initial, draftScope, addLabel, chi
     track('garment_select', { id: found.garment.id, via: 'link' });
     track('color_select', { color: found.variant.colorName, via: 'link' });
   };
-  const [notice, setNotice] = useState<string | null>(null);
   // Короткая подсказка по действию; сама гаснет.
   const [hint, setHint] = useState<string | null>(null);
   useEffect(() => {
@@ -259,14 +260,21 @@ export function ConstructorApp({ onAddToCart, initial, draftScope, addLabel, chi
     const t = setTimeout(() => setHint(null), 4000);
     return () => clearTimeout(t);
   }, [hint]);
+  /** Показывает черновик на холсте; его картинки перед этим читаются из IndexedDB (restoreImages). */
+  const openDraft = (d: Draft) => {
+    st.hydrate(d);
+    if (d.imagesDropped) setHint('Картинки из прошлого раза не сохранились — загрузи их заново.');
+    setDraft(null);
+    setDraftGate('open');
+  };
   useEffect(() => {
     if (draftGate !== 'wait' || !st.garments.length) return;
     if (initial) {
-      // Начатая и не положенная в корзину работа этого режима важнее стартового состояния.
-      const own = loadDraft(draftScope);
-      if (own && hasContent(own)) { st.hydrate(own); setDraftGate('open'); return; }
       // Пока ответа нет — эффект не повторяется: ворота переходят в 'open' только по ответу.
       setDraftGate('ask');
+      // Начатая и не положенная в корзину работа этого режима важнее стартового состояния.
+      const own = loadDraft(draftScope);
+      if (own && hasContent(own)) { restoreImages(own, draftScope).then(openDraft); return; }
       initial(st.garments).catch(() => ({ start: undefined, notice: undefined })).then(({ start, notice }) => {
         if (start) st.hydrate(start);
         else openLinked();
@@ -291,9 +299,11 @@ export function ConstructorApp({ onAddToCart, initial, draftScope, addLabel, chi
       const r = await saveDraft({
         garmentId: st.garmentId, variantId: st.variantId, side: st.side, method: st.method, quantities: st.quantities, layers: st.layers,
       }, initial ? draftScope : undefined);
-      if (r === 'no-images') setNotice('Черновик сохранён без картинок: не хватило места в браузере.');
-      else if (r === 'failed') setNotice('Не получилось сохранить черновик в браузере.');
-      else setNotice(null);
+      // Говорим один раз, когда сохранение перестало получаться, а не после каждой правки.
+      if (r === lastSave.current) return;
+      lastSave.current = r;
+      if (r === 'no-images') setHint('Картинка не сохранится в этом браузере: после обновления страницы загрузи её заново.');
+      else if (r === 'failed') setHint('Дизайн не сохранится в этом браузере: после обновления страницы он пропадёт.');
     }, 800);
     return () => clearTimeout(t);
   }, [draftGate, st.garmentId, st.variantId, st.side, st.method, st.quantities, st.layers]);
@@ -695,10 +705,10 @@ export function ConstructorApp({ onAddToCart, initial, draftScope, addLabel, chi
         <DraftPrompt
           draft={draft}
           onNew={() => { clearDraft(); setDraft(null); openLinked(); setDraftGate('open'); }}
-          onContinue={() => { st.hydrate(draft); setDraft(null); setDraftGate('open'); }}
+          onContinue={() => restoreImages(draft).then(openDraft)}
         />
       )}
-      {(hint ?? notice) && <div className={s.notice} role="status">{hint ?? notice}</div>}
+      {hint && <div className={s.notice} role="status">{hint}</div>}
       {templatesOpen && <TemplatePicker hex={hex} onClose={() => setTemplatesOpen(false)} />}
       {photosOpen && garment && (
         <ModelInfo garment={garment} onClose={() => { setPhotosOpen(false); requestAnimationFrame(() => photosBtn.current?.focus()); }} />

@@ -12,7 +12,7 @@ export function DraftPrompt({ draft, onNew, onContinue }: { draft: Draft; onNew:
       <div className={s.modal} role="dialog" aria-label="Продолжить дизайн?">
         <h3>Продолжить дизайн?</h3>
         <p className={s.muted}>Мы сохранили твой дизайн в этом браузере ({when}).</p>
-        {draft.imagesDropped && <p className={s.warn}>Картинки в черновик не поместились — их нужно загрузить заново.</p>}
+        {draft.imagesDropped && <p className={s.warn}>Картинки не сохранились — их нужно загрузить заново.</p>}
         <button className={s.cta} onClick={() => dismiss(onContinue)}>Продолжить</button>
         <button className={s.btn} onClick={() => dismiss(onNew)}>Начать новый</button>
       </div>
