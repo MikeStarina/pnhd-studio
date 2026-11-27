@@ -37,6 +37,19 @@
   text-transform: uppercase;
 }
 
+.action {
+  justify-self: end;
+}
+
+/* С кнопкой заголовок берёт всю ширину, кроме самой кнопки: в две трети колонки длинный заголовок переносился бы */
+.row[data-action] {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.row[data-action] .title {
+  grid-column: auto;
+}
+
 .lead {
   display: flex;
   flex-direction: column;
@@ -86,8 +99,14 @@
     font-size: var(--display-l);
   }
 
-  .row {
+  .row,
+  .row[data-action] {
     grid-template-columns: 1fr;
+  }
+
+  /* Кнопка шапки — только на компьютере; пустая ячейка сетки дала бы лишний зазор под заголовком */
+  .action {
+    display: none;
   }
 
   .title {

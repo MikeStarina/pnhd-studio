@@ -16,9 +16,11 @@ const SectionHead: React.FC<{
   as?: 'h1' | 'h2';
   /** Заголовок и пояснение под ним — по центру */
   centered?: boolean;
-}> = ({ title, titleId, lead, readOnScroll = false, as: Heading = 'h2', centered }) => (
+  /** Кнопка справа на линии низа заголовка (например, «Весь каталог →») — вместо пояснения. Только на компьютере: на планшете и телефоне шапка без кнопки */
+  action?: React.ReactNode;
+}> = ({ title, titleId, lead, readOnScroll = false, as: Heading = 'h2', centered, action }) => (
   <header className={styles.head} data-centered={centered || undefined} data-reveal-group>
-    <div className={styles.row}>
+    <div className={styles.row} data-action={action ? '' : undefined}>
       <Heading id={titleId} className={styles.title}>
         {title}
       </Heading>
@@ -27,6 +29,7 @@ const SectionHead: React.FC<{
           <p>{readOnScroll ? <span className={styles.read}>{lead}</span> : lead}</p>
         </div>
       )}
+      {action && <div className={styles.action}>{action}</div>}
     </div>
   </header>
 );

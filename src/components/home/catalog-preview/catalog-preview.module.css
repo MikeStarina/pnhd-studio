@@ -1,118 +1,189 @@
-/* Бенто категорий: 4 колонки × 2 ряда. Футболки — высокая плитка в первой колонке, худи — широкая,
-   остальные — малые, последняя — чёрная «Весь каталог». Высота сетки — по окну (--catalog-height) */
+/* Каталог на главной: футболки — крупная плитка на две колонки и два ряда, справа сетка 2×2,
+   под сеткой — чёрная полоса «Весь каталог». «N моделей» — плашкой на фото, название и цена — одной строкой под ним */
 .bento {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-template-rows: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-  height: var(--catalog-height);
+  column-gap: var(--tile-gap);
+  row-gap: var(--tile-row-gap);
 }
 
 .tile {
-  position: relative;
   min-width: 0;
-  min-height: 0;
-  border-radius: var(--radius-card);
-  overflow: hidden;
-  background: var(--color-surface);
 }
 
-.tall {
+.big {
+  grid-column: span 2;
   grid-row: span 2;
 }
 
-.wide {
-  grid-column: span 2;
-}
-
 .link {
-  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
   height: 100%;
-  box-sizing: border-box;
-  padding: 24px;
   color: var(--color-ink);
   text-decoration: none;
 }
 
 .link:focus-visible {
   outline: 2px solid var(--color-ink);
-  outline-offset: -4px;
-  border-radius: inherit;
+  outline-offset: 4px;
+  border-radius: var(--radius-tile);
 }
 
-/* Фото с разным фоном (белым, серым) сводятся к одной подложке: белый фон растворяется в ней */
+.photo {
+  position: relative;
+  display: block;
+  aspect-ratio: 260 / 238;
+  border-radius: var(--radius-tile);
+  overflow: hidden;
+  background: var(--color-tile);
+}
+
+/* Крупная плитка тянется на высоту двух рядов: фото забирает всё, что осталось над подписью */
+.big .photo {
+  flex: 1;
+  aspect-ratio: auto;
+  min-height: 0;
+}
+
+.frame {
+  position: absolute;
+  inset: 0;
+}
+
+/* Вещи — вырезки без полей: вписаны целиком с отступом от краёв плитки и с тенью по контуру */
+.photo:not(.tshirt) .frame {
+  inset: 10% 8% 6%;
+}
+
 .img {
-  object-fit: cover;
-  object-position: center 20%;
-  mix-blend-mode: multiply;
+  object-fit: contain;
+  filter: var(--shadow-cutout);
   transition: transform var(--duration-slow) var(--ease);
 }
 
-/* Наведение — только там, где есть мышь: на телефоне тап оставляет его «залипшим» */
-@media (hover: hover) {
-  .link:hover .img {
-    transform: scale(1.04);
-  }
-
-  .link:hover .arrow {
-    background: var(--color-ink);
-    color: var(--color-white);
-  }
-
-  .all:hover {
-    background: var(--accent);
-  }
-
-  .all .link:hover .arrow {
-    background: var(--color-white);
-    color: var(--color-ink);
-  }
+/* Футболки: салатовый градиент, белая звезда за моделью */
+.tshirt {
+  background: linear-gradient(180deg, var(--color-lime-tint), var(--color-lime));
 }
 
-/* Название и подпись — белая плашка внизу слева: читается на любом фото и не закрывает лицо модели сверху */
-/* Нижняя строка плитки: плашка слева, стрелка справа — по центру плашки */
-.foot {
-  position: relative;
+/* Модель: голова у верха плитки, футболка видна целиком с краем брюк, ноги уходят за низ */
+.tshirt .frame {
+  inset: -14% 0 -27%;
+}
+
+.tshirt .img {
+  object-position: 50% 0;
+  filter: var(--shadow-cutout-lime);
+}
+
+.star {
+  position: absolute;
+  left: 11%;
+  top: 31.6%;
+  width: 152%;
+  height: auto;
+  transform: translate(-50%, -50%) rotate(-10.69deg);
+  pointer-events: none;
+}
+
+/* «N моделей» — белая плашка в левом верхнем углу фото */
+.models {
+  position: absolute;
+  top: var(--tile-chip-inset);
+  left: var(--tile-chip-inset);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  width: 100%;
+  gap: var(--tile-chip-gap);
+  padding: var(--tile-chip-pad) var(--tile-chip-pad) var(--tile-chip-pad) var(--tile-chip-inset);
+  border-radius: var(--radius-pill);
+  background: var(--color-white);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  transition: gap var(--duration-slow) var(--ease-out-soft);
 }
 
-.label {
+.big .models {
+  font-size: var(--text-xs);
+}
+
+.dot {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  min-width: 0;
-  box-sizing: border-box;
-  padding: 14px 18px 16px;
-  border-radius: var(--radius-card-s);
-  background: var(--color-white);
+  align-items: center;
+  justify-content: center;
+  width: var(--tile-dot);
+  height: var(--tile-dot);
+  border-radius: var(--radius-pill);
+  background: var(--color-blue);
+  color: var(--color-white);
+}
+
+.big .dot {
+  width: var(--tile-dot-l);
+  height: var(--tile-dot-l);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  column-gap: 12px;
+  row-gap: 4px;
+  margin-top: 14px;
+  font-size: var(--tile-title);
+  font-weight: var(--weight-bold);
+  line-height: 1.1;
+}
+
+.big .row {
+  font-size: var(--tile-title-l);
 }
 
 .name {
-  font-family: var(--font-display);
-  font-size: var(--display-s-compact);
-  font-weight: var(--weight-black);
-  line-height: var(--display-leading);
+  letter-spacing: 0.02em;
   text-transform: uppercase;
 }
 
-/* Число моделей и цена — двумя строками: в узкой плитке перенос в одну строку оставлял точку-разделитель в начале строки */
-.meta {
+.price {
+  white-space: nowrap;
+}
+
+/* «Весь каталог» — полоса на всю ширину сетки; от плиток чуть дальше, чем ряды друг от друга */
+.all {
+  grid-column: 1 / -1;
+  margin-top: 8px;
+}
+
+.allLink {
   display: flex;
-  flex-direction: column;
-  font-size: var(--text-xs);
-  line-height: 1.3;
-  color: var(--color-line-dark);
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: var(--tile-bar);
+  box-sizing: border-box;
+  padding: 16px 32px;
+  border-radius: var(--radius-tile);
+  background: var(--color-ink);
+  color: var(--color-white);
+  text-decoration: none;
+}
+
+.allLink:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 4px;
+}
+
+.allName {
+  font-size: var(--display-s);
+  font-weight: var(--weight-black);
+  line-height: var(--display-leading);
+  text-transform: uppercase;
 }
 
 .arrow {
@@ -123,44 +194,39 @@
   width: var(--tile-arrow);
   height: var(--tile-arrow);
   border-radius: var(--radius-pill);
-  background: var(--accent);
-  color: var(--on-accent);
-  transition: background var(--duration) var(--ease), color var(--duration) var(--ease);
+  background: var(--color-lime);
+  color: var(--color-ink);
+  transition: transform var(--duration) var(--ease);
 }
 
-/* «Весь каталог» — чёрная плитка; при наведении берёт акцент секции */
-.all {
-  background: var(--color-ink);
-  transition: background var(--duration) var(--ease);
+/* Наведение — только там, где есть мышь: на телефоне тап оставляет его «залипшим» */
+@media (hover: hover) {
+  .link:hover .img {
+    transform: scale(1.04);
+  }
+
+  /* Плашка «N моделей» вытягивается вправо: растёт зазор между текстом и кружком, поэтому кружок едет вместе с краем.
+     Плашка вне потока — соседей не двигает */
+  .link:hover .models {
+    gap: calc(var(--tile-chip-gap) + var(--tile-chip-stretch));
+  }
+
+  .allLink:hover .arrow {
+    transform: translateX(4px);
+  }
 }
 
-.all .link {
-  color: var(--color-white);
+/* С клавиатуры — так же, как мышью */
+.link:focus-visible .models {
+  gap: calc(var(--tile-chip-gap) + var(--tile-chip-stretch));
 }
 
-.all .foot {
-  height: 100%;
-  align-items: flex-end;
-}
-
-.all .label {
-  height: 100%;
-  justify-content: space-between;
-  padding: 0;
-  background: none;
-}
-
-.all .name {
-  font-size: var(--display-s);
-}
-
-.all .meta {
-  color: var(--color-white-80);
-  font-size: var(--text-m);
-}
-
-.all .link:focus-visible {
-  outline-color: var(--color-white);
+@media (prefers-reduced-motion: reduce) {
+  .img,
+  .models,
+  .arrow {
+    transition: none;
+  }
 }
 
 .empty {
@@ -174,68 +240,88 @@
   color: var(--color-ink);
 }
 
-/* Планшет и телефон: две колонки; футболки и «Весь каталог» — на всю ширину, остальные плитки по две в ряд */
+/* Компьютер: чтобы блок помещался в один экран, «Весь каталог» — таблетка справа от заголовка, а не полоса под сеткой.
+   Заголовок и сетка вместе занимают высоту окна (--catalog-height); сетка берёт всё, что осталось под заголовком,
+   сколько бы строк он ни занял. Вещи вписаны целиком (contain), фон плитки продолжает фон снимка */
+@media (min-width: 1024px) {
+  .fit {
+    display: flex;
+    flex-direction: column;
+    height: var(--catalog-height);
+  }
+
+  .bento {
+    flex: 1;
+    min-height: 0;
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+  }
+
+  .all {
+    display: none;
+  }
+
+  .tile {
+    min-height: 0;
+  }
+
+  .photo {
+    flex: 1;
+    aspect-ratio: auto;
+    min-height: 0;
+  }
+}
+
+.longsleeve {
+  background: var(--color-blue);
+}
+
+.longsleeve .img {
+  filter: var(--shadow-cutout-blue);
+}
+
+/* Планшет и телефон: две колонки, футболки и полоса «Весь каталог» — на всю ширину; таблетку у заголовка прячет сама шапка секции */
 @media (max-width: 1023px) {
   .bento {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: none;
-    height: auto;
-    gap: 12px;
   }
 
-  .tile {
+  .big {
+    grid-row: auto;
+  }
+
+  .big .photo {
+    flex: none;
     aspect-ratio: 4 / 3;
   }
 
-  .tall {
-    grid-row: auto;
-    grid-column: span 2;
-    aspect-ratio: 16 / 10;
+  .allLink {
+    padding: 16px 24px;
   }
-
-  .wide {
-    grid-column: auto;
-  }
-
-  .all {
-    grid-column: span 2;
-    aspect-ratio: auto;
-    min-height: 96px;
-  }
-
-  .link {
-    padding: 16px;
-  }
-
 }
 
-/* Телефон: малые плитки квадратные и узкие — плашка мельче, стрелка только у широких плиток, нажимается вся плитка */
 @media (max-width: 599px) {
-  .tile {
-    aspect-ratio: 1;
+  .big .photo {
+    aspect-ratio: 536 / 572;
   }
 
-  .tall {
-    aspect-ratio: 4 / 3;
+  /* Узкая плитка: сверху место под плашку «N моделей», вещь не уходит под неё */
+  .photo:not(.tshirt) .frame {
+    inset: 24% 12% 8%;
   }
 
-  .all {
-    aspect-ratio: auto;
+  /* В узкой плитке цена всегда под названием: иначе одни плитки в строку, другие с переносом */
+  .row {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 8px;
   }
 
-  .label {
-    padding: 10px 12px 12px;
+  .big .row {
+    flex-direction: row;
+    align-items: baseline;
   }
 
-  .name {
-    font-size: var(--text-l);
-  }
-
-  .meta {
-    font-size: var(--text-2xs);
-  }
-
-  .tile:not(.tall):not(.all) .arrow {
-    display: none;
+  .allLink {
+    padding: 16px 16px 16px 20px;
   }
 }

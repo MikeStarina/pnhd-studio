@@ -33,3 +33,47 @@
   outline: 2px solid currentColor;
   outline-offset: 3px;
 }
+
+/* Крупная (рядом с заголовком секции): высота --more-link-l, кегль --text-l, стрелка — салатовый круг --tile-arrow.
+   При наведении круг уезжает вправо, фон таблетки не меняется */
+.link[data-size='l'] {
+  gap: 20px;
+  height: var(--more-link-l);
+  padding: 0 calc((var(--more-link-l) - var(--tile-arrow)) / 2) 0 32px;
+  font-size: var(--text-l);
+  font-weight: var(--weight-bold);
+}
+
+.link[data-size='l']:hover {
+  background: var(--color-ink);
+  color: var(--color-white);
+}
+
+:global([data-tone='black']) .link[data-size='l']:hover {
+  background: var(--color-white);
+  color: var(--color-ink);
+}
+
+.arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tile-arrow);
+  height: var(--tile-arrow);
+  border-radius: var(--radius-pill);
+  background: var(--color-lime);
+  color: var(--color-ink);
+  transition: transform var(--duration) var(--ease);
+}
+
+@media (hover: hover) {
+  .link[data-size='l']:hover .arrow {
+    transform: translateX(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arrow {
+    transition: none;
+  }
+}

@@ -1,33 +1,22 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { getShopData } from '@/app/utils/constants';
-import { productMainPhotoUrl } from '@/app/utils/product-photos';
 import { Icon } from '@/features/constructor/ui/icons';
 import { IProduct } from '@/app/utils/types';
 import { modelsWord, rub, sortForShop } from '@/components/catalog/data';
 import Section from '../section/section';
 import SectionHead from '../section-head/section-head';
+import MoreLink from '../more-link/more-link';
 import styles from './catalog-preview.module.css';
 
-/** Плитки бенто по порядку: размер задаёт место в сетке (высокая — первая колонка, широкая — две колонки) */
+/** Плитки по порядку: футболки — крупная слева, остальные — сетка 2×2 справа. Фото — вырезки из макета, число моделей и цена — из каталога */
 const categories = [
-  { type: 'tshirt', label: 'Футболки', href: '/futbolki', size: 'tall' },
-  { type: 'hoodie', label: 'Худи', href: '/hudi', size: 'wide' },
-  { type: 'longsleeve', label: 'Лонгсливы', href: '/longslivy', size: 'small' },
-  { type: 'sweatshirt', label: 'Свитшоты', href: '/svitshoty', size: 'small' },
-  { type: 'totebag', label: 'Шопперы', href: '/shoppery', size: 'small' },
+  { type: 'tshirt', label: 'Футболки', href: '/futbolki', photo: '/home/catalog/tshirt.png', look: styles.tshirt },
+  { type: 'hoodie', label: 'Худи', href: '/hudi', photo: '/home/catalog/hoodie-cutout.png', look: '' },
+  { type: 'longsleeve', label: 'Лонгсливы', href: '/longslivy', photo: '/home/catalog/longsleeve-cutout.png', look: styles.longsleeve },
+  { type: 'sweatshirt', label: 'Свитшоты', href: '/svitshoty', photo: '/home/catalog/sweatshirt-cutout.png', look: '' },
+  { type: 'totebag', label: 'Шопперы', href: '/shoppery', photo: '/home/catalog/shopper-cutout.png', look: '' },
 ] as const;
-
-const sizeClass = { tall: styles.tall, wide: styles.wide, small: '' };
-
-/**
- * Снимки на модели в каталоге — JPG, вырезанные вещи — обычно PNG. У новых товаров первое фото — вырезка,
- * а снимки на модели идут дальше в галерее, поэтому ищем первый JPG по всей галерее в порядке каталога.
- * Товары без `photos` (шопперы) отдают старый главный снимок — он тоже на модели.
- */
-const tilePhoto = (products: IProduct[]) =>
-  products.flatMap((product) => product.photos ?? []).find((url) => /\.jpe?g$/i.test(url)) ??
-  productMainPhotoUrl(products[0]);
 
 const CatalogPreview: React.FC = async () => {
   const products: IProduct[] = (await getShopData()) ?? [];
@@ -39,66 +28,68 @@ const CatalogPreview: React.FC = async () => {
 
   return (
     <Section tone="white" id="catalog" labelledBy="catalog-title">
-      <SectionHead
-        titleId="catalog-title"
-        title={<>Или выбери готовое</>}
-        lead={
-          sorted.length > 0
-            ? `${sorted.length} ${modelsWord(sorted.length)} одежды и аксессуаров — на любую нанесём твой принт`
-            : undefined
-        }
-      />
+      <div className={styles.fit}>
+        <SectionHead
+          titleId="catalog-title"
+          title={<>Выбери вещь для принта</>}
+          action={
+            tiles.length > 0 && (
+              <MoreLink href="/shop" size="l">
+                Весь каталог
+              </MoreLink>
+            )
+          }
+        />
 
-      {tiles.length > 0 ? (
-        <ul className={styles.bento} data-reveal-group="fan">
-          {tiles.map((tile) => (
-            <li key={tile.type} className={`${styles.tile} ${sizeClass[tile.size]}`}>
-              <Link href={tile.href} className={styles.link}>
-                <Image
-                  src={tilePhoto(tile.products)}
-                  alt=""
-                  fill
-                  sizes={tile.size === 'small' ? '(max-width: 1023px) 50vw, 25vw' : '(max-width: 1023px) 100vw, 50vw'}
-                  className={styles.img}
-                />
-                <span className={styles.foot}>
-                  <span className={styles.label}>
-                    <span className={styles.name}>{tile.label}</span>
-                    <span className={styles.meta}>
-                      <span>
-                        {tile.products.length}&nbsp;{modelsWord(tile.products.length)}
+        {tiles.length > 0 ? (
+          <ul className={styles.bento} data-reveal-group="fan">
+            {tiles.map((tile) => (
+              <li key={tile.type} className={`${styles.tile} ${tile.type === 'tshirt' ? styles.big : ''}`}>
+                <Link href={tile.href} className={styles.link}>
+                  <span className={`${styles.photo} ${tile.look}`}>
+                    {tile.type === 'tshirt' && (
+                      <Image src="/home/catalog/star-burst.svg" alt="" width={814} height={783} className={styles.star} />
+                    )}
+                    <span className={styles.frame}>
+                      <Image
+                        src={tile.photo}
+                        alt=""
+                        fill
+                        sizes={tile.type === 'tshirt' ? '(max-width: 1023px) 100vw, 45vw' : '(max-width: 1023px) 50vw, 23vw'}
+                        className={styles.img}
+                      />
+                    </span>
+                    <span className={styles.models}>
+                      {tile.products.length}&nbsp;{modelsWord(tile.products.length)}
+                      <span className={styles.dot}>
+                        <Icon name="arrowRight" size={14} stroke={2} />
                       </span>
-                      <span>от&nbsp;{rub(Math.min(...tile.products.map((product) => product.price)))}</span>
                     </span>
                   </span>
-                  <span className={styles.arrow}>
-                    <Icon name="arrowRight" size={24} stroke={2} />
+                  <span className={styles.row}>
+                    <span className={styles.name}>{tile.label}</span>
+                    <span className={styles.price}>
+                      от&nbsp;{rub(Math.min(...tile.products.map((product) => product.price)))}
+                    </span>
                   </span>
-                </span>
-              </Link>
-            </li>
-          ))}
-          <li className={`${styles.tile} ${styles.all}`}>
-            <Link href="/shop" className={styles.link}>
-              <span className={styles.foot}>
-                <span className={styles.label}>
-                  <span className={styles.name}>Весь каталог</span>
-                  <span className={styles.meta}>
-                    {sorted.length}&nbsp;{modelsWord(sorted.length)}
-                  </span>
-                </span>
+                </Link>
+              </li>
+            ))}
+            <li className={styles.all}>
+              <Link href="/shop" className={styles.allLink}>
+                <span className={styles.allName}>Весь каталог</span>
                 <span className={styles.arrow}>
                   <Icon name="arrowRight" size={24} stroke={2} />
                 </span>
-              </span>
-            </Link>
-          </li>
-        </ul>
-      ) : (
-        <p className={styles.empty}>
-          Каталог сейчас не загрузился. Открой <Link href="/shop">полный каталог</Link> или обнови страницу чуть позже.
-        </p>
-      )}
+              </Link>
+            </li>
+          </ul>
+        ) : (
+          <p className={styles.empty}>
+            Каталог сейчас не загрузился. Открой <Link href="/shop">полный каталог</Link> или обнови страницу чуть позже.
+          </p>
+        )}
+      </div>
     </Section>
   );
 };
