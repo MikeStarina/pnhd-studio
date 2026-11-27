@@ -36,7 +36,6 @@ import { DesignPanel } from './DesignPanel';
 import { DraftPrompt } from './DraftPrompt';
 import { LayersPanel } from './LayersPanel';
 import { ModelInfo } from './ModelInfo';
-import { OrderForm } from './OrderForm';
 import { OrderFooter, OrderPanel } from './OrderPanel';
 import { SizeChart } from './SizeChart';
 import { StepGuide, type GuideStep } from './StepGuide';
@@ -68,17 +67,12 @@ const SumRow = ({ title, meta, onClick }: { title: string; meta: string; onClick
   </button>
 );
 
-/** Шаги на телефоне: изделие → принт → размеры; четвёртый шаг — заявка — открывает кнопка в итоге. */
+/** Шаги на телефоне: изделие → принт → размеры; четвёртый шаг — корзина — открывает кнопка в итоге. */
 type Tab = 'garment' | 'design' | 'order';
 /** Сдвиг пальца (px), с которого жест по ручке листа — это свайп, а не нажатие. */
 const GRIP_SWIPE = 24;
 
-/**
- * ordersEndpoint — куда уходит заявка: POST {endpoint}/number выдаёт номер, POST {endpoint} принимает заявку.
- * null — демо без сервера: номер выдаётся в браузере, заявка никуда не отправляется (экран успеха и PDF работают).
- */
-export function ConstructorApp({ ordersEndpoint = '/api/orders', onAddToCart, initial, draftScope, addLabel, children }: {
-  ordersEndpoint?: string | null;
+export function ConstructorApp({ onAddToCart, initial, draftScope, addLabel, children }: {
   /**
    * Состояние, с которого открыть конструктор вместо черновика: правка позиции из корзины, принт на товар из корзины.
    * Вызывается один раз, когда каталог загружен; null — обычное открытие.
@@ -90,8 +84,8 @@ export function ConstructorApp({ ordersEndpoint = '/api/orders', onAddToCart, in
   addLabel?: string;
   /** Окна сайта поверх конструктора (например, «Добавлено в корзину»): внутри корня, чтобы работали стили модуля. */
   children?: React.ReactNode;
-  /** Изделие с принтом снято и сохранено — положить в корзину сайта (adr/0001). Без него кнопки «В корзину» нет. */
-  onAddToCart?: (design: CartDesign) => void;
+  /** Изделие с принтом снято и сохранено — положить в корзину сайта (adr/0001): заявку оформляют в корзине. */
+  onAddToCart: (design: CartDesign) => void;
 }) {
   const st = useConstructor();
   const garment = useConstructor(selectGarment);
@@ -104,7 +98,6 @@ export function ConstructorApp({ ordersEndpoint = '/api/orders', onAddToCart, in
   const [fileError, setFileError] = useState<string | null>(null);
   // Ошибка файла относится к последней попытке загрузки: выбрали слой или другую сторону — она больше не к месту.
   useEffect(() => { setFileError(null); }, [st.selectedLayerId, st.side]);
-  const [orderOpen, setOrderOpen] = useState(false);
   const [layersOpen, setLayersOpen] = useState(true);
   const [dragOver, setDragOver] = useState(false);
   const [chartOpen, setChartOpen] = useState(false);
@@ -199,9 +192,8 @@ export function ConstructorApp({ ordersEndpoint = '/api/orders', onAddToCart, in
 
   // Cmd/Ctrl+Z — отмена, Cmd/Ctrl+Shift+Z и Ctrl+Y — повтор, Delete — удалить выбранный слой.
   // Когда фокус в поле ввода, клавиши остаются полю (там своя отмена набора).
-  // Пока открыта форма заявки, клавиши холст не трогают.
   useEffect(() => {
-    if (orderOpen || templatesOpen || cropId) return;
+    if (templatesOpen || cropId) return;
     const onKey = (e: KeyboardEvent) => {
       // Esc — «Готово»: закрыть настройки слоя, даже из поля ввода (пока не открыта таблица размеров).
       if (e.key === 'Escape' && !chartOpen && (useConstructor.getState().selectedLayerId || useConstructor.getState().selectedGroup)) {
@@ -228,7 +220,7 @@ export function ConstructorApp({ ordersEndpoint = '/api/orders', onAddToCart, in
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [orderOpen, chartOpen, templatesOpen, cropId]);
+  }, [chartOpen, templatesOpen, cropId]);
 
   /** Макет и размеры, только что положенные в корзину (сравниваются по ссылке). */
   const sent = useRef<{ layers: unknown; quantities: unknown } | null>(null);
@@ -504,17 +496,9 @@ export function ConstructorApp({ ordersEndpoint = '/api/orders', onAddToCart, in
     if (!price?.qty) { setTab('order'); finishTo('order'); return false; }
     return true;
   };
-  const openOrder = () => {
-    if (!ready() || !price) return;
-    setOrderOpen(true);
-    track('order_form_open', {
-      product: garment?.name, method: st.method, qty: price.qty, order_price: price.total, colors: price.lines.length,
-    });
-  };
-
   const [adding, setAdding] = useState(false);
   const addToCart = async () => {
-    if (adding || !onAddToCart || !ready() || !garment || !price || !stageRef.current) return;
+    if (adding || !ready() || !garment || !price || !stageRef.current) return;
     setAdding(true);
     try {
       const design = await captureDesign(stageRef, garment, price);
@@ -689,8 +673,8 @@ export function ConstructorApp({ ordersEndpoint = '/api/orders', onAddToCart, in
 
         {/* Итог — на мобильном закреплён внизу */}
         <OrderFooter
-          price={price} hasDesign={hasDesign} blocked={blocked} onOrder={openOrder}
-          onAddToCart={onAddToCart ? addToCart : undefined} adding={adding} addLabel={addLabel}
+          price={price} hasDesign={hasDesign} blocked={blocked}
+          onAddToCart={addToCart} adding={adding} addLabel={addLabel}
         />
       </aside>
 
@@ -719,9 +703,6 @@ export function ConstructorApp({ ordersEndpoint = '/api/orders', onAddToCart, in
         />
       )}
       {chartOpen && <SizeChart sizes={variant?.sizes ?? []} onClose={() => setChartOpen(false)} />}
-      {orderOpen && garment && variant && price && (
-        <OrderForm garment={garment} variant={variant} price={price} stage={stageRef} endpoint={ordersEndpoint} onClose={() => setOrderOpen(false)} />
-      )}
     </div>
   );
 }

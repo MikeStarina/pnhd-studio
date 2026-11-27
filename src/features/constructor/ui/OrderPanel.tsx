@@ -208,21 +208,20 @@ function CountUp({ value }: { value: number }) {
   return <>{rub(shown)}</>;
 }
 
-export function OrderFooter({ price, hasDesign, blocked = false, onOrder, onAddToCart, adding = false, addLabel = 'В корзину' }: {
+export function OrderFooter({ price, hasDesign, blocked = false, onAddToCart, adding = false, addLabel = 'В корзину' }: {
   price: Price | null;
   hasDesign: boolean;
   /** Принт выходит за зону печати: кнопка ведёт к проблемному слою. */
   blocked?: boolean;
-  onOrder: () => void;
-  /** Есть — главная кнопка кладёт изделие в корзину; заявку оформляют уже в корзине. */
-  onAddToCart?: () => void;
+  /** Главная кнопка кладёт изделие в корзину; заявку оформляют уже в корзине. */
+  onAddToCart: () => void;
   /** Холст снимает превью для корзины. */
   adding?: boolean;
   addLabel?: string;
 }) {
   const one = price?.lines.length === 1 ? price.lines[0] : null;
   const label = !hasDesign ? 'Добавить принт' : blocked ? 'Принт вне зоны' : !price?.qty ? 'Выбрать размеры'
-    : onAddToCart ? (adding ? 'Сохраняем…' : addLabel) : 'Оформить заявку';
+    : adding ? 'Сохраняем…' : addLabel;
   return (
     <footer className={`${s.footer} ${o.footer}`}>
       <div className={o.footerPrice}>
@@ -234,7 +233,7 @@ export function OrderFooter({ price, hasDesign, blocked = false, onOrder, onAddT
         ) : null}
       </div>
       {/* Кнопка всегда активна: до заявки она ведёт к следующему шагу (на телефоне это единственный путь вперёд) */}
-      <button type="button" className={o.button} onClick={onAddToCart ?? onOrder} aria-busy={adding || undefined}>
+      <button type="button" className={o.button} onClick={onAddToCart} aria-busy={adding || undefined}>
         {label}
       </button>
     </footer>

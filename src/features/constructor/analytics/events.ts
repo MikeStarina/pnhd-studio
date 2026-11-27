@@ -3,7 +3,7 @@
  * цель в Метрику, без счётчика — в консоль.
  */
 import {
-  ANALYTICS_OFF_KEY, analyticsAllowed, readEntry, track as sendGoal, trackPurchase as sendPurchase,
+  ANALYTICS_OFF_KEY, analyticsAllowed, readEntry, track as sendGoal,
   type ConstructorGoal, type GoalParams,
 } from '@/components/site/analytics';
 
@@ -20,14 +20,10 @@ export type FunnelEvent =
   | 'size_set'
   | 'sizes_copy'
   | 'color_remove'
-  | 'order_form_open'
   | 'cart_add'
-  | 'order_form_error'
-  | 'order_form_close'
   | 'order_send'
   | 'order_success'
-  | 'order_error'
-  | 'pdf_download';
+  | 'order_error';
 
 export { ANALYTICS_OFF_KEY, analyticsAllowed };
 
@@ -47,14 +43,3 @@ export function track(event: FunnelEvent, params?: GoalParams, once?: string) {
   return sendGoal((GOAL_NAME[event] ?? event) as ConstructorGoal, { source, link_product: product, ...params }, once);
 }
 
-/** Покупка для электронной коммерции Метрики: на номер заказа уходит один раз. */
-export function trackPurchase(order: {
-  number: string; total: number; name: string;
-  /** Цвета заявки: у каждого своя цена за штуку. */
-  items: Array<{ productId: string; color: string; perItem: number; qty: number }>;
-}) {
-  sendPurchase({
-    id: order.number, revenue: order.total,
-    products: order.items.map((x) => ({ id: x.productId, name: order.name, variant: x.color, price: x.perItem, quantity: x.qty })),
-  });
-}
