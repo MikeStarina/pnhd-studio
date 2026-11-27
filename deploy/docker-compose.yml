@@ -32,6 +32,10 @@ services:
 
 networks:
   studio:
+    # MTU сети сервера — 1450 (облако REG.RU). При 1500 у Docker крупные пакеты TLS теряются:
+    # рукопожатие с pinhead.bitrix24.ru зависает, и заявки не уходят в Битрикс.
+    driver_opts:
+      com.docker.network.driver.mtu: "1450"
 
 volumes:
   # Заявки, которые ещё не ушли в канал, переживают перезапуск и новый образ.
