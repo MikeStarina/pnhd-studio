@@ -32,6 +32,7 @@ export default defineConfig({
         ORDER_TELEGRAM_BOT_TOKEN: '',
         ORDER_TELEGRAM_CHAT_ID: '',
         NEXT_PUBLIC_YM_COUNTER_ID: '',
+        ORDER_LEDGER_TOKEN: 'e2e-bitrix-ledger',
       },
     },
   ],

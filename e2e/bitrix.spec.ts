@@ -212,3 +212,16 @@ test('заказ из каталога после приёма бэкендом 
   expect(String(deal.COMMENTS)).toContain('Футболка REGULAR черная');
   expect(String(deal.COMMENTS)).toContain('M — 1, L — 1');
 });
+
+test('проверка связи с Битриксом закрыта паролем журнала и показывает, дошёл ли вызов, без ключа вебхука', async ({ request }) => {
+  test.skip(!process.env.BITRIX_STUB_LOG, 'нужна заглушка Битрикса: npx playwright test -c playwright.bitrix.config.ts');
+  const auth = (p: string) => ({ authorization: `Basic ${Buffer.from(`report:${p}`).toString('base64')}` });
+
+  expect((await request.get('/api/orders/ledger/bitrix')).status()).toBe(401);
+  const res = await request.get('/api/orders/ledger/bitrix', { headers: auth('e2e-bitrix-ledger') });
+  expect(res.status()).toBe(200);
+  const body = (await res.json()) as { webhook: { host: string; user: string; clean: boolean }; bitrix: { ok: boolean } };
+  expect(body.webhook).toEqual({ host: 'localhost:3115', user: '1', clean: true });
+  expect(body.bitrix.ok).toBe(true);
+  expect(JSON.stringify(body)).not.toContain('/rest/1/test');
+});
