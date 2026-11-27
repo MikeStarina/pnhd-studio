@@ -117,3 +117,40 @@ jobs:
             docker compose pull
             docker compose up -d --remove-orphans
             docker compose ps
+
+      # Сообщение в тему «Релизы» группы мониторинга: что выложено (текст коммита ветки выкладки) или что выкладка не удалась.
+      # Без секрета RELEASES_TELEGRAM_TOKEN шаг ничего не делает.
+      - name: Notify releases topic
+        if: always()
+        env:
+          TG_TOKEN: ${{ secrets.RELEASES_TELEGRAM_TOKEN }}
+          TG_CHAT: ${{ vars.RELEASES_TELEGRAM_CHAT_ID }}
+          TG_THREAD: ${{ vars.RELEASES_TELEGRAM_THREAD }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          [ -n "$TG_TOKEN" ] && [ -n "$TG_CHAT" ] || exit 0
+          esc() { sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g'; }
+          SHA="${GITHUB_SHA::7}"
+          WHEN="$(TZ=Europe/Moscow date '+%d.%m %H:%M') МСК"
+          TITLE="$(git log -1 --format=%s | esc)"
+          BODY="$(git log -1 --format=%b | esc)"
+          URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}"
+          if [ "$JOB_STATUS" = "success" ]; then
+            TEXT="🚀 <b>Новая версия на сайте</b>
+          <i>${WHEN} · версия <a href=\"${URL}\">${SHA}</a></i>
+
+          <b>${TITLE}</b>
+          ${BODY}"
+          else
+            TEXT="⚠️ <b>Выкладка не удалась</b>
+          <i>${WHEN} · версия ${SHA}</i>
+
+          Сайт остался на прошлой версии или перезапускается. Если он недоступен, сторож напишет в «Аварии».
+          Что выкладывали: <b>${TITLE}</b>"
+          fi
+          TEXT="$(printf '%s' "$TEXT" | sed 's/^          //')"
+          jq -n --arg chat "$TG_CHAT" --arg thread "$TG_THREAD" --arg text "$TEXT" \
+            '{chat_id: $chat, text: $text, parse_mode: "HTML", disable_web_page_preview: true}
+             + (if $thread == "" then {} else {message_thread_id: ($thread | tonumber)} end)' \
+            | curl -sS -m 20 -o /dev/null -w "telegram %{http_code}\n" -H 'content-type: application/json' -d @- \
+                "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" || true
