@@ -178,6 +178,16 @@ export type SizeQuantities = Record<string, number>;
 /** Метод нанесения. Клиенту даём выбор с описанием разницы. */
 export type PrintMethod = 'dtf' | 'dtg';
 
+/** Метод стороны: рукава пока печатаем только DTF (DTG на рукавах не делаем), остальное — выбранным методом заказа. */
+export const sideMethod = (method: PrintMethod, side: Side): PrintMethod => (isSleeve(side) ? 'dtf' : method);
+/** Стороны печатаются разными методами — тогда метод пишем у каждой стороны. */
+export const mixedMethods = (method: PrintMethod, sides: Side[]) => new Set(sides.map((s) => sideMethod(method, s))).size > 1;
+/** Методы заказа по сторонам: «DTG», «DTF» или «DTG + DTF»; без сторон — выбранный. */
+export function methodsLabel(method: PrintMethod, sides: Side[]): string {
+  const used = [...new Set(sides.map((s) => sideMethod(method, s)))];
+  return (used.length ? used : [method]).map((m) => m.toUpperCase()).join(' + ');
+}
+
 export interface OrderContacts {
   name: string;
   phone: string;

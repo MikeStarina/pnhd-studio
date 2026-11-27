@@ -12,7 +12,6 @@ import { designBounds } from '../model/bounds';
 import { clearDraft, hasContent, loadDraft, restoreImages, saveDraft, type Draft, type DraftState, type SaveResult } from '../model/draft';
 import { ensureFont, onFontLoaded } from '../model/fonts';
 import { calcPrice, priceVariants } from '../model/pricing';
-import { METHOD_INFO } from '../config/pricing';
 import { validateFile, ACCEPT_ATTR, convertHeic, isHeic, MIN_DPI } from '../model/quality';
 import { overflowingLayers } from '../model/overflow';
 import { sideHasLayers, visibleLayers } from '../model/visibility';
@@ -24,7 +23,7 @@ import { coverCrop, isLetterSlot, letterBoxes, maskAspect, refitSlot } from '../
 import { letterSlots } from '../config/templates';
 import { contentBox } from '../model/trim';
 import { START_MAX_CM } from '../model/placement';
-import { SIDE_LABEL, SIDE_TAB, type Garment, type ImageLayer, type PhotoShape } from '../model/types';
+import { methodsLabel, SIDE_LABEL, SIDE_TAB, type Garment, type ImageLayer, type PhotoShape } from '../model/types';
 import type { DesignStageHandle } from '../canvas/DesignStage';
 import type { CartDesign } from '../cart/types';
 import { captureDesign } from '../export/captureDesign';
@@ -36,7 +35,7 @@ import { DesignPanel } from './DesignPanel';
 import { DraftPrompt } from './DraftPrompt';
 import { LayersPanel } from './LayersPanel';
 import { ModelInfo } from './ModelInfo';
-import { OrderFooter, OrderPanel } from './OrderPanel';
+import { MethodPicker, OrderFooter, OrderPanel } from './OrderPanel';
 import { SizeChart } from './SizeChart';
 import { StepGuide, type GuideStep } from './StepGuide';
 import { TemplatePicker } from './TemplatePicker';
@@ -459,11 +458,11 @@ export function ConstructorApp({ onAddToCart, initial, draftScope, addLabel, chi
     requestAnimationFrame(() => (to === 'layers' ? layersRef : orderRef).current?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
   };
   const sideLayerCount = st.layers.filter((l) => l.side === st.side).length;
-  const methodName = METHOD_INFO[st.method].title.split(/\s+[—–-]\s+/)[0];
 
   // Скрытые слои дизайном не считаются: сторона только с ними — пустая.
   const shown = useMemo(() => visibleLayers(st.layers), [st.layers]);
   const hasDesign = shown.some((l) => sides.includes(l.side));
+  const methodName = methodsLabel(st.method, sides.filter((sd) => shown.some((l) => l.side === sd)));
 
   // Шаги сверху: первый пройден, когда посетитель сам выбрал вещь или цвет (или уже нанёс принт).
   const firstPick = useRef<string | null>(null);
@@ -519,6 +518,8 @@ export function ConstructorApp({ onAddToCart, initial, draftScope, addLabel, chi
     return true;
   };
   const [adding, setAdding] = useState(false);
+  // Телефон: с «Изделия» идём в «Принт», даже если принт уже есть, — там выбирают метод печати.
+  const toPrint = narrow && tab === 'garment' && hasDesign;
   const addToCart = async () => {
     if (adding || !ready() || !garment || !price || !stageRef.current) return;
     setAdding(true);
@@ -665,6 +666,8 @@ export function ConstructorApp({ onAddToCart, initial, draftScope, addLabel, chi
           />
           {/* Телефон: слои — не отдельная вкладка, а короткий список под кнопками добавления */}
           {narrow && !selected && !st.selectedGroup && <LayersPanel embedded hex={hex} open onToggle={() => {}} />}
+          {/* Телефон: метод печати — здесь, в шаге «Принт»; на компьютере он над размерами */}
+          {narrow && !selected && !st.selectedGroup && <MethodPicker />}
           <input
             ref={fileRef} type="file" hidden accept={ACCEPT_ATTR}
             onChange={(e) => { onFile(e.target.files?.[0]); e.target.value = ''; }}
@@ -689,14 +692,15 @@ export function ConstructorApp({ onAddToCart, initial, draftScope, addLabel, chi
             <SumRow title="Размеры" meta={price?.qty ? `${price.qty} шт` : 'не выбраны'} onClick={() => finishTo('order')} />
           </div>
           <div className={s.full}>
-            <OrderPanel variant={variant} price={price} onSizeChart={() => setChartOpen(true)} />
+            <OrderPanel variant={variant} price={price} onSizeChart={() => setChartOpen(true)} withMethod={!narrow} />
           </div>
         </section>
 
         {/* Итог — на мобильном закреплён внизу */}
         <OrderFooter
           price={price} hasDesign={hasDesign} blocked={blocked}
-          onAddToCart={addToCart} adding={adding} addLabel={addLabel}
+          onAddToCart={toPrint ? () => setTab('design') : addToCart} adding={adding} addLabel={addLabel}
+          stepLabel={toPrint ? 'К принту' : undefined}
         />
       </aside>
 

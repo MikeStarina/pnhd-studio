@@ -69,14 +69,41 @@ const body = (
  * Зона рукава на виде сбоку; правый рукав — зеркально по кадру.
  * outline — фигурная зона по форме рукава (доли рамки зоны, по часовой стрелке); для правого рукава
  * зеркалится по x, порядок точек разворачивается, чтобы обход остался по часовой.
+ * fromTop — сколько срезать сверху (доля высоты рамки от плечевого шва): у плеча печатать тяжело даже DTF;
+ * контур обрезается по этой линии.
  */
-const sleeves = (x: number, y: number, w: number, h: number, widthCm: number, outline?: Outline) => ({
-  sleeve_left: { ...area(x, y, w, h, widthCm), outline },
-  sleeve_right: {
-    ...area(FRAME.w - x - w, y, w, h, widthCm),
-    outline: outline?.map(([px, py]): [number, number] => [1 - px, py]).reverse(),
-  },
-});
+const sleeves = (x: number, y: number, w: number, h: number, widthCm: number, outline?: Outline, fromTop = 0) => {
+  const cut = outline && fromTop ? clipBelow(outline, fromTop) : outline;
+  const [top, height] = [y + h * fromTop, h * (1 - fromTop)];
+  return {
+    sleeve_left: { ...area(x, top, w, height, widthCm), outline: cut },
+    sleeve_right: {
+      ...area(FRAME.w - x - w, top, w, height, widthCm),
+      outline: cut?.map(([px, py]): [number, number] => [1 - px, py]).reverse(),
+    },
+  };
+};
+
+/** Часть контура ниже линии t (доля высоты), пересчитанная в новую рамку от t до низа. */
+function clipBelow(outline: Outline, t: number): Outline {
+  const out: Outline = [];
+  outline.forEach((a, i) => {
+    const b = outline[(i + 1) % outline.length];
+    if (a[1] >= t) out.push(a);
+    // ребро пересекает линию — добавляем точку пересечения
+    if ((a[1] - t) * (b[1] - t) < 0) out.push([a[0] + ((b[0] - a[0]) * (t - a[1])) / (b[1] - a[1]), t]);
+  });
+  return out.map(([px, py]) => [px, (py - t) / (1 - t)]);
+}
+
+/**
+ * Короткий рукав: у шва (≈1 см) печатать легко, у самого плеча — тяжело. Контур идёт по шву, низ — ≈1 см над строчкой подгибки,
+ * а у REGULAR срезана верхушка дуги (доля высоты рамки), где рукав переходит в плечо. У OVERSIZE плечо спущено — дуга и есть шов, её не режем.
+ */
+const TEE_SHOULDER_CUT = 0.15;
+
+/** Длинный рукав: зона от манжеты до чуть выше локтя — доля длины рукава от плечевого шва, выше которой не печатаем. */
+const ABOVE_ELBOW = 0.45;
 
 /** Рукав лонгслива: контур снят по швам на снимке (с отступом ~3 ед.) — сверху по плечевому шву, книзу сужается к манжете. */
 const LONGSLEEVE_SLEEVE: Outline = [[0.052, 0.103], [0.155, 0.048], [0.328, 0.014], [0.552, 0.0], [0.81, 0.007], [0.966, 0.034], [1.0, 0.075], [0.983, 0.151], [0.931, 0.253], [0.931, 0.356], [0.914, 0.425], [0.897, 0.493], [0.862, 0.562], [0.81, 0.699], [0.741, 0.836], [0.69, 0.938], [0.655, 0.979], [0.603, 1.0], [0.241, 1.0], [0.207, 0.979], [0.19, 0.938], [0.172, 0.836], [0.155, 0.699], [0.155, 0.562], [0.138, 0.493], [0.103, 0.425], [0.086, 0.356], [0.052, 0.253], [0.0, 0.151]];
@@ -147,9 +174,9 @@ const ZIP_FRONT = centered(SCALE.ziphoodie, ZIP_W_CM, 129, 260, 124, ['heart'], 
 /**
  * Рукава худи: зона по форме рукава (контур HOODIE_SLEEVE); сантиметры — по шкале рукава (5 ед. кадра ≈ 1 см).
  */
-const HOODIE_SLEEVES = sleeves(165, 131, 60, 254, 12.0, HOODIE_SLEEVE);
+const HOODIE_SLEEVES = sleeves(165, 131, 60, 254, 12.0, HOODIE_SLEEVE, ABOVE_ELBOW);
 /** Зип-худи — свой вид сбоку и своя разметка рукава. */
-const ZIP_SLEEVES = sleeves(170, 139, 58, 231, 11.6, ZIP_SLEEVE);
+const ZIP_SLEEVES = sleeves(170, 139, 58, 231, 11.6, ZIP_SLEEVE, ABOVE_ELBOW);
 
 /**
  * Шоппер 35×40 см: одна картинка на обе стороны. Корпус сумки — 222 ед. кадра ≈ 35 см (6,3 ед. на см);
@@ -164,7 +191,7 @@ export const SHAPES: Record<ShapeId, GarmentShape> = {
   },
   tshirt_regular: {
     images: views('tshirt_regular', 'tshirt_regular_back', 'tshirt_regular'),
-    areas: { front: TSHIRT_FRONT, back: TSHIRT_BACK, ...sleeves(175, 91, 75, 97, 15.0, TSHIRT_SLEEVE) },
+    areas: { front: TSHIRT_FRONT, back: TSHIRT_BACK, ...sleeves(175, 91, 75, 101, 15.0, TSHIRT_SLEEVE, TEE_SHOULDER_CUT) },
   },
   tshirt_oversize: {
     images: views('tshirt_oversize', 'tshirt_oversize_back', 'tshirt_oversize'),
@@ -172,11 +199,11 @@ export const SHAPES: Record<ShapeId, GarmentShape> = {
   },
   longsleeve: {
     images: views('longsleeve', 'longsleeve_back', 'longsleeve'),
-    areas: { front: LONGSLEEVE_FRONT, back: LONGSLEEVE_BACK, ...sleeves(180, 96, 58, 292, 11.6, LONGSLEEVE_SLEEVE) },
+    areas: { front: LONGSLEEVE_FRONT, back: LONGSLEEVE_BACK, ...sleeves(180, 96, 58, 292, 11.6, LONGSLEEVE_SLEEVE, ABOVE_ELBOW) },
   },
   sweatshirt: {
     images: views('sweatshirt', 'sweatshirt_back', 'sweatshirt'),
-    areas: { front: SWEATSHIRT_FRONT, back: SWEATSHIRT_BACK, ...sleeves(167, 100, 68, 286, 13.6, SWEATSHIRT_SLEEVE) },
+    areas: { front: SWEATSHIRT_FRONT, back: SWEATSHIRT_BACK, ...sleeves(167, 100, 68, 286, 13.6, SWEATSHIRT_SLEEVE, ABOVE_ELBOW) },
   },
   hoodie: {
     images: { ...views('hoodie', 'hoodie_back', 'hoodie'), pocket: img('hoodie') },

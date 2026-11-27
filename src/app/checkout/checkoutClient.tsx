@@ -8,7 +8,7 @@ import { useDesignPrices } from '@/features/constructor/cart/useDesignPrice';
 import { buildDesignOrder, sendDesignOrder } from '@/features/constructor/cart/sendDesign';
 import { deleteDesignAssets, getAsset } from '@/features/constructor/cart/assets';
 import type { CartDesign } from '@/features/constructor/cart/types';
-import { SIDE_LABEL } from '@/features/constructor/model/types';
+import { methodsLabel, mixedMethods, SIDE_LABEL, sideMethod } from '@/features/constructor/model/types';
 import { productPhotoSources } from '../utils/product-photos';
 import type { OrderContacts } from '@/features/constructor/model/types';
 import { PROMO_TEXT, promoAppliesTo } from '@/features/constructor/config/promo';
@@ -93,7 +93,7 @@ async function orderSummary(
     name: `${design.garment.name} — свой принт`,
     details: [
       ...designPrices[i].lines.map((line) => `${line.color}: ${sizesText(line.sizes)}`),
-      `Печать ${design.method.toUpperCase()}: ${design.sides.map((side) => SIDE_LABEL[side].toLowerCase()).join(', ')}`,
+      `Печать ${methodsLabel(design.method, design.sides)}: ${design.sides.map((side) => `${SIDE_LABEL[side].toLowerCase()}${mixedMethods(design.method, design.sides) ? ` ${sideMethod(design.method, side).toUpperCase()}` : ''}`).join(', ')}`,
     ],
     qty: designPrices[i].qty,
     total: designPrices[i].total,

@@ -7,7 +7,7 @@ import { STOCK_HINTS } from '../config/stock';
 import { SIZE_CHART } from '../config/size-chart';
 import type { calcPrice } from '../model/pricing';
 import { selectGarment, selectSizes, useConstructor, variantQty } from '../model/store';
-import { SIDE_LABEL, type GarmentVariant, type PrintMethod } from '../model/types';
+import { isSleeve, sideMethod, SIDE_LABEL, type GarmentVariant, type PrintMethod } from '../model/types';
 import { Icon } from './icons';
 import s from './constructor.module.css';
 import o from './order.module.css';
@@ -38,20 +38,53 @@ const splitSize = (size: string) => {
   return m ? ([m[1], m[2]] as const) : ([size, ''] as const);
 };
 
-/** Нанесение, размеры с количеством и разбивка цены. */
-export function OrderPanel({ variant, price, onSizeChart }: {
+/** Выбор метода печати. На компьютере — над размерами, на телефоне — в шаге «Принт», где его видно сразу. */
+export function MethodPicker() {
+  const orderMethod = useConstructor((st) => st.method);
+  const side = useConstructor((st) => st.side);
+  const { setMethod } = useConstructor.getState();
+  // Открыт рукав — показываем его метод: всегда DTF, DTG не нажать. Выбор заказа для переда и спины не трогаем.
+  const onSleeve = isSleeve(side);
+  const method = sideMethod(orderMethod, side);
+  return (
+    <>
+      <h3 className={s.h}>Нанесение</h3>
+      <div className={o.seg} role="radiogroup" aria-label="Метод печати">
+        {(Object.keys(METHOD_INFO) as PrintMethod[]).map((m) => {
+          const [name, sub] = splitTitle(METHOD_INFO[m].title);
+          const off = onSleeve && m !== 'dtf';
+          return (
+            <button
+              key={m} type="button" role="radio" aria-checked={method === m} disabled={off}
+              className={method === m ? o.segBtnActive : o.segBtn} onClick={() => setMethod(m)}
+            >
+              {name}
+              {off ? <small>пока недоступно на рукавах</small> : sub && <small>{sub}</small>}
+            </button>
+          );
+        })}
+      </div>
+      <div className={o.card}><p>{METHOD_INFO[method].hint}</p></div>
+    </>
+  );
+}
+
+/** Нанесение (если не вынесено в шаг «Принт»), размеры с количеством и разбивка цены. */
+export function OrderPanel({ variant, price, onSizeChart, withMethod }: {
   variant: GarmentVariant | null;
   price: Price | null;
   onSizeChart: () => void;
+  /** На телефоне метод выбирают в шаге «Принт» — здесь не повторяем. */
+  withMethod: boolean;
 }) {
-  const method = useConstructor((st) => st.method);
   const sizes = useConstructor(selectSizes);
   const quantities = useConstructor((st) => st.quantities);
   const garments = useConstructor((st) => st.garments);
   const garment = useConstructor(selectGarment);
-  const { setMethod, incSize, setSizeQty, copySizes, clearSizes, selectVariant, selectGarment: openGarment } = useConstructor.getState();
+  const { incSize, setSizeQty, copySizes, clearSizes, selectVariant, selectGarment: openGarment } = useConstructor.getState();
 
   const lines = price?.lines ?? [];
+  const mixed = new Set(price?.current?.sides.map((x) => x.method)).size > 1;
   const curQty = price?.current?.qty ?? 0;
   // Цвет пока пустой, а другие набраны — предлагаем взять их размеры (только те, что есть у этого цвета).
   const copyFrom = curQty ? [] : lines.filter((l) => l.productId !== variant?.productId && l.sizes.some(([k]) => variant?.sizes.includes(k)));
@@ -63,22 +96,7 @@ export function OrderPanel({ variant, price, onSizeChart }: {
 
   return (
     <>
-      <h3 className={s.h}>Нанесение</h3>
-      <div className={o.seg} role="radiogroup" aria-label="Метод печати">
-        {(Object.keys(METHOD_INFO) as PrintMethod[]).map((m) => {
-          const [name, sub] = splitTitle(METHOD_INFO[m].title);
-          return (
-            <button
-              key={m} type="button" role="radio" aria-checked={method === m}
-              className={method === m ? o.segBtnActive : o.segBtn} onClick={() => setMethod(m)}
-            >
-              {name}
-              {sub && <small>{sub}</small>}
-            </button>
-          );
-        })}
-      </div>
-      <div className={o.card}><p>{METHOD_INFO[method].hint}</p></div>
+      {withMethod && <MethodPicker />}
 
       <div className={o.subRow}>
         <h3 className={s.h} style={{ margin: 0 }}><span className={s.hNum} aria-hidden>3</span>Размеры</h3>
@@ -162,7 +180,7 @@ export function OrderPanel({ variant, price, onSizeChart }: {
           {price.current.sides.map((x) => (
             <div key={x.side} className={o.row}>
               <span>
-                Печать: {SIDE_LABEL[x.side].toLowerCase()} · {x.format}
+                Печать: {SIDE_LABEL[x.side].toLowerCase()} · {x.format}{mixed && ` · ${x.method.toUpperCase()}`}
                 {x.oversize && <span className={o.note}> (крупнее формата — уточнит менеджер)</span>}
               </span>
               <span>{rub(x.price)}</span>
@@ -208,7 +226,7 @@ function CountUp({ value }: { value: number }) {
   return <>{rub(shown)}</>;
 }
 
-export function OrderFooter({ price, hasDesign, blocked = false, onAddToCart, adding = false, addLabel = 'В корзину' }: {
+export function OrderFooter({ price, hasDesign, blocked = false, onAddToCart, adding = false, addLabel = 'В корзину', stepLabel }: {
   price: Price | null;
   hasDesign: boolean;
   /** Принт выходит за зону печати: кнопка ведёт к проблемному слою. */
@@ -218,10 +236,12 @@ export function OrderFooter({ price, hasDesign, blocked = false, onAddToCart, ad
   /** Холст снимает превью для корзины. */
   adding?: boolean;
   addLabel?: string;
+  /** Кнопка ведёт на шаг, а не к заявке (телефон: «Изделие» → «Принт»). */
+  stepLabel?: string;
 }) {
   const one = price?.lines.length === 1 ? price.lines[0] : null;
-  const label = !hasDesign ? 'Добавить принт' : blocked ? 'Принт вне зоны' : !price?.qty ? 'Выбрать размеры'
-    : adding ? 'Сохраняем…' : addLabel;
+  const label = stepLabel ?? (!hasDesign ? 'Добавить принт' : blocked ? 'Принт вне зоны' : !price?.qty ? 'Выбрать размеры'
+    : adding ? 'Сохраняем…' : addLabel);
   return (
     <footer className={`${s.footer} ${o.footer}`}>
       <div className={o.footerPrice}>

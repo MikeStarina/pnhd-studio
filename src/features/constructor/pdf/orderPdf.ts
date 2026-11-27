@@ -1,6 +1,6 @@
 import { pickupLine } from '../config/pickup';
-import { SIDE_LABEL, type OrderContacts, type PrintMethod, type Side } from '../model/types';
-import type { PriceBreakdown } from '../model/pricing';
+import { methodsLabel, mixedMethods, SIDE_LABEL, type OrderContacts, type PrintMethod, type Side } from '../model/types';
+import type { PriceBreakdown, SidePrice } from '../model/pricing';
 
 /**
  * PDF заказа, одна страница A4. Без внешних библиотек: страница рисуется на canvas,
@@ -99,19 +99,21 @@ async function renderPage(d: OrderPdfData): Promise<HTMLCanvasElement> {
   const colGap = 70;
   const cw = (W - 2 * M - colGap) / 2;
   const p = d.price;
-  const details: Array<[string, string]> = [
-    ['Изделие', d.garment],
-    ['Нанесение', d.method.toUpperCase()],
-  ];
   // Формат печати у всех цветов одинаковый (зависит от габарита принта), цена — разная.
   const printSides = p.lines[0]?.sides ?? [];
+  const mixed = mixedMethods(d.method, printSides.map((x) => x.side));
+  const tag = (x: SidePrice) => (mixed ? ` ${x.method.toUpperCase()}` : '');
+  const details: Array<[string, string]> = [
+    ['Изделие', d.garment],
+    ['Нанесение', methodsLabel(d.method, printSides.map((x) => x.side))],
+  ];
   if (printSides.length) {
     details.push(['Формат печати', printSides.map((x) =>
-      `${SIDE_LABEL[x.side].toLowerCase()} ${x.format}${x.oversize ? ' (крупнее формата)' : ''} ≈ ${Math.round(x.wCm)} × ${Math.round(x.hCm)} см`,
+      `${SIDE_LABEL[x.side].toLowerCase()} ${x.format}${tag(x)}${x.oversize ? ' (крупнее формата)' : ''} ≈ ${Math.round(x.wCm)} × ${Math.round(x.hCm)} см`,
     ).join('; ')]);
   }
   for (const l of p.lines) {
-    const prints = l.sides.map((x) => `${SIDE_LABEL[x.side].toLowerCase()} ${x.format} ${rub(x.price)}`).join(', ');
+    const prints = l.sides.map((x) => `${SIDE_LABEL[x.side].toLowerCase()} ${x.format}${tag(x)} ${rub(x.price)}`).join(', ');
     details.push([`Цвет: ${l.color} — ${l.qty} шт`, l.sizes.map(([s, q]) => `${s} × ${q}`).join(', ')]);
     details.push(['За шт', `${rub(l.perItem)} (изделие ${rub(l.garment)}${l.garment < l.garmentFull ? ` вместо ${rub(l.garmentFull)} по акции` : ''}${prints ? ` + печать: ${prints}` : ''})`]);
     details.push(['Сумма по цвету', rub(l.total)]);

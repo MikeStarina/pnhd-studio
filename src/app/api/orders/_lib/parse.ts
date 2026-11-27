@@ -3,7 +3,7 @@ import { fetchCatalog } from '@/features/constructor/api/catalog';
 import { PROMO_TEXT } from '@/features/constructor/config/promo';
 import { fileExt, PRINT_FILES } from '@/features/constructor/config/print-files';
 import type { SideBounds } from '@/features/constructor/model/pricing';
-import type { Garment, PrintMethod, Side } from '@/features/constructor/model/types';
+import { methodsLabel, mixedMethods, type Garment, type PrintMethod, type Side } from '@/features/constructor/model/types';
 import { newOrderNumber, ORDER_NUMBER } from './number';
 import { priceOrder, type RequestedLine } from './price';
 import { printPdf } from './print-pdf';
@@ -292,8 +292,10 @@ export async function parseOrder(req: Request): Promise<Order> {
   const priced = priceOrder(catalog, method as PrintMethod, requested, printPx, claimed);
   if (!priced) throw new BadOrder('bad_product');
   const { lines, qty, total, promo } = priced;
+  const printSides = priced.sides.map((x) => x.side);
+  const mixed = mixedMethods(method as PrintMethod, printSides);
   const sides = priced.sides.map((x) =>
-    `${SIDE_NAME[x.side]} ${x.format}${x.oversize ? ' (крупнее формата)' : ''} ≈${Math.round(x.wCm)}×${Math.round(x.hCm)} см`);
+    `${SIDE_NAME[x.side]} ${x.format}${mixed ? ` ${x.method.toUpperCase()}` : ''}${x.oversize ? ' (крупнее формата)' : ''} ≈${Math.round(x.wCm)}×${Math.round(x.hCm)} см`);
   // Тот же файл печати в PDF точно в размер принта — для макетчика и печатной машины.
   for (const x of priced.sides) {
     const png = printFiles[x.side];
@@ -313,7 +315,8 @@ export async function parseOrder(req: Request): Promise<Order> {
     number,
     fingerprint,
     garment: { name: priced.garmentName },
-    method, lines, qty, total, sides, promo, contacts, utm,
+    // Метод по сторонам («dtg + dtf»): рукава печатаем DTF при любом выборе.
+    method: methodsLabel(method as PrintMethod, printSides).toLowerCase(), lines, qty, total, sides, promo, contacts, utm,
     clientId: /^\d{5,30}$/.test(str(raw.clientId, 40)) ? str(raw.clientId, 40) : '',
     source: /^[\w.:-]{1,40}$/.test(str(raw.source, 40)) ? str(raw.source, 40) : '',
     page: /^https?:\/\//.test(str(raw.page, 300)) ? str(raw.page, 300) : '',

@@ -1,7 +1,7 @@
 import { priceListFor, WHITE_MIN_CHANNEL, type FormatPrice, type PriceList, type PrintFormat } from '../config/pricing';
 import { promoPrice } from '../config/promo';
 import { hexToRgb } from './color';
-import type { Garment, PrintMethod, Side, SizeQuantities } from './types';
+import { sideMethod, type Garment, type PrintMethod, type Side, type SizeQuantities } from './types';
 
 /** Габарит принта на стороне в сантиметрах (считается из слоёв, см. bounds.ts). */
 export type SideBounds = Partial<Record<Side, { wCm: number; hCm: number } | null>>;
@@ -28,7 +28,7 @@ export function tierIndex(qty: number, tiers: number[]): number {
 }
 
 /** Печать одной стороны: формат и цена за принт на текущей ступени тиража. */
-export interface SidePrice { side: Side; format: PrintFormat; price: number; oversize: boolean; wCm: number; hCm: number }
+export interface SidePrice { side: Side; method: PrintMethod; format: PrintFormat; price: number; oversize: boolean; wCm: number; hCm: number }
 
 /** Один цвет заявки: изделие, количество по размерам и его цена. */
 export interface PriceLine {
@@ -93,20 +93,23 @@ export function calcPrice(args: {
   variants: PriceVariant[];
   currentId: string | null;
 }): PriceBreakdown {
-  const list = priceListFor(args.method);
   const count = (v: PriceVariant) => v.sizeNames.reduce((s, k) => s + (v.sizes[k] ?? 0), 0);
   // Ступень — по общему количеству заявки: принт один, тираж общий для всех цветов и размеров.
   const qty = args.variants.reduce((s, v) => s + count(v), 0);
-  const tier = tierIndex(qty, list.tiers);
 
+  // У каждой стороны свой прайс: рукава — DTF, остальное — выбранный метод.
   const printed = (Object.entries(args.bounds) as Array<[Side, { wCm: number; hCm: number } | null]>)
     .filter((e): e is [Side, { wCm: number; hCm: number }] => !!e[1] && e[1].wCm > 0)
-    .map(([side, b]) => ({ side, b, ...formatFor(b.wCm, b.hCm, list) }));
+    .map(([side, b]) => {
+      const method = sideMethod(args.method, side);
+      const list = priceListFor(method);
+      return { side, method, b, list, tier: tierIndex(qty, list.tiers), ...formatFor(b.wCm, b.hCm, list) };
+    });
   const priceAt = (f: FormatPrice, white: boolean, t: number) => (white ? f.white : f.colored)[t];
 
   const lineFor = (v: PriceVariant): PriceLine => {
-    const sides = printed.map(({ side, b, format, oversize }) => ({
-      side, format: format.name, price: priceAt(format, v.isWhite, tier), oversize, wCm: b.wCm, hCm: b.hCm,
+    const sides = printed.map(({ side, method, b, tier, format, oversize }) => ({
+      side, method, format: format.name, price: priceAt(format, v.isWhite, tier), oversize, wCm: b.wCm, hCm: b.hCm,
     }));
     const perItem = v.garmentPrice + sides.reduce((s, x) => s + x.price, 0);
     const sizes = v.sizeNames.map((k): [string, number] => [k, v.sizes[k] ?? 0]).filter(([, n]) => n > 0);
@@ -118,10 +121,12 @@ export function calcPrice(args: {
   const cur = args.variants.find((v) => v.productId === args.currentId);
   const current = cur ? lineFor(cur) : null;
 
-  const nextQty = list.tiers[tier + 1];
-  const next = printed.length && nextQty && cur
-    ? { qty: nextQty, perItem: cur.garmentPrice + printed.reduce((s, x) => s + priceAt(x.format, cur.isWhite, tier + 1), 0) }
+  // Следующая ступень — ближайшая из прайсов сторон; на ней каждая сторона берёт свою ступень.
+  const nextQty = Math.min(...printed.map((x) => x.list.tiers[x.tier + 1] ?? Infinity));
+  const next = cur && Number.isFinite(nextQty)
+    ? { qty: nextQty, perItem: cur.garmentPrice + printed.reduce((s, x) => s + priceAt(x.format, cur.isWhite, tierIndex(nextQty, x.list.tiers)), 0) }
     : null;
+  const tierFrom = Math.max(1, ...printed.map((x) => x.list.tiers[x.tier]));
 
-  return { lines, current, qty, total: lines.reduce((s, l) => s + l.total, 0), tierFrom: list.tiers[tier], next };
+  return { lines, current, qty, total: lines.reduce((s, l) => s + l.total, 0), tierFrom, next };
 }

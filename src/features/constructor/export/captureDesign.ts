@@ -5,7 +5,7 @@ import { designBounds } from '../model/bounds';
 import type { PriceBreakdown } from '../model/pricing';
 import { useConstructor } from '../model/store';
 import { sideHasLayers, visibleLayers } from '../model/visibility';
-import type { Garment } from '../model/types';
+import { sideMethod, type Garment } from '../model/types';
 import { newDesignId, putAssets } from '../cart/assets';
 import type { CartDesign } from '../cart/types';
 import { printVectorPdf } from '../pdf/printVectorPdf';
@@ -54,9 +54,9 @@ export async function captureDesign(stage: RefObject<DesignStageHandle>, garment
           if (!print) throw new Error('export_failed');
           const printName = `print_${sd}_${print.dpi}dpi.png`;
           files.push([printName, await toPng(print.dataUrl)]);
-          // DTF: дизайнеру нужен текст кривыми — под него кладут подложку. DTG печатают с PNG.
+          // DTF (рукава — всегда): дизайнеру нужен текст кривыми — под него кладут подложку. DTG печатают с PNG.
           // Это дополнение к PNG: не собрался — позиция всё равно уходит в корзину.
-          const vector = method === 'dtf' && print.texts.length
+          const vector = sideMethod(method, sd) === 'dtf' && print.texts.length
             ? await printVectorPdf(print.art ? await toPng(print.art) : null, print.size, print.texts)
               .catch((e) => { console.error('[constructor] vector pdf', e); return null; })
             : null;
