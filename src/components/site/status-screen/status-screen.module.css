@@ -1,6 +1,10 @@
 /* Экран-состояние: «Спасибо», ошибка, 404. Чёрная карточка по сетке страницы.
-   Успех — салатовый знак с упругим отскоком (редкий радостный момент); сбой — спокойный белый знак, без отскока. */
+   Успех — салатовый знак с упругим отскоком (редкий радостный момент); сбой — спокойный белый знак, без отскока.
+   Появление — Motion в status-screen.tsx. */
 .page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   box-sizing: border-box;
   width: 100%;
   max-width: var(--page-max);
@@ -118,60 +122,15 @@
   }
 }
 
+/* До запуска Motion (status-screen.tsx) части скрыты — только если скрипты работают и движение не уменьшено */
 @media (prefers-reduced-motion: no-preference) {
-  .badge[data-tone='success'] {
-    animation: pop var(--duration-celebrate) var(--ease-elastic) both;
-  }
-
-  .badge[data-tone='problem'] {
-    animation: rise var(--duration-reveal-part) var(--ease-out-soft) both;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .card {
-    animation: rise var(--duration-reveal) var(--ease-out-soft) both;
-  }
-
-  .title,
-  .text,
-  .note,
-  .actions {
-    animation: rise var(--duration-reveal-part) var(--ease-out-soft) both;
-  }
-
-  .title {
-    animation-delay: calc(var(--reveal-stagger) * 2);
-  }
-
-  .text {
-    animation-delay: calc(var(--reveal-stagger) * 3);
-  }
-
-  .note {
-    animation-delay: calc(var(--reveal-stagger) * 4);
-  }
-
-  .actions {
-    animation-delay: calc(var(--reveal-stagger) * 5);
-  }
-
-  .badge {
-    animation-delay: var(--reveal-stagger);
-  }
-}
-
-@keyframes rise {
-  from {
+  :global(.js-reveal:not(.reveal-all)) .card,
+  :global(.js-reveal:not(.reveal-all)) .badge,
+  :global(.js-reveal:not(.reveal-all)) .title,
+  :global(.js-reveal:not(.reveal-all)) .text,
+  :global(.js-reveal:not(.reveal-all)) .note,
+  :global(.js-reveal:not(.reveal-all)) .actions {
     opacity: 0;
-    transform: translateY(var(--reveal-shift));
-  }
-}
-
-@keyframes pop {
-  from {
-    opacity: 0;
-    transform: scale(0.85) rotate(-12deg);
   }
 }
 

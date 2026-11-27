@@ -147,7 +147,8 @@ export async function readStored(number: string) {
   return { meta, file };
 }
 
-export const storedCount = async () => (await readdir(path.resolve(ORDERS_DIR)).catch(() => [])).length;
+/** Сколько заявок в хранилище: рядом с ними лежат журнал и черновики писем — их не считаем. */
+export const storedCount = async () => (await readdir(path.resolve(ORDERS_DIR)).catch(() => [])).filter((n) => /^ST-/.test(n)).length;
 
 /** Перетаскивает слой дизайна мышью: index — номер слоя на холсте (-1 — верхний), сдвиг — в долях его размера. */
 export async function dragLayer(page: Page, index: number, dxParts: number, dyParts: number) {

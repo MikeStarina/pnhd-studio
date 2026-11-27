@@ -2,6 +2,7 @@ import React from 'react';
 import { redirect } from 'next/navigation';
 import { siteContacts } from '@/components/site/contacts';
 import OrderNumbers from './order-numbers';
+import OrderItems from './order-items';
 import StatusScreen from '@/components/site/status-screen/status-screen';
 
 /** Страница после оформления заказа. Без `?from=checkout` (прямой заход) — на главную. */
@@ -24,7 +25,9 @@ const Page: React.FC<{ searchParams: { [n: string]: string | undefined } }> = ({
         { label: 'Вернуться в каталог', href: '/shop' },
         { label: 'На главную', href: '/' },
       ]}
-    />
+    >
+      <OrderItems />
+    </StatusScreen>
   );
 };
 

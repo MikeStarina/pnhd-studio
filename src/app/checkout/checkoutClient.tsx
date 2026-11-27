@@ -6,7 +6,10 @@ import { actions as cartActions } from '@/redux/cart-slice/cart.slice';
 import { actions as designActions } from '@/redux/cart-designs-slice/cart-designs.slice';
 import { useDesignPrices } from '@/features/constructor/cart/useDesignPrice';
 import { buildDesignOrder, sendDesignOrder } from '@/features/constructor/cart/sendDesign';
-import { deleteDesignAssets } from '@/features/constructor/cart/assets';
+import { deleteDesignAssets, getAsset } from '@/features/constructor/cart/assets';
+import type { CartDesign } from '@/features/constructor/cart/types';
+import { SIDE_LABEL } from '@/features/constructor/model/types';
+import { productPhotoSources } from '../utils/product-photos';
 import type { OrderContacts } from '@/features/constructor/model/types';
 import { PROMO_TEXT, promoAppliesTo } from '@/features/constructor/config/promo';
 import { track } from '@/features/constructor/analytics/events';
@@ -14,7 +17,8 @@ import MainUserData, { type TCheckoutErrors } from '@/components/pages-component
 import CartCatalogSync from '@/components/pages-components/cart-page/cart-catalog-sync/cart-catalog-sync';
 import DeliveryData from '@/components/pages-components/checkout-page/delivery-data/delivery-data';
 import { CartEmpty, CartLoading } from '@/components/pages-components/cart-page/cart-state/cart-state';
-import { checkoutOrderObjectCreateFunc, itemPrintUnitPrice, orderPricing } from '../utils/cart-utils';
+import { checkoutOrderObjectCreateFunc, getPreviewArrFunc, itemPrintUnitPrice, orderPricing, positionTotals } from '../utils/cart-utils';
+import { pickupLine } from '@/features/constructor/config/pickup';
 import { useCreateOrderMutation, usePromocodeValidationMutation } from '@/api/api';
 import { rub } from '@/components/catalog/data';
 import { Icon } from '@/features/constructor/ui/icons';
@@ -25,10 +29,92 @@ import { trackPurchase } from '@/components/site/analytics';
 import type { TCartState } from '@/redux/cart-slice/cart.slice';
 import ConsentField from '@/components/site/consent-field/consent-field';
 import Amount from '@/components/pages-components/cart-page/amount';
-import { clearSent, readSent, saveOrderNumbers, saveSent, type SentOrders } from './sent-orders';
+import { clearOrderSummary, clearSent, readSent, saveOrderNumbers, saveOrderSummary, saveSent, type OrderSummary, type SentOrders } from './sent-orders';
 import styles from './page.module.css';
 import summary from '@/components/pages-components/cart-page/cart-summary/cart-summary.module.css';
 import form from '@/components/pages-components/checkout-page/form/form.module.css';
+
+/**
+ * Письмо покупателю со всем заказом (api/orders/confirm). Переход на «Спасибо» его не ждёт: keepalive доносит запрос
+ * и после ухода со страницы, а повтор того же оформления сервер второй раз не отправит.
+ */
+const sendConfirmation = (cart: TCartState, done: SentOrders, delivery: OrderSummary['delivery']) => {
+  const order = cart.order ?? [];
+  const totals = positionTotals(cart);
+  void fetch('/api/orders/confirm', {
+    method: 'POST',
+    keepalive: true,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: cart.userData.email.trim(),
+      designs: [...done.designs.values()],
+      catalog: done.catalog && order.length ? {
+        id: done.catalog,
+        items: order.map((elem, i) => ({
+          productId: elem.item._id,
+          sizes: Object.fromEntries(elem.item.sizes.filter((s) => (s.userQty ?? 0) > 0).map((s) => [s.name, s.userQty])),
+          prints: getPreviewArrFunc(elem.prints).length,
+          total: totals[i].discounted,
+          fullTotal: totals[i].full,
+        })),
+      } : null,
+      delivery,
+    }),
+  }).catch(() => undefined);
+};
+
+/** Доставка для письма и страницы «Спасибо». Без товаров каталога СДЭК не считается: цену назовёт менеджер. */
+const deliverySummary = (cart: TCartState, price: number): OrderSummary['delivery'] => {
+  if (!cart.isDelivery) return { kind: 'pickup', text: pickupLine(), price: 0 };
+  const text = ['СДЭК', cart.deliveryParams.validCityTo?.city, cart.deliveryParams.validDeliveryPoint?.name].filter(Boolean).join(', ');
+  return { kind: 'delivery', text, price: cart.order?.length ? price : null };
+};
+
+const sizesText = (sizes: Array<[string, number]>) => sizes.map(([size, n]) => `${size}×${n}`).join(', ');
+
+/** Превью изделия с принтом для «Спасибо»: картинки изделий удаляются вместе с корзиной, поэтому — уменьшенной копией. */
+async function previewThumb(asset: string | undefined): Promise<string | undefined> {
+  const blob = asset ? await getAsset(asset) : undefined;
+  if (!blob) return undefined;
+  const bitmap = await createImageBitmap(blob);
+  const scale = Math.min(1, 192 / Math.max(bitmap.width, bitmap.height));
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.round(bitmap.width * scale);
+  canvas.height = Math.round(bitmap.height * scale);
+  canvas.getContext('2d')?.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  return canvas.toDataURL('image/webp', 0.85);
+}
+
+/** Состав заказа для страницы «Спасибо» — тот же, что в письме покупателю. */
+async function orderSummary(
+  cart: TCartState, designs: CartDesign[], designPrices: Array<CartDesign['price']>, delivery: OrderSummary['delivery'], total: number,
+): Promise<OrderSummary> {
+  const designItems = await Promise.all(designs.map(async (design, i) => ({
+    name: `${design.garment.name} — свой принт`,
+    details: [
+      ...designPrices[i].lines.map((line) => `${line.color}: ${sizesText(line.sizes)}`),
+      `Печать ${design.method.toUpperCase()}: ${design.sides.map((side) => SIDE_LABEL[side].toLowerCase()).join(', ')}`,
+    ],
+    qty: designPrices[i].qty,
+    total: designPrices[i].total,
+    image: await previewThumb(design.previews.find((p) => p.side === 'front')?.asset ?? design.previews[0]?.asset).catch(() => undefined),
+  })));
+  const totals = positionTotals(cart);
+  const catalogItems = (cart.order ?? []).map((elem, i) => {
+    const { full, discounted } = totals[i];
+    const prints = getPreviewArrFunc(elem.prints).length;
+    const sizes = sizesText(elem.item.sizes.filter((s) => (s.userQty ?? 0) > 0).map((s): [string, number] => [s.name, s.userQty ?? 0]));
+    return {
+      name: elem.item.name,
+      details: [elem.item.color ? `${elem.item.color}: ${sizes}` : sizes, ...(prints ? [`Печать: ${prints} ${prints === 1 ? 'место' : 'места'}`] : [])],
+      qty: elem.item.sizes.reduce((sum, size) => sum + (size.userQty ?? 0), 0),
+      total: discounted,
+      fullTotal: full > discounted ? full : undefined,
+      image: productPhotoSources(elem.item, 0).cdnPhoto,
+    };
+  });
+  return { items: [...designItems, ...catalogItems], delivery, total };
+}
 
 type TPromo = 'idle' | 'invalid' | 'error';
 
@@ -230,6 +316,21 @@ const CheckoutPage: React.FC = () => {
         }))),
       ],
     });
+    const deliveryInfo = deliverySummary(cart, delivery);
+    // Заказ уже принят: сбой письма или списка для «Спасибо» не должен оставить покупателя на оформлении.
+    clearOrderSummary();
+    try {
+      sendConfirmation(cart, done, deliveryInfo);
+      // Уменьшение превью не должно держать переход: не успело за 4 с — «Спасибо» откроется без списка.
+      await Promise.race([
+        orderSummary(cart, designs, designPrices, deliveryInfo, discounted + designTotal + delivery)
+          .then(saveOrderSummary)
+          .catch((err) => console.error('[checkout] order summary failed', err)),
+        new Promise((resolve) => setTimeout(resolve, 4000)),
+      ]);
+    } catch (err) {
+      console.error('[checkout] confirmation failed', err);
+    }
     // CartPersist сотрёт сохранённую корзину вместе с Redux; картинки изделий удаляем сами — до ухода со страницы.
     await Promise.all(designs.map((design) => deleteDesignAssets(design.id).catch(() => undefined)));
     saveOrderNumbers([...done.designs.values()]);

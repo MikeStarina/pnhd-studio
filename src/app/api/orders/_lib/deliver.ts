@@ -1,4 +1,5 @@
 import { sendToBitrix } from './bitrix';
+import { dropStaleDrafts } from './mail/drafts';
 import { orderText, type Order } from './parse';
 import { findOrder, listOrders, loadOrder, markAttempt, markDelivered } from './store';
 import { sendToTelegram } from './telegram';
@@ -88,7 +89,10 @@ const loop = globalThis as { __orderRetryLoop?: ReturnType<typeof setInterval> }
 /** Запускает фоновую повторную отправку — один раз на процесс сервера. */
 export function ensureRetryLoop(): void {
   if (loop.__orderRetryLoop) return;
-  loop.__orderRetryLoop = setInterval(() => void retryPending().catch((e) => console.error('[order] retry loop:', e)), RETRY_EVERY_MS);
+  loop.__orderRetryLoop = setInterval(() => {
+    void retryPending().catch((e) => console.error('[order] retry loop:', e));
+    void dropStaleDrafts().catch((e) => console.error('[mail] stale drafts:', e));
+  }, RETRY_EVERY_MS);
   loop.__orderRetryLoop.unref?.();
   void retryPending().catch(() => undefined);
 }

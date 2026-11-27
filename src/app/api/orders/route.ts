@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { deliverAndMark, ensureRetryLoop, hasChannel, logOrder } from './_lib/deliver';
 import { BadOrder, DuplicateOrder, parseOrder, type Order } from './_lib/parse';
 import { recordOrder } from './_lib/ledger';
+import { saveDraft } from './_lib/mail/drafts';
 import { retryAfter } from './_lib/limit';
 import { markLogged, saveOrder } from './_lib/store';
 
@@ -33,6 +34,8 @@ export async function POST(req: Request) {
 
   // Журнал — не условие приёма: если запись не удалась, заявка всё равно уходит менеджеру.
   await recordOrder(order).catch((e) => console.error('[order]', order.number, 'not in ledger:', e));
+  // Черновик письма покупателю (mail/drafts.ts): без него письмо просто не упомянет это изделие.
+  await saveDraft(order).catch((e) => console.error('[mail]', order.number, 'draft not saved:', e));
 
   let stored = true;
   try {

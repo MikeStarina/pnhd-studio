@@ -55,6 +55,26 @@ const promoCoversItem = (elem: ICartOrderElement, discountedItem: string): boole
  * Суммы заказа для экрана и для бэкенда. Бэкенд берёт их из заказа как есть (чек ЮKassa, сделка в Битриксе):
  * промокод 'freeShipping' обнуляет доставку, остальные умножают цену своих позиций на discount_ratio.
  */
+/**
+ * Суммы позиций до и после промокода — для письма покупателю и страницы «Спасибо».
+ * orderPricing округляет скидку один раз по всему заказу: остаток округления уходит в последнюю позицию
+ * под промокодом, чтобы сумма позиций совпала с итогом заказа.
+ */
+export const positionTotals = (cart: TCartState): Array<{ full: number; discounted: number }> => {
+    const order = cart.order ?? [];
+    const promo = cart.validPromoCode;
+    const covered = (elem: ICartOrderElement) =>
+        Boolean(promo.name) && promo.mechanic !== 'freeShipping' && promoCoversItem(elem, promo.discounted_item);
+    const totals = order.map((elem) => {
+        const full = positionTotal(elem);
+        return { full, discounted: covered(elem) ? Math.round(full * promo.discount_ratio) : full };
+    });
+    // Не findLastIndex: его нет в Safari до 15.4, а оформление должно дойти до «Спасибо» и там
+    const last = order.map(covered).lastIndexOf(true);
+    if (last >= 0) totals[last].discounted += orderPricing(cart).discounted - totals.reduce((sum, t) => sum + t.discounted, 0);
+    return totals;
+};
+
 export const orderPricing = (cart: TCartState) => {
     const order = cart.order ?? [];
     const promo = cart.validPromoCode;

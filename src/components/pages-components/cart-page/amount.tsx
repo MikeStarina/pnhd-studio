@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import { animate } from 'motion';
-import { EASE_OUT_SOFT, motionSeconds } from './motion-tokens';
+import { EASE_OUT_SOFT, motionSeconds } from '@/styles/motion';
 
 /**
  * Сумма, которая при изменении докручивается от прежнего значения к новому (--duration-celebrate).

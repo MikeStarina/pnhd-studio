@@ -87,3 +87,53 @@ export function clearSent(): void {
     // Нечего очищать.
   }
 }
+
+/** Состав оформленного заказа — для страницы «Спасибо»: к её открытию корзина уже очищена. */
+export interface OrderSummary {
+  items: Array<{
+    name: string;
+    /** Цвет и размеры, печать. */
+    details: string[];
+    qty: number;
+    total: number;
+    /** Сумма до скидки — если позиция подешевела по промокоду. */
+    fullTotal?: number;
+    /** Фото товара каталога или уменьшенное превью изделия с принтом (data URL). */
+    image?: string;
+  }>;
+  /** price null — стоимость доставки рассчитает менеджер. */
+  delivery: { kind: 'pickup' | 'delivery'; text: string; price: number | null };
+  total: number;
+}
+
+const SUMMARY_KEY = 'checkout-summary';
+
+export function saveOrderSummary(summary: OrderSummary): void {
+  try {
+    sessionStorage.setItem(SUMMARY_KEY, JSON.stringify(summary));
+  } catch {
+    // Хранилище закрыто или переполнено превью — «Спасибо» покажется без списка.
+  }
+}
+
+/** Состав прошлого заказа не должен пережить новое оформление: если новый не сохранится, «Спасибо» покажется без списка. */
+export function clearOrderSummary(): void {
+  try {
+    sessionStorage.removeItem(SUMMARY_KEY);
+  } catch {
+    // Нечего очищать.
+  }
+}
+
+/** null — состава нет или он записан в другой форме (вкладка пережила выкладку): страница покажется без списка. */
+export function readOrderSummary(): OrderSummary | null {
+  try {
+    const stored = JSON.parse(sessionStorage.getItem(SUMMARY_KEY) ?? 'null') as Partial<OrderSummary> | null;
+    const ok = stored && Array.isArray(stored.items) && stored.items.length > 0
+      && stored.items.every((x) => typeof x?.name === 'string' && Array.isArray(x.details) && typeof x.qty === 'number' && typeof x.total === 'number')
+      && typeof stored.delivery?.text === 'string' && typeof stored.total === 'number';
+    return ok ? (stored as OrderSummary) : null;
+  } catch {
+    return null;
+  }
+}

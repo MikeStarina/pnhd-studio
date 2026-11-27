@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import { rub } from '@/components/catalog/data';
 import { Icon } from '@/features/constructor/ui/icons';
 import Amount from '../amount';
-import { EASE_IN, EASE_OUT_SOFT, motionPixels, motionSeconds } from '../motion-tokens';
+import { EASE_IN, EASE_OUT_SOFT, motionPixels, motionSeconds } from '@/styles/motion';
 import styles from './cart-row.module.css';
 
 /**

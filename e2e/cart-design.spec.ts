@@ -257,7 +257,8 @@ test('оформление отправляет изделие с принтом
 
   // Наш сервер сохранил заявку с файлами печати, превью, исходником, PDF и макетом.
   await expect.poll(storedCount).toBe(before + 1);
-  const dirs = await readdir(path.resolve(ORDERS_DIR));
+  // Рядом с заявками лежат журнал и черновики писем — берём только папки заявок.
+  const dirs = (await readdir(path.resolve(ORDERS_DIR))).filter((d) => /^ST-/.test(d));
   const newest = (await Promise.all(dirs.map(async (d) => ({ d, t: (await stat(path.resolve(ORDERS_DIR, d))).mtimeMs }))))
     .sort((a, b) => b.t - a.t)[0].d;
   const { meta } = await readStored(newest);

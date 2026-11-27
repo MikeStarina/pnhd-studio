@@ -10,6 +10,8 @@ import { defineConfig, devices } from '@playwright/test';
 const PORT = Number(process.env.E2E_PORT ?? 3111);
 const SUFFIX = process.env.E2E_PORT ? `-${PORT}` : '';
 export const ORDERS_DIR = `data/e2e-orders${SUFFIX}`;
+/** Письма покупателю в тестах не уходят по SMTP, а ложатся сюда JSON-файлами (api/orders/_lib/mail/send.ts). */
+export const MAIL_DIR = `data/e2e-mail${SUFFIX}`;
 
 export default defineConfig({
   testDir: 'e2e',
@@ -36,6 +38,9 @@ export default defineConfig({
     env: {
       NEXT_DIST_DIR: `.next-e2e${SUFFIX}`,
       ORDER_STORE_DIR: ORDERS_DIR,
+      MAIL_TEST_DIR: MAIL_DIR,
+      MAIL_LOGIN: '',
+      MAIL_PASS: '',
       // Пустые значения перекрывают .env.local: заявки из тестов не должны попасть в настоящий канал.
       ORDER_BITRIX_WEBHOOK: '',
       ORDER_TELEGRAM_BOT_TOKEN: '',

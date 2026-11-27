@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion, useAnimate } from 'motion/react';
 import { Icon } from '@/features/constructor/ui/icons';
-import { EASE, motionSeconds } from '../motion-tokens';
+import { EASE, motionSeconds, SPRING_BOUNCE_SOFT } from '@/styles/motion';
 import styles from './size-stepper.module.css';
 
 /**
@@ -22,7 +22,7 @@ const SizeStepper: React.FC<{
   const [scope, animate] = useAnimate<HTMLSpanElement>();
   const change = (delta: 1 | -1) => {
     onChange(delta);
-    animate(scope.current, { scale: [0.85, 1], opacity: [0.4, 1] }, { type: 'spring', visualDuration: motionSeconds('--duration-slow'), bounce: 0.4 });
+    animate(scope.current, { scale: [0.85, 1], opacity: [0.4, 1] }, { type: 'spring', visualDuration: motionSeconds('--duration-slow'), bounce: SPRING_BOUNCE_SOFT });
   };
 
   return (
