@@ -33,6 +33,8 @@ export default defineConfig({
         ORDER_TELEGRAM_CHAT_ID: '',
         NEXT_PUBLIC_YM_COUNTER_ID: '',
         ORDER_LEDGER_TOKEN: 'e2e-bitrix-ledger',
+        // Страница здоровья открывает ключевые страницы на этом же сервере.
+        HEALTH_SELF_URL: `http://localhost:${PORT}`,
       },
     },
   ],

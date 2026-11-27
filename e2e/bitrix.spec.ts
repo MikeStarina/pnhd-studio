@@ -39,6 +39,8 @@ test('изделие из конструктора, оформленное в к
   expect(contact).not.toHaveProperty('SOURCE_ID');
   // Ник — в стандартное поле «Мессенджеры» контакта, чтобы менеджер открыл чат из карточки; и строкой в сделке.
   expect(contact.IM).toEqual([{ VALUE: 'pinhead_test', VALUE_TYPE: 'TELEGRAM' }]);
+  // Второй адрес почты из ника — по нему ChatApp связывает контакт с перепиской в Telegram.
+  expect((contact.EMAIL as { VALUE: string }[]).map((e) => e.VALUE)).toContain('pinhead_test@telegram.chatapp.online');
   expect(deal.COMMENTS).toContain('Telegram: @pinhead_test');
   expect(calls.filter((c) => c.method === 'crm.timeline.comment.add').length).toBeGreaterThan(0);
 });
@@ -159,7 +161,7 @@ test('страница здоровья: 200, пока всё работает; 
   const healthyBody = await healthy.json();
   expect(healthyBody).toEqual({
     ok: true, version: 'dev',
-    checks: { bitrix: 'ok', orders: 'ok', disk: 'ok', space: 'ok', backend: 'ok', retry: 'ok' },
+    checks: { bitrix: 'ok', orders: 'ok', disk: 'ok', space: 'ok', backend: 'ok', retry: 'ok', pages: 'ok' },
   });
   // Слово warning в ответе — сигнал для проверки по ключевому слову: без предупреждений его нет.
   expect(JSON.stringify(healthyBody)).not.toContain('warning');
