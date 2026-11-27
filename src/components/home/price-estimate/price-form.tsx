@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCreateLeadMutation } from '@/api/api';
 import { readRoistatVisitId } from '@/components/shared-components/telegram-link/telegram-link';
 import { track } from '@/components/site/analytics';
@@ -35,6 +35,9 @@ const PriceForm: React.FC<{ source?: 'price' | 'methods' }> = ({ source = 'price
   const [agree, setAgree] = useState(false);
   const [errors, setErrors] = useState<Errors>({});
   const [createLead, { isLoading, isSuccess, isError, reset }] = useCreateLeadMutation();
+  // До загрузки скрипта браузер отправил бы форму сам: заявка потерялась бы, имя и телефон ушли бы в адрес страницы.
+  const [ready, setReady] = useState(false);
+  useEffect(() => setReady(true), []);
 
   // Приём заявок на бэкенде принимает только имя, телефон (до 12 символов) и метку Roistat: лишние поля он отклоняет.
   const send = async () => {
@@ -77,7 +80,7 @@ const PriceForm: React.FC<{ source?: 'price' | 'methods' }> = ({ source = 'price
 
   return (
     <div className={styles.card}>
-      <form className={styles.form} onSubmit={submit} noValidate>
+      <form className={styles.form} method="post" onSubmit={submit} noValidate>
         <div className={styles.formHead}>
           <h3 className={styles.formTitle}>Посчитаем твой заказ</h3>
           <p className={styles.formLead}>
@@ -127,7 +130,7 @@ const PriceForm: React.FC<{ source?: 'price' | 'methods' }> = ({ source = 'price
             <button type="button" className={styles.secondary} onClick={send}>Повторить</button>
           </div>
         )}
-        <button type="submit" className={styles.submit} disabled={isLoading}>
+        <button type="submit" className={styles.submit} disabled={!ready || isLoading}>
           {isLoading ? 'Отправляем…' : 'Передать менеджеру'}
         </button>
         <p className={styles.hours}>Отвечаем в рабочее время: {siteContacts.hours.toLowerCase()}</p>
