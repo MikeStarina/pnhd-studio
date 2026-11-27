@@ -11,6 +11,7 @@ import type { OrderContacts } from '@/features/constructor/model/types';
 import { PROMO_TEXT, promoAppliesTo } from '@/features/constructor/config/promo';
 import { track } from '@/features/constructor/analytics/events';
 import MainUserData, { type TCheckoutErrors } from '@/components/pages-components/checkout-page/main-user-data/main-user-data';
+import CartCatalogSync from '@/components/pages-components/cart-page/cart-catalog-sync/cart-catalog-sync';
 import DeliveryData from '@/components/pages-components/checkout-page/delivery-data/delivery-data';
 import { CartEmpty, CartLoading } from '@/components/pages-components/cart-page/cart-state/cart-state';
 import { checkoutOrderObjectCreateFunc, itemPrintUnitPrice, orderPricing } from '../utils/cart-utils';
@@ -24,12 +25,23 @@ import { trackPurchase } from '@/components/site/analytics';
 import type { TCartState } from '@/redux/cart-slice/cart.slice';
 import ConsentField from '@/components/site/consent-field/consent-field';
 import Amount from '@/components/pages-components/cart-page/amount';
-import { clearSent, readSent, saveSent, type SentOrders } from './sent-orders';
+import { clearSent, readSent, saveOrderNumbers, saveSent, type SentOrders } from './sent-orders';
 import styles from './page.module.css';
 import summary from '@/components/pages-components/cart-page/cart-summary/cart-summary.module.css';
 import form from '@/components/pages-components/checkout-page/form/form.module.css';
 
 type TPromo = 'idle' | 'invalid' | 'error';
+
+/** Почему не ушло изделие с принтом: повтор поможет только при сбое связи. */
+type TFailReason = 'network' | 'asset' | 'catalog';
+const failReason = (err: unknown): TFailReason => {
+  const code = err instanceof Error ? err.message : '';
+  if (code === 'asset_missing') return 'asset';
+  return ['catalog_changed', 'garment_missing', 'no_sizes'].includes(code) ? 'catalog' : 'network';
+};
+
+/** Бэкенд каталога хранит «Фамилия Имя» одной строкой до 40 знаков; длиннее — заказ не сохранится. */
+const OWNER_NAME_MAX = 40;
 
 // Порядок — как поля на странице: фокус уходит на первое неверное.
 const FIELD_IDS: Record<keyof TCheckoutErrors, string> = {
@@ -42,6 +54,7 @@ const FIELD_IDS: Record<keyof TCheckoutErrors, string> = {
   point: 'checkout-point',
   feedback: 'checkout-feedback',
   printFiles: 'checkout-print-files',
+  promo: 'checkout-promo',
   agree: 'checkout-agree',
 };
 
@@ -56,7 +69,11 @@ const validate = (cart: TCartState, agree: boolean, feedback: string | null, pri
     && !orderPricing(cart).freeShipping && deliveryParams.deliveryPrice <= 0;
   return {
     ...(userData.name.trim().length >= 2 ? {} : { name: 'Укажи имя' }),
-    ...(userData.surname.trim().length >= 2 ? {} : { surname: 'Укажи фамилию' }),
+    ...(userData.surname.trim().length < 2
+      ? { surname: 'Укажи фамилию' }
+      : `${userData.surname} ${userData.name}`.length > OWNER_NAME_MAX
+        ? { surname: `Имя и фамилия вместе — не длиннее ${OWNER_NAME_MAX - 1} знаков` }
+        : {}),
     ...(userData.phone.replace(/\D/g, '').length === 11 ? {} : { phone: 'Введи телефон полностью' }),
     ...(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email.trim()) ? {} : { email: 'Проверь адрес почты' }),
     ...(!userData.telegram.trim()
@@ -69,6 +86,8 @@ const validate = (cart: TCartState, agree: boolean, feedback: string | null, pri
     ...(waitingPrice ? { point: 'Дождись расчёта доставки' } : {}),
     ...(feedback === null || feedback.trim() ? {} : { feedback: PROMO_TEXT.commentError }),
     ...(printFiles === null || printFiles.length ? {} : { printFiles: 'Приложи файлы для печати' }),
+    // Код в поле без «Применить» скидки не даёт: молча оформить заказ без неё нельзя.
+    ...(cart.user_promocode.trim() && !cart.validPromoCode.name ? { promo: 'Нажми «Применить» или очисти поле' } : {}),
     ...(agree ? {} : { agree: 'Отметь согласие на обработку персональных данных, иначе заказ не отправить' }),
   };
 };
@@ -111,6 +130,7 @@ const CheckoutPage: React.FC = () => {
   const feedbackNeeded = designs.some((design) => promoAppliesTo(design.garment.type));
   const [errors, setErrors] = useState<TCheckoutErrors>({});
   const [failed, setFailed] = useState<'none' | 'all' | 'designs'>('none');
+  const [reason, setReason] = useState<TFailReason>('network');
   const [promo, setPromo] = useState<TPromo>('idle');
   const [pending, setPending] = useState(false);
   const sending = useRef(false);
@@ -186,6 +206,7 @@ const CheckoutPage: React.FC = () => {
       if (designs.length) track('order_error', { message: String(err).slice(0, 100) });
       sending.current = false;
       setPending(false);
+      setReason(failReason(err));
       setFailed(done.catalog || done.designs.size ? 'designs' : 'all');
       return;
     }
@@ -211,6 +232,7 @@ const CheckoutPage: React.FC = () => {
     });
     // CartPersist сотрёт сохранённую корзину вместе с Redux; картинки изделий удаляем сами — до ухода со страницы.
     await Promise.all(designs.map((design) => deleteDesignAssets(design.id).catch(() => undefined)));
+    saveOrderNumbers([...done.designs.values()]);
     clearSent();
     dispatch(cartActions.resetCart());
     dispatch(designActions.clear());
@@ -230,6 +252,7 @@ const CheckoutPage: React.FC = () => {
   const changePromo = (value: string) => {
     dispatch(cartActions.setUserPromocode(value));
     setPromo('idle');
+    setErrors(({ promo: _applied, ...rest }) => rest);
     if (validPromoCode.name) {
       dispatch(cartActions.resetValidPromocode());
       resetPromo();
@@ -248,6 +271,7 @@ const CheckoutPage: React.FC = () => {
         <h1 className={styles.title}>Оформление заказа</h1>
       </div>
 
+      <CartCatalogSync />
       {!hydrated ? (
         <CartLoading />
       ) : order.length === 0 && designs.length === 0 ? (
@@ -381,6 +405,8 @@ const CheckoutPage: React.FC = () => {
                       Промокод {validPromoCode.name} применён
                     </>
                   )}
+                  {validPromoCode.name && designs.length > 0 && <span>. На изделия со своим принтом он не действует</span>}
+                  {errors.promo && <span className={form.error}>{errors.promo}</span>}
                   {promo === 'invalid' && <span className={form.error}>Такого промокода нет</span>}
                   {promo === 'error' && <span className={form.error}>Не удалось проверить промокод, попробуй ещё раз</span>}
                 </p>
@@ -422,13 +448,24 @@ const CheckoutPage: React.FC = () => {
                 <div className={styles.failure} role="alert">
                   <p className={styles.failureText}>
                     <Icon name="alert" size="1.25em" stroke={2} />
-                    {failed === 'all'
-                      ? 'Не удалось оформить заказ. Проверь соединение и попробуй ещё раз'
-                      : 'Не удалось оформить заказ полностью: часть уже принята, изделие со своим принтом — нет. Нажми «Повторить», принятое второй раз не уйдёт'}
+                    {reason === 'asset'
+                      ? 'Макет не сохранился в браузере, без него заказ не оформить. Удали изделие из корзины и собери его заново в конструкторе'
+                      : reason === 'catalog'
+                        ? 'В каталоге изменились размеры или цвета изделия со своим принтом. Открой его из корзины и выбери размеры заново'
+                        : failed === 'all'
+                          ? 'Не удалось оформить заказ. Проверь соединение и попробуй ещё раз'
+                          : 'Не удалось оформить заказ полностью: часть уже принята, изделие со своим принтом — нет. Нажми «Повторить», принятое второй раз не уйдёт'}
+                    {reason !== 'network' && failed === 'designs' && '. Остальной заказ уже принят, второй раз он не уйдёт'}
                   </p>
-                  <button type="button" className={styles.retry} onClick={send} disabled={busy}>
-                    Повторить
-                  </button>
+                  {reason === 'network' ? (
+                    <button type="button" className={styles.retry} onClick={send} disabled={busy}>
+                      Повторить
+                    </button>
+                  ) : (
+                    <Link href="/cart" className={styles.retry}>
+                      В корзину
+                    </Link>
+                  )}
                 </div>
               )}
 

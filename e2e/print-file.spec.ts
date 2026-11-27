@@ -79,3 +79,17 @@ test('файл печати переда не обрезан по зоне ру�
   expect(Math.abs((box.imgW / dpi) * 2.54 - Number(cm[1]))).toBeLessThanOrEqual(1);
   expect(Math.abs((box.imgH / dpi) * 2.54 - Number(cm[2]))).toBeLessThanOrEqual(1);
 });
+
+test('превью снимается со всем изделием, даже если холст приближен', async ({ page }) => {
+  await openConstructor(page);
+  await uploadImage(page, 'red.png', solidPng(900, 900, [230, 20, 20]));
+  // Кнопки масштаба лежат под слоем подсказки шагов: нажимаем событием, а не указателем.
+  const zoom = page.getByRole('button', { name: 'Увеличить', exact: true });
+  await zoom.dispatchEvent('click');
+  await zoom.dispatchEvent('click');
+  await expect(page.getByRole('button', { name: 'Сбросить масштаб' })).not.toHaveText('100%');
+  const { file } = await readStored(await orderAndSubmit(page, { M: 1 }));
+  const box = await colorBox(page, (await file('preview_0_front')).buf, 'red');
+  // Без приближения квадрат занимает 0,154 ширины кадра с изделием; с приближением ×2 было 0,241.
+  expect(Math.abs(box.w / box.imgW - 0.154)).toBeLessThan(0.01);
+});

@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/redux-hooks';
 import { actions as cartActions } from '@/redux/cart-slice/cart.slice';
 import form from '../form/form.module.css';
 
-export type TCheckoutErrors = Partial<Record<'name' | 'surname' | 'phone' | 'email' | 'telegram' | 'city' | 'point' | 'feedback' | 'printFiles' | 'agree', string>>;
+export type TCheckoutErrors = Partial<Record<'name' | 'surname' | 'phone' | 'email' | 'telegram' | 'city' | 'point' | 'feedback' | 'printFiles' | 'promo' | 'agree', string>>;
 
 /** Телефон в виде «+7 (999) 123-45-67» — тот же разбор, что в форме «Цена» на главной. */
 const formatPhone = (value: string): string => {

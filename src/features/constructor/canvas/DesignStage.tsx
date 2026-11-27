@@ -421,9 +421,10 @@ export function DesignStage({ apiRef, empty, zoom: zoomProp, onZoom, focus = fal
   const clampR = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
   /** Где может стоять край кадра длиной full на холсте длиной vis: закрывает холст целиком или целиком на нём. */
   const span = (vis: number, full: number): [number, number] => [Math.min(0, vis - full), Math.max(0, vis - full)];
-  const calcView = (withFocus: boolean) => {
+  /** userZoom и userPan — приближение и сдвиг, заданные клиентом; снимок для заявки считается без них. */
+  const calcView = (withFocus: boolean, userZoom = zoom, userPan = pan) => {
     const v = { k: 1, x: ox, y: oy, bx: ox, by: oy, minX: ox, maxX: ox, minY: oy, maxY: oy };
-    if (!area || !(isSleeve(side) || zoom > 1 || withFocus)) return v;
+    if (!area || !(isSleeve(side) || userZoom > 1 || withFocus)) return v;
     const fit = Math.min(MAX_ZOOM, (SLEEVE_FILL * size.h) / area.h, (SLEEVE_FILL * size.w) / area.w);
     const fa = withFocus ? focusAnchor(focusKey) : null;
     // Ширина зоны — во весь холст, но принт целиком (по высоте и ширине) остаётся в кадре между полями.
@@ -434,7 +435,7 @@ export function DesignStage({ apiRef, empty, zoom: zoomProp, onZoom, focus = fal
       fa && fa.w > 0 ? (FOCUS_FILL * box.w) / (fa.w * area.w) : Infinity,
     );
     const base = Math.max(1, isSleeve(side) ? fit : 1, withFocus ? focusFit : 1);
-    const k = Math.min(MAX_TOTAL_ZOOM, base * zoom);
+    const k = Math.min(MAX_TOTAL_ZOOM, base * userZoom);
     const [minX, maxX] = span(box.w, size.w * k);
     const bx = clampR(box.w / 2 - (area.x + area.w / 2) * k, minX, maxX);
     let [minY, maxY] = span(box.h, size.h * k);
@@ -450,16 +451,17 @@ export function DesignStage({ apiRef, empty, zoom: zoomProp, onZoom, focus = fal
       minY = Math.min(by, lo);
       maxY = Math.max(by, hi);
     }
-    return { k, x: clampR(bx + pan.x, minX, maxX), y: clampR(by + pan.y, minY, maxY), bx, by, minX, maxX, minY, maxY };
+    return { k, x: clampR(bx + userPan.x, minX, maxX), y: clampR(by + userPan.y, minY, maxY), bx, by, minX, maxX, minY, maxY };
   };
   const cv = calcView(focusOn);
   const view = { k: cv.k, x: cv.x, y: cv.y };
   panLimits.current = { bx: cv.bx, by: cv.by, minX: cv.minX, maxX: cv.maxX, minY: cv.minY, maxY: cv.maxY, k: cv.k };
   baseView.current = { x: cv.bx, y: cv.by };
   // Снимки для заявки — как раньше, по кадру изделия без фокуса: тот же масштаб (рукав приближен),
-  // кадр заполнен изделием; вырезаем ровно прямоугольник кадра.
+  // кадр заполнен изделием; вырезаем ровно прямоугольник кадра. Приближение клиента в снимок не идёт:
+  // менеджеру и в корзине нужно изделие целиком.
   {
-    const r = calcView(false);
+    const r = calcView(false, 1, { x: 0, y: 0 });
     const [fxa] = span(size.w, size.w * r.k);
     const [fya] = span(size.h, size.h * r.k);
     const fx = area ? clampR(size.w / 2 - (area.x + area.w / 2) * r.k, fxa, 0) : 0;

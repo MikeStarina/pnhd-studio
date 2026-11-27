@@ -39,12 +39,44 @@ export function readSent(order: TCartState['order']): SentOrders {
   }
 }
 
+/**
+ * Заказ каталога уже принят, а оформление не закончено. Пока так, корзину менять нельзя:
+ * принятый заказ узнаётся по её составу, изменённая корзина ушла бы вторым заказом.
+ */
+export function hasSentCatalog(): boolean {
+  try {
+    return Boolean((JSON.parse(sessionStorage.getItem(KEY) ?? 'null') as Stored | null)?.catalog);
+  } catch {
+    return false;
+  }
+}
+
 export function saveSent(order: TCartState['order'], sent: SentOrders): void {
   const stored: Stored = { cart: cartKey(order), catalog: sent.catalog, designs: [...sent.designs], numbers: [...sent.numbers] };
   try {
     sessionStorage.setItem(KEY, JSON.stringify(stored));
   } catch {
     // Хранилище закрыто — запись остаётся в памяти страницы.
+  }
+}
+
+const NUMBERS_KEY = 'checkout-numbers';
+
+/** Номера принятых заявок — для страницы «Спасибо»: она открывается новой загрузкой и памяти оформления не видит. */
+export function saveOrderNumbers(numbers: string[]): void {
+  try {
+    sessionStorage.setItem(NUMBERS_KEY, JSON.stringify(numbers));
+  } catch {
+    // Хранилище закрыто — «Спасибо» покажется без номера.
+  }
+}
+
+export function readOrderNumbers(): string[] {
+  try {
+    const stored: unknown = JSON.parse(sessionStorage.getItem(NUMBERS_KEY) ?? '[]');
+    return Array.isArray(stored) ? stored.filter((n): n is string => typeof n === 'string') : [];
+  } catch {
+    return [];
   }
 }
 

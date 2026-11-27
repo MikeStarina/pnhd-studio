@@ -4,6 +4,7 @@ import { AnimatePresence } from 'motion/react';
 import { useAppSelector } from '@/redux/redux-hooks';
 import CartDesignItem from '@/components/pages-components/cart-page/cart-design-item/cart-design-item';
 import CartItem from '@/components/pages-components/cart-page/cart-item/cart-item';
+import CartCatalogSync from '@/components/pages-components/cart-page/cart-catalog-sync/cart-catalog-sync';
 import CartSummary from '@/components/pages-components/cart-page/cart-summary/cart-summary';
 import { CartEmpty, CartLoading } from '@/components/pages-components/cart-page/cart-state/cart-state';
 import styles from './page.module.css';
@@ -32,6 +33,7 @@ const CartClient: React.FC = () => {
           </p>
         )}
       </div>
+      <CartCatalogSync />
       {!hydrated ? (
         <CartLoading />
       ) : count === 0 ? (

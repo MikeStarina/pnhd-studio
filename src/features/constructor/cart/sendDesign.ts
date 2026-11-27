@@ -25,6 +25,9 @@ export async function buildDesignOrder(
   if (!garment) throw new Error('garment_missing');
   const price = calcPrice({ method: design.method, bounds: design.bounds, variants: priceVariants(garment, design.quantities), currentId: null });
   if (!price.lines.length) throw new Error('no_sizes');
+  // Размер или цвет пропал из каталога: расчёт молча отбросил бы его, и в заявку ушло бы меньше, чем видит покупатель.
+  const wanted = Object.values(design.quantities).flatMap((sizes) => Object.values(sizes)).reduce((sum, n) => sum + n, 0);
+  if (price.qty !== wanted) throw new Error('catalog_changed');
   const issued = number ?? (await issueNumber());
 
   const form = new FormData();

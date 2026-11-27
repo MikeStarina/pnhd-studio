@@ -1,0 +1,22 @@
+/* Сообщение о сверке корзины с каталогом: спокойная плашка над списком, не ошибка */
+.notice {
+  margin-bottom: 24px;
+  padding: 16px;
+  border: var(--border-control) solid var(--color-ink);
+  border-radius: var(--radius-control);
+  background: var(--color-white);
+  font-size: var(--text-s);
+  line-height: 1.4;
+}
+
+.title {
+  margin: 0 0 4px;
+  font-weight: var(--weight-bold);
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--color-ink-64);
+}
