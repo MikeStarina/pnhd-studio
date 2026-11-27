@@ -1,4 +1,4 @@
-import { readdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { expect, test } from '@playwright/test';
 import { acceptedNumber, addToCart, fillCheckout, openConstructor, orderAndSubmit, solidPng, uploadImage } from './helpers';
 
@@ -140,4 +140,64 @@ test('проверка связи с Битриксом закрыта паро�
   expect(body.webhook).toEqual({ host: 'localhost:3115', user: '1', clean: true });
   expect(body.bitrix.ok).toBe(true);
   expect(JSON.stringify(body)).not.toContain('/rest/1/test');
+});
+
+/** Тестовое хранилище без записей о непринятых файлах: их оставляют другие тесты, а это — предупреждение здоровья. */
+const clearKeptFiles = async () => {
+  const root = 'data/e2e-orders-bitrix';
+  for (const name of await readdir(root).catch(() => [] as string[])) {
+    const meta = await readFile(`${root}/${name}/meta.json`, 'utf8').catch(() => '');
+    if (meta.includes('"filesKept"')) await rm(`${root}/${name}`, { recursive: true, force: true });
+  }
+};
+
+test('страница здоровья: 200, пока всё работает; 503, если заявка застряла; без ключей и данных клиентов', async ({ request }) => {
+  test.skip(!process.env.BITRIX_STUB_LOG, 'нужна заглушка Битрикса: npx playwright test -c playwright.bitrix.config.ts');
+  await clearKeptFiles();
+  const healthy = await request.get('/api/health');
+  expect(healthy.status()).toBe(200);
+  const healthyBody = await healthy.json();
+  expect(healthyBody).toEqual({
+    ok: true, version: 'dev',
+    checks: { bitrix: 'ok', orders: 'ok', disk: 'ok', space: 'ok', backend: 'ok', retry: 'ok' },
+  });
+  // Слово warning в ответе — сигнал для проверки по ключевому слову: без предупреждений его нет.
+  expect(JSON.stringify(healthyBody)).not.toContain('warning');
+
+  // Заявка, которую сервер больше не пытается отправить (60 попыток) и которая лежит дольше 15 минут.
+  const dir = 'data/e2e-orders-bitrix/ST-9999';
+  await mkdir(dir, { recursive: true });
+  await writeFile(`${dir}/meta.json`, JSON.stringify({
+    number: 'ST-9999', fingerprint: 'x', status: 'pending', receivedAt: new Date(Date.now() - 3600_000).toISOString(),
+    attempts: 60, lastAttemptAt: new Date().toISOString(), total: 1000,
+    order: { contacts: { name: 'Клиент Скрытый', phone: '+79990000000' } },
+  }));
+  try {
+    const stuck = await request.get('/api/health');
+    expect(stuck.status()).toBe(503);
+    const body = await stuck.json();
+    expect(body).toMatchObject({ ok: false, checks: { orders: '1 stuck' } });
+    expect(JSON.stringify(body)).not.toContain('Скрытый');
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+  expect((await request.get('/api/health')).status()).toBe(200);
+});
+
+test('страница здоровья: файл, который Битрикс не принял за последние сутки, — предупреждение без аварии', async ({ request }) => {
+  test.skip(!process.env.BITRIX_STUB_LOG, 'нужна заглушка Битрикса: npx playwright test -c playwright.bitrix.config.ts');
+  await clearKeptFiles();
+  const dir = 'data/e2e-orders-bitrix/ST-9998';
+  await mkdir(dir, { recursive: true });
+  await writeFile(`${dir}/meta.json`, JSON.stringify({
+    number: 'ST-9998', fingerprint: 'x', status: 'delivered', receivedAt: new Date().toISOString(), attempts: 1,
+    deliveredAt: new Date().toISOString(), channel: 'bitrix', total: 1000, filesKept: ['ST-9998_file_0_maket.pdf'],
+  }));
+  try {
+    const res = await request.get('/api/health');
+    expect(res.status()).toBe(200);
+    expect(await res.json()).toMatchObject({ ok: true, warnings: ['files_not_delivered: 1'] });
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
 });

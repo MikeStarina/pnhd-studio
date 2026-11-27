@@ -1,4 +1,4 @@
-import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, rm, statfs, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { ORDER_NUMBER } from './number';
 import type { Order, OrderFile } from './parse';
@@ -134,4 +134,24 @@ export async function listOrders(): Promise<StoredOrder[]> {
     out.push(m);
   }
   return out;
+}
+
+/** Можно ли записать заявку на диск: пишет и удаляет пробный файл. */
+export async function storeWritable(): Promise<boolean> {
+  const probe = path.join(DIR, `.health-${process.pid}`);
+  try {
+    await mkdir(DIR, { recursive: true });
+    await writeFile(probe, 'ok');
+    await rm(probe, { force: true });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/** Свободное место на диске хранилища, в байтах. */
+export async function storeFreeBytes(): Promise<number> {
+  await mkdir(DIR, { recursive: true });
+  const s = await statfs(DIR);
+  return s.bavail * s.bsize;
 }

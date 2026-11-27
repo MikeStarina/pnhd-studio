@@ -32,6 +32,9 @@ ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 # Заявки конструктора до доставки в Битрикс/Telegram. Сюда монтируется том (deploy/docker-compose.yml).
 ENV ORDER_STORE_DIR=/app/data/orders
+# Коммит, из которого собран образ: его показывает /api/health.
+ARG GIT_SHA=
+ENV GIT_SHA=$GIT_SHA
 
 # Папка создаётся с владельцем nextjs: пустой именованный том при первом запуске берёт её права.
 RUN groupadd --system --gid 1001 nodejs \

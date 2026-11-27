@@ -84,12 +84,17 @@ export async function retryPending(): Promise<void> {
 }
 
 const RETRY_EVERY_MS = 5 * 60_000;
-const loop = globalThis as { __orderRetryLoop?: ReturnType<typeof setInterval> };
+const loop = globalThis as { __orderRetryLoop?: ReturnType<typeof setInterval>; __orderRetryTick?: number };
+
+/** Сколько миллисекунд назад был последний проход повторной отправки; null — цикл не запущен. */
+export const retryLoopAge = () => (loop.__orderRetryTick ? Date.now() - loop.__orderRetryTick : null);
 
 /** Запускает фоновую повторную отправку — один раз на процесс сервера. */
 export function ensureRetryLoop(): void {
   if (loop.__orderRetryLoop) return;
+  loop.__orderRetryTick = Date.now();
   loop.__orderRetryLoop = setInterval(() => {
+    loop.__orderRetryTick = Date.now();
     void retryPending().catch((e) => console.error('[order] retry loop:', e));
     void dropStaleDrafts().catch((e) => console.error('[mail] stale drafts:', e));
   }, RETRY_EVERY_MS);
