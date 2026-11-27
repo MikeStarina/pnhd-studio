@@ -289,6 +289,8 @@
     grid-template-areas: 'center' 'grip' 'panel' 'footer';
     gap: 0; padding: 0;
     height: 100vh; height: var(--constructor-height, 100dvh); overflow: hidden;
+    /* Быстрые тапы по цветам и моделям не должны превращаться в зум двойным тапом; щипок остаётся. */
+    touch-action: manipulation;
   }
   /* Пока открыта клавиатура — ровно в видимой области над ней, поверх шапки сайта: иначе шапка + конструктор
      не помещаются, iOS сдвигает страницу и холст уходит за верхний край. */

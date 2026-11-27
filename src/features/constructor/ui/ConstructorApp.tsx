@@ -71,6 +71,8 @@ const SumRow = ({ title, meta, onClick }: { title: string; meta: string; onClick
 type Tab = 'garment' | 'design' | 'order';
 /** Сдвиг пальца (px), с которого жест по ручке листа — это свайп, а не нажатие. */
 const GRIP_SWIPE = 24;
+/** Сколько ждать после ухода фокуса из поля, пока экранная клавиатура закроется (мс). */
+const KEYBOARD_CLOSE_MS = 400;
 
 export function ConstructorApp({ onAddToCart, initial, draftScope, addLabel, children }: {
   /**
@@ -165,8 +167,11 @@ export function ConstructorApp({ onAddToCart, initial, draftScope, addLabel, chi
   useEffect(() => {
     const vv = window.visualViewport;
     if (!vv) return;
-    const onResize = () => {
-      const open = window.innerHeight - vv.height > 120 && window.matchMedia('(max-width: 900px)').matches;
+    const update = () => {
+      // Видимую область уменьшает не только клавиатура поля, но и зум, и клавиатура самого браузера (адресная строка):
+      // без фокуса в поле конструктора экран застревал в раскладке набора — без шапки, цветов и итога.
+      // vv.height приходит в увеличенных пикселях: без умножения на масштаб зум выглядит как клавиатура.
+      const open = typingIn(appRef.current) && window.innerHeight - vv.height * vv.scale > 120 && window.matchMedia('(max-width: 900px)').matches;
       appRef.current?.style.setProperty('--vvh', `${Math.round(vv.height)}px`);
       appRef.current?.style.setProperty('--vvt', `${Math.round(vv.offsetTop)}px`);
       setKb(open);
@@ -181,12 +186,19 @@ export function ConstructorApp({ onAddToCart, initial, draftScope, addLabel, chi
     };
     // iOS сдвигает видимую область к полю ввода, не меняя её размер, — тогда приходит только scroll.
     const onScroll = () => appRef.current?.style.setProperty('--vvt', `${Math.round(vv.offsetTop)}px`);
-    onResize();
-    vv.addEventListener('resize', onResize);
+    // Закрытие клавиатуры не каждый браузер сопровождает resize, поэтому перепроверяем и при смене фокуса.
+    // После ухода фокуса ждём, пока клавиатура уедет: обычно resize приходит раньше и выключает раскладку сам.
+    const onFocusOut = () => setTimeout(update, KEYBOARD_CLOSE_MS);
+    update();
+    vv.addEventListener('resize', update);
     vv.addEventListener('scroll', onScroll);
+    document.addEventListener('focusin', update);
+    document.addEventListener('focusout', onFocusOut);
     return () => {
-      vv.removeEventListener('resize', onResize);
+      vv.removeEventListener('resize', update);
       vv.removeEventListener('scroll', onScroll);
+      document.removeEventListener('focusin', update);
+      document.removeEventListener('focusout', onFocusOut);
     };
   }, []);
 
@@ -705,4 +717,11 @@ export function ConstructorApp({ onAddToCart, initial, draftScope, addLabel, chi
       {chartOpen && <SizeChart sizes={variant?.sizes ?? []} onClose={() => setChartOpen(false)} />}
     </div>
   );
+}
+
+/** Фокус в поле конструктора, которое открывает экранную клавиатуру: ползунок, галочка, выбор цвета и файла её не открывают. */
+function typingIn(app: HTMLElement | null) {
+  const field = document.activeElement;
+  return !!field && !!app?.contains(field)
+    && field.matches('textarea, input:not([type=range], [type=checkbox], [type=radio], [type=color], [type=file])');
 }
