@@ -127,20 +127,26 @@ jobs:
           TG_CHAT: ${{ vars.RELEASES_TELEGRAM_CHAT_ID }}
           TG_THREAD: ${{ vars.RELEASES_TELEGRAM_THREAD }}
           JOB_STATUS: ${{ job.status }}
+          BEFORE: ${{ github.event.before }}
         run: |
           [ -n "$TG_TOKEN" ] && [ -n "$TG_CHAT" ] || exit 0
           esc() { sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g'; }
           SHA="${GITHUB_SHA::7}"
           WHEN="$(TZ=Europe/Moscow date '+%d.%m %H:%M') МСК"
+          # Все коммиты этого пуша, от старых к новым: выкладка из нескольких коммитов описывается целиком.
+          git fetch --quiet --depth=30 origin "$GITHUB_SHA" 2>/dev/null || true
+          RANGE="$GITHUB_SHA"; COUNT=1
+          if [ -n "$BEFORE" ] && git cat-file -e "${BEFORE}^{commit}" 2>/dev/null; then
+            RANGE="${BEFORE}..${GITHUB_SHA}"; COUNT=30
+          fi
+          NOTES="$(git log --reverse -n "$COUNT" --format='<b>%s</b>%n%b' "$RANGE" | esc | sed -e 's#^&lt;b&gt;#<b>#' -e 's#&lt;/b&gt;$#</b>#' | cat -s)"
           TITLE="$(git log -1 --format=%s | esc)"
-          BODY="$(git log -1 --format=%b | esc)"
           URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}"
           if [ "$JOB_STATUS" = "success" ]; then
             TEXT="🚀 <b>Новая версия на сайте</b>
           <i>${WHEN} · версия <a href=\"${URL}\">${SHA}</a></i>
 
-          <b>${TITLE}</b>
-          ${BODY}"
+          ${NOTES}"
           else
             TEXT="⚠️ <b>Выкладка не удалась</b>
           <i>${WHEN} · версия ${SHA}</i>
