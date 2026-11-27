@@ -25,7 +25,8 @@ import { Icon } from '@/features/constructor/ui/icons';
 import { PrintFilesField } from '@/features/constructor/ui/PrintFilesField';
 import { telegramNick } from '../utils/telegram';
 import { readRoistatVisitId } from '@/components/shared-components/telegram-link/telegram-link';
-import { trackPurchase } from '@/components/site/analytics';
+import { getClientId, trackPurchase } from '@/components/site/analytics';
+import { getUtm } from '@/features/constructor/analytics/utm';
 import type { TCartState } from '@/redux/cart-slice/cart.slice';
 import ConsentField from '@/components/site/consent-field/consent-field';
 import Amount from '@/components/pages-components/cart-page/amount';
@@ -59,6 +60,42 @@ const sendConfirmation = (cart: TCartState, done: SentOrders, delivery: OrderSum
         })),
       } : null,
       delivery,
+    }),
+  }).catch(() => undefined);
+};
+
+/**
+ * Сделка в Битриксе по заказу каталога (api/orders/catalog): бэкенд заказ сохранил, но сделку сам не создаёт.
+ * Заказ уже принят, поэтому оформление сбой не показывает; keepalive доносит запрос и после перехода на «Спасибо».
+ */
+const sendCatalogDeal = async (cart: TCartState, id: string, shipping: number, delivery: string) => {
+  const order = cart.order ?? [];
+  const totals = positionTotals(cart);
+  const clientId = await getClientId();
+  const { userData } = cart;
+  void fetch('/api/orders/catalog', {
+    method: 'POST',
+    keepalive: true,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      id,
+      contacts: { name: `${userData.name} ${userData.surname}`.trim(), phone: userData.phone, email: userData.email.trim(), telegram: userData.telegram },
+      items: order.map((elem, i) => ({
+        name: elem.item.name,
+        color: elem.item.color,
+        sizes: elem.item.sizes.filter((s) => (s.userQty ?? 0) > 0).map((s) => ({ name: s.name, qty: s.userQty })),
+        total: totals[i].discounted,
+        prints: (elem.prints ?? []).filter((p) => p.file?.url).map((p) => ({
+          name: p.file!.name, size: p.cartParams?.size ?? '', price: p.cartParams?.price ?? 0, file: p.file!.url,
+        })),
+      })),
+      promo: cart.validPromoCode.name ?? '',
+      delivery,
+      shipping,
+      sum: totals.reduce((sum, t) => sum + t.discounted, 0) + shipping,
+      utm: getUtm(),
+      clientId,
+      page: window.location.href,
     }),
   }).catch(() => undefined);
 };
@@ -273,6 +310,7 @@ const CheckoutPage: React.FC = () => {
         if ('error' in result) throw new Error('catalog_order');
         done.catalog = result.data.id;
         saveSent(cart.order, done);
+        await sendCatalogDeal(cart, result.data.id, delivery, deliverySummary(cart, delivery).text);
       }
       for (const [i, design] of designs.entries()) {
         if (done.designs.has(design.id)) continue;
